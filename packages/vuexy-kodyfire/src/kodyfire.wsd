@@ -1,0 +1,63 @@
+@startuml
+skinparam componentstyle uml2
+
+() Source
+package "Kodyfire" {
+    folder Technologies {
+        package Laravel {
+            component LaravelParser {
+                file schema.json
+                component LaravelTransformer {
+                }
+                component LaravelLoader {
+                }
+                component LaravelValidator {
+                }
+                component LaravelExtractor
+            }
+            component LaravelGenerator {
+                component LaravelAction {
+                }
+                file assets.json
+                file actions.json
+            }
+        }
+    }
+    Component Packager {
+
+    }
+    Component Deployer {
+
+    }
+    component Parser {
+        port "output.json"  as output
+        component Extractor {
+        }
+        component Transformer {
+        }
+        component Loader {
+        }
+        component Validator {
+        }
+
+    }
+
+    component Generator {
+        port "Generated files" as generatorOutput
+        component Action {
+            file registery.json
+        }
+    }
+
+
+    output -u0)- Generator
+    Parser <-up- Source: use
+    Validator -(0- LaravelValidator
+    Loader -(0- LaravelLoader
+    Transformer -(0- LaravelTransformer
+    Extractor -(0- LaravelExtractor
+    Generator -(0- LaravelGenerator
+    generatorOutput -l0)- Packager: output
+    generatorOutput -0)- Deployer: output
+}
+@enduml
