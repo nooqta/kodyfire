@@ -1,0 +1,11 @@
+{
+  "name": "laravel-codyfire",
+  "version": "1.0.0",
+  "description": "Generator for laravel API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "NOQTA",
+  "license": "ISC"
+}
