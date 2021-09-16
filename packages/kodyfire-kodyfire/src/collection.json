@@ -1,0 +1,8 @@
+{
+  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {  "kodyfire": {
+      "description": "A blank schematic.",
+      "factory": "./kodyfire/index#kodyfire"
+    }
+  }
+}
