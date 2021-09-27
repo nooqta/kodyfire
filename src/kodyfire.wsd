@@ -2,8 +2,15 @@
 skinparam componentstyle uml2
 
 () Source
-package "Kodyfire" {
-    folder Technologies {
+package "Kodyfire-core" {
+    [typing]
+}
+package KodfireCli {
+    component cli {
+        kodyfire -(0- Kodyfire
+    }
+}
+folder Technologies {
         package Laravel {
             component LaravelParser {
                 file schema.json
@@ -23,6 +30,10 @@ package "Kodyfire" {
             }
         }
     }
+' package devkit-schematic {
+'     port "Schematic API"
+' }
+package "Kodyfire" {
     Component Packager {
 
     }
@@ -51,7 +62,8 @@ package "Kodyfire" {
 
 
     output -u0)- Generator
-    Parser <-up- Source: use
+    Parser <-l- Source: use
+    cli <-l- Source: use
     Validator -(0- LaravelValidator
     Loader -(0- LaravelLoader
     Transformer -(0- LaravelTransformer
