@@ -1,0 +1,25 @@
+@startuml
+start
+package Kodyfire {
+package Parser {
+  :generate output.json;
+  floating note left: Parsed source
+}
+package Generator {
+    :load technology registered actions;
+    :read output.json;
+    repeat
+  :read next concept;
+  :run action using template;
+repeat while (more concept?) is (true)
+->false;
+    :do action using artifact;
+    :return result;
+}
+package Packager {
+    :package result;
+}
+}
+end
+
+@enduml

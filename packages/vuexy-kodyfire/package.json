@@ -1,28 +1,55 @@
 {
-  "name": "kodyfire",
-  "version": "1.0.0",
-  "description": "Code generator for Laravel, express and the list goes on.",
+  "name": "@noqta/kodyfire",
+  "version": "0.0.20",
+  "description": "Code generator for Laravel, express, Flutter and the list goes on.",
+  "typings": "./kodyfire.d.ts",
+  "directories": {
+    "bin": "./src/bin"
+  },
   "scripts": {
+    "watch": "tsc -w",
     "build": "tsc -p tsconfig.json",
-    "test": "npm run build && jasmine src/**/*_spec.js"
+    "test": "npm run build && jasmine src/**/*_spec.js",
+    "kody": "node ./src/bin/kody.js"
   },
   "keywords": [
     "schematics"
   ],
+  "bin": {
+    "kody": "./src/bin/kody.js",
+    "cody": "./src/bin/kody.js",
+    "kodyfire": "./src/bin/kody.js"
+  },
   "repository": "https://gitlab.noqta.tn/noqta/kodyfire.git",
   "author": "NOQTA",
   "license": "MIT",
-  "private": true,
   "schematics": "./src/collection.json",
+  "publishConfig": {
+    "@noqta:registry": "https://gitlab.noqta.tn/api/v4/projects/161/packages/npm/"
+  },
   "dependencies": {
     "@angular-devkit/core": "^12.2.3",
     "@angular-devkit/schematics": "^12.2.3",
-    "laravel-codyfire": "file:src/kodyfire/technologies/laravel/latest",
-    "typescript": "~4.3.2"
+    "@noqta/helloworld-html-kodyfire": "0.0.35",
+    "@noqta/laravel-kodyfire": "0.0.11",
+    "@types/inquirer": "^8.1.1",
+    "ajv": "^8.6.3",
+    "ansi-colors": "^4.1.1",
+    "boxen": "^5.1.2",
+    "chalk": "^4.1.2",
+    "cli-table": "^0.3.6",
+    "commander": "^8.2.0",
+    "fs-extra": "^10.0.0",
+    "handlebars": "^4.7.7",
+    "inquirer": "^8.1.5",
+    "kodyfire-core": "0.0.12",
+    "minimist": "^1.2.5",
+    "symbol-observable": "^4.0.0",
+    "zx": "^4.2.0"
   },
   "devDependencies": {
-    "@types/node": "^12.11.1",
     "@types/jasmine": "~3.8.0",
+    "@types/node": "^12.11.1",
     "jasmine": "^3.5.0"
   }
 }

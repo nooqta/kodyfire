@@ -1,0 +1,13 @@
+{
+  "schema": {
+    "fields": {
+      "name": { "type": "string", "unique": true },
+      "id": { "type": "enum", "options": ["laravel"] },
+      "type": { "type": "enum", "options": ["api"] },
+      "version": { "type": "string" },
+      "enabled": { "type": "boolean", "default": true }
+    }
+  },
+  "templates": [
+  ]
+}
