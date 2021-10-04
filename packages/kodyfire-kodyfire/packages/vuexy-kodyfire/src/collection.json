@@ -4,6 +4,10 @@
       "description": "A blank schematic.",
       "schema": "./kodyfire/schema.json",
       "factory": "./kodyfire/index#run"
+    },
+      "scaffold": {
+      "description": "A blank schematic.",
+      "factory": "./kodyfire/index#scaffold"
     }
   }
 }
