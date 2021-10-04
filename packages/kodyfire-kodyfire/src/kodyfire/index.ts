@@ -1,4 +1,5 @@
-import {  SchematicContext, Tree } from "@angular-devkit/schematics";
+import { strings } from "@angular-devkit/core";
+import {  apply, applyTemplates, chain, mergeWith, move, Rule, SchematicContext, Tree, url } from "@angular-devkit/schematics";
 import { join } from "path";
 
 import { IParser, IValidator } from "../lib";
@@ -38,7 +39,7 @@ export function run(_options: KodyfireOptionsSchema) {
         let kody = new m.Kody(parser, currentCody, tree);
         // parse source
         // source is passed statically for developing purposes
-        const fileName = join(process.cwd(),'data.json');
+        const fileName = join(process.cwd(),'data-laravel.json');
         let content = kody.read(fileName);
         const data = kody.parse(content);
         /// check if source is valid
@@ -54,23 +55,24 @@ export function run(_options: KodyfireOptionsSchema) {
 
   };
 }
-// function createHost(tree: Tree): workspaces.WorkspaceHost {
-//   return {
-//     async readFile(path: string): Promise<string> {
-//       const data = tree.read(path);
-//       if (!data) {
-//         throw new SchematicsException('File not found.');
-//       }
-//       return virtualFs.fileBufferToString(data);
-//     },
-//     async writeFile(path: string, data: string): Promise<void> {
-//       return tree.overwrite(path, data);
-//     },
-//     async isDirectory(path: string): Promise<boolean> {
-//       return !tree.exists(path) && tree.getDir(path).subfiles.length > 0;
-//     },
-//     async isFile(path: string): Promise<boolean> {
-//       return tree.exists(path);
-//     },
-//   };
-// }
+
+export function scaffold(_options: any): Rule {
+  return async (tree: Tree, _context: SchematicContext) => {
+    const fileName = './data.json';
+    const content = tree.read(fileName);
+    const json = content?.toString()?? "{}";
+        const templateSource = apply(
+            url('./templates/blank'),
+         [
+            applyTemplates({
+              ...strings,
+              ...JSON.parse(json)
+            }),
+            move('./dist/my-kody'),
+          ]);
+          const rule = chain([mergeWith(templateSource)]);
+          console.log(chalk.green('🙌 kody done! '));
+          return rule;
+
+  };
+}

@@ -1,6 +1,6 @@
-import { Action, Tree } from "@angular-devkit/schematics";
-import { Service, Technology } from "..";
-import { ActionList } from "./actionList";
+
+import { Tree } from "@angular-devkit/schematics";
+import { Technology } from "..";
 export enum Source {
     Template
 }
@@ -8,14 +8,12 @@ export interface TemplateSchema {
     path: string;
     options: string[];
 }
-export interface IConcept extends Service<IConcept> {
+export interface IConcept {
     name: string;
     defaultAction: string;
-    action: Partial<Action>;
     source?: Source;
     template: TemplateSchema;
     outputDir?: string;
-    actions: ActionList;
     technology: Technology;
     generate(data: any, tree: Tree): any;
 }

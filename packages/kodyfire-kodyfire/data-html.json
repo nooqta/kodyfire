@@ -1,0 +1,19 @@
+{
+    "page": [
+        {
+            "title": "the title",
+            "content": "This the content. It should contain html so encoding and decoding into base64 will be used",
+            "template": "page1.html.template"
+        },
+        {
+            "title": "the title 2",
+            "content": "This the content 2. It should contain html so encoding and decoding into base64 will be used",
+            "template": "page2.html.template"
+        },
+        {
+            "title": "the title 3",
+            "content": "This the content 3. It should contain html so encoding and decoding into base64 will be used",
+            "template": "page1.html.template"
+        }
+    ]
+}

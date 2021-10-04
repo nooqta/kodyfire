@@ -1,0 +1,21 @@
+{
+    "name": "<%= classify(technology) %>",
+    "version": "<%= classify(version) %>",
+    "rootDir": "blank-kodyfire",
+    "concepts": [
+        {
+            "name": "<%= name %>",
+            "defaultAction": "create",
+            "source": "template",
+            "outputDir": "",
+            "template": {
+                "path": "templates/",
+                "options": [
+                ],
+                "placeholders": [
+                ]
+            }
+        }
+    ]
+
+}

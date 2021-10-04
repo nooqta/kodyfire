@@ -124,6 +124,19 @@ program
   });
 
 program
+  .command("scaffold")
+  .description("Generate a blank kody project")
+
+  .action(async (_opt: { name: any }) => {
+    // await $`schematics @noqta/kodyfire:run --name ${_opt.name} --dry-run`;
+    try {
+      execute({ ..._opt, schematic: "scaffold", dryRun: false });
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+program
   .command("list")
   .alias("ls")
   .description("list available technologies")
