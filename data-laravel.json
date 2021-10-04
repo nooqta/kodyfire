@@ -1,0 +1,213 @@
+{
+    "project": "dummy",
+    "controller": [
+        {
+            "model": {
+                "namespace": "App\\Models",
+                "configModel": [],
+                "isMenuHeader": false,
+                "hasSubMenu": true,
+                "softDelete": false,
+                "defaultView": 0,
+                "authorizedRoles": [
+                  "admin"
+                ],
+                "hasController": true,
+                "hasView": false,
+                "hasPagination": true,
+                "routePrefix": "prefix",
+                "fieldByLine": 2,
+                "relationships": [
+                  {
+                    "name": "cities",
+                    "type": "hasMany",
+                    "model": "City"
+                  }
+                ],
+                "controller": {
+                  "routeType": "detailed",
+                  "middleware": [],
+                  "actions": [
+                    {
+                      "name": "getAll",
+                      "type": "index",
+                      "middleware": "['auth:sanctum', 'role:admin']"
+                    },
+                    {
+                      "name": "get",
+                      "type": "show",
+                      "middleware": "['auth:sanctum', 'role:admin']"
+                    },
+                    {
+                      "name": "create",
+                      "type": "store",
+                      "middleware": "['auth:sanctum', 'role:admin']"
+                    },
+                    {
+                      "name": "update",
+                      "type": "update",
+                      "middleware": "['auth:sanctum', 'role:admin']"
+                    },
+                    {
+                      "name": "delete",
+                      "type": "destroy",
+                      "middleware": "['auth:sanctum', 'role:admin']"
+                    }
+                  ]
+                },
+                "fields": [
+                  {
+                    "arguments": [],
+                    "options": [],
+                    "type": "string",
+                    "name": "name",
+                    "label": "name",
+                    "relation": false,
+                    "extra_relation": "",
+                    "hidden": false,
+                    "extra_type": "name",
+                    "translation": {
+                      "ar": "الإسم الكامل",
+                      "en": "Name",
+                      "fr": "Nom complet"
+                    }
+                  },
+                  {
+                    "arguments": [],
+                    "options": [],
+                    "type": "string",
+                    "name": "code",
+                    "label": "code",
+                    "relation": false,
+                    "extra_relation": "",
+                    "hidden": false,
+                    "extra_type": "countryCode",
+                    "translation": {
+                      "fr": "Code",
+                      "ar": "الشفرة",
+                      "en": "Code"
+                    }
+                  }
+                ],
+                "foreign_keys": [],
+                "validations": [],
+                "name": "Country",
+                "translation": {
+                  "fr": "Pays"
+                },
+                "fillable": [
+                  "name",
+                  "code"
+                ]
+              },
+            "template": "controller.php.template",
+            "namespace": "App\\Http\\Controllers\\API\\V1"
+        },
+        {
+            "model": {
+                "name": "Currency",
+                "namespace": "App\\Models",
+                "configModel": [],
+                "isMenuHeader": false,
+                "hasSubMenu": true,
+                "softDelete": false,
+                "defaultView": 0,
+                "authorizedRoles": [
+                  "admin"
+                ],
+                "hasController": true,
+                "hasView": false,
+                "hasPagination": true,
+                "routePrefix": "prefix",
+                "fieldByLine": 2,
+                "relationships": [
+                  {
+                    "name": "country",
+                    "type": "belongsTo",
+                    "model": "Country",
+                    "args": "'country_id'"
+                  }
+                ],
+                "controller": {
+                  "routeType": "detailed",
+                  "middleware": [],
+                  "actions": [
+                    {
+                      "name": "getAll",
+                      "type": "index",
+                      "middleware": "['auth:sanctum', 'role:admin']"
+                    },
+                    {
+                      "name": "get",
+                      "type": "show",
+                      "middleware": "['auth:sanctum', 'role:admin']"
+                    },
+                    {
+                      "name": "create",
+                      "type": "store",
+                      "middleware": "['auth:sanctum', 'role:admin']"
+                    },
+                    {
+                      "name": "update",
+                      "type": "update",
+                      "middleware": "['auth:sanctum', 'role:admin']"
+                    },
+                    {
+                      "name": "delete",
+                      "type": "destroy",
+                      "middleware": "['auth:sanctum', 'role:admin']"
+                    }
+                  ]
+                },
+                "fields": [
+                  {
+                    "arguments": [],
+                    "options": [],
+                    "type": "string",
+                    "name": "name",
+                    "label": "name",
+                    "relation": false,
+                    "extra_relation": "",
+                    "hidden": false,
+                    "extra_type": "name",
+                    "translation": {
+                      "ar": "الإسم",
+                      "en": "Name",
+                      "fr": "Nom"
+                    }
+                  },
+                  {
+                    "arguments": [
+                      8,
+                      3
+                    ],
+                    "options": [],
+                    "type": "decimal",
+                    "name": "rate",
+                    "label": "rate",
+                    "relation": false,
+                    "extra_relation": "",
+                    "hidden": false,
+                    "extra_type": "randomDigit",
+                    "translation": {
+                      "fr": "Rate",
+                      "ar": "الشفرة",
+                      "en": "Rate"
+                    }
+                  }
+                ],
+                "foreign_keys": [],
+                "validations": [],
+                "translation": {
+                  "fr": "Devise"
+                },
+                "fillable": [
+                  "name",
+                  "rate"
+                ]
+              },
+            "template": "controller.php.template",
+            "namespace": "App\\Http\\Controllers\\API\\V1"
+        }
+    ]
+}

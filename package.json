@@ -30,8 +30,9 @@
   "dependencies": {
     "@angular-devkit/core": "^12.2.3",
     "@angular-devkit/schematics": "^12.2.3",
+    "@noqta/blank-kodyfire": "0.0.7",
     "@noqta/helloworld-html-kodyfire": "0.0.35",
-    "@noqta/laravel-kodyfire": "0.0.11",
+    "@noqta/laravel-kodyfire": "0.0.16",
     "@types/inquirer": "^8.1.1",
     "ajv": "^8.6.3",
     "ansi-colors": "^4.1.1",

@@ -6,7 +6,6 @@ import { IAction } from "./typings/action";
 import { ActionList } from "./typings/actionList";
 import { ITechnology, Technology } from "./typings/technology";
 import { IConcept, Source, TemplateSchema } from "./typings/concept";
-import { Service, ServiceFactory } from "./typings/service";
 import { IArgument } from "./typings/argument";
 import {
   capitalize,
@@ -25,8 +24,6 @@ export {
   Technology,
   IConcept,
   TemplateSchema,
-  Service,
-  ServiceFactory,
   Source,
   IAction,
   IArgument,

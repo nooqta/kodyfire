@@ -55,9 +55,6 @@ package "Kodyfire" {
 
     component Generator {
         port "Generated files" as generatorOutput
-        component Action {
-            file registery.json
-        }
     }
 
 
