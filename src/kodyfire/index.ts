@@ -2,7 +2,7 @@ import { strings } from "@angular-devkit/core";
 import {  apply, applyTemplates, chain, mergeWith, move, Rule, SchematicContext, Tree, url } from "@angular-devkit/schematics";
 import { join } from "path";
 
-import { IParser, IValidator } from "../lib";
+import { IParser, IValidator } from "kodyfire-core";
 import * as repo from "./../../kodyfire.json";
 import { KodyfireOptionsSchema } from './schema';
 const boxen = require("boxen");
