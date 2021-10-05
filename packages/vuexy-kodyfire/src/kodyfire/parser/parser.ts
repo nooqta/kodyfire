@@ -1,6 +1,6 @@
 
-import { IValidator } from "../../lib/validator";
-import { IParser } from "../../lib/parser";
+import { IValidator } from "kodyfire-core";
+import { IParser } from "kodyfire-core";
 
 export class Parser implements IParser {
 validator: IValidator;

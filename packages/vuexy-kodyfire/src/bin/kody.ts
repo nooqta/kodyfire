@@ -3,7 +3,7 @@
 
 import { UnsuccessfulWorkflowExecution } from "@angular-devkit/schematics";
 import { NodeWorkflow } from "@angular-devkit/schematics/tools";
-import { Template } from "../lib/template";
+import { Template } from "kodyfire-core";
 // import { $ } from "zx";
 const chalk = require("chalk");
 const { Command } = require("commander");

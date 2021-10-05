@@ -1,4 +1,4 @@
-import { IValidator } from "./../../../lib";
+import { IValidator } from "kodyfire-core";
 import { schema } from "./schema";
 import Ajv, {ErrorObject, JSONSchemaType} from "ajv"
 

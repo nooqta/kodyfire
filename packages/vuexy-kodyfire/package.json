@@ -30,7 +30,7 @@
   "dependencies": {
     "@angular-devkit/core": "^12.2.3",
     "@angular-devkit/schematics": "^12.2.3",
-    "@noqta/blank-kodyfire": "0.0.7",
+    "@noqta/blank-kodyfire": "0.0.8",
     "@noqta/helloworld-html-kodyfire": "0.0.35",
     "@noqta/laravel-kodyfire": "0.0.16",
     "@types/inquirer": "^8.1.1",
@@ -43,7 +43,7 @@
     "fs-extra": "^10.0.0",
     "handlebars": "^4.7.7",
     "inquirer": "^8.1.5",
-    "kodyfire-core": "0.0.12",
+    "kodyfire-core": "0.0.14",
     "minimist": "^1.2.5",
     "symbol-observable": "^4.0.0",
     "zx": "^4.2.0"
