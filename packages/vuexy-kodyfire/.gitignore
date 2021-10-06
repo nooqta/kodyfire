@@ -18,6 +18,7 @@ dist
 **/.DS_Store
 .DS_Store
 src/kodyfire/technologies
+src/core
 dist
 #npm
 .npmrc
