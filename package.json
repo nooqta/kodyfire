@@ -45,6 +45,7 @@
     "inquirer": "^8.1.5",
     "kodyfire-core": "0.0.14",
     "minimist": "^1.2.5",
+    "pluralize": "^8.0.0",
     "symbol-observable": "^4.0.0",
     "zx": "^4.2.0"
   },

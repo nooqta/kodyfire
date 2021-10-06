@@ -24,7 +24,6 @@ export class Validator implements IValidator {
             return true;
           } else {
             this.errors = validate.errors;
-            console.log(validate.errors)
             return false;
           }
     }

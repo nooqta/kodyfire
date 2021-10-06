@@ -101,7 +101,6 @@ const list = () => {
         ]);
       }
     );
-    console.log(table.toString());
   }
 };
 
