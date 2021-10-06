@@ -1,5 +1,10 @@
 {
   "project": "dummy",
+  "kernel": [
+    {
+      "template": "kernel.php.template"
+    }
+  ],
   "model": [
     {
       "namespace": "App\\Models",
