@@ -1,6 +1,6 @@
 {
   "name": "@noqta/kodyfire",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "Code generator for Laravel, express, Flutter and the list goes on.",
   "typings": "./kodyfire.d.ts",
   "directories": {
@@ -32,7 +32,7 @@
     "@angular-devkit/schematics": "^12.2.3",
     "@noqta/blank-kodyfire": "0.0.8",
     "@noqta/helloworld-html-kodyfire": "0.0.35",
-    "@noqta/laravel-kodyfire": "0.0.17",
+    "@noqta/laravel-kodyfire": "0.0.18",
     "@types/inquirer": "^8.1.1",
     "ajv": "^8.6.3",
     "ansi-colors": "^4.1.1",
