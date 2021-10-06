@@ -204,203 +204,516 @@
       ]
     }
   ],
-    "controller": [
-        {
-          "model": "Country",
-          "namespace": "App\\Http\\Controllers\\API\\V1",
-          "relationships": [
-            {
-              "name": "cities",
-              "type": "hasMany",
-              "model": "City"
-            }
-          ],
-          "controller": {
-            "routeType": "detailed",
-            "middleware": [],
-            "actions": [
-              {
-                "name": "getAll",
-                "type": "index",
-                "middleware": "['auth:sanctum', 'role:admin']"
-              },
-              {
-                "name": "get",
-                "type": "show",
-                "middleware": "['auth:sanctum', 'role:admin']"
-              },
-              {
-                "name": "create",
-                "type": "store",
-                "middleware": "['auth:sanctum', 'role:admin']"
-              },
-              {
-                "name": "update",
-                "type": "update",
-                "middleware": "['auth:sanctum', 'role:admin']"
-              },
-              {
-                "name": "delete",
-                "type": "destroy",
-                "middleware": "['auth:sanctum', 'role:admin']"
-              }
-            ]
-          },
-          "fields": [
-            {
-              "arguments": [],
-              "options": [],
-              "type": "string",
-              "name": "name",
-              "label": "name",
-              "relation": false,
-              "extra_relation": "",
-              "hidden": false,
-              "extra_type": "name",
-              "translation": {
-                "ar": "الإسم الكامل",
-                "en": "Name",
-                "fr": "Nom complet"
-              }
-            },
-            {
-              "arguments": [],
-              "options": [],
-              "type": "string",
-              "name": "code",
-              "label": "code",
-              "relation": false,
-              "extra_relation": "",
-              "hidden": false,
-              "extra_type": "countryCode",
-              "translation": {
-                "fr": "Code",
-                "ar": "الشفرة",
-                "en": "Code"
-              }
-            }
-          ],
-          "foreign_keys": [],
-          "validations": [],
-          "name": "Country",
-          "translation": {
-            "fr": "Pays"
-          },
-          "fillable": [
-            "name",
-            "code"
-          ],
-          "template": "controller.php.template"
-        },
-        {
-          
-          "model": "Currency",
-          "namespace": "App\\Http\\Controllers\\API\\V1",
-          "name": "Currency",
-          "configModel": [],
-          "softDelete": false,
-          "authorizedRoles": [
-            "admin"
-          ],
-          "routePrefix": "prefix",
-          "relationships": [
-            {
-              "name": "country",
-              "type": "belongsTo",
-              "model": "Country",
-              "args": "'country_id'"
-            }
-          ],
-          "controller": {
-            "routeType": "detailed",
-            "middleware": [],
-            "actions": [
-              {
-                "name": "getAll",
-                "type": "index",
-                "middleware": "['auth:sanctum', 'role:admin']"
-              },
-              {
-                "name": "get",
-                "type": "show",
-                "middleware": "['auth:sanctum', 'role:admin']"
-              },
-              {
-                "name": "create",
-                "type": "store",
-                "middleware": "['auth:sanctum', 'role:admin']"
-              },
-              {
-                "name": "update",
-                "type": "update",
-                "middleware": "['auth:sanctum', 'role:admin']"
-              },
-              {
-                "name": "delete",
-                "type": "destroy",
-                "middleware": "['auth:sanctum', 'role:admin']"
-              }
-            ]
-          },
-          "fields": [
-            {
-              "arguments": [],
-              "options": [],
-              "type": "string",
-              "name": "name",
-              "label": "name",
-              "relation": false,
-              "extra_relation": "",
-              "hidden": false,
-              "extra_type": "name",
-              "translation": {
-                "ar": "الإسم",
-                "en": "Name",
-                "fr": "Nom"
-              }
-            },
-            {
-              "arguments": [
-                8,
-                3
-              ],
-              "options": [],
-              "type": "decimal",
-              "name": "rate",
-              "label": "rate",
-              "relation": false,
-              "extra_relation": "",
-              "hidden": false,
-              "extra_type": "randomDigit",
-              "translation": {
-                "fr": "Rate",
-                "ar": "الشفرة",
-                "en": "Rate"
-              }
-            }
-          ],
-          "foreign_keys": [],
-          "validations": [],
-          "translation": {
-            "fr": "Devise"
-          },
-          "fillable": [
-            "name",
-            "rate"
-          ],
-          "template": "controller.php.template"
-        }
-    ],
-    "request": [
+  "controller": [
       {
-        "namespace": "App\\Http\\Requests",
         "model": "Country",
-        "template": "request.php.template"
+        "namespace": "App\\Http\\Controllers\\API\\V1",
+        "relationships": [
+          {
+            "name": "cities",
+            "type": "hasMany",
+            "model": "City"
+          }
+        ],
+        "controller": {
+          "routeType": "detailed",
+          "middleware": [],
+          "actions": [
+            {
+              "name": "getAll",
+              "type": "index",
+              "middleware": "['auth:sanctum', 'role:admin']"
+            },
+            {
+              "name": "get",
+              "type": "show",
+              "middleware": "['auth:sanctum', 'role:admin']"
+            },
+            {
+              "name": "create",
+              "type": "store",
+              "middleware": "['auth:sanctum', 'role:admin']"
+            },
+            {
+              "name": "update",
+              "type": "update",
+              "middleware": "['auth:sanctum', 'role:admin']"
+            },
+            {
+              "name": "delete",
+              "type": "destroy",
+              "middleware": "['auth:sanctum', 'role:admin']"
+            }
+          ]
+        },
+        "fields": [
+          {
+            "arguments": [],
+            "options": [],
+            "type": "string",
+            "name": "name",
+            "label": "name",
+            "relation": false,
+            "extra_relation": "",
+            "hidden": false,
+            "extra_type": "name",
+            "translation": {
+              "ar": "الإسم الكامل",
+              "en": "Name",
+              "fr": "Nom complet"
+            }
+          },
+          {
+            "arguments": [],
+            "options": [],
+            "type": "string",
+            "name": "code",
+            "label": "code",
+            "relation": false,
+            "extra_relation": "",
+            "hidden": false,
+            "extra_type": "countryCode",
+            "translation": {
+              "fr": "Code",
+              "ar": "الشفرة",
+              "en": "Code"
+            }
+          }
+        ],
+        "foreign_keys": [],
+        "validations": [],
+        "name": "Country",
+        "translation": {
+          "fr": "Pays"
+        },
+        "fillable": [
+          "name",
+          "code"
+        ],
+        "template": "controller.php.template"
       },
       {
-        "namespace": "App\\Http\\Requests",
+        
         "model": "Currency",
-        "template": "request.php.template"
+        "namespace": "App\\Http\\Controllers\\API\\V1",
+        "name": "Currency",
+        "configModel": [],
+        "softDelete": false,
+        "authorizedRoles": [
+          "admin"
+        ],
+        "routePrefix": "prefix",
+        "relationships": [
+          {
+            "name": "country",
+            "type": "belongsTo",
+            "model": "Country",
+            "args": "'country_id'"
+          }
+        ],
+        "controller": {
+          "routeType": "detailed",
+          "middleware": [],
+          "actions": [
+            {
+              "name": "getAll",
+              "type": "index",
+              "middleware": "['auth:sanctum', 'role:admin']"
+            },
+            {
+              "name": "get",
+              "type": "show",
+              "middleware": "['auth:sanctum', 'role:admin']"
+            },
+            {
+              "name": "create",
+              "type": "store",
+              "middleware": "['auth:sanctum', 'role:admin']"
+            },
+            {
+              "name": "update",
+              "type": "update",
+              "middleware": "['auth:sanctum', 'role:admin']"
+            },
+            {
+              "name": "delete",
+              "type": "destroy",
+              "middleware": "['auth:sanctum', 'role:admin']"
+            }
+          ]
+        },
+        "fields": [
+          {
+            "arguments": [],
+            "options": [],
+            "type": "string",
+            "name": "name",
+            "label": "name",
+            "relation": false,
+            "extra_relation": "",
+            "hidden": false,
+            "extra_type": "name",
+            "translation": {
+              "ar": "الإسم",
+              "en": "Name",
+              "fr": "Nom"
+            }
+          },
+          {
+            "arguments": [
+              8,
+              3
+            ],
+            "options": [],
+            "type": "decimal",
+            "name": "rate",
+            "label": "rate",
+            "relation": false,
+            "extra_relation": "",
+            "hidden": false,
+            "extra_type": "randomDigit",
+            "translation": {
+              "fr": "Rate",
+              "ar": "الشفرة",
+              "en": "Rate"
+            }
+          }
+        ],
+        "foreign_keys": [],
+        "validations": [],
+        "translation": {
+          "fr": "Devise"
+        },
+        "fillable": [
+          "name",
+          "rate"
+        ],
+        "template": "controller.php.template"
       }
-    ]
+  ],
+  "request": [
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "Country",
+      "prefix": "Create",
+      "template": "request.php.template",
+      "relationships": [
+        {
+          "name": "cities",
+          "type": "hasMany",
+          "model": "City"
+        }
+      ],
+      
+      "fields": [
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "name",
+          "label": "name",
+          "relation": false,
+          "extra_relation": "",
+          "hidden": false,
+          "extra_type": "name",
+          "translation": {
+            "ar": "الإسم الكامل",
+            "en": "Name",
+            "fr": "Nom complet"
+          }
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "code",
+          "label": "code",
+          "relation": false,
+          "extra_relation": "",
+          "hidden": false,
+          "extra_type": "countryCode",
+          "translation": {
+            "fr": "Code",
+            "ar": "الشفرة",
+            "en": "Code"
+          }
+        }
+      ],
+      "controller": {
+        "routeType": "detailed",
+        "middleware": [],
+        "actions": [
+          {
+            "name": "getAll",
+            "type": "index",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "get",
+            "type": "show",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "create",
+            "type": "store",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "update",
+            "type": "update",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "delete",
+            "type": "destroy",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          }
+        ]
+      }
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "Country",
+      "prefix": "Update",
+      "template": "request.php.template",
+      "relationships": [
+        {
+          "name": "cities",
+          "type": "hasMany",
+          "model": "City"
+        }
+      ],
+      
+      "fields": [
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "name",
+          "label": "name",
+          "relation": false,
+          "extra_relation": "",
+          "hidden": false,
+          "extra_type": "name",
+          "translation": {
+            "ar": "الإسم الكامل",
+            "en": "Name",
+            "fr": "Nom complet"
+          }
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "code",
+          "label": "code",
+          "relation": false,
+          "extra_relation": "",
+          "hidden": false,
+          "extra_type": "countryCode",
+          "translation": {
+            "fr": "Code",
+            "ar": "الشفرة",
+            "en": "Code"
+          }
+        }
+      ],
+      "controller": {
+        "routeType": "detailed",
+        "middleware": [],
+        "actions": [
+          {
+            "name": "getAll",
+            "type": "index",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "get",
+            "type": "show",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "create",
+            "type": "store",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "update",
+            "type": "update",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "delete",
+            "type": "destroy",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          }
+        ]
+      }
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "Currency",
+      "prefix": "Create",
+      "template": "request.php.template",
+      "relationships": [
+        {
+          "name": "country",
+          "type": "belongsTo",
+          "model": "Country",
+          "args": "'country_id'"
+        }
+      ],
+      "fields": [
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "name",
+          "label": "name",
+          "relation": false,
+          "extra_relation": "",
+          "hidden": false,
+          "extra_type": "name",
+          "translation": {
+            "ar": "الإسم",
+            "en": "Name",
+            "fr": "Nom"
+          }
+        },
+        {
+          "arguments": [
+            8,
+            3
+          ],
+          "options": [],
+          "type": "decimal",
+          "name": "rate",
+          "label": "rate",
+          "relation": false,
+          "extra_relation": "",
+          "hidden": false,
+          "extra_type": "randomDigit",
+          "translation": {
+            "fr": "Rate",
+            "ar": "الشفرة",
+            "en": "Rate"
+          }
+        }
+      ],
+      "controller": {
+        "routeType": "detailed",
+        "middleware": [],
+        "actions": [
+          {
+            "name": "getAll",
+            "type": "index",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "get",
+            "type": "show",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "create",
+            "type": "store",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "update",
+            "type": "update",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "delete",
+            "type": "destroy",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          }
+        ]
+      }
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "Currency",
+      "prefix": "Update",
+      "template": "request.php.template",
+      "relationships": [
+        {
+          "name": "country",
+          "type": "belongsTo",
+          "model": "Country",
+          "args": "'country_id'"
+        }
+      ],
+      
+      "fields": [
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "name",
+          "label": "name",
+          "relation": false,
+          "extra_relation": "",
+          "hidden": false,
+          "extra_type": "name",
+          "translation": {
+            "ar": "الإسم",
+            "en": "Name",
+            "fr": "Nom"
+          }
+        },
+        {
+          "arguments": [
+            8,
+            3
+          ],
+          "options": [],
+          "type": "decimal",
+          "name": "rate",
+          "label": "rate",
+          "relation": false,
+          "extra_relation": "",
+          "hidden": false,
+          "extra_type": "randomDigit",
+          "translation": {
+            "fr": "Rate",
+            "ar": "الشفرة",
+            "en": "Rate"
+          }
+        }
+      ],
+      "controller": {
+        "routeType": "detailed",
+        "middleware": [],
+        "actions": [
+          {
+            "name": "getAll",
+            "type": "index",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "get",
+            "type": "show",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "create",
+            "type": "store",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "update",
+            "type": "update",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "delete",
+            "type": "destroy",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          }
+        ]
+      }
+    }
+  ]
 }
