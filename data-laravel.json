@@ -15,6 +15,92 @@
       "template": "repository.php.template"
     }
   ],
+  "migration": [
+    {
+      
+      "model": "Country",
+      "template": "migration.php.template",
+      "fields": [
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "name",
+          "label": "name",
+          "relation": false,
+          "extra_relation": "",
+          "hidden": false,
+          "extra_type": "name",
+          "translation": {
+            "ar": "الإسم الكامل",
+            "en": "Name",
+            "fr": "Nom complet"
+          }
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "code",
+          "label": "code",
+          "relation": false,
+          "extra_relation": "",
+          "hidden": false,
+          "extra_type": "countryCode",
+          "translation": {
+            "fr": "Code",
+            "ar": "الشفرة",
+            "en": "Code"
+          }
+        }
+      ],
+      "foreign_keys": []
+    },
+    {
+      
+      "model": "Currency",
+      "template": "migration.php.template",
+      "fields": [
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "name",
+          "label": "name",
+          "relation": false,
+          "extra_relation": "",
+          "hidden": false,
+          "extra_type": "name",
+          "translation": {
+            "ar": "الإسم",
+            "en": "Name",
+            "fr": "Nom"
+          }
+        },
+        {
+          "arguments": [
+            8,
+            3
+          ],
+          "options": [],
+          "type": "decimal",
+          "name": "rate",
+          "label": "rate",
+          "relation": false,
+          "extra_relation": "",
+          "hidden": false,
+          "extra_type": "randomDigit",
+          "translation": {
+            "fr": "Rate",
+            "ar": "الشفرة",
+            "en": "Rate"
+          }
+        }
+      ],
+      
+      "foreign_keys": []
+    }
+  ],
   "model": [
     {
       "namespace": "App\\Models",
