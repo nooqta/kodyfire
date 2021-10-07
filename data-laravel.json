@@ -5,6 +5,9 @@
       "template": "kernel.php.template"
     }
   ],
+  "roles": [
+    "admin"
+  ],
   "api": [
     {
       "template": "api.php.template"
@@ -37,6 +40,11 @@
       "model": "Currency",
       "template": "seed.php.template",
       "namespace": "Database\\Seeders"
+    }
+  ],
+  "databaseSeed": [
+    {
+      "template": "databaseSeed.php.template"
     }
   ],
   "repository": [
