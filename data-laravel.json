@@ -15,6 +15,18 @@
       "template": "web.php.template"
     }
   ],
+  "factory": [
+    {
+      "model": "Country",
+      "template": "factory.php.template",
+      "namespace": "Database\\Factories"
+    },
+    {
+      "model": "Currency",
+      "template": "factory.php.template",
+      "namespace": "Database\\Factories"
+    }
+  ],
   "repository": [
     {
       "model": "Country",
