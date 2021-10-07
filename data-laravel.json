@@ -5,6 +5,16 @@
       "template": "kernel.php.template"
     }
   ],
+  "repository": [
+    {
+      "model": "Country",
+      "template": "repository.php.template"
+    },
+    {
+      "model": "Currency",
+      "template": "repository.php.template"
+    }
+  ],
   "model": [
     {
       "namespace": "App\\Models",
