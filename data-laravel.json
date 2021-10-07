@@ -10,6 +10,11 @@
       "template": "api.php.template"
     }
   ],
+  "web": [
+    {
+      "template": "web.php.template"
+    }
+  ],
   "repository": [
     {
       "model": "Country",
