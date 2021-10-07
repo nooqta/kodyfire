@@ -27,6 +27,18 @@
       "namespace": "Database\\Factories"
     }
   ],
+  "seed": [
+    {
+      "model": "Country",
+      "template": "seed.php.template",
+      "namespace": "Database\\Seeders"
+    },
+    {
+      "model": "Currency",
+      "template": "seed.php.template",
+      "namespace": "Database\\Seeders"
+    }
+  ],
   "repository": [
     {
       "model": "Country",
