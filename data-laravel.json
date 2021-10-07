@@ -5,9 +5,8 @@
       "template": "kernel.php.template"
     }
   ],
-  "route": [
+  "api": [
     {
-      "model": "Country",
       "template": "api.php.template"
     }
   ],
