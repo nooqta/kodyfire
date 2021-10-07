@@ -5,6 +5,12 @@
       "template": "kernel.php.template"
     }
   ],
+  "route": [
+    {
+      "model": "Country",
+      "template": "api.php.template"
+    }
+  ],
   "repository": [
     {
       "model": "Country",
@@ -97,7 +103,6 @@
           }
         }
       ],
-      
       "foreign_keys": []
     }
   ],
