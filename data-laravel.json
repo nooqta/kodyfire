@@ -3,7 +3,6 @@
   "kernel": [
     {
       "template": "kernel.php.template"
-      
     }
   ],
   "dependency": [
@@ -114,7 +113,6 @@
   ],
   "migration": [
     {
-      
       "model": "Country",
       "template": "migration.php.template",
       "fields": [
@@ -201,19 +199,7 @@
     {
       "namespace": "App\\Models",
       "template": "model.php.template",
-      "configModel": [],
-      "isMenuHeader": false,
-      "hasSubMenu": true,
       "softDelete": false,
-      "defaultView": 0,
-      "authorizedRoles": [
-        "admin"
-      ],
-      "hasController": true,
-      "hasView": false,
-      "hasPagination": true,
-      "routePrefix": "prefix",
-      "fieldByLine": 2,
       "relationships": [
         {
           "name": "cities",
@@ -287,7 +273,6 @@
         }
       ],
       "foreign_keys": [],
-      "validations": [],
       "name": "Country",
       "translation": {
         "fr": "Pays"
@@ -301,19 +286,7 @@
       "name": "Currency",
       "namespace": "App\\Models",
       "template": "model.php.template",
-      "configModel": [],
-      "isMenuHeader": false,
-      "hasSubMenu": true,
       "softDelete": false,
-      "defaultView": 0,
-      "authorizedRoles": [
-        "admin"
-      ],
-      "hasController": true,
-      "hasView": false,
-      "hasPagination": true,
-      "routePrefix": "prefix",
-      "fieldByLine": 2,
       "relationships": [
         {
           "name": "country",
@@ -391,7 +364,6 @@
         }
       ],
       "foreign_keys": [],
-      "validations": [],
       "translation": {
         "fr": "Devise"
       },
@@ -478,7 +450,6 @@
           }
         ],
         "foreign_keys": [],
-        "validations": [],
         "name": "Country",
         "translation": {
           "fr": "Pays"
@@ -494,12 +465,10 @@
         "model": "Currency",
         "namespace": "App\\Http\\Controllers\\API\\V1",
         "name": "Currency",
-        "configModel": [],
         "softDelete": false,
         "authorizedRoles": [
           "admin"
         ],
-        "routePrefix": "prefix",
         "relationships": [
           {
             "name": "country",
@@ -577,7 +546,6 @@
           }
         ],
         "foreign_keys": [],
-        "validations": [],
         "translation": {
           "fr": "Devise"
         },
