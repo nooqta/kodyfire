@@ -3,6 +3,26 @@
   "kernel": [
     {
       "template": "kernel.php.template"
+      
+    }
+  ],
+  "dependency": [
+    {
+      "template": "bash.template",
+      "install": "laravel/fortify",
+      "commands": [
+        "php artisan vendor:publish --provider='Laravel\\Fortify\\FortifyServiceProvider'",
+        "php artisan migrate"
+      ],
+      "middleware": [
+        "auth:sanctum"
+      ]
+    }
+  ],
+  "config": [
+    {
+      "key": "spa_url",
+      "value": "env('SPA_URL', 'http://erp.tn:3000')"
     }
   ],
   "roles": [
@@ -16,6 +36,35 @@
   "web": [
     {
       "template": "web.php.template"
+    }
+  ],
+  "auth": [
+    {
+      "template": "fortify.php.template"
+    },
+    {
+      "template": "sanctum.php.template"
+    },
+    {
+      "template": "cors.php.template"
+    },
+    {
+      "template": "app.php.template"
+    },
+    {
+      "template": "auth.php.template"
+    },
+    {
+      "template": "config.php.template"
+    },
+    {
+      "template": "provider.php.template"
+    },
+    {
+      "template": "reset.php.template"
+    },
+    {
+      "template": "redirectifauthenticated.php.template"
     }
   ],
   "factory": [
