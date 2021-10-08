@@ -64,6 +64,12 @@
       "template": "reset.php.template"
     },
     {
+      "template": "repositoryParent.php.template"
+    },
+    {
+      "template": "repositories.php.template"
+    },
+    {
       "template": "redirectifauthenticated.php.template"
     }
   ],
