@@ -63,12 +63,6 @@
       "template": "reset.php.template"
     },
     {
-      "template": "repositoryParent.php.template"
-    },
-    {
-      "template": "repositories.php.template"
-    },
-    {
       "template": "redirectifauthenticated.php.template"
     }
   ],
@@ -102,6 +96,14 @@
     }
   ],
   "repository": [
+    {
+      "template": "repositoryParent.php.template",
+      "model": ""
+    },
+    {
+      "template": "repositories.php.template",
+      "model": ""
+    },
     {
       "model": "Country",
       "template": "repository.php.template"
