@@ -101,6 +101,7 @@ const list = () => {
         ]);
       }
     );
+    console.log(table.toString());
   }
 };
 
@@ -139,7 +140,7 @@ program
   .command("list")
   .alias("ls")
   .description("list available technologies")
-  .action((_opt: any) => {
-    list();
+  .action(async (_opt: any) => {
+    return list();
   });
 program.parse(process.argv);

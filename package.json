@@ -1,6 +1,6 @@
 {
   "name": "@noqta/kodyfire",
-  "version": "0.0.24",
+  "version": "0.0.25",
   "description": "Code generator for Laravel, express, Flutter and the list goes on.",
   "typings": "./kodyfire.d.ts",
   "directories": {
