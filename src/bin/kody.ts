@@ -13,12 +13,15 @@ const { join } = require("path");
 var Table = require("cli-table");
 const boxen = require("boxen");
 
+var EventEmitter = require('events')
+var ee = new EventEmitter()
+
 function parseSchematicName(_arg: any): {
   collection: string;
   schematic: string;
 } {
   // All schematics are local to kody
-  let collection = ".";
+  let collection = "@noqta/kodyfire";
 
   let schematic = _arg.schematic;
 
@@ -60,7 +63,9 @@ export async function execute(args: any): Promise<0 | 1> {
 
 const list = () => {
   const fileName = join(process.cwd(), "kodyfire.json");
-
+  ee.on('message', (text: string) => {
+    console.log(text)
+  })
   let fileContent = fs.readFileSync(fileName);
   let content = JSON.parse(fileContent);
   if (content.templates.length == 0) {
