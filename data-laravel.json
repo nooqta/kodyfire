@@ -5,6 +5,31 @@
       "template": "kernel.php.template"
     }
   ],
+
+  "databag": [
+    {
+      "template": "databag.php.template"
+    }
+  ],
+  "dependency": [
+    {
+      "template": "bash.template",
+      "install": "laravel/fortify",
+      "commands": [
+        "php artisan vendor:publish --provider='Laravel\\Fortify\\FortifyServiceProvider'",
+        "php artisan migrate"
+      ],
+      "middleware": [
+        "auth:sanctum"
+      ]
+    }
+  ],
+  "config": [
+    {
+      "key": "spa_url",
+      "value": "env('SPA_URL', 'http://erp.tn:3000')"
+    }
+  ],
   "roles": [
     "admin"
   ],
@@ -16,6 +41,35 @@
   "web": [
     {
       "template": "web.php.template"
+    }
+  ],
+  "auth": [
+    {
+      "template": "fortify.php.template"
+    },
+    {
+      "template": "sanctum.php.template"
+    },
+    {
+      "template": "cors.php.template"
+    },
+    {
+      "template": "app.php.template"
+    },
+    {
+      "template": "auth.php.template"
+    },
+    {
+      "template": "config.php.template"
+    },
+    {
+      "template": "provider.php.template"
+    },
+    {
+      "template": "reset.php.template"
+    },
+    {
+      "template": "redirectifauthenticated.php.template"
     }
   ],
   "factory": [
@@ -49,6 +103,14 @@
   ],
   "repository": [
     {
+      "template": "repositoryParent.php.template",
+      "model": ""
+    },
+    {
+      "template": "repositories.php.template",
+      "model": ""
+    },
+    {
       "model": "Country",
       "template": "repository.php.template"
     },
@@ -59,7 +121,6 @@
   ],
   "migration": [
     {
-      
       "model": "Country",
       "template": "migration.php.template",
       "fields": [
@@ -146,19 +207,7 @@
     {
       "namespace": "App\\Models",
       "template": "model.php.template",
-      "configModel": [],
-      "isMenuHeader": false,
-      "hasSubMenu": true,
       "softDelete": false,
-      "defaultView": 0,
-      "authorizedRoles": [
-        "admin"
-      ],
-      "hasController": true,
-      "hasView": false,
-      "hasPagination": true,
-      "routePrefix": "prefix",
-      "fieldByLine": 2,
       "relationships": [
         {
           "name": "cities",
@@ -232,7 +281,6 @@
         }
       ],
       "foreign_keys": [],
-      "validations": [],
       "name": "Country",
       "translation": {
         "fr": "Pays"
@@ -246,19 +294,7 @@
       "name": "Currency",
       "namespace": "App\\Models",
       "template": "model.php.template",
-      "configModel": [],
-      "isMenuHeader": false,
-      "hasSubMenu": true,
       "softDelete": false,
-      "defaultView": 0,
-      "authorizedRoles": [
-        "admin"
-      ],
-      "hasController": true,
-      "hasView": false,
-      "hasPagination": true,
-      "routePrefix": "prefix",
-      "fieldByLine": 2,
       "relationships": [
         {
           "name": "country",
@@ -336,7 +372,6 @@
         }
       ],
       "foreign_keys": [],
-      "validations": [],
       "translation": {
         "fr": "Devise"
       },
@@ -423,7 +458,6 @@
           }
         ],
         "foreign_keys": [],
-        "validations": [],
         "name": "Country",
         "translation": {
           "fr": "Pays"
@@ -439,12 +473,10 @@
         "model": "Currency",
         "namespace": "App\\Http\\Controllers\\API\\V1",
         "name": "Currency",
-        "configModel": [],
         "softDelete": false,
         "authorizedRoles": [
           "admin"
         ],
-        "routePrefix": "prefix",
         "relationships": [
           {
             "name": "country",
@@ -522,7 +554,6 @@
           }
         ],
         "foreign_keys": [],
-        "validations": [],
         "translation": {
           "fr": "Devise"
         },
