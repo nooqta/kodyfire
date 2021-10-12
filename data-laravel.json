@@ -5,7 +5,6 @@
       "template": "kernel.php.template"
     }
   ],
-
   "databag": [
     {
       "template": "databag.php.template"

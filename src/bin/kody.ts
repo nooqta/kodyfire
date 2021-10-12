@@ -12,7 +12,7 @@ const fs = require("fs");
 const { join } = require("path");
 var Table = require("cli-table");
 const boxen = require("boxen");
-const pack = require(join(process.cwd(), "kodyfire.json"));
+const pack = require(join(process.cwd(), "package.json"));
 
 var EventEmitter = require('events')
 var ee = new EventEmitter()
