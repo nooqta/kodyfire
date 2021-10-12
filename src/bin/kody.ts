@@ -12,6 +12,7 @@ const fs = require("fs");
 const { join } = require("path");
 var Table = require("cli-table");
 const boxen = require("boxen");
+const pack = require(join(process.cwd(), "kodyfire.json"));
 
 var EventEmitter = require('events')
 var ee = new EventEmitter()
@@ -21,7 +22,8 @@ function parseSchematicName(_arg: any): {
   schematic: string;
 } {
   // All schematics are local to kody
-  let collection = "@noqta/kodyfire";
+  const collectionName = "@noqta/kodyfire";
+  let collection = pack.name == collectionName? collectionName : ".";
 
   let schematic = _arg.schematic;
 
