@@ -23,7 +23,7 @@ function parseSchematicName(_arg: any): {
 } {
   // All schematics are local to kody
   const collectionName = "@noqta/kodyfire";
-  let collection = pack.name == collectionName? collectionName : ".";
+  let collection = pack.name == collectionName? "." : collectionName;
 
   let schematic = _arg.schematic;
 
