@@ -32,6 +32,7 @@
     "@angular-devkit/schematics": "^12.2.3",
     "@noqta/blank-kodyfire": "0.0.8",
     "@noqta/helloworld-html-kodyfire": "0.0.35",
+    "@noqta/kody-laravel": "0.0.11",
     "@noqta/laravel-kodyfire": "0.0.24",
     "@types/inquirer": "^8.1.1",
     "ajv": "^8.6.3",
