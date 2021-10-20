@@ -13,14 +13,12 @@
   "dependency": [
     {
       "template": "bash.template",
-      "install": "laravel/fortify",
+      "install": "andreaselia/laravel-api-to-postman",
       "commands": [
-        "php artisan vendor:publish --provider='Laravel\\Fortify\\FortifyServiceProvider'",
-        "php artisan migrate"
+        "php artisan vendor:publish --provider='AndreasElia\\PostmanGenerator\\PostmanGeneratorServiceProvider' --tag='postman-config'",
+        "php artisan export:postman"
       ],
-      "middleware": [
-        "auth:sanctum"
-      ]
+      "middleware": []
     }
   ],
   "config": [
