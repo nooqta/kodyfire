@@ -1,12 +1,12 @@
 {
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {  "run": {
-      "description": "A blank schematic.",
+      "description": "Generate acrtificats based on a schema definition file.",
       "schema": "./kodyfire/schema.json",
       "factory": "./kodyfire/index#run"
     },
       "scaffold": {
-      "description": "A blank schematic.",
+      "description": "Scaffold a boilerplate for you project.",
       "factory": "./kodyfire/index#scaffold"
     }
   }

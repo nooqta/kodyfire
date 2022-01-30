@@ -115,7 +115,7 @@ const list = () => {
 
 program
   .command("run")
-  .description("Generate an API based on the selected technology")
+  .description("Generate a digital artifact based on the selected technology")
   .option(
     "-n,--name <name>",
     "Name of technology (default is Laravel)",

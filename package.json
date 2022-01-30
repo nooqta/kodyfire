@@ -1,6 +1,6 @@
 {
   "name": "@noqta/kodyfire",
-  "version": "0.0.28",
+  "version": "0.0.33",
   "description": "Code generator for Laravel, express, Flutter and the list goes on.",
   "typings": "./kodyfire.d.ts",
   "directories": {
@@ -10,7 +10,8 @@
     "watch": "tsc -w",
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && jasmine src/**/*_spec.js",
-    "kody": "node ./src/bin/kody.js"
+    "kody": "node ./src/bin/kody.js",
+    "kody:watch": "./src/bin/watch.mjs"
   },
   "keywords": [
     "schematics"
@@ -31,7 +32,7 @@
     "@angular-devkit/core": "^12.2.3",
     "@angular-devkit/schematics": "^12.2.3",
     "@noqta/blank-kodyfire": "0.0.8",
-    "@noqta/helloworld-html-kodyfire": "0.0.35",
+    "@noqta/helloworld-html-kodyfire": "0.0.40",
     "@noqta/laravel-kodyfire": "0.0.24",
     "@types/inquirer": "^8.1.1",
     "ajv": "^8.6.3",
@@ -44,7 +45,8 @@
     "fs-extra": "^10.0.0",
     "handlebars": "^4.7.7",
     "inquirer": "^8.1.5",
-    "kodyfire-core": "0.0.16",
+    "kodyfire-core": "0.0.22",
+    "lodash": "^4.17.21",
     "minimist": "^1.2.5",
     "pluralize": "^8.0.0",
     "symbol-observable": "^4.0.0",
