@@ -1,0 +1,21 @@
+{
+    "name": "Techno",
+    "version": "0.1",
+    "rootDir": "blank-kodyfire",
+    "concepts": [
+        {
+            "name": "sample",
+            "defaultAction": "create",
+            "source": "template",
+            "outputDir": "",
+            "template": {
+                "path": "templates/",
+                "options": [
+                ],
+                "placeholders": [
+                ]
+            }
+        }
+    ]
+
+}

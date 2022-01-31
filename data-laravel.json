@@ -5,7 +5,6 @@
       "template": "kernel.php.template"
     }
   ],
-
   "databag": [
     {
       "template": "databag.php.template"
@@ -14,14 +13,12 @@
   "dependency": [
     {
       "template": "bash.template",
-      "install": "laravel/fortify",
+      "install": "andreaselia/laravel-api-to-postman",
       "commands": [
-        "php artisan vendor:publish --provider='Laravel\\Fortify\\FortifyServiceProvider'",
-        "php artisan migrate"
+        "php artisan vendor:publish --provider='AndreasElia\\PostmanGenerator\\PostmanGeneratorServiceProvider' --tag='postman-config'",
+        "php artisan export:postman"
       ],
-      "middleware": [
-        "auth:sanctum"
-      ]
+      "middleware": []
     }
   ],
   "config": [
@@ -102,14 +99,6 @@
     }
   ],
   "repository": [
-    {
-      "template": "repositoryParent.php.template",
-      "model": ""
-    },
-    {
-      "template": "repositories.php.template",
-      "model": ""
-    },
     {
       "model": "Country",
       "template": "repository.php.template"

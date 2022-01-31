@@ -55,6 +55,7 @@
   "devDependencies": {
     "@types/jasmine": "~3.8.0",
     "@types/node": "^12.11.1",
-    "jasmine": "^3.5.0"
+    "jasmine": "^3.5.0",
+    "lerna": "^4.0.0"
   }
 }
