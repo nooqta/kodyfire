@@ -13,13 +13,12 @@ jsconfig.json
 node_modules/
 npm-debug.log*
 yarn-error.log*
-# dist
+dist
 # Mac OSX Finder files.
 **/.DS_Store
 .DS_Store
 src/kodyfire/technologies
 src/core
-# dist
 #npm
 .npmrc
 #api-extractor.json

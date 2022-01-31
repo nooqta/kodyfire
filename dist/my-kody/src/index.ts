@@ -1,1 +1,0 @@
-export { Sample } from './concepts/sample'
