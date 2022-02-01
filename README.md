@@ -1,27 +1,25 @@
-# Getting Started With Schematics
+# Getting Started With Kodyfire
 
-This repository is a basic Schematic implementation that serves as a starting point to create and publish Schematics to NPM.
+This repository is for the kodyfire cli.
 
-### Testing
-
-To test locally, install `@angular-devkit/schematics-cli` globally and use the `schematics` command line tool. That tool acts the same as the `generate` command of the Angular CLI, but also has a debug mode.
+### Introduction
 
 Check the documentation with
 
 ```bash
-schematics --help
+kody --help
 ```
 
-### Unit Testing
+### Run a kody
+@todo
+### Develop a new kody
 
-`npm run test` will run the unit tests, using Jasmine as a runner and test framework.
-
+@todo
 ### Publishing
 
 To publish, simply do:
 
 ```bash
-npm run build
 npm publish
 ```
 

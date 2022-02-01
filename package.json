@@ -1,6 +1,6 @@
 {
-  "name": "@noqta/kodyfire",
-  "version": "0.0.33",
+  "name": "kodyfire",
+  "version": "0.0.37",
   "description": "Code generator for Laravel, express, Flutter and the list goes on.",
   "typings": "./kodyfire.d.ts",
   "directories": {
@@ -25,15 +25,12 @@
   "author": "NOQTA",
   "license": "MIT",
   "schematics": "./src/collection.json",
-  "publishConfig": {
-    "@noqta:registry": "https://gitlab.noqta.tn/api/v4/projects/161/packages/npm/"
-  },
   "dependencies": {
     "@angular-devkit/core": "^12.2.3",
     "@angular-devkit/schematics": "^12.2.3",
-    "@noqta/blank-kodyfire": "0.0.8",
-    "@noqta/helloworld-html-kodyfire": "0.0.40",
-    "@noqta/laravel-kodyfire": "0.0.24",
+    "blank-kodyfire": "0.0.8",
+    "helloworld-html-kodyfire": "0.0.40",
+    "laravel-kodyfire": "0.0.27",
     "@types/inquirer": "^8.1.1",
     "ajv": "^8.6.3",
     "ansi-colors": "^4.1.1",
@@ -45,7 +42,7 @@
     "fs-extra": "^10.0.0",
     "handlebars": "^4.7.7",
     "inquirer": "^8.1.5",
-    "kodyfire-core": "0.0.22",
+    "kodyfire-core": "0.0.28",
     "lodash": "^4.17.21",
     "minimist": "^1.2.5",
     "pluralize": "^8.0.0",

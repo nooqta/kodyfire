@@ -12,7 +12,7 @@ export function run(_options: KodyfireOptionsSchema) {
   return async (tree: Tree, _context: SchematicContext) => {
     // source is passed statically for developing purposes
     const fileName = join(process.cwd(),'data-html.json');
-      let runner = new Runner({..._options, tree, getKody, handleKodyNotFound, handleSourceNotValid, handleKodySuccess, fileName});
+      let runner = new Runner({..._options, getKody, handleKodyNotFound, handleSourceNotValid, handleKodySuccess, fileName});
       tree = await runner.run(_options);
         // finish process
         return tree;

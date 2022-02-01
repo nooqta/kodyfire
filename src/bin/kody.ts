@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 "use strict";
 
-import { UnsuccessfulWorkflowExecution } from "@angular-devkit/schematics";
-import { NodeWorkflow } from "@angular-devkit/schematics/tools";
-import { Template } from "kodyfire-core";
+import { Runner, Template } from "kodyfire-core";
+import { CliWorkflow } from "../kodyfire/lib/cli/worklfow";
 // import { $ } from "zx";
 const chalk = require("chalk");
 const { Command } = require("commander");
@@ -12,54 +11,22 @@ const fs = require("fs");
 const { join } = require("path");
 var Table = require("cli-table");
 const boxen = require("boxen");
-const pack = require(join(process.cwd(), "package.json"));
 
 var EventEmitter = require('events')
 var ee = new EventEmitter()
 
-function parseSchematicName(_arg: any): {
-  collection: string;
-  schematic: string;
-} {
-  // All schematics are local to kody
-  const collectionName = "@noqta/kodyfire";
-  let collection = pack?.name ? "." : collectionName;
-
-  let schematic = _arg.schematic;
-
-  return { collection, schematic };
-}
-
 export async function execute(args: any): Promise<0 | 1> {
-  const { collection: collectionName, schematic: schematicName } =
-    parseSchematicName(args);
-  const root = process.cwd();
-  // const dryRun = args.dryRun as boolean;
-  const dryRun = false;
-  const workflow = new NodeWorkflow(root, {
-    resolvePaths: [root, join(root, "src")],
-    dryRun: dryRun,
-    schemaValidation: true,
-  });
-
   try {
-    await workflow
-      .execute({
-        collection: collectionName,
-        schematic: schematicName,
-        options: args,
-      })
-      .toPromise();
-
-    return 0;
-  } catch (err) {
-    if (err instanceof UnsuccessfulWorkflowExecution) {
-      console.log(chalk.red("Kody failed. See above."));
-    } else {
-      console.log(chalk.red(err.stack || err.message));
-    }
-
-    return 1;
+    // source is passed statically for developing purposes
+    const input = join(process.cwd(),'data-html.json');
+    let workflow  = new CliWorkflow(input);
+    let runner = new Runner({...args, ...workflow});
+    const output = await runner.run(args);
+      // finish process
+      return output;
+  } catch (error) {
+    console.log(chalk.red(error.stack || error.message));
+    process.exit(1);
   }
 }
 
