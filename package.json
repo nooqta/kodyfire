@@ -28,12 +28,10 @@
   "dependencies": {
     "@angular-devkit/core": "^12.2.3",
     "@angular-devkit/schematics": "^12.2.3",
-    "blank-kodyfire": "0.0.8",
-    "helloworld-html-kodyfire": "0.0.40",
-    "laravel-kodyfire": "0.0.27",
     "@types/inquirer": "^8.1.1",
     "ajv": "^8.6.3",
     "ansi-colors": "^4.1.1",
+    "blank-kodyfire": "0.0.8",
     "boxen": "^5.1.2",
     "chalk": "^4.1.2",
     "cli-table": "^0.3.6",
@@ -41,8 +39,10 @@
     "events": "^3.3.0",
     "fs-extra": "^10.0.0",
     "handlebars": "^4.7.7",
+    "helloworld-html-kodyfire": "0.0.40",
     "inquirer": "^8.1.5",
     "kodyfire-core": "0.0.28",
+    "laravel-kodyfire": "0.0.27",
     "lodash": "^4.17.21",
     "minimist": "^1.2.5",
     "pluralize": "^8.0.0",
@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@types/jasmine": "~3.8.0",
-    "@types/node": "^12.11.1",
+    "@types/node": "^12.20.43",
     "jasmine": "^3.5.0",
     "lerna": "^4.0.0"
   }
