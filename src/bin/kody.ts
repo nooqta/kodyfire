@@ -13,7 +13,8 @@ const { join } = require("path");
 var Table = require("cli-table");
 const boxen = require("boxen");
 const pack = require(join(process.cwd(), "kodyfire.json"));
-
+const globalDirs = require('global-dirs');
+const isPathInside = require('is-path-inside');
 var EventEmitter = require('events')
 var ee = new EventEmitter()
 
@@ -38,7 +39,6 @@ export async function execute(args: any): Promise<0 | 1> {
   const root = process.cwd();
   // const dryRun = args.dryRun as boolean;
   const dryRun = false;
-  console.log('dryRun',dryRun);
   const workflow = new NodeWorkflow(root, {
     resolvePaths: [root, join(root, "src")],
     dryRun: dryRun,
@@ -79,6 +79,35 @@ export async function run(args: any): Promise<0 | 1> {
     console.log(chalk.red(error.stack || error.message));
     process.exit(1);
   }
+}
+export const isPackageInstalled = (name: string) => {
+  try {
+		return (
+			isPathInside(name, globalDirs.yarn.packages) ||
+			isPathInside(name, fs.realpathSync(globalDirs.npm.packages))
+		);
+	} catch {
+		return false;
+	}
+}
+
+export const startWebServer = () => {
+  const isInstalled = isPackageInstalled('kodyfire-builder');
+  let message = "Starting web server...";
+  if (!isInstalled) {
+    message = `😞 Kodyfire server not installed yet.\nInstall the web builder to quickly generate your schema 🚀🚀🚀\n
+    npm install -g kodyfire-builder`;
+  } 
+    // const kody = chalk.greenBright(chalk.bold("kody"));
+    console.log(
+      boxen(message, {
+        padding: 1,
+        margin: 1,
+        align: "center",
+        borderColor: "yellow",
+        borderStyle: "round",
+      })
+    );
 }
 
 const list = () => {
@@ -142,7 +171,7 @@ program
   .action(async (_opt: { name: any }) => {
     // await $`schematics @noqta/kodyfire:run --name ${_opt.name} --dry-run`;
     try {
-      execute({ ..._opt, schematic: "run", dryRun: false });
+      run({ ..._opt, schematic: "run", dryRun: false });
     } catch (error) {
       console.log(error);
     }
@@ -167,5 +196,13 @@ program
   .description("list available technologies")
   .action(async (_opt: any) => {
     return list();
+  });
+
+program
+  .command("start")
+  .alias("builder")
+  .description("Build your schema on the fly using web interface")
+  .action(async (_opt: any) => {
+    return startWebServer();
   });
 program.parse(process.argv);
