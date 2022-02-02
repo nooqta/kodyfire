@@ -13,8 +13,6 @@ const { join } = require("path");
 var Table = require("cli-table");
 const boxen = require("boxen");
 const pack = require(join(process.cwd(), "kodyfire.json"));
-const globalDirs = require('global-dirs');
-const isPathInside = require('is-path-inside');
 var EventEmitter = require('events')
 var ee = new EventEmitter()
 
@@ -80,11 +78,11 @@ export async function run(args: any): Promise<0 | 1> {
     process.exit(1);
   }
 }
-export const isPackageInstalled = (name: string) => {
+export const isPackageInstalled = (_name: string) => {
   try {
+    
 		return (
-			isPathInside(name, globalDirs.yarn.packages) ||
-			isPathInside(name, fs.realpathSync(globalDirs.npm.packages))
+      true
 		);
 	} catch {
 		return false;
@@ -200,6 +198,7 @@ program
 
 program
   .command("start")
+  .alias("serve")
   .alias("builder")
   .description("Build your schema on the fly using web interface")
   .action(async (_opt: any) => {

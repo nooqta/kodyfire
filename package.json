@@ -52,8 +52,6 @@
   "devDependencies": {
     "@types/jasmine": "~3.8.0",
     "@types/node": "^12.20.43",
-    "global-dirs": "^3.0.0",
-    "is-path-inside": "^4.0.0",
     "jasmine": "^3.5.0",
     "lerna": "^4.0.0"
   }
