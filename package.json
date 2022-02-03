@@ -1,6 +1,6 @@
 {
   "name": "kodyfire",
-  "version": "0.0.39",
+  "version": "0.0.54",
   "description": "Code generator for Laravel, express, Flutter and the list goes on.",
   "typings": "./kodyfire.d.ts",
   "directories": {
@@ -21,7 +21,6 @@
     "cody": "./src/bin/kody.js",
     "kodyfire": "./src/bin/kody.js"
   },
-  "repository": "https://gitlab.noqta.tn/noqta/kodyfire.git",
   "author": "NOQTA",
   "license": "MIT",
   "schematics": "./src/collection.json",

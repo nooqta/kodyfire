@@ -1,6 +1,0 @@
-37 error Error: Command failed with exit code 128: git add -- packages/kody-server/package.json packages/kody-server/package-lock.json packages/helloworld-html-kodyfire/package.json packages/helloworld-html-kodyfire/package-lock.json packages/core/package.json packages/core/package-lock.json packages/kody-builder/package.json packages/kody-builder/package-lock.json lerna.json
-37 error fatal: Pathspec 'packages/core/package.json' is in submodule 'packages/core'
-37 error     at makeError (/Users/macbookpro/Sites/kodyfire/node_modules/execa/lib/error.js:60:11)
-37 error     at handlePromise (/Users/macbookpro/Sites/kodyfire/node_modules/execa/index.js:118:26)
-37 error     at processTicksAndRejections (internal/process/task_queues.js:95:5)
-37 error     at async Promise.all (index 0)

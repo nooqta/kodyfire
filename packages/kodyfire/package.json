@@ -21,7 +21,6 @@
     "cody": "./src/bin/kody.js",
     "kodyfire": "./src/bin/kody.js"
   },
-  "repository": "https://gitlab.noqta.tn/noqta/kodyfire.git",
   "author": "NOQTA",
   "license": "MIT",
   "schematics": "./src/collection.json",
@@ -52,7 +51,6 @@
   "devDependencies": {
     "@types/jasmine": "~3.8.0",
     "@types/node": "^12.20.43",
-    "jasmine": "^3.5.0",
-    "lerna": "^4.0.0"
+    "jasmine": "^3.5.0"
   }
 }
