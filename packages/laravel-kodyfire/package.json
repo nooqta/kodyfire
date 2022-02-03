@@ -1,6 +1,6 @@
 {
   "name": "laravel-kodyfire",
-  "version": "0.0.56",
+  "version": "0.0.57",
   "description": "Generator for laravel API",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
     "@angular-devkit/schematics": "^12.2.3",
     "ajv": "^8.6.3",
     "fs-extra": "^10.0.0",
-    "kodyfire-core": "^0.0.56",
+    "kodyfire-core": "^0.0.57",
     "moment": "^2.29.1",
     "typescript": "~4.3.2"
   },
