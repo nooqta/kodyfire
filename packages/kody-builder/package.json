@@ -23,8 +23,8 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "cypress": "^6.1.0",
-    "react-scripts": "^4.0.1",
+    "cypress": "^9.4.1",
+    "react-scripts": "^3.0.1",
     "start-server-and-test": "^1.11.6"
   },
   "scripts": {

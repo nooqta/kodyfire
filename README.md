@@ -1,7 +1,10 @@
-# Getting Started With Kodyfire
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+# Getting Started With Kodyfire
+```bash
+npm install -g kodyfire
+```
 
-This repository is for the kodyfire cli.
+This repository is for kodyfire project.
 
 ### Introduction
 
