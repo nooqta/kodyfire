@@ -1,8 +1,8 @@
 {
   "name": "kodyfire",
   "version": "0.0.54",
-  "description": "Code generator for Laravel, express, Flutter and the list goes on.",
-  "typings": "./kodyfire.d.ts",
+  "description": "Artifact generator,automation tool and a general purpose low code and nocode generator.",
+  "typings": "./packages/kodyfire-cli/kodyfire.d.ts",
   "directories": {
     "bin": "./src/bin"
   },
@@ -10,8 +10,8 @@
     "watch": "tsc -w",
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && jasmine src/**/*_spec.js",
-    "kody": "node ./src/bin/kody.js",
-    "kody:watch": "./src/bin/watch.mjs"
+    "kody": "node ./packages/kodyfire-cli/src/bin/kody.js",
+    "kody:watch": "./packages/kodyfire-cli/src/bin/watch.mjs"
   },
   "keywords": [
     "schematics"
@@ -23,34 +23,10 @@
   },
   "author": "NOQTA",
   "license": "MIT",
-  "schematics": "./src/collection.json",
-  "dependencies": {
-    "@angular-devkit/core": "^12.2.3",
-    "@angular-devkit/schematics": "^12.2.3",
-    "@types/inquirer": "^8.1.1",
-    "ajv": "^8.6.3",
-    "ansi-colors": "^4.1.1",
-    "blank-kodyfire": "0.0.8",
-    "boxen": "^5.1.2",
-    "chalk": "^4.1.2",
-    "cli-table": "^0.3.6",
-    "commander": "^8.2.0",
-    "events": "^3.3.0",
-    "fs-extra": "^10.0.0",
-    "handlebars": "^4.7.7",
-    "helloworld-html-kodyfire": "0.0.40",
-    "inquirer": "^8.1.5",
-    "kodyfire-core": "0.0.28",
-    "laravel-kodyfire": "0.0.27",
-    "lodash": "^4.17.21",
-    "minimist": "^1.2.5",
-    "pluralize": "^8.0.0",
-    "symbol-observable": "^4.0.0",
-    "zx": "^4.2.0"
-  },
   "devDependencies": {
     "@types/jasmine": "~3.8.0",
     "@types/node": "^12.20.43",
+    "typescript": "~4.3.2",
     "jasmine": "^3.5.0",
     "lerna": "^4.0.0"
   }
