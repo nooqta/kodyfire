@@ -23,7 +23,7 @@
     "@angular-devkit/schematics": "^12.2.3",
     "ajv": "^8.6.3",
     "fs-extra": "^10.0.0",
-    "kodyfire-core": "^0.0.57",
+    "kodyfire-core": "^0.0.56",
     "typescript": "~4.3.2"
   },
   "devDependencies": {
