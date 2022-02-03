@@ -1,0 +1,94 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Features;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use Laravel\Fortify\Http\Controllers\RegisteredUserController;
+use Laravel\Fortify\Http\Controllers\VerifyEmailController;
+use Laravel\Fortify\Http\Controllers\EmailVerificationNotificationController;
+use Laravel\Fortify\Http\Controllers\ProfileInformationController;
+use Laravel\Fortify\Http\Controllers\PasswordController;
+use Laravel\Fortify\Http\Controllers\ConfirmedPasswordStatusController;
+use Laravel\Fortify\Http\Controllers\ConfirmablePasswordController;
+use Laravel\Fortify\Http\Controllers\NewPasswordController;
+use Laravel\Fortify\Http\Controllers\PasswordResetLinkController;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::group(['middleware' => config('fortify.middleware', ['web']), 'prefix' => 'api/v1'], function () {
+    $limiter = config('fortify.limiters.login');
+    $twoFactorLimiter = config('fortify.limiters.two-factor');
+
+    Route::post('/login', [AuthenticatedSessionController::class, 'store'])
+        ->middleware(array_filter([
+            'guest',
+            $limiter ? 'throttle:'.$limiter : null,
+        ]));
+
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+        ->name('auth.logout');
+
+    // Password Reset...
+    if (Features::enabled(Features::resetPasswords())) {
+
+        Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
+            ->middleware(['guest'])
+            ->name('auth.password.email');
+
+        Route::post('/reset-password', [NewPasswordController::class, 'store'])
+            ->middleware(['guest'])
+            ->name('auth.password.reset');
+    }
+
+    // Registration...
+    if (Features::enabled(Features::registration())) {
+
+        Route::post('/register', [RegisteredUserController::class, 'store'])
+            ->middleware(['guest']);
+    }
+
+    // Email Verification...
+    if (Features::enabled(Features::emailVerification())) {
+
+        Route::get('/email/verify/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
+            ->middleware(['auth:sanctum', 'signed', 'throttle:6,1'])
+            ->name('auth.verification.verify');
+
+        Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
+            ->middleware(['auth', 'throttle:6,1'])
+            ->name('auth.verification.send');
+    }
+
+    // Profile Information...
+    if (Features::enabled(Features::updateProfileInformation())) {
+        Route::put('/user/profile-information', [ProfileInformationController::class, 'update'])
+            ->middleware(['auth:sanctum'])
+            ->name('auth.user-profile-information.update');
+    }
+
+    // Passwords...
+    if (Features::enabled(Features::updatePasswords())) {
+        Route::put('/user/password', [PasswordController::class, 'update'])
+            ->middleware(['auth:sanctum'])
+            ->name('auth.user-password.update');
+    }
+
+    // Password Confirmation...
+
+    Route::get('/user/confirmed-password-status', [ConfirmedPasswordStatusController::class, 'show'])
+        ->middleware(['auth:sanctum'])
+        ->name('auth.password.confirmation');
+
+    Route::post('/user/confirm-password', [ConfirmablePasswordController::class, 'store'])
+        ->middleware(['auth:sanctum']);
+});
+

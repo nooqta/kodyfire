@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Repositories;
+
+
+use App\Services\Services;
+use App\Storage\DataBag;
+use Symfony\Component\HttpFoundation\File;
+// use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeExtensionGuesser;
+use Symfony\Component\Mime\MimeTypes;
+use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Support\Facades\Storage;
+
+abstract class Repository
+{
+    use Repositories;
+    use Services;
+
+    /** @var  MimeTypeExtensionGuesser */
+    protected $extensionGuesser;
+    /** @var  FilesystemAdapter */
+    protected $disk;
+
+
+    /**
+     * File system disk instance
+     *
+     * @return FilesystemAdapter
+     */
+    protected function disk()
+    {
+        if ($this->disk == null) {
+            $this->disk = Storage::disk(env('FILE_SYSTEM_DISK'));
+        }
+
+        return $this->disk;
+    }
+
+    /**
+     * Extension guesser instance
+     *
+     * @return MimeTypeExtensionGuesser
+     */
+    protected function extensionGuesser()
+    {
+        if ($this->extensionGuesser == null) {
+            $this->extensionGuesser = new MimeTypes();
+        }
+
+        return $this->extensionGuesser;
+    }
+
+    /**
+     * Generates unique ID
+     *
+     * @return string
+     */
+    protected function uniqueId()
+    {
+        return uniqid('', true);
+    }
+
+    protected function dataBag(array $data)
+    {
+        return new DataBag($data);
+    }
+}
