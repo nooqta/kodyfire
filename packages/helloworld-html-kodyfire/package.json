@@ -1,0 +1,41 @@
+{
+  "name": "helloworld-html-kodyfire",
+  "version": "0.0.51",
+  "description": "Generator for HTML Hello World!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "node ./scripts/register.js",
+    "build": "tsc -p tsconfig.json",
+    "postuninstall": "node ./scripts/uninstall.js"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/helloworld-html-kodyfire/-/helloworld-html-kodyfire-0.0.40.tgz",
+  "_spec": "0.0.40",
+  "_where": "C:\\Bitnami\\wampstack-7.4.16-0\\apps\\kodyfire",
+  "author": {
+    "name": "NOQTA"
+  },
+  "dependencies": {
+    "@angular-devkit/core": "^12.2.3",
+    "@angular-devkit/schematics": "^12.2.3",
+    "ajv": "^8.6.3",
+    "fs-extra": "^10.0.0",
+    "kodyfire-core": "0.0.29",
+    "typescript": "~4.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.14"
+  },
+  "kodyfire": {
+    "id": "html",
+    "type": "web",
+    "version": "5"
+  },
+  "license": "ISC",
+  "publishConfig": {
+    "@noqta:registry": "https://gitlab.noqta.tn/api/v4/projects/163/packages/npm/"
+  }
+}
