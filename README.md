@@ -1,4 +1,5 @@
 # Getting Started With Kodyfire
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
 This repository is for the kodyfire cli.
 
