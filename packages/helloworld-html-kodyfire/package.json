@@ -1,6 +1,6 @@
 {
   "name": "helloworld-html-kodyfire",
-  "version": "0.0.59",
+  "version": "0.0.60",
   "description": "Generator for HTML Hello World!",
   "main": "index.js",
   "scripts": {
