@@ -9,6 +9,7 @@
   "scripts": {
     "watch": "tsc -w",
     "build": "tsc -p tsconfig.json",
+    "install": "lerna exec -- npm install",
     "test": "npm run build && jasmine src/**/*_spec.js",
     "kody": "node ./packages/kodyfire-cli/src/bin/kody.js",
     "kody:watch": "./packages/kodyfire-cli/src/bin/watch.mjs"

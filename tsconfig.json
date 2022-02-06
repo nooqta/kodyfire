@@ -20,8 +20,8 @@
     "sourceMap": true,
     "strictNullChecks": true,
     "target": "es6",
-    "types": ["jasmine", "node"]
-  },
-  "include": ["src/**/*", ],
-  "exclude": ["src/*/files/**/*"]
+    "jsx": "react-jsx",
+    },
+  "include": ["packages/*/src/**/*", ],
+  "exclude": ["src/*/files/**/*", "packages/*/src/concepts/templates/**/*", "**/*.test.tsx"]
 }

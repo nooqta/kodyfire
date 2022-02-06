@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './App.css';
 import { person } from '@jsonforms/examples';
 
@@ -21,7 +21,7 @@ function App() {
         data={data}
         renderers={materialRenderers}
         cells={materialCells}
-        onChange={({ data, errors }) => setData(data)}
+        onChange={({ data }) => setData(data)}
       />
     </div>
   );
