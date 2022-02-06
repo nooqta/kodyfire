@@ -1,6 +1,6 @@
 {
   "name": "kodyfire",
-  "version": "0.0.58",
+  "version": "0.0.59",
   "description": "Artifact generator,automation tool and a general purpose low code and nocode generator.",
   "typings": "./packages/kodyfire-cli/kodyfire.d.ts",
   "directories": {
@@ -15,7 +15,7 @@
     "kody:watch": "./packages/kodyfire-cli/src/bin/watch.mjs"
   },
   "keywords": [
-    "schematics"
+    "low-code", "nocode", "generator", "artifact", "automation", "tool"
   ],
   "bin": {
     "kody": "./src/bin/kody.js",
