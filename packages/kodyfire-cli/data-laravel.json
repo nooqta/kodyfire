@@ -1,5 +1,6 @@
 {
   "project": "dummy",
+  "name": "laravel",
   "kernel": [
     {
       "template": "kernel.php.template"

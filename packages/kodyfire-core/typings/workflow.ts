@@ -12,7 +12,6 @@ export class KodyWorkflow implements IKodyWorkflow {
     input: any;
     public getKody = async (_name:string): Promise<any> => {
         const packages =  await Package.getInstalledKodies();
-        console.log(packages);
         return packages.find((kody:any) => kody.id === _name);
     }
     public handleKodyNotFound = (name:string): any => {

@@ -66,9 +66,16 @@ export async function execute(args: any): Promise<0 | 1> {
 
 export async function run(args: any): Promise<0 | 1> {
   try {
-    // source is passed statically for developing purposes
-    const input = join(process.cwd(),'data-html.json');
-    let workflow  = new CliWorkflow(input);
+    if(typeof args.source === 'undefined') {
+      args.source = join(process.cwd(), "kody.json");
+    }
+    if (!fs.existsSync(args.source)) {
+      console.log(chalk.red(`${chalk.bgRed(chalk.white(args.source))} not found. Please provide the source file to be used.`));
+    process.exit(1);
+    }
+    args.name = JSON.parse(fs.readFileSync(args.source).toString()).name || '';
+    const {source} = args;
+    let workflow  = new CliWorkflow(source);
     let runner = new Runner({...args, ...workflow});
     const output = await runner.run(args);
       // finish process
@@ -80,7 +87,6 @@ export async function run(args: any): Promise<0 | 1> {
 }
 export const isPackageInstalled = (_name: string) => {
   try {
-    
 		return (
       true
 		);
@@ -157,14 +163,14 @@ const list = () => {
   }
 };
 
-
+program.version('0.0.1', '-v, --version', 'output the current version');
 program
   .command("run")
   .description("Generate a digital artifact based on the selected technology")
   .option(
-    "-n,--name <name>",
-    "Name of technology (default is Laravel)",
-    "laravel"
+    "-s,--source <source>",
+    "Source file to be used as the schema for the generator (default: kody.json)",
+    "kody.json"
   )
   .action(async (_opt: { name: any }) => {
     // await $`schematics @noqta/kodyfire:run --name ${_opt.name} --dry-run`;

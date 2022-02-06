@@ -10,7 +10,9 @@
     "watch": "tsc -w",
     "build": "tsc -p tsconfig.json",
     "install": "lerna exec -- npm install",
+    "link": "lerna link",
     "test": "npm run build && jasmine src/**/*_spec.js",
+    "audit": "lerna exec -- npm audit fix --force",
     "kody": "node ./packages/kodyfire-cli/src/bin/kody.js",
     "kody:watch": "./packages/kodyfire-cli/src/bin/watch.mjs"
   },
@@ -18,9 +20,9 @@
     "low-code", "nocode", "generator", "artifact", "automation", "tool"
   ],
   "bin": {
-    "kody": "./src/bin/kody.js",
-    "cody": "./src/bin/kody.js",
-    "kodyfire": "./src/bin/kody.js"
+    "kody": "./packages/kodyfire-cli/src/bin/kody.js",
+    "cody": "./packages/kodyfire-cli/src/bin/kody.js",
+    "kodyfire": "./packages/kodyfire-cli/src/bin/kody.js"
   },
   "author": "NOQTA",
   "license": "MIT",

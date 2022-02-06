@@ -13,22 +13,20 @@ export class Package {
         
     }
     async registerPackages() {
-        let packages = this.getInstalledKodiesName();
+        let packages = Package.getInstalledKodiesName();
         for(let _package of packages) {
             await this.registerPackage(_package);
         }
     }
-    getInstalledKodiesName() {
+    static getInstalledKodiesName() {
         const packageJson = Package.getPackageJson();
-        let packages = Object.keys(packageJson.dependencies).filter((_package: any) => _package.indexOf('-kodyfire') > -1);
-        return _.merge(packages, Object.keys(packageJson.devDependencies).filter((_package: any) => _package.indexOf('-kodyfire') > -1));
+        let packages = packageJson.dependencies? Object.keys(packageJson.dependencies).filter((_package: any) => _package.indexOf('-kodyfire') > -1): [];
+        return _.merge(packages, packageJson.devDependencies? Object.keys(packageJson.devDependencies).filter((_package: any) => _package.indexOf('-kodyfire') > -1) : []);
     }
 
     static async getInstalledKodies() {
-        const packageJson = this.getPackageJson();
         let kodies = [];
-        let packages = Object.keys(packageJson.dependencies).filter((_package: any) => _package.indexOf('-kodyfire') > -1);
-        packages = _.merge(packages, Object.keys(packageJson.devDependencies).filter((_package: any) => _package.indexOf('-kodyfire') > -1));
+        let packages = Package.getInstalledKodiesName();
         for(let _package of packages) {
             const { isValid, packageInfo } = await this.getPackageInfo(_package);
             if(isValid) kodies.push(packageInfo);
