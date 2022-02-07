@@ -1,6 +1,6 @@
 {
   "name": "kodyfire-builder",
-  "version": "0.0.61",
+  "version": "0.0.62",
   "private": true,
   "proxy": "http://localhost:3555",
   "dependencies": {
