@@ -1,13 +1,11 @@
 {
   "name": "blank-kodyfire",
   "version": "0.0.60",
-  "description": "Generator for a blank kody to get you on a rocket!",
+  "description": "Generator for a blank kody to get you riding on a rocket!",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "node ./scripts/register.js",
-    "build": "tsc -p tsconfig.json",
-    "postuninstall": "node ./scripts/uninstall.js"
+    "build": "tsc -p tsconfig.json"
   },
   "kodyfire": {
     "id": "kodyfire",

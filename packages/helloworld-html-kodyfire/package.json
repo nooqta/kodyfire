@@ -5,9 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "node ./scripts/register.js",
-    "build": "tsc -p tsconfig.json",
-    "postuninstall": "node ./scripts/uninstall.js"
+    "build": "tsc -p tsconfig.json"
   },
   "_requiredBy": [
     "/"
