@@ -23,6 +23,6 @@
     "jsx": "react-jsx",
     "types": ["node"],
     },
-  "include": ["packages/*/src/**/*", ],
+  "include": ["packages/*/src/**/*", "packages/*/commands/**/*" ],
   "exclude": ["src/*/files/**/*", "packages/*/src/concepts/templates/**/*", "**/*.tsx"]
 }

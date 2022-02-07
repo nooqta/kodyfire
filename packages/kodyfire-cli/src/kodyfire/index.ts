@@ -2,8 +2,7 @@ import { strings } from "@angular-devkit/core";
 import {  apply, applyTemplates, chain, mergeWith, move, Rule, SchematicContext, Tree, url } from "@angular-devkit/schematics";
 import { join } from "path";
 
-import { Runner } from "kodyfire-core";
-import * as repo from "./../../kodyfire.json";
+import { Package, Runner } from "kodyfire-core";
 import { KodyfireOptionsSchema } from './schema';
 const boxen = require("boxen");
 const chalk = require("chalk");
@@ -41,7 +40,8 @@ export function scaffold(_options: any): Rule {
   };
 }
 async function getKody(name: string): Promise<any> {
-  return repo.templates.find(
+  const packages = await Package.getInstalledKodies();
+  return packages.find(
     (cody: any) => cody.id == name
   );
 }

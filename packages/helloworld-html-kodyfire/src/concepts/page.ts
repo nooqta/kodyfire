@@ -28,6 +28,7 @@ export class Page implements IConcept {
   }
 
   async generate(data: any): Promise<any>  {
+    console.log(`fs.path.dirname(filename)`);
     const template = await fsPromises.readFile(
       join(
         relative(process.cwd(), __dirname),
@@ -43,7 +44,10 @@ export class Page implements IConcept {
       this.outputDir,
       this.getFilename(data.template)
     )
-    
+    // We need to create the directory if it doesn't exist
+    console.log(fs.path.dirname(filename));
+
+    await fsPromises.mkdir(fs.path.dirname(filename), {recursive: true})
     await fsPromises.writeFile(filename, compiled);
   }
 

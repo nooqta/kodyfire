@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// @ts-nocheck
 "use strict";
 import { NodeWorkflow } from "@angular-devkit/schematics/tools";
 import { UnsuccessfulWorkflowExecution } from "@angular-devkit/schematics";
@@ -15,7 +16,8 @@ const boxen = require("boxen");
 const pack = require(join(process.cwd(), "package.json"));
 var EventEmitter = require('events')
 var ee = new EventEmitter()
-
+var glob = require( 'glob' )
+  , path = require( 'path' );
 
 function parseSchematicName(_arg: any): {
   collection: string;
@@ -64,27 +66,6 @@ export async function execute(args: any): Promise<0 | 1> {
   }
 }
 
-export async function run(args: any): Promise<0 | 1> {
-  try {
-    if(typeof args.source === 'undefined') {
-      args.source = join(process.cwd(), "kody.json");
-    }
-    if (!fs.existsSync(args.source)) {
-      console.log(chalk.red(`${chalk.bgRed(chalk.white(args.source))} not found. Please provide the source file to be used.`));
-    process.exit(1);
-    }
-    args.name = JSON.parse(fs.readFileSync(args.source).toString()).name || '';
-    const {source} = args;
-    let workflow  = new CliWorkflow(source);
-    let runner = new Runner({...args, ...workflow});
-    const output = await runner.run(args);
-      // finish process
-      return output;
-  } catch (error) {
-    console.log(chalk.red(error.stack || error.message));
-    process.exit(1);
-  }
-}
 export const isPackageInstalled = (_name: string) => {
   try {
 		return (
@@ -115,70 +96,12 @@ export const startWebServer = () => {
     $`npm run start:builder`
 }
 
-const list = async () => {
-  console.log(parseSchematicName({schematic: 'list'}));
-  const kodies = await Package.getInstalledKodies();
-  // @todo: use event emitter to listen to the event of the runner
-  ee.on('message', (text: string) => {
-    console.log(text)
-  })
-  
-  if (kodies.length == 0) {
-    const kody = chalk.greenBright(chalk.bold("kody"));
-    const message = `😞 No ${kody} installed yet.\nInstall a ${kody} to become a Ninja 🚀🚀🚀`;
-    console.log(
-      boxen(message, {
-        padding: 1,
-        margin: 1,
-        align: "center",
-        borderColor: "yellow",
-        borderStyle: "round",
-      })
-    );
-  } else {
-    var table = new Table({
-      head: ["id", "name", "type", "version"],
-      colWidths: [31, 31, 21, 10],
-      style: {
-        "padding-left": 1,
-        "padding-right": 1,
-        head: ["yellow"],
-      },
-    });
-
-
-
-    kodies.forEach(
-      (template: Template) => {
-        table.push([
-          template.id,
-          template.name,
-          template.type,
-          template.version
-        ]);
-      }
-    );
-    console.log(table.toString());
-  }
-};
-
 program.version('0.0.1', '-v, --version', 'output the current version');
-program
-  .command("run")
-  .description("Generate a digital artifact based on the selected technology")
-  .option(
-    "-s,--source <source>",
-    "Source file to be used as the schema for the generator (default: kody.json)",
-    "kody.json"
-  )
-  .action(async (_opt: { name: any }) => {
-    // await $`schematics @noqta/kodyfire:run --name ${_opt.name} --dry-run`;
-    try {
-      run({ ..._opt, schematic: "run", dryRun: false });
-    } catch (error) {
-      console.log(error);
-    }
-  });
+glob.sync(`${path.resolve(process.mainModule.path, '../..')}/commands/**/*.js` ).forEach( function( file ) {
+  const cmd = require(path.resolve( file )).default;
+  cmd(program);
+});
+
 
 program
   .command("scaffold")
@@ -193,13 +116,13 @@ program
     }
   });
 
-program
-  .command("list")
-  .alias("ls")
-  .description("list available technologies")
-  .action(async (_opt: any) => {
-    return list();
-  });
+// program
+//   .command("list")
+//   .alias("ls")
+//   .description("list available technologies")
+//   .action(async (_opt: any) => {
+//     return list();
+//   });
 
 program
   .command("start")
@@ -209,4 +132,5 @@ program
   .action(async (_opt: any) => {
     return startWebServer();
   });
+ 
 program.parse(process.argv);

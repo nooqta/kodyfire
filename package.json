@@ -12,7 +12,7 @@
     "start:kodyfire-builder": "lerna exec --scope kodyfire-builder -- npm start",
     "start:kodyfire-server": "lerna exec --scope kodyfire-server -- npm start",
     "start:builder": "npm run start:kodyfire-builder & npm run start:kodyfire-server",
-    "install": "lerna exec -- npm install",
+    "lerna:install": "lerna exec -- npm install",
     "link": "lerna link",
     "test": "npm run build && jasmine src/**/*_spec.js",
     "audit": "lerna exec -- npm audit fix --force",

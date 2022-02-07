@@ -19,8 +19,12 @@
   "bin": {
     "kody": "./src/bin/kody.js",
     "cody": "./src/bin/kody.js",
-    "kodyfire": "./src/bin/kody.js"
+    "kodyfire": "./src/bin/kody.js",
+    "_k": "./src/bin/cli.js"
   },
+  "workspaces": [
+    "commands/*"
+  ],
   "author": "NOQTA",
   "license": "MIT",
   "schematics": "./src/collection.json",
@@ -37,13 +41,16 @@
     "commander": "^8.2.0",
     "events": "^3.3.0",
     "fs-extra": "^10.0.0",
+    "glob": "^7.2.0",
     "handlebars": "^4.7.7",
     "helloworld-html-kodyfire": "^0.0.56",
+    "import-local": "^3.1.0",
     "inquirer": "^8.1.5",
     "kodyfire-core": "^0.0.56",
     "laravel-kodyfire": "^0.0.56",
     "lodash": "^4.17.21",
     "minimist": "^1.2.5",
+    "npmlog": "^6.0.0",
     "pluralize": "^8.0.0",
     "symbol-observable": "^4.0.0",
     "zx": "^4.2.0"
