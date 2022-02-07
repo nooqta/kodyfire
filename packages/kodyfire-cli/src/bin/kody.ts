@@ -4,7 +4,7 @@ import { NodeWorkflow } from "@angular-devkit/schematics/tools";
 import { UnsuccessfulWorkflowExecution } from "@angular-devkit/schematics";
 import { Package, Runner, Template } from "kodyfire-core";
 import { CliWorkflow } from "../kodyfire/lib/cli/worklfow";
-// import { $ } from "zx";
+import { $ } from "zx";
 const chalk = require("chalk");
 const { Command } = require("commander");
 const program = new Command();
@@ -112,6 +112,7 @@ export const startWebServer = () => {
         borderStyle: "round",
       })
     );
+    $`npm run start:builder`
 }
 
 const list = async () => {
