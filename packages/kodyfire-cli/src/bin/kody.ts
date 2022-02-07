@@ -2,7 +2,7 @@
 "use strict";
 import { NodeWorkflow } from "@angular-devkit/schematics/tools";
 import { UnsuccessfulWorkflowExecution } from "@angular-devkit/schematics";
-import { Runner, Template } from "kodyfire-core";
+import { Package, Runner, Template } from "kodyfire-core";
 import { CliWorkflow } from "../kodyfire/lib/cli/worklfow";
 // import { $ } from "zx";
 const chalk = require("chalk");
@@ -12,7 +12,7 @@ const fs = require("fs");
 const { join } = require("path");
 var Table = require("cli-table");
 const boxen = require("boxen");
-const pack = require(join(process.cwd(), "kodyfire.json"));
+const pack = require(join(process.cwd(), "package.json"));
 var EventEmitter = require('events')
 var ee = new EventEmitter()
 
@@ -22,7 +22,7 @@ function parseSchematicName(_arg: any): {
   schematic: string;
 } {
   // All schematics are local to kody
-  const collectionName = "kodyfire";
+  const collectionName = "kodyfire-cli";
   let collection = pack.name == collectionName? collectionName : ".";
 
   let schematic = _arg.schematic;
@@ -114,14 +114,15 @@ export const startWebServer = () => {
     );
 }
 
-const list = () => {
-  const fileName = join(process.cwd(), "kodyfire.json");
+const list = async () => {
+  console.log(parseSchematicName({schematic: 'list'}));
+  const kodies = await Package.getInstalledKodies();
+  // @todo: use event emitter to listen to the event of the runner
   ee.on('message', (text: string) => {
     console.log(text)
   })
-  let fileContent = fs.readFileSync(fileName);
-  let content = JSON.parse(fileContent);
-  if (content.templates.length == 0) {
+  
+  if (kodies.length == 0) {
     const kody = chalk.greenBright(chalk.bold("kody"));
     const message = `😞 No ${kody} installed yet.\nInstall a ${kody} to become a Ninja 🚀🚀🚀`;
     console.log(
@@ -135,8 +136,8 @@ const list = () => {
     );
   } else {
     var table = new Table({
-      head: ["id", "name", "type", "version", "enabled"],
-      colWidths: [21, 21, 21, 7, 10],
+      head: ["id", "name", "type", "version"],
+      colWidths: [31, 31, 21, 10],
       style: {
         "padding-left": 1,
         "padding-right": 1,
@@ -146,16 +147,13 @@ const list = () => {
 
 
 
-    content.templates.forEach(
+    kodies.forEach(
       (template: Template) => {
         table.push([
           template.id,
           template.name,
           template.type,
-          template.version,
-          template.enabled
-            ? chalk.green(template.enabled)
-            : chalk.red(template.enabled),
+          template.version
         ]);
       }
     );
