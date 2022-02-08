@@ -13,13 +13,13 @@ const kodyfire_core_1 = require("kodyfire-core");
 const chalk = require("chalk");
 const boxen = require("boxen");
 var Table = require("cli-table");
-var EventEmitter = require('events');
+var EventEmitter = require("events");
 var ee = new EventEmitter();
 const { Command } = require("commander");
 const action = () => __awaiter(void 0, void 0, void 0, function* () {
     const kodies = yield kodyfire_core_1.Package.getInstalledKodies();
     // @todo: use event emitter to listen to the event of the runner
-    ee.on('message', (text) => {
+    ee.on("message", (text) => {
         console.log(text);
     });
     if (kodies.length == 0) {
@@ -44,17 +44,12 @@ const action = () => __awaiter(void 0, void 0, void 0, function* () {
             },
         });
         kodies.forEach((template) => {
-            table.push([
-                template.id,
-                template.name,
-                template.type,
-                template.version
-            ]);
+            table.push([template.id, template.name, template.type, template.version]);
         });
         console.log(table.toString());
     }
 });
-const command = (program) => {
+module.exports = (program) => {
     program
         .command("list")
         .alias("ls")
@@ -63,5 +58,4 @@ const command = (program) => {
         return action();
     }));
 };
-exports.default = command;
 //# sourceMappingURL=index.js.map

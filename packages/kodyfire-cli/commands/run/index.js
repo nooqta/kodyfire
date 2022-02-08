@@ -9,7 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.action = void 0;
 const chalk = require("chalk");
 const fs = require("fs");
 const { join } = require("path");
@@ -19,14 +18,14 @@ const { Command } = require("commander");
 function action(args) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            if (typeof args.source === 'undefined') {
+            if (typeof args.source === "undefined") {
                 args.source = join(process.cwd(), "kody.json");
             }
             if (!fs.existsSync(args.source)) {
                 console.log(chalk.red(`${chalk.bgRed(chalk.white(args.source))} not found. Please provide the source file to be used.`));
                 process.exit(1);
             }
-            args.name = JSON.parse(fs.readFileSync(args.source).toString()).name || '';
+            args.name = JSON.parse(fs.readFileSync(args.source).toString()).name || "";
             const { source } = args;
             let workflow = new worklfow_1.CliWorkflow(source);
             let runner = new kodyfire_core_1.Runner(Object.assign(Object.assign({}, args), workflow));
@@ -40,8 +39,7 @@ function action(args) {
         }
     });
 }
-exports.action = action;
-const command = (program) => {
+module.exports = (program) => {
     program
         .command("run")
         .description("Generate a digital artifact based on the selected technology")
@@ -56,5 +54,4 @@ const command = (program) => {
         }
     }));
 };
-exports.default = command;
 //# sourceMappingURL=index.js.map
