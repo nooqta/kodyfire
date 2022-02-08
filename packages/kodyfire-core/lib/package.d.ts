@@ -6,8 +6,9 @@ export declare class Package {
     registeredKodies: Map<string, IKody>;
     constructor(kody: IKody);
     registerPackages(): Promise<void>;
-    getInstalledKodiesName(): any;
+    static getInstalledKodiesName(dirname?: string): any;
     static getInstalledKodies(): Promise<any[]>;
+    static getInstalledKodiesFromPath(dirname: string): Promise<any[]>;
     getRegistredPackages(): string[];
     static getPackageJson(dirname?: string): any;
     registerKodyPackage(_package: any): Promise<any>;

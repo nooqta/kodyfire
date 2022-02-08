@@ -15,7 +15,6 @@ class KodyWorkflow {
     constructor() {
         this.getKody = (_name) => __awaiter(this, void 0, void 0, function* () {
             const packages = yield __1.Package.getInstalledKodies();
-            console.log(packages);
             return packages.find((kody) => kody.id === _name);
         });
         this.handleKodyNotFound = (name) => {

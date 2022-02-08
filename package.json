@@ -11,6 +11,7 @@
     "build": "tsc -p tsconfig.json",
     "start:kodyfire-builder": "lerna exec --scope kodyfire-builder -- npm start",
     "start:kodyfire-server": "lerna exec --scope kodyfire-server -- npm start",
+    "dev:kodyfire-server": "NODE_ROOT_PATH=${LERNA_ROOT_PATH} lerna exec --scope kodyfire-server -- npm run dev",
     "start:builder": "npm run start:kodyfire-builder & npm run start:kodyfire-server",
     "lerna:install": "lerna exec -- npm install",
     "link": "lerna link",

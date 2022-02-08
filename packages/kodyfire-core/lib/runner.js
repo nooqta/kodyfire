@@ -40,7 +40,6 @@ class Runner {
             // get package name
             const { name } = _options;
             const currentKody = yield this.getKody(name);
-            console.log(currentKody);
             // stop processing if package not found
             if (typeof currentKody == "undefined") {
                 this.handleKodyNotFound(name);

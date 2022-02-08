@@ -18,8 +18,9 @@ export class Package {
             await this.registerPackage(_package);
         }
     }
-    static getInstalledKodiesName() {
-        const packageJson = Package.getPackageJson();
+
+    static getInstalledKodiesName(dirname = process.cwd()) {
+        const packageJson = Package.getPackageJson(dirname);
         let packages = packageJson.dependencies? Object.keys(packageJson.dependencies).filter((_package: any) => _package.indexOf('-kodyfire') > -1): [];
         return _.merge(packages, packageJson.devDependencies? Object.keys(packageJson.devDependencies).filter((_package: any) => _package.indexOf('-kodyfire') > -1) : []);
     }
@@ -29,6 +30,15 @@ export class Package {
         let packages = Package.getInstalledKodiesName();
         for(let _package of packages) {
             const { isValid, packageInfo } = await this.getPackageInfo(_package);
+            if(isValid) kodies.push(packageInfo);
+        }
+        return kodies;
+    }
+    static async getInstalledKodiesFromPath(dirname: string) {
+        let kodies = [];
+        let packages = Package.getInstalledKodiesName(dirname);
+        for(let _package of packages) {
+            const { isValid, packageInfo } = await this.getPackageInfo(_package, dirname);
             if(isValid) kodies.push(packageInfo);
         }
         return kodies;
@@ -60,8 +70,8 @@ export class Package {
         return false;
     }
 
-    private static async getPackageInfo(_package: any) {
-        const packageJson = await this.getPackageJson(path.join(process.cwd(), 'node_modules', _package));
+    private static async getPackageInfo(_package: any, dirname = process.cwd()) {
+        const packageJson = await this.getPackageJson(path.join(dirname, 'node_modules', _package));
         let packageInfo;
         packageInfo = packageJson.kodyfire;
         packageInfo.name = _package;

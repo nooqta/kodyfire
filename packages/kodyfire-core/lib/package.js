@@ -21,25 +21,35 @@ class Package {
     }
     registerPackages() {
         return __awaiter(this, void 0, void 0, function* () {
-            let packages = this.getInstalledKodiesName();
+            let packages = Package.getInstalledKodiesName();
             for (let _package of packages) {
                 yield this.registerPackage(_package);
             }
         });
     }
-    getInstalledKodiesName() {
-        const packageJson = Package.getPackageJson();
-        let packages = Object.keys(packageJson.dependencies).filter((_package) => _package.indexOf('-kodyfire') > -1);
-        return _.merge(packages, Object.keys(packageJson.devDependencies).filter((_package) => _package.indexOf('-kodyfire') > -1));
+    static getInstalledKodiesName(dirname = process.cwd()) {
+        const packageJson = Package.getPackageJson(dirname);
+        let packages = packageJson.dependencies ? Object.keys(packageJson.dependencies).filter((_package) => _package.indexOf('-kodyfire') > -1) : [];
+        return _.merge(packages, packageJson.devDependencies ? Object.keys(packageJson.devDependencies).filter((_package) => _package.indexOf('-kodyfire') > -1) : []);
     }
     static getInstalledKodies() {
         return __awaiter(this, void 0, void 0, function* () {
-            const packageJson = this.getPackageJson();
             let kodies = [];
-            let packages = Object.keys(packageJson.dependencies).filter((_package) => _package.indexOf('-kodyfire') > -1);
-            packages = _.merge(packages, Object.keys(packageJson.devDependencies).filter((_package) => _package.indexOf('-kodyfire') > -1));
+            let packages = Package.getInstalledKodiesName();
             for (let _package of packages) {
                 const { isValid, packageInfo } = yield this.getPackageInfo(_package);
+                if (isValid)
+                    kodies.push(packageInfo);
+            }
+            return kodies;
+        });
+    }
+    static getInstalledKodiesFromPath(dirname) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let kodies = [];
+            let packages = Package.getInstalledKodiesName(dirname);
+            for (let _package of packages) {
+                const { isValid, packageInfo } = yield this.getPackageInfo(_package, dirname);
                 if (isValid)
                     kodies.push(packageInfo);
             }
@@ -74,9 +84,9 @@ class Package {
             return false;
         });
     }
-    static getPackageInfo(_package) {
+    static getPackageInfo(_package, dirname = process.cwd()) {
         return __awaiter(this, void 0, void 0, function* () {
-            const packageJson = yield this.getPackageJson(path.join(process.cwd(), 'node_modules', _package));
+            const packageJson = yield this.getPackageJson(path.join(dirname, 'node_modules', _package));
             let packageInfo;
             packageInfo = packageJson.kodyfire;
             packageInfo.name = _package;
