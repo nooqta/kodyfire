@@ -1,7 +1,6 @@
 {
   "name": "kodyfire-builder",
   "version": "0.0.64",
-  "private": true,
   "proxy": "http://localhost:3555",
   "dependencies": {
     "@emotion/react": "^11.7.1",
