@@ -1,6 +1,6 @@
 {
   "name": "blank-kodyfire",
-  "version": "0.0.63",
+  "version": "0.0.64",
   "description": "Generator for a blank kody to get you riding on a rocket!",
   "main": "index.js",
   "scripts": {
