@@ -3,11 +3,14 @@
     "page": [
         {
             "title": "This is a title 1",
+            "subtitle": "عنوان رقم ١",
+            "name": "Anis Marrouchi",
             "content": "This is a content. It looks like this: <div style='color: blue;'>This is a div</div>",
             "template": "page1.html.template"
         },
         {
             "title": "صفحة تجريبية 2",
+            "subtitle": "عنوان رقم 2",
             "content": "This the content 2. It should contain html so encoding and decoding into base64 will be used",
             "template": "page2.html.template"
         }

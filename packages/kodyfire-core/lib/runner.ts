@@ -18,7 +18,7 @@ export class Runner implements IKodyWorkflow {
 
     // require package
     const m = await import(currentKody.name);
-    let kody: IKody = new m.Kody(currentKody);
+    let kody: IKody = new m.Kody({..._options, ...currentKody});
     kody.package = new Package(kody);
     await kody.package.registerPackages();
     

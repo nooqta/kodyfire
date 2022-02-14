@@ -16,6 +16,8 @@ export class Technology implements ITechnology {
   concepts: Map<string, IConcept>;
   assets: any;
   actions: ActionList;
+  input?: any;
+  params: any;
   constructor(params: any) {
     try {
       this.id = params.id;

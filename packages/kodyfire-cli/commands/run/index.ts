@@ -6,6 +6,7 @@ import { CliWorkflow } from "../../src/kodyfire/lib/cli/worklfow";
 const { Command } = require("commander");
 
 async function action(args: any): Promise<0 | 1> {
+  console.log(args);
   try {
     if (typeof args.source === "undefined") {
       args.source = join(process.cwd(), "kody.json");
@@ -40,6 +41,10 @@ module.exports = (program: typeof Command) => {
       "-s,--source <source>",
       "Source file to be used as the schema for the generator (default: kody.json)",
       "kody.json"
+    )
+    .option(
+      "--templates-path",
+      "overrides the templates path",
     )
     .action(async (_opt: { name: any }) => {
       // await $`schematics @noqta/kodyfire:run --name ${_opt.name} --dry-run`;

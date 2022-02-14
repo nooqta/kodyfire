@@ -1,1 +1,1 @@
-{"version":3,"file":"technology.js","sourceRoot":"","sources":["technology.ts"],"names":[],"mappings":";;;AAAA,6CAA0C;AAc1C,MAAa,UAAU;IASnB;QACI,IAAI,CAAC,OAAO,GAAG,IAAI,uBAAU,EAAE,CAAC;QAChC,IAAI,CAAC,QAAQ,GAAG,IAAI,GAAG,EAAE,CAAC;IAC9B,CAAC;CAEJ;AAdD,gCAcC"}
+{"version":3,"file":"technology.js","sourceRoot":"","sources":["technology.ts"],"names":[],"mappings":";;;AAAA,6CAA0C;AAe1C,MAAa,UAAU;IAUnB;QACI,IAAI,CAAC,OAAO,GAAG,IAAI,uBAAU,EAAE,CAAC;QAChC,IAAI,CAAC,QAAQ,GAAG,IAAI,GAAG,EAAE,CAAC;IAC9B,CAAC;CAEJ;AAfD,gCAeC"}

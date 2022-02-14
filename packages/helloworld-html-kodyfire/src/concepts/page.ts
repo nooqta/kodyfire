@@ -6,7 +6,7 @@ import {
   dasherize,
 } from "kodyfire-core";
 import * as handlebars from "handlebars";
-import { join, relative } from "path";
+import { join, relative, dirname } from "path";
 const fs = require('fs');
 const fsPromises = fs.promises;
 
@@ -28,10 +28,9 @@ export class Page implements IConcept {
   }
 
   async generate(data: any): Promise<any>  {
-    console.log(`fs.path.dirname(filename)`);
     const template = await fsPromises.readFile(
       join(
-        relative(process.cwd(), __dirname),
+        this.getTemplatesPath(),
         this.template.path,
         data.template
         )
@@ -45,18 +44,22 @@ export class Page implements IConcept {
       this.getFilename(data.template)
     )
     // We need to create the directory if it doesn't exist
-    console.log(fs.path.dirname(filename));
 
-    await fsPromises.mkdir(fs.path.dirname(filename), {recursive: true})
+    await fsPromises.mkdir(dirname(filename), {recursive: true})
     await fsPromises.writeFile(filename, compiled);
   }
 
   getFilename(name: any) {
     // const regexp = /(\d+)/;
     return dasherize(
+
       name
         .replace(".template", "")
         //.replace(regexp, Math.floor(Math.random() * 100))
     );
   }
+  getTemplatesPath(): string {
+    return this.technology.params.templatesPath? this.technology.params.templatesPath : relative(process.cwd(), __dirname);
+  }
 }
+

@@ -92,17 +92,17 @@ export class Package {
         // @todo: register event listeners dynamically
         this.kody.events.on('generate', (_content: any) => {
             if(_package.name) {
-                console.log(`${this.kody.params?.name} is generating. Listening from ${_package.name}`);
+                // console.log(`${this.kody.params?.name} is generating. Listening from ${_package.name}`);
             }
         });
         this.kody.events.on('parse', (_content: any) => {
             if(_package.name) {
-                    console.log(`${this.kody.params?.name} is parsing. Listening from ${_package.name}`);
+                    // console.log(`${this.kody.params?.name} is parsing. Listening from ${_package.name}`);
             }
         });
         this.kody.events.on('read', (_content: any) => {
             if(_package.name) {
-                    console.log(`${this.kody.params?.name} is reading. Listening from ${_package.name}`);
+                    // console.log(`${this.kody.params?.name} is reading. Listening from ${_package.name}`);
             }
         });
     }

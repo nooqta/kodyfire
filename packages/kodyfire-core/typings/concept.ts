@@ -9,6 +9,7 @@ export interface TemplateSchema {
 }
 export interface IConcept {
     name: string;
+    templatesPath?: string;
     defaultAction: string;
     source?: Source;
     template: TemplateSchema;

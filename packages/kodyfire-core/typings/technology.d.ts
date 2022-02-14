@@ -9,6 +9,7 @@ export interface ITechnology {
     concepts: Map<string, IConcept>;
     assets: any;
     actions: ActionList;
+    params: any;
 }
 export declare class Technology implements ITechnology {
     id: string;
@@ -19,6 +20,7 @@ export declare class Technology implements ITechnology {
     concepts: Map<string, IConcept>;
     assets: any;
     actions: ActionList;
+    params: any;
     constructor();
 }
 //# sourceMappingURL=technology.d.ts.map

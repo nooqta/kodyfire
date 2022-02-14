@@ -17,6 +17,7 @@ const worklfow_1 = require("../../src/kodyfire/lib/cli/worklfow");
 const { Command } = require("commander");
 function action(args) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log(args);
         try {
             if (typeof args.source === "undefined") {
                 args.source = join(process.cwd(), "kody.json");
@@ -44,6 +45,7 @@ module.exports = (program) => {
         .command("run")
         .description("Generate a digital artifact based on the selected technology")
         .option("-s,--source <source>", "Source file to be used as the schema for the generator (default: kody.json)", "kody.json")
+        .option("--templates-path", "overrides the templates path")
         .action((_opt) => __awaiter(void 0, void 0, void 0, function* () {
         // await $`schematics @noqta/kodyfire:run --name ${_opt.name} --dry-run`;
         try {

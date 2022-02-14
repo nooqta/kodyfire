@@ -10,6 +10,7 @@ export interface ITechnology {
     concepts: Map<string,IConcept>;
     assets: any;
     actions: ActionList;
+    params: any;
 }
 
 export class Technology implements ITechnology {
@@ -21,6 +22,7 @@ export class Technology implements ITechnology {
     concepts: Map<string,IConcept>;
     assets: any;
     actions: ActionList;
+    params: any;
     constructor() {
         this.actions = new ActionList();
         this.concepts = new Map();

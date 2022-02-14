@@ -7,7 +7,8 @@ import {
 import * as assets from "./assets.json";
 /* @ts-ignore */
 import * as classes from ".";
-
+import { join } from "path";
+const fs = require('fs');
 export class Technology implements ITechnology {
   id: string;
   name: string;
@@ -16,6 +17,8 @@ export class Technology implements ITechnology {
   concepts: Map<string, IConcept>;
   assets: any;
   actions: ActionList;
+  input?: any;
+  params: any;
   constructor(params: any) {
     try {
       this.id = params.id;
@@ -25,7 +28,16 @@ export class Technology implements ITechnology {
       this.concepts = new Map<string, IConcept>();
       this.rootDir = assets.rootDir;
       this.assets = assets;
-
+      this.params = params;
+      if(params.templatesPath) {
+        // user requested to use custom templates. We need to set the path to the templates
+        const templatesPath = join(process.cwd(), '.kody', params.name);
+        // we check if the path exists
+        if(!fs.existsSync(templatesPath)) {
+          throw new Error(`The path ${templatesPath} does not exist.\nRun the command "kodyfire publish ${params.name}" to publish the templates.`);
+        }
+        params.templatesPath = join(process.cwd(), '.kody', params.name);
+      }
       // add dynamic property for technology
       for (let concept of this.assets.concepts) {
         this.concepts.set(

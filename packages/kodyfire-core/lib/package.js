@@ -107,21 +107,18 @@ class Package {
         // @todo: retrieve events from package
         // @todo: register event listeners dynamically
         this.kody.events.on('generate', (_content) => {
-            var _a;
             if (_package.name) {
-                console.log(`${(_a = this.kody.params) === null || _a === void 0 ? void 0 : _a.name} is generating. Listening from ${_package.name}`);
+                // console.log(`${this.kody.params?.name} is generating. Listening from ${_package.name}`);
             }
         });
         this.kody.events.on('parse', (_content) => {
-            var _a;
             if (_package.name) {
-                console.log(`${(_a = this.kody.params) === null || _a === void 0 ? void 0 : _a.name} is parsing. Listening from ${_package.name}`);
+                // console.log(`${this.kody.params?.name} is parsing. Listening from ${_package.name}`);
             }
         });
         this.kody.events.on('read', (_content) => {
-            var _a;
             if (_package.name) {
-                console.log(`${(_a = this.kody.params) === null || _a === void 0 ? void 0 : _a.name} is reading. Listening from ${_package.name}`);
+                // console.log(`${this.kody.params?.name} is reading. Listening from ${_package.name}`);
             }
         });
     }

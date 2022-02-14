@@ -46,7 +46,7 @@ class Runner {
             }
             // require package
             const m = yield Promise.resolve().then(() => __importStar(require(currentKody.name)));
-            let kody = new m.Kody(currentKody);
+            let kody = new m.Kody(Object.assign(Object.assign({}, _options), currentKody));
             kody.package = new __1.Package(kody);
             yield kody.package.registerPackages();
             // parse source
