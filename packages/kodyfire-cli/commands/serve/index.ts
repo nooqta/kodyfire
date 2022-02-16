@@ -1,6 +1,6 @@
-const boxen = require("boxen");
+import boxen from "boxen";
 import { $ } from "zx";
-const { Command } = require("commander");
+import { Command } from "commander";
 
 export const isPackageInstalled = (_name: string) => {
   try {

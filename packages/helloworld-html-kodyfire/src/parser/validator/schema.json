@@ -1,0 +1,21 @@
+{
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "minLength": 1
+      },
+      "page": {
+        "type": "array",
+        "items": {
+          "type": "object",
+        "properties": {
+          "title": {"type": "string"},
+          "subtitle": {"type": "string"},
+          "content": {"type": "string"},
+          "template": {"type": "string", "enum": ["page1.html.template", "page2.html.template"]}
+        }
+        }
+      } 
+    }
+  }

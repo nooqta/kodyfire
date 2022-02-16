@@ -8,9 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isPackageInstalled = void 0;
-const boxen = require("boxen");
+const boxen_1 = __importDefault(require("boxen"));
 const zx_1 = require("zx");
 const { Command } = require("commander");
 const isPackageInstalled = (_name) => {
@@ -30,7 +33,7 @@ const action = () => {
       npm install -g kodyfire-builder`;
     }
     // const kody = chalk.greenBright(chalk.bold("kody"));
-    console.log(boxen(message, {
+    console.log(boxen_1.default(message, {
         padding: 1,
         margin: 1,
         align: "center",

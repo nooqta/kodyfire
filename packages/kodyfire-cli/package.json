@@ -49,12 +49,13 @@
     "minimist": "^1.2.5",
     "npmlog": "^6.0.0",
     "pluralize": "^8.0.0",
-    "symbol-observable": "^4.0.0",
-    "zx": "^4.2.0"
+    "symbol-observable": "^4.0.0"
   },
   "devDependencies": {
     "@types/jasmine": "~3.8.0",
     "@types/node": "^12.20.43",
-    "jasmine": "^3.5.0"
+    "jasmine": "^3.5.0",
+    "symbol-observable": "^4.0.0",
+    "zx": "^4.2.0"
   }
 }
