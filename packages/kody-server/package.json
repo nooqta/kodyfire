@@ -1,6 +1,6 @@
 {
   "name": "kodyfire-server",
-  "version": "0.0.65",
+  "version": "0.0.66",
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -16,7 +16,7 @@
     "body-parser": "^1.19.2",
     "dotenv": "^15.0.0",
     "express": "^4.17.2",
-    "kodyfire-core": "^0.0.65"
+    "kodyfire-core": "^0.0.66"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
