@@ -1,17 +1,13 @@
-import { Fragment, useState, useMemo, useEffect } from 'react';
+import React, { Fragment, useState, useMemo, useEffect } from 'react';
 import { JsonForms } from '@jsonforms/react';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import logo from './logo.svg';
-import './App.css';
-import uischema from './uischema.json';
+// import './App.css';
 import {
   materialCells,
   materialRenderers,
 } from '@jsonforms/material-renderers';
-import RatingControl from './RatingControl';
-import ratingControlTester from './ratingControlTester';
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
@@ -45,13 +41,13 @@ const initialData = {};
 const renderers = [
   ...materialRenderers,
   //register custom renderers
-  { tester: ratingControlTester, renderer: RatingControl },
+  // { tester: ratingControlTester, renderer: RatingControl },
 ];
 
 const App = () => {
   const classes = useStyles();
-  const [data, setData] = useState<any>(initialData);
-  const [schema, setSchema] = useState<any>({});
+  const [data, setData] = useState(initialData);
+  const [schema, setSchema] = useState({});
   const stringifiedData = useMemo(() => JSON.stringify(data, null, 2), [data]);
   useEffect(() => {
     fetch('/api/kodies')
@@ -86,13 +82,6 @@ const App = () => {
 
   return (
     <Fragment>
-      {/* <div className='App'>
-        <header className='App-header'>
-          <img src={logo} className='App-logo' alt='logo' />
-          <h1 className='App-title'>Welcome to JSON Forms with React</h1>
-          <p className='App-intro'>More Forms. Less Code.</p>
-        </header>
-      </div> */}
 
       <Grid
         container
