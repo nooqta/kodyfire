@@ -16,6 +16,14 @@
   },
   "author": "NOQTA",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nooqta/kodyfire.git",
+    "directory": "packages/blank-kodyfire"
+  },
+  "bugs": {
+    "url": "https://github.com/nooqta/kodyfire/issues"
+  },
   "dependencies": {
     "@angular-devkit/core": "^12.2.3",
     "@angular-devkit/schematics": "^12.2.3",
