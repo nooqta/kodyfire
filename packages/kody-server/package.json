@@ -4,6 +4,14 @@
   "description": "",
   "main": "index.js",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nooqta/kodyfire.git",
+    "directory": "packages/kodyfire-server"
+  },
+  "bugs": {
+    "url": "https://github.com/nooqta/kodyfire/issues"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./index.js",

@@ -7,12 +7,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p tsconfig.json"
   },
-  "_requiredBy": [
-    "/"
-  ],
-  "_resolved": "https://registry.npmjs.org/helloworld-html-kodyfire/-/helloworld-html-kodyfire-0.0.40.tgz",
-  "_spec": "0.0.40",
-  "_where": "C:\\Bitnami\\wampstack-7.4.16-0\\apps\\kodyfire",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nooqta/kodyfire.git",
+    "directory": "packages/helloworld-html-kodyfire"
+  },
+  "bugs": {
+    "url": "https://github.com/nooqta/kodyfire/issues"
+  },
   "author": {
     "name": "NOQTA"
   },

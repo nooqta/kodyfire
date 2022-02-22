@@ -3,6 +3,14 @@
   "version": "0.0.66",
   "description": "Common types used by kodyfire.",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nooqta/kodyfire.git",
+    "directory": "packages/kodyfire-core"
+  },
+  "bugs": {
+    "url": "https://github.com/nooqta/kodyfire/issues"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p tsconfig.json"
