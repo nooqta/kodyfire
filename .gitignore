@@ -26,6 +26,9 @@ src/core
 temp/
 target/
 
+#lerna
+/.changelog
+
 #kodyfire
 .kody
 dist

@@ -2,5 +2,17 @@
   "packages": [
     "packages/*"
   ],
+  "changelog": {
+    "repo": "noqta/kodyfire",
+    "labels": {
+      "new feature": ":rocket: New Feature",
+      "breaking change": ":boom: Breaking Change",
+      "bug fix": ":bug: Bug Fix",
+      "enhancement": ":nail_care: Enhancement",
+      "documentation": ":memo: Documentation",
+      "internal": ":house: Internal"
+    },
+    "cacheDir": ".changelog"
+  },
   "version": "0.0.66"
 }

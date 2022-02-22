@@ -9,6 +9,7 @@
   "scripts": {
     "watch": "tsc -w",
     "build": "tsc -p tsconfig.json",
+    "changelog": "lerna-changelog",
     "start:kodyfire-builder": "lerna exec --scope kodyfire-builder -- npm start",
     "start:kodyfire-server": "lerna exec --scope kodyfire-server -- npm run dev",
     "start:builder": "npm run start:kodyfire-builder & npm run start:kodyfire-server",
@@ -40,6 +41,7 @@
     "concurrently": "^7.0.0",
     "jasmine": "^3.5.0",
     "lerna": "^4.0.0",
+    "lerna-changelog": "^2.2.0",
     "typescript": "~4.3.2",
     "zx": "^5.1.0"
   },
