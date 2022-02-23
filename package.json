@@ -18,7 +18,8 @@
     "test": "jest",
     "audit": "lerna exec -- npm audit fix --force",
     "kody": "node ./packages/kodyfire-cli/src/bin/kody.js",
-    "kody:watch": "./packages/kodyfire-cli/src/bin/watch.mjs"
+    "kody:watch": "./packages/kodyfire-cli/src/bin/watch.mjs",
+    "prepare": "husky install"
   },
   "keywords": [
     "low-code",
