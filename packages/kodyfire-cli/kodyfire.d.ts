@@ -1,5 +1,5 @@
 export declare interface IKody {
-    parser: IParser;
+  parser: IParser;
 }
 
 /**
@@ -7,19 +7,19 @@ export declare interface IKody {
  * @alpha
  */
 export declare interface IParser {
-    data: any;
-    requiresExtract: boolean;
-    requiresTansform: boolean;
-    requiresLoad: boolean;
-    validator: IValidator;
-    reader(filename: string): any;
-    parse(data: any): any;
+  data: any;
+  requiresExtract: boolean;
+  requiresTansform: boolean;
+  requiresLoad: boolean;
+  validator: IValidator;
+  reader(filename: string): any;
+  parse(data: any): any;
 }
 
 export declare interface IValidator {
-    rules: any;
-    errors: any;
-    validate(data: any): boolean;
+  rules: any;
+  errors: any;
+  validate(data: any): boolean;
 }
 
-export { }
+export {};

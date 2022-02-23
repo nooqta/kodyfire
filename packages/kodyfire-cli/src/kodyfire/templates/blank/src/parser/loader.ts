@@ -1,3 +1,3 @@
 export const load: any = () => {
-    return `This is the load`
-}
+  return `This is the load`;
+};

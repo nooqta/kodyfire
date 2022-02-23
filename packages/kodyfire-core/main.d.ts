@@ -1,2 +1,2 @@
-import { IKody } from "./parser";
+import { IKody } from './parser';
 export { IKody };

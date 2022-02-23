@@ -22,6 +22,6 @@
     "target": "es6",
     "types": ["jasmine", "node"]
   },
-  "include": ["src/**/*", "commands/**/*" ],
+  "include": ["src/**/*", "commands/**/*"],
   "exclude": ["src/*/files/**/*"]
 }

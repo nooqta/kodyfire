@@ -21,8 +21,16 @@
     "strictNullChecks": true,
     "target": "es6",
     "jsx": "react-jsx",
-    "types": ["node"],
-    },
-  "include": ["packages/*/src/**/*", "packages/*/commands/**/*", "packages/*/lib/**/*" ],
-  "exclude": ["src/*/files/**/*", "packages/*/src/concepts/templates/**/*", "**/*.tsx"]
+    "types": ["node"]
+  },
+  "include": [
+    "packages/*/src/**/*",
+    "packages/*/commands/**/*",
+    "packages/*/lib/**/*"
+  ],
+  "exclude": [
+    "src/*/files/**/*",
+    "packages/*/src/concepts/templates/**/*",
+    "**/*.tsx"
+  ]
 }

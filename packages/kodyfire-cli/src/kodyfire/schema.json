@@ -1,16 +1,16 @@
 {
-    "title": "Kodyfire Options Schema",
-    "type": "object",
-    "properties": {
-      "name": {
-        "type": "string",
-        "description": "The project name."
-      },
-      "dryRun": {
-        "type": "boolean",
-        "description": "Dry run schematic."
-      }
+  "title": "Kodyfire Options Schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The project name."
     },
-    "additionalProperties": true,
-    "required": ["name"]
-  }
+    "dryRun": {
+      "type": "boolean",
+      "description": "Dry run schematic."
+    }
+  },
+  "additionalProperties": true,
+  "required": ["name"]
+}

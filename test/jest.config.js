@@ -3,8 +3,8 @@
 module.exports = {
   testEnvironment: 'jsdom',
   globals: {
-    "ts-jest": {
-      tsConfig: "tsconfig.json",
+    'ts-jest': {
+      tsConfig: 'tsconfig.json',
       diagnostics: false,
     },
   },
@@ -12,8 +12,8 @@ module.exports = {
   testPathIgnorePatterns: ['/src/', 'node_modules'],
   // Jest transformations -- this adds support for TypeScript
   // using ts-jest
-  preset: "ts-jest",
+  preset: 'ts-jest',
   transform: {
-    "^.+\\.[t|j]sx?$": "ts-jest"
+    '^.+\\.[t|j]sx?$': 'ts-jest',
   },
 };

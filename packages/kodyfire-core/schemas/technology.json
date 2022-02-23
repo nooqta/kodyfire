@@ -1,89 +1,88 @@
 {
-    "title": "Technology Schema",
-    "type": "object",
-    "properties": {
-        "name": {
-            "type": "string"
-        },
-        "version": {
-            "type": "string"
-        },
-        "concepts": {
+  "title": "Technology Schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "concepts": {
+      "elements": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "required": true
+          },
+          "actions": {
             "elements": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "required": true
-                    },
-                    "actions": {
-                        "elements": {
-                            "ref": "#/definitions/action"
-                        },
-                        "description": "The action definition."
-                    },
-                    "defaultAction": {
-                        "type": "string"
-                    }
-                },
-                "additionalProperties": false,
-                "required": ["name", "actions"]
+              "ref": "#/definitions/action"
             },
-            "description": "The concept definitions."
-        }
-    },
-    "definitions": {
-        "concept": {
-            "type": "object",
-            "properties": {
-                "name": {
-                    "type": "string",
-                    "required": true
-                },
-                "actions": {
-                    "elements": {
-                        "$ref": "#/definitions/action"
-                    },
-                    "description": "The action definition."
-                },
-                "defaultAction": {
-                    "type": "string"
-                }
-            },
-            "additionalProperties": false,
-            "required": ["name", "actions"]
+            "description": "The action definition."
+          },
+          "defaultAction": {
+            "type": "string"
+          }
         },
-        "action": {
-            "type": "object",
-            "properties": {
-                "kind": {
-                    "type": "string"
-                },
-                "arguments": {
-                    "elements": {
-                        "$ref": "#/definitions/argument"
-                    },
-                    "description": "The action definition."
-                }
-            },
-            "additionalProperties": false,
-            "required": ["kind", "arguments"]
+        "additionalProperties": false,
+        "required": ["name", "actions"]
+      },
+      "description": "The concept definitions."
+    }
+  },
+  "definitions": {
+    "concept": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "required": true
         },
-        "argument": {
-            "type": "object",
-            "properties": {
-                "key": {
-                    "type": "string"
-                },
-                "arguments": {
-                    "type": "string"
-                }
-            },
-            "additionalProperties": false,
-            "required": ["key"]
+        "actions": {
+          "elements": {
+            "$ref": "#/definitions/action"
+          },
+          "description": "The action definition."
+        },
+        "defaultAction": {
+          "type": "string"
         }
-
+      },
+      "additionalProperties": false,
+      "required": ["name", "actions"]
     },
-    "additionalProperties": false,
-    "required": ["concepts"]
+    "action": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "type": "string"
+        },
+        "arguments": {
+          "elements": {
+            "$ref": "#/definitions/argument"
+          },
+          "description": "The action definition."
+        }
+      },
+      "additionalProperties": false,
+      "required": ["kind", "arguments"]
+    },
+    "argument": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "type": "string"
+        },
+        "arguments": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": ["key"]
+    }
+  },
+  "additionalProperties": false,
+  "required": ["concepts"]
 }

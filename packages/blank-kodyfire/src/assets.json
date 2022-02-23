@@ -1,21 +1,18 @@
 {
-    "name": "kodyfire",
-    "version": "0.1",
-    "rootDir": "dist",
-    "concepts": [
-        {
-            "name": "kodyfire",
-            "defaultAction": "clone",
-            "source": "template",
-            "outputDir": "",
-            "template": {
-                "path": "templates/blank",
-                "options": [
-                ],
-                "placeholders": [
-                ]
-            }
-        }
-    ]
-
+  "name": "kodyfire",
+  "version": "0.1",
+  "rootDir": "dist",
+  "concepts": [
+    {
+      "name": "kodyfire",
+      "defaultAction": "clone",
+      "source": "template",
+      "outputDir": "",
+      "template": {
+        "path": "templates/blank",
+        "options": [],
+        "placeholders": []
+      }
+    }
+  ]
 }

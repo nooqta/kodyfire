@@ -1,211 +1,230 @@
 export const action = {
-  type: "object",
+  type: 'object',
   properties: {
-    name: { type: "string" },
-    type: { type: "string" },
-    midleware: { type: "string" }
-  }
-}
+    name: { type: 'string' },
+    type: { type: 'string' },
+    midleware: { type: 'string' },
+  },
+};
 export const model = {
-  type: "string"
-}
+  type: 'string',
+};
 export const controller = {
-  type: "object",
+  type: 'object',
   properties: {
     model: model,
-    namespace: {type: "string"},
-    template: {enum: ["controller.php.template"]}
+    namespace: { type: 'string' },
+    template: { enum: ['controller.php.template'] },
   },
-  required: ["template", "namespace", "model"]
-}
+  required: ['template', 'namespace', 'model'],
+};
 export const controllerArray = {
-  type: "array",
-  items: controller
-}
-
+  type: 'array',
+  items: controller,
+};
 
 export const request = {
-  type: "object",
+  type: 'object',
   properties: {
     model: model,
-    namespace: {type: "string"},
-    template: {enum: ["request.php.template"]},
-    prefix: { type: "string", default: "Create" }
+    namespace: { type: 'string' },
+    template: { enum: ['request.php.template'] },
+    prefix: { type: 'string', default: 'Create' },
   },
-  required: ["template", "namespace", "model"]
-}
+  required: ['template', 'namespace', 'model'],
+};
 export const requestArray = {
-  type: "array",
-  items: request
-}
+  type: 'array',
+  items: request,
+};
 
 export const item = {
-  type: "string"
-}
+  type: 'string',
+};
 
 export const dependency = {
-  type: "object",
+  type: 'object',
   properties: {
     install: item,
-    template: { type: "string" },
+    template: { type: 'string' },
     commands: {
-      type: "array",
-      items: item
+      type: 'array',
+      items: item,
     },
     middleware: {
-      type: "array",
-      items: item
-    }
+      type: 'array',
+      items: item,
+    },
   },
-  required: ["template"]
-}
+  required: ['template'],
+};
 
 export const kernel = {
-  type: "object",
+  type: 'object',
   properties: {
-    template: { enum: ["kernel.php.template"] }
+    template: { enum: ['kernel.php.template'] },
   },
-  required: ["template"]
-}
+  required: ['template'],
+};
 
 export const kernelArray = {
-  type: "array",
-  items: kernel
-}
+  type: 'array',
+  items: kernel,
+};
 
 export const repository = {
-  type: "object",
+  type: 'object',
   properties: {
     model: model,
-    namespace: {type: "string"},
-    template: {enum: ["repository.php.template", "repositoryParent.php.template", "repositories.php.template"]}
+    namespace: { type: 'string' },
+    template: {
+      enum: [
+        'repository.php.template',
+        'repositoryParent.php.template',
+        'repositories.php.template',
+      ],
+    },
   },
-  required: ["model"]
-}
+  required: ['model'],
+};
 
 export const migration = {
-  type: "object",
+  type: 'object',
   properties: {
     model: model,
-    template: {enum: ["migration.php.template"]}
+    template: { enum: ['migration.php.template'] },
   },
-  required: ["model"]
-}
+  required: ['model'],
+};
 
 export const api = {
-  type: "object",
+  type: 'object',
   properties: {
-    template: {enum: ["api.php.template"]}
+    template: { enum: ['api.php.template'] },
   },
-  required: ["template"]
-}
+  required: ['template'],
+};
 
 export const web = {
-  type: "object",
+  type: 'object',
   properties: {
-    template: {enum: ["web.php.template"]}
+    template: { enum: ['web.php.template'] },
   },
-  required: ["template"]
-}
+  required: ['template'],
+};
 
 export const factory = {
-  type: "object",
+  type: 'object',
   properties: {
-    namespace: { type: "string" },
-    model: { type: "string" },
-    template: {enum: ["factory.php.template"]}
+    namespace: { type: 'string' },
+    model: { type: 'string' },
+    template: { enum: ['factory.php.template'] },
   },
-  required: ["model", "namespace","template"]
-}
+  required: ['model', 'namespace', 'template'],
+};
 
 export const seed = {
-  type: "object",
+  type: 'object',
   properties: {
-    namespace: { type: "string" },
-    model: { type: "string" },
-    template: {enum: ["seed.php.template"]}
+    namespace: { type: 'string' },
+    model: { type: 'string' },
+    template: { enum: ['seed.php.template'] },
   },
-  required: ["model", "namespace","template"]
-}
+  required: ['model', 'namespace', 'template'],
+};
 
 export const databaseSeed = {
-  type: "object",
+  type: 'object',
   properties: {
-    template: {enum: ["databaseSeed.php.template"]}
+    template: { enum: ['databaseSeed.php.template'] },
   },
-  required: ["template"]
-}
+  required: ['template'],
+};
 
 export const databag = {
-  type: "object",
+  type: 'object',
   properties: {
-    template: {enum: ["databag.php.template"]}
+    template: { enum: ['databag.php.template'] },
   },
-  required: ["template"]
-}
+  required: ['template'],
+};
 
 export const auth = {
-  type: "object",
+  type: 'object',
   properties: {
-    template: {enum: ["fortify.php.template", "sanctum.php.template", "cors.php.template", "auth.php.template", "repositoryParent.php.template", "repositories.php.template", "config.php.template", "reset.php.template", "provider.php.template", "redirectifauthenticated.php.template", "app.php.template"]}
+    template: {
+      enum: [
+        'fortify.php.template',
+        'sanctum.php.template',
+        'cors.php.template',
+        'auth.php.template',
+        'repositoryParent.php.template',
+        'repositories.php.template',
+        'config.php.template',
+        'reset.php.template',
+        'provider.php.template',
+        'redirectifauthenticated.php.template',
+        'app.php.template',
+      ],
+    },
   },
-  required: ["template"]
-}
+  required: ['template'],
+};
 
 export const repositoryArray = {
-  type: "array",
-  items: repository
-}
+  type: 'array',
+  items: repository,
+};
 
 export const migrationArray = {
-  type: "array",
-  items: migration
-}
+  type: 'array',
+  items: migration,
+};
 
 export const apiArray = {
-  type: "array",
-  items: api
-}
+  type: 'array',
+  items: api,
+};
 
 export const webArray = {
-  type: "array",
-  items: web
-}
+  type: 'array',
+  items: web,
+};
 
 export const factoryArray = {
-  type: "array",
-  items: factory
-}
+  type: 'array',
+  items: factory,
+};
 
 export const seedArray = {
-  type: "array",
-  items: seed
-}
+  type: 'array',
+  items: seed,
+};
 
 export const databaseSeedArray = {
-  type: "array",
-  items: databaseSeed
-}
+  type: 'array',
+  items: databaseSeed,
+};
 
 export const authArray = {
-  type: "array",
-  items: auth
-}
+  type: 'array',
+  items: auth,
+};
 
 export const dependencyArray = {
-  type: "array",
-  items: dependency
-}
+  type: 'array',
+  items: dependency,
+};
 
 export const databagArray = {
-  type: "array",
-  items: databag
-}
+  type: 'array',
+  items: databag,
+};
 
 export const schema = {
-  type: "object",
+  type: 'object',
   properties: {
-    project: {type: "string"},
+    project: { type: 'string' },
     controller: controllerArray,
     request: requestArray,
     kernel: kernelArray,
@@ -219,5 +238,5 @@ export const schema = {
     auth: authArray,
     dependency: dependencyArray,
     databag: databagArray,
-  }
-}
+  },
+};

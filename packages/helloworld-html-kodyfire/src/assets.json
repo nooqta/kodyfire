@@ -1,26 +1,18 @@
 {
-    "name": "html",
-    "version": 5,
-    "rootDir": "dist",
-    "concepts": [
-        {
-            "name": "page",
-            "defaultAction": "create",
-            "source": "template",
-            "outputDir": "",
-            "template": {
-                "path": "templates",
-                "options": [
-                    "page1.html.template",
-                    "page2.html.template"
-                ],
-                "placeholders": [
-                    "title",
-                    "content",
-                    "template"
-                ]
-            }
-        }
-    ]
-
+  "name": "html",
+  "version": 5,
+  "rootDir": "dist",
+  "concepts": [
+    {
+      "name": "page",
+      "defaultAction": "create",
+      "source": "template",
+      "outputDir": "",
+      "template": {
+        "path": "templates",
+        "options": ["page1.html.template", "page2.html.template"],
+        "placeholders": ["title", "content", "template"]
+      }
+    }
+  ]
 }

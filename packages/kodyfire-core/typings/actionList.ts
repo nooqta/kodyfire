@@ -1,5 +1,3 @@
-import { ActionList as BaseActionList } from "@angular-devkit/schematics";
+import { ActionList as BaseActionList } from '@angular-devkit/schematics';
 
-export class ActionList extends BaseActionList {
-    
-}
+export class ActionList extends BaseActionList {}

@@ -1,3 +1,3 @@
 export const extract: any = () => {
-    return `This is the extractor`
-}
+  return `This is the extractor`;
+};

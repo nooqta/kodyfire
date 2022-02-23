@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 export interface Template {
   id: any;
   name: any;
@@ -6,4 +6,3 @@ export interface Template {
   version: any;
   enabled: any;
 }
-;

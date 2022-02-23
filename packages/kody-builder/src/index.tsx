@@ -1,5 +1,3 @@
-
-   
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import ReactDOM from 'react-dom';
 import App from './App';
@@ -14,7 +12,7 @@ const theme = createTheme({
         root: {
           margin: '0.8em 0',
         },
-      }
+      },
     },
   },
 });

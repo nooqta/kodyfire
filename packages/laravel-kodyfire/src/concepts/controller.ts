@@ -1,11 +1,11 @@
 /* @ts-nocheck */
-import { classify } from "@angular-devkit/core/src/utils/strings";
-import { IConcept, ITechnology, Source, TemplateSchema } from "kodyfire-core";
-import { Engine } from "./engine";
+import { classify } from '@angular-devkit/core/src/utils/strings';
+import { IConcept, ITechnology, Source, TemplateSchema } from 'kodyfire-core';
+import { Engine } from './engine';
 
 /* @ts-ignore */
 export class Controller implements IConcept {
-    source?: Source;
+  source?: Source;
   name: string;
   content: string;
   outputDir: string;
@@ -15,30 +15,35 @@ export class Controller implements IConcept {
   engine: Engine;
   constructor(concept: Partial<IConcept>, technology: ITechnology) {
     this.source = concept.source ?? Source.Template;
-    this.outputDir = concept.outputDir ?? "";
-    this.name = concept.name ?? "";
+    this.outputDir = concept.outputDir ?? '';
+    this.name = concept.name ?? '';
     this.template = concept.template as TemplateSchema;
     this.technology = technology;
   }
   generate(_data: any) {
     this.engine = new Engine();
-    this.engine.builder.registerHelper("getControllerMethods", () => {
+    this.engine.builder.registerHelper('getControllerMethods', () => {
       return this.getControllerMethods(_data);
     });
     const template = this.engine.read(this.template.path, _data.template);
     const compiled = this.engine.compile(template, _data);
-    this.engine.createOrOverwrite(this.technology.rootDir, this.outputDir, this.getFilename(_data.name), compiled)
+    this.engine.createOrOverwrite(
+      this.technology.rootDir,
+      this.outputDir,
+      this.getFilename(_data.name),
+      compiled
+    );
   }
-  
-getFilename(name: any) {
-  return `${classify(name)}Controller.php`;
-}
 
-getLoad(fields: any) {
-    return fields && `$data->load(${fields});`
+  getFilename(name: any) {
+    return `${classify(name)}Controller.php`;
+  }
+
+  getLoad(fields: any) {
+    return fields && `$data->load(${fields});`;
   }
   getList(model: any): string {
-    let fieldsToLoad = ''
+    let fieldsToLoad = '';
     if (model.relationships.length > 0) {
       fieldsToLoad = model.relationships
         .filter(
@@ -48,19 +53,24 @@ getLoad(fields: any) {
             relation.type != 'morphMany'
         )
         .map((field: any) => {
-          const relation: string = field['name']
-          return `'${relation}'`
+          const relation: string = field['name'];
+          return `'${relation}'`;
         })
-        .join(',')
+        .join(',');
     }
-    const action = model.controller.actions.find((a: any) => a.name === 'getAll')
-  
-    let load = ''
-  
+    const action = model.controller.actions.find(
+      (a: any) => a.name === 'getAll'
+    );
+
+    let load = '';
+
     if (!!action && !!action.load && Array.isArray(action.load)) {
-      load = '$data->load(' + action.load.map((l: any) => `'${l}'`).join(', ') + ');'
+      load =
+        '$data->load(' +
+        action.load.map((l: any) => `'${l}'`).join(', ') +
+        ');';
     }
-  
+
     let data = `
   if (!$request->has('pagination')) {
     $data = ${model.name}::all();
@@ -80,7 +90,7 @@ getLoad(fields: any) {
       $data = ${model.name}::search($search)->paginate($pageSize);
     }
     ${load}
-  }`
+  }`;
     if (!model.hasPagination) {
       data = `
     if (!$request->has('pagination')) {
@@ -92,17 +102,17 @@ getLoad(fields: any) {
         $data = ${model.name}::search($search);
       }
       ${this.getLoad(fieldsToLoad)}
-    }`
+    }`;
     }
-    return data
+    return data;
   }
-  
+
   getUserRelations(relations: Array<string>) {
-    return relations.join('->')
+    return relations.join('->');
   }
-  
+
   getControllerMethods(model: any): string {
-    let methods = ''
+    let methods = '';
     model.controller.actions.forEach((action: any) => {
       switch (action.type) {
         case 'index':
@@ -116,8 +126,8 @@ public function ${action.name}(Request  $request) {
     ], 500);
   }
   return response()->json(['data' => $data]);
-}\n`
-          break
+}\n`;
+          break;
         case 'store':
           methods += `
     public function ${action.name}(Create${model.name}Request $request, ${model.name}Repository $repository)
@@ -133,8 +143,8 @@ public function ${action.name}(Request  $request) {
         }
         $message = trans('app.createSuccessMsg');
         return response()->json(['data' => $model, 'message' => $message, 'success' => true]);
-    }\n`
-          break
+    }\n`;
+          break;
         case 'show':
           methods += `
     public function ${action.name}(${model.name} $${model.name.toLowerCase()})
@@ -148,15 +158,17 @@ public function ${action.name}(Request  $request) {
           ], 500);
       }
       return response()->json(['data' => $data]);
-    }\n`
-          break
+    }\n`;
+          break;
         case 'getByUser':
           methods += `
     public function getByUser()
     {
       try {
         $user = auth()->user();
-        $${action.route.relations[action.route.relations.length - 1]} = $user->${this.getUserRelations(action.route.relations)};
+        $${
+          action.route.relations[action.route.relations.length - 1]
+        } = $user->${this.getUserRelations(action.route.relations)};
         
         $data = $${model.name.toLowerCase()};
       } catch (\\Throwable $th) {
@@ -166,11 +178,13 @@ public function ${action.name}(Request  $request) {
           ], 500);
       }
       return response()->json(['data' => $data]);
-    }\n`
-          break
+    }\n`;
+          break;
         case 'update':
           methods += `
-    public function ${action.name}(Update${model.name}Request $request, ${model.name} $${model.name.toLowerCase()}, ${model.name}Repository $repository) {
+    public function ${action.name}(Update${model.name}Request $request, ${
+            model.name
+          } $${model.name.toLowerCase()}, ${model.name}Repository $repository) {
       $data = new DataBag(['data' => $request->all()]);
       try {
           $model = $repository->update($${model.name.toLowerCase()}, $data);
@@ -182,8 +196,8 @@ public function ${action.name}(Request  $request) {
       }
       $message = trans('app.updateSuccessMsg');
       return response()->json(['data' => $model, 'message' => $message, 'success' => true]);
-      }\n`
-          break
+      }\n`;
+          break;
         case 'destroy':
           methods += `
     public function ${action.name}(${model.name} $${model.name.toLowerCase()}) {
@@ -198,8 +212,8 @@ public function ${action.name}(Request  $request) {
     }
     $message = trans('app.deleteSuccessMsg');
     return response()->json(['message' => $message], 200);
-    }\n`
-          break
+    }\n`;
+          break;
         case 'deleteMany':
           methods += `
     public function deleteMany(string $data)
@@ -217,47 +231,50 @@ public function ${action.name}(Request  $request) {
       $message = trans('app.deleteSuccessMsg');
       return response()->json(['message' => $message], 200);
     }\n`;
-          break
+          break;
         case 'generate':
-          methods += this.getGenerateDocumentMethod(action, model)
-          break
+          methods += this.getGenerateDocumentMethod(action, model);
+          break;
         default:
       }
-    })
-    return methods
+    });
+    return methods;
   }
-  
- deleteAttachments(model: any): string {
-    let attachmentsToDelete = ''
+
+  deleteAttachments(model: any): string {
+    let attachmentsToDelete = '';
     if (model.fields.filter((e: any) => e.extra_type == 'file').length > 0) {
       model.fields.forEach((element: any) => {
         if (element.extra_type == 'file') {
           attachmentsToDelete += `
                   if($${model.name.toLowerCase()}->${element.name}){
-                      $fileuri = str_replace('/storage', '', $${model.name.toLowerCase()}->${element.name
-            });
+                      $fileuri = str_replace('/storage', '', $${model.name.toLowerCase()}->${
+            element.name
+          });
                       Storage::disk('public')->delete($fileuri);
-                  }\n`
+                  }\n`;
         }
-      })
+      });
     }
-    return attachmentsToDelete
+    return attachmentsToDelete;
   }
-  
- deleteManyAttachments(model: any): string {
-    let attachmentsToDelete = ''
+
+  deleteManyAttachments(model: any): string {
+    let attachmentsToDelete = '';
     if (model.fields.filter((e: any) => e.extra_type == 'file').length > 0) {
       attachmentsToDelete = `
           foreach ($ids as $id) {
             $${model.name.toLowerCase()} = ${model.name}::find($id);
             ${this.deleteAttachments(model)}
-          }`
+          }`;
     }
-    return attachmentsToDelete
+    return attachmentsToDelete;
   }
-  
- getGenerateDocumentMethod(action: any, model: any) {
-    let content = `\npublic function ${action.name}(${model.name} $${model.name.toLowerCase()})
+
+  getGenerateDocumentMethod(action: any, model: any) {
+    let content = `\npublic function ${action.name}(${
+      model.name
+    } $${model.name.toLowerCase()})
     {
       $data = $this->prepareData($${model.name.toLowerCase()});
       $template = storage_path('app/public/uploads/${action.options.template}');
@@ -270,7 +287,9 @@ public function ${action.name}(Request  $request) {
       $path = storage_path('app/public/uploads/${model.name.toLowerCase()}_' . $${model.name.toLowerCase()}->id . '.docx');
       $templateProcessor->saveAs($path);
   
-      ${!!action.options.convert_to_pdf ? `// Set the PDF Engine Renderer Path
+      ${
+        !!action.options.convert_to_pdf
+          ? `// Set the PDF Engine Renderer Path
       $domPdfPath = base_path('vendor/dompdf/dompdf');
       \\PhpOffice\\PhpWord\\Settings::setPdfRendererPath($domPdfPath);
       \\PhpOffice\\PhpWord\\Settings::setPdfRendererName('DomPDF');
@@ -282,9 +301,12 @@ public function ${action.name}(Request  $request) {
       $PDFWriter = \\PhpOffice\\PhpWord\\IOFactory::createWriter($Content,'PDF');
       $PDFWriter->save(storage_path('app/public/uploads/${model.name.toLowerCase()}_' . $${model.name.toLowerCase()}->id . '.pdf'));
       unlink($path);
-      return response()->download(storage_path('app/public/uploads/${model.name.toLowerCase()}_' . $${model.name.toLowerCase()}->id . '.pdf'))->deleteFileAfterSend(${!!!action.options.save_on_disc});`
-      : `ob_end_clean();
-      return response()->download($path)->deleteFileAfterSend(${!!!action.options.save_on_disc});`}
+      return response()->download(storage_path('app/public/uploads/${model.name.toLowerCase()}_' . $${model.name.toLowerCase()}->id . '.pdf'))->deleteFileAfterSend(${!!!action
+              .options.save_on_disc});`
+          : `ob_end_clean();
+      return response()->download($path)->deleteFileAfterSend(${!!!action
+        .options.save_on_disc});`
+      }
     }
   
     public function prepareData(${model.name} $model)
@@ -295,11 +317,13 @@ public function ${action.name}(Request  $request) {
     }`;
     return content;
   }
-  
- prepareData(action: any) {
+
+  prepareData(action: any) {
     let content = '';
-    content = action.options.data.map((element: any) => `'${element.placeholder}' => $model->${element.value},\n`);
+    content = action.options.data.map(
+      (element: any) =>
+        `'${element.placeholder}' => $model->${element.value},\n`
+    );
     return content;
   }
-
 }

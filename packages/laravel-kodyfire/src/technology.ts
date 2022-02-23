@@ -1,12 +1,7 @@
-import {
-  ActionList,
-  capitalize,
-  IConcept,
-  ITechnology
-} from "kodyfire-core";
-import * as assets from "./assets.json";
+import { ActionList, capitalize, IConcept, ITechnology } from 'kodyfire-core';
+import * as assets from './assets.json';
 /* @ts-ignore */
-import * as classes from ".";
+import * as classes from '.';
 
 export class Technology implements ITechnology {
   id: string;
@@ -23,7 +18,7 @@ export class Technology implements ITechnology {
       this.id = params.id;
       this.name = params.name;
       this.version = params.version;
-      this.actions  = new ActionList();
+      this.actions = new ActionList();
       this.concepts = new Map<string, IConcept>();
       this.rootDir = assets.rootDir;
       this.assets = assets;

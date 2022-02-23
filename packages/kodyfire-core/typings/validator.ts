@@ -1,5 +1,5 @@
 export interface IValidator {
-    rules: any;
-    errors: any;
-    validate(data: any): boolean;
+  rules: any;
+  errors: any;
+  validate(data: any): boolean;
 }

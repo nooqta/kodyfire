@@ -2,8 +2,8 @@
  * The IKody interface
  * @alpha
  */
-import { IParser } from "../parser";
+import { IParser } from '../parser';
 export interface IKody {
-    parser: IParser;
+  parser: IParser;
 }
 //# sourceMappingURL=kody.d.ts.map

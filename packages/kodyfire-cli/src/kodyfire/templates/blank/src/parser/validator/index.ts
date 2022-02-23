@@ -1,2 +1,2 @@
-export { schema } from "./schema";
-export { Validator} from "./validator";
+export { schema } from './schema';
+export { Validator } from './validator';

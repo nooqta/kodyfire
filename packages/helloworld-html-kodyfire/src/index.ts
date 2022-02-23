@@ -1,1 +1,1 @@
-export { Page } from './concepts/page'
+export { Page } from './concepts/page';

@@ -1,4 +1,5 @@
 # Getting Started With Kodyfire
+
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
 This repository is for the kodyfire cli. Artifact generator,automation tool and a general purpose low code and nocode generator.
@@ -6,6 +7,7 @@ This repository is for the kodyfire cli. Artifact generator,automation tool and 
 ```bash
 npm install -g kodyfire-cli
 ```
+
 ### Introduction
 
 Check the documentation with
@@ -15,10 +17,13 @@ kody --help
 ```
 
 ### Run a kody
+
 @todo
+
 ### Develop a new kody
 
 @todo
+
 ### Publishing
 
 To publish, simply do:

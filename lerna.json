@@ -1,7 +1,5 @@
 {
-  "packages": [
-    "packages/*"
-  ],
+  "packages": ["packages/*"],
   "changelog": {
     "repo": "noqta/kodyfire",
     "labels": {

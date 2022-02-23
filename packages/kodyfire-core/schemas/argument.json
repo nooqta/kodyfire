@@ -1,13 +1,13 @@
 {
-    "type": "object",
-    "properties": {
-        "key": {
-            "type": "string"
-        },
-        "arguments": {
-            "type": "string"
-        }
+  "type": "object",
+  "properties": {
+    "key": {
+      "type": "string"
     },
-    "additionalProperties": false,
-    "required": ["key"]
+    "arguments": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": ["key"]
 }

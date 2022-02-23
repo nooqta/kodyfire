@@ -58,9 +58,9 @@ const App = () => {
             .then(res => res.json())
             .then(schema => {
               setSchema(schema);
-            })
+            });
         }
-      })
+      });
   }, []);
   const clearData = () => {
     setData({});
@@ -77,12 +77,11 @@ const App = () => {
       .then(res => res.json())
       .then(data => {
         setData(data);
-      })
-  }
+      });
+  };
 
   return (
     <Fragment>
-
       <Grid
         container
         justifyContent={'center'}
@@ -119,9 +118,14 @@ const App = () => {
               onChange={({ errors, data }) => setData(data)}
             />
           </div>
-          <Button className={classes.resetButton} onClick={handleDataChange} color='primary' variant='contained' >
+          <Button
+            className={classes.resetButton}
+            onClick={handleDataChange}
+            color="primary"
+            variant="contained"
+          >
             Generate
-            </Button>
+          </Button>
         </Grid>
       </Grid>
     </Fragment>

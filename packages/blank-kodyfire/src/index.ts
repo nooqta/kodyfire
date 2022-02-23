@@ -1,1 +1,1 @@
-export { Kodyfire } from './concepts/kodyfire'
+export { Kodyfire } from './concepts/kodyfire';

@@ -1,4 +1,4 @@
-import { IKody, IKodyWorkflow, Package } from "..";
+import { IKody, IKodyWorkflow, Package } from '..';
 
 export class Runner implements IKodyWorkflow {
   options: any;
@@ -12,16 +12,16 @@ export class Runner implements IKodyWorkflow {
     const { name } = _options;
     const currentKody: any = await this.getKody(name);
     // stop processing if package not found
-    if (typeof currentKody == "undefined") {
+    if (typeof currentKody == 'undefined') {
       this.handleKodyNotFound(name);
     }
 
     // require package
     const m = await import(currentKody.name);
-    let kody: IKody = new m.Kody({..._options, ...currentKody});
+    let kody: IKody = new m.Kody({ ..._options, ...currentKody });
     kody.package = new Package(kody);
     await kody.package.registerPackages();
-    
+
     // parse source
     let content = kody.read(this.input);
     const data = kody.parse(content);

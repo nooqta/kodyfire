@@ -1,7 +1,7 @@
 #!/usr/bin/env zx
 
 import fs from 'fs';
-import { $ } from "zx";
+import { $ } from 'zx';
 const argv = process.argv.slice(3);
 const source = argv[0];
 console.log(`Watching for file changes on ${source}`);

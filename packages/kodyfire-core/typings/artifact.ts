@@ -1,7 +1,7 @@
 export enum ArtifactType {
-    file
+  file,
 }
 export interface IArtifact {
-    name: string;
-    type: ArtifactType;
+  name: string;
+  type: ArtifactType;
 }

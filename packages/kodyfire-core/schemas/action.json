@@ -1,12 +1,12 @@
 {
-    "type": "object",
-      "properties": {
-      "kind": {"type": "string"},
-      "arguments": {
-          "elements":{"$ref": "argument"},
-          "description": "The action definition."
-        }
+  "type": "object",
+  "properties": {
+    "kind": { "type": "string" },
+    "arguments": {
+      "elements": { "$ref": "argument" },
+      "description": "The action definition."
+    }
   },
   "additionalProperties": false,
-"required": ["kind", "arguments"]
+  "required": ["kind", "arguments"]
 }

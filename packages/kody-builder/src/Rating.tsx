@@ -12,10 +12,12 @@ export const Rating: React.FC<RatingProps> = ({ id, value, updateValue }) => {
   const [hoverAt, setHoverAt] = useState<number | null>(null);
 
   return (
-    <div id='#/properties/rating' className='rating'>
-      <InputLabel shrink style={{ marginTop: '0.8em' }}>Rating</InputLabel>
+    <div id="#/properties/rating" className="rating">
+      <InputLabel shrink style={{ marginTop: '0.8em' }}>
+        Rating
+      </InputLabel>
       <div style={{ cursor: 'pointer', fontSize: '18px' }}>
-        {[0, 1, 2, 3, 4].map((i) => {
+        {[0, 1, 2, 3, 4].map(i => {
           const fullStars = hoverAt ?? value;
 
           return (

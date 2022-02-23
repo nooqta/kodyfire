@@ -1,1 +1,11 @@
-{"templates":[{"name":"@noqta/laravel-kodyfire","id":"laravel","type":"api","version":"8.61","enabled":true}]}
+{
+  "templates": [
+    {
+      "name": "@noqta/laravel-kodyfire",
+      "id": "laravel",
+      "type": "api",
+      "version": "8.61",
+      "enabled": true
+    }
+  ]
+}
