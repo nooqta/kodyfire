@@ -1,1 +1,1 @@
-{"version":3,"file":"argument.d.ts","sourceRoot":"","sources":["argument.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,SAAS;IACtB,IAAI,EAAE,MAAM,CAAC;IACb,KAAK,EAAE,MAAM,CAAC;CACjB"}
+{"version":3,"file":"argument.d.ts","sourceRoot":"","sources":["argument.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,SAAS;IACxB,IAAI,EAAE,MAAM,CAAC;IACb,KAAK,EAAE,MAAM,CAAC;CACf"}

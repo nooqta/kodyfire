@@ -17,7 +17,7 @@ export class Kody extends BaseKody implements IKody {
   constructor(params: any) {
     super();
     this.params = params;
-    let validator = new Validator();
+    const validator = new Validator();
     this.parser = new Parser(validator);
     this.generator = new Generator(params);
     this.technology = this.generator.technology;

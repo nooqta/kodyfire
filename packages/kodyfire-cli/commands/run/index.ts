@@ -3,7 +3,7 @@ const fs = require('fs');
 const { join } = require('path');
 import { Runner } from 'kodyfire-core';
 import { CliWorkflow } from '../../src/kodyfire/lib/cli/worklfow';
-const { Command } = require('commander');
+import { Command } from 'commander';
 
 async function action(args: any): Promise<0 | 1> {
   console.log(args);
@@ -23,8 +23,8 @@ async function action(args: any): Promise<0 | 1> {
     }
     args.name = JSON.parse(fs.readFileSync(args.source).toString()).name || '';
     const { source } = args;
-    let workflow = new CliWorkflow(source);
-    let runner = new Runner({ ...args, ...workflow });
+    const workflow = new CliWorkflow(source);
+    const runner = new Runner({ ...args, ...workflow });
     const output = await runner.run(args);
     // finish process
     return output;
@@ -33,7 +33,7 @@ async function action(args: any): Promise<0 | 1> {
     process.exit(1);
   }
 }
-module.exports = (program: typeof Command) => {
+module.exports = (program: Command) => {
   program
     .command('run')
     .description('Generate a digital artifact based on the selected technology')

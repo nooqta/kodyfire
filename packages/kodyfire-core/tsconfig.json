@@ -23,5 +23,5 @@
     "types": ["jasmine", "node"]
   },
   "include": ["**/*"],
-  "exclude": []
+  "exclude": ["node_modules", "**/*.tsx"]
 }

@@ -1,1 +1,1 @@
-{"version":3,"file":"artifact.d.ts","sourceRoot":"","sources":["artifact.ts"],"names":[],"mappings":"AAAA,oBAAY,YAAY;IACpB,IAAI,IAAA;CACP;AACD,MAAM,WAAW,SAAS;IACtB,IAAI,EAAE,MAAM,CAAC;IACb,IAAI,EAAE,YAAY,CAAC;CACtB"}
+{"version":3,"file":"artifact.d.ts","sourceRoot":"","sources":["artifact.ts"],"names":[],"mappings":"AAAA,oBAAY,YAAY;IACtB,IAAI,IAAA;CACL;AACD,MAAM,WAAW,SAAS;IACxB,IAAI,EAAE,MAAM,CAAC;IACb,IAAI,EAAE,YAAY,CAAC;CACpB"}

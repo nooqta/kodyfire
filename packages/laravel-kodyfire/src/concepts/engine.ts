@@ -39,7 +39,7 @@ export class Engine {
   }
 
   compile(template: any, data: any) {
-    let tpl = this.builder.compile(template);
+    const tpl = this.builder.compile(template);
     return tpl(data);
   }
   async create(

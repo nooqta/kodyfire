@@ -2,7 +2,7 @@ import { extract } from './extractor';
 import { transform } from './transformer';
 import { load } from './loader';
 import { IParser, IValidator } from 'kodyfire-core';
-var fs = require('fs');
+const fs = require('fs');
 
 export class Parser implements IParser {
   validator: IValidator;

@@ -1,3 +1,3 @@
 import { ActionBase } from '@angular-devkit/schematics';
-export interface IAction extends ActionBase {}
+export type IAction = ActionBase
 //# sourceMappingURL=action.d.ts.map

@@ -131,9 +131,9 @@ export class Request implements IConcept {
     if (modelName != '') {
       model = this.models.find((m: any) => m.name == modelName);
       if (typeof model != 'undefined') {
+        const prefix = `${this.underscorize(Object.values(relation)[0])}.*.`;
         switch (Object.keys(relation)[0]) {
           case 'hasMany':
-            let prefix = `${this.underscorize(Object.values(relation)[0])}.*.`;
             content += this.getValidation(model, prefix, relatedModel);
             break;
 

@@ -6,6 +6,7 @@ beforeAll(async () => {
 });
 
 /** this code is called once before all the tested are finished */
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 afterAll(async () => {});
 
 describe('Strapi in general', () => {

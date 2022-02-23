@@ -2,7 +2,7 @@ import { classify } from '@angular-devkit/core/src/utils/strings';
 import { IConcept, ITechnology } from 'kodyfire-core';
 import { Concept } from './concept';
 import { Engine } from './engine';
-var pluralize = require('pluralize');
+const pluralize = require('pluralize');
 export class Repository extends Concept {
   model: any;
   constructor(concept: Partial<IConcept>, technology: ITechnology) {

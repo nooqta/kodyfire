@@ -39,7 +39,7 @@ export class Api extends Concept {
 
   getGroupsList(models: any[]) {
     let groups = '';
-    let middlewares: any = [];
+    const middlewares: any = [];
     models.forEach((el: any) => {
       if (el.hasController) {
         if (el.controller.routeType == 'detailed') {
@@ -53,7 +53,7 @@ export class Api extends Concept {
         }
       }
     });
-    let unique = [...new Set(middlewares)];
+    const unique = [...new Set(middlewares)];
 
     Array.from(unique).forEach((el: any) => {
       groups += `Route::group([
@@ -71,12 +71,12 @@ ${this.getRoutesList(el, models)}
   }
 
   getRoutesList(group: any, models: any[]) {
-    let routesArray: any = [];
+    const routesArray: any = [];
     let routes: any = '';
 
     models.forEach((model: any) => {
       if (model.controller.routeType == 'detailed') {
-        let filtredRoutes = model.controller.actions.filter(
+        const filtredRoutes = model.controller.actions.filter(
           (action: any) => action.middleware == group
         );
         filtredRoutes.forEach((item: any) => {

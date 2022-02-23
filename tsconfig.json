@@ -21,7 +21,7 @@
     "strictNullChecks": true,
     "target": "es6",
     "jsx": "react-jsx",
-    "types": ["node"]
+    "types": []
   },
   "include": [
     "packages/*/src/**/*",
@@ -31,6 +31,8 @@
   "exclude": [
     "src/*/files/**/*",
     "packages/*/src/concepts/templates/**/*",
+    "packages/kodyfire-cli/dist/**/*",
+    "packages/*/dist",
     "**/*.tsx"
   ]
 }

@@ -36,7 +36,7 @@ export class Technology implements ITechnology {
         params.templatesPath = join(process.cwd(), '.kody', params.name);
       }
       // add dynamic property for technology
-      for (let concept of this.assets.concepts) {
+      for (const concept of this.assets.concepts) {
         this.concepts.set(
           concept.name,
           new (<any>classes)[capitalize(concept.name)](concept, this)

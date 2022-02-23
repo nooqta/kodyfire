@@ -20,8 +20,8 @@ export class Generator implements IGenerator {
     this.input = content;
     this.technology.input = content;
     // for every concept in concepts list
-    for (let [key] of this.technology.concepts) {
-      for (let data of content[key]) {
+    for (const [key] of this.technology.concepts) {
+      for (const data of content[key]) {
         // do apropriate action
         this.tree = this.technology.concepts.get(key)?.generate(data);
       }

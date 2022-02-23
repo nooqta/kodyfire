@@ -1,9 +1,9 @@
 import { Package, Template } from 'kodyfire-core';
 const chalk = require('chalk');
 const boxen = require('boxen');
-var Table = require('cli-table');
-var EventEmitter = require('events');
-var ee = new EventEmitter();
+const Table = require('cli-table');
+const EventEmitter = require('events');
+const ee = new EventEmitter();
 const { Command } = require('commander');
 
 const action = async () => {
@@ -26,7 +26,7 @@ const action = async () => {
       })
     );
   } else {
-    var table = new Table({
+    const table = new Table({
       head: ['id', 'name', 'type', 'version'],
       colWidths: [31, 31, 21, 10],
       style: {

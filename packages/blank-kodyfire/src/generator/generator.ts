@@ -9,7 +9,7 @@ export class Generator implements IGenerator {
   }
   async generate(content: any) {
     // for every concept in concepts list
-    for (let [key] of this.technology.concepts) {
+    for (const [key] of this.technology.concepts) {
       // do apropriate action
       await this.technology.concepts.get(key)?.generate(content);
     }

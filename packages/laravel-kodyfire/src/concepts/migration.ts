@@ -55,13 +55,13 @@ export class Migration extends Concept {
   }
 
   getFilename(name: any) {
-    var date = new Date();
-    var m = date.getMonth();
-    var d = date.getDate();
-    var y = date.getFullYear();
-    var s = date.getTime();
+    const date = new Date();
+    const m = date.getMonth();
+    const d = date.getDate();
+    const y = date.getFullYear();
+    const s = date.getTime();
     this.wait(1000);
-    var ms = moment(date).add(300, 'milliseconds').toDate().getMilliseconds();
+    const ms = moment(date).add(300, 'milliseconds').toDate().getMilliseconds();
     return `${y}_${m}_${d}_${s}${ms}_create_${strings.dasherize(
       pluralize(name)
     )}_table.php`;

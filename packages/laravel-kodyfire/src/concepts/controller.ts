@@ -272,7 +272,7 @@ public function ${action.name}(Request  $request) {
   }
 
   getGenerateDocumentMethod(action: any, model: any) {
-    let content = `\npublic function ${action.name}(${
+    const content = `\npublic function ${action.name}(${
       model.name
     } $${model.name.toLowerCase()})
     {
@@ -288,7 +288,7 @@ public function ${action.name}(Request  $request) {
       $templateProcessor->saveAs($path);
   
       ${
-        !!action.options.convert_to_pdf
+        action.options.convert_to_pdf
           ? `// Set the PDF Engine Renderer Path
       $domPdfPath = base_path('vendor/dompdf/dompdf');
       \\PhpOffice\\PhpWord\\Settings::setPdfRendererPath($domPdfPath);
@@ -301,10 +301,10 @@ public function ${action.name}(Request  $request) {
       $PDFWriter = \\PhpOffice\\PhpWord\\IOFactory::createWriter($Content,'PDF');
       $PDFWriter->save(storage_path('app/public/uploads/${model.name.toLowerCase()}_' . $${model.name.toLowerCase()}->id . '.pdf'));
       unlink($path);
-      return response()->download(storage_path('app/public/uploads/${model.name.toLowerCase()}_' . $${model.name.toLowerCase()}->id . '.pdf'))->deleteFileAfterSend(${!!!action
+      return response()->download(storage_path('app/public/uploads/${model.name.toLowerCase()}_' . $${model.name.toLowerCase()}->id . '.pdf'))->deleteFileAfterSend(${!action
               .options.save_on_disc});`
           : `ob_end_clean();
-      return response()->download($path)->deleteFileAfterSend(${!!!action
+      return response()->download($path)->deleteFileAfterSend(${!action
         .options.save_on_disc});`
       }
     }

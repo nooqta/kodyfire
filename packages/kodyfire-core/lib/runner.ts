@@ -18,12 +18,12 @@ export class Runner implements IKodyWorkflow {
 
     // require package
     const m = await import(currentKody.name);
-    let kody: IKody = new m.Kody({ ..._options, ...currentKody });
+    const kody: IKody = new m.Kody({ ..._options, ...currentKody });
     kody.package = new Package(kody);
     await kody.package.registerPackages();
 
     // parse source
-    let content = kody.read(this.input);
+    const content = kody.read(this.input);
     const data = kody.parse(content);
     /// check if source is valid
     if (!data) {

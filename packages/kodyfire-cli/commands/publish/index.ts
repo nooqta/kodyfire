@@ -33,11 +33,11 @@ const action = async (args: any) => {
 
 async function copyDir(src: any, dest: any) {
   await fs.mkdir(dest, { recursive: true });
-  let entries = await fs.readdir(src, { withFileTypes: true });
+  const entries = await fs.readdir(src, { withFileTypes: true });
 
-  for (let entry of entries) {
-    let srcPath = path.join(src, entry.name);
-    let destPath = path.join(dest, entry.name);
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
 
     entry.isDirectory()
       ? await copyDir(srcPath, destPath)
@@ -50,7 +50,5 @@ module.exports = (program: typeof Command) => {
     .command('publish')
     .requiredOption('-n,--name <kody>', 'kody name to publish')
     .description('Publish the templates of the kody')
-    .action(async (_opt: any) => {
-      return action(_opt);
-    });
+    .action(async (_opt: any) => action(_opt));
 };

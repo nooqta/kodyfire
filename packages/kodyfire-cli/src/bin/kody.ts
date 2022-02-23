@@ -5,12 +5,12 @@ const { Command } = require('commander');
 const program = new Command();
 const fs = require('fs');
 const { join } = require('path');
-var Table = require('cli-table');
+const Table = require('cli-table');
 const boxen = require('boxen');
 const pack = require(join(process.cwd(), 'package.json'));
-var EventEmitter = require('events');
-var ee = new EventEmitter();
-var glob = require('glob'),
+const EventEmitter = require('events');
+const ee = new EventEmitter();
+const glob = require('glob'),
   path = require('path');
 
 program.version('0.0.1', '-v, --version', 'output the current version');

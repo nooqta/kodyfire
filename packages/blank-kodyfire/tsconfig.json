@@ -5,6 +5,7 @@
     "declaration": true,
     "module": "commonjs",
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "resolveJsonModule": true,
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
@@ -18,7 +19,7 @@
     "sourceMap": true,
     "strictNullChecks": true,
     "target": "es6",
-    "types": ["jasmine", "node"]
+    "types": []
   },
   "include": ["src/**/*"],
   "exclude": ["src/*/files/**/*"]

@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, { Fragment, useState, useMemo, useEffect } from 'react';
 import { JsonForms } from '@jsonforms/react';
 import Grid from '@mui/material/Grid';
@@ -48,7 +49,7 @@ const App = () => {
   const classes = useStyles();
   const [data, setData] = useState(initialData);
   const [schema, setSchema] = useState({});
-  const stringifiedData = useMemo(() => JSON.stringify(data, null, 2), [data]);
+  // const stringifiedData = useMemo(() => JSON.stringify(data, null, 2), [data]);
   useEffect(() => {
     fetch('/api/kodies')
       .then(res => res.json())
@@ -62,6 +63,7 @@ const App = () => {
         }
       });
   }, []);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const clearData = () => {
     setData({});
   };

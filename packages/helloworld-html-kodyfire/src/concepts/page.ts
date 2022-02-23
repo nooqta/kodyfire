@@ -32,8 +32,8 @@ export class Page implements IConcept {
       join(this.getTemplatesPath(), this.template.path, data.template)
     );
 
-    let tpl = handlebars.compile(template?.toString());
-    let compiled = tpl(data);
+    const tpl = handlebars.compile(template?.toString());
+    const compiled = tpl(data);
     const filename = join(
       this.technology.rootDir,
       this.outputDir,

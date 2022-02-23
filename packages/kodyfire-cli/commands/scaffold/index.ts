@@ -12,9 +12,9 @@ function parseSchematicName(_arg: any): {
 } {
   // All schematics are local to kody
   const collectionName = 'kodyfire-cli';
-  let collection = pack.name == collectionName ? collectionName : '.';
+  const collection = pack.name == collectionName ? collectionName : '.';
 
-  let schematic = _arg.schematic;
+  const schematic = _arg.schematic;
 
   return { collection, schematic };
 }

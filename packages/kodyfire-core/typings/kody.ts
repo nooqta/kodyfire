@@ -12,13 +12,13 @@ export interface IKody {
   generator: IGenerator;
   package?: Package;
   events: EventEmitter;
-  get data(): any;
-  get errors(): any;
+  data: any;
+  errors: any;
   parse(content: any): any;
   read(source: string): any;
   generate(content: any): any;
   whereami(): string;
-  whoami(): string;
+  whoami(): String;
 }
 export abstract class BaseKody implements IKody {
   params: { name: string; version: string; id: string };

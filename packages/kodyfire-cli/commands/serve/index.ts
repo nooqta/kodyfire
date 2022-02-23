@@ -30,7 +30,7 @@ const action = () => {
   $`npm run start:builder`;
 };
 
-module.exports = (program: typeof Command) => {
+module.exports = (program: Command) => {
   program
     .command('serve')
     .description('Build your schema on the fly using web interface')

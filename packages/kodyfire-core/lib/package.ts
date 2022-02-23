@@ -12,15 +12,15 @@ export class Package {
     this.registeredKodies = new Map();
   }
   async registerPackages() {
-    let packages = Package.getInstalledKodiesName();
-    for (let _package of packages) {
+    const packages = Package.getInstalledKodiesName();
+    for (const _package of packages) {
       await this.registerPackage(_package);
     }
   }
 
   static getInstalledKodiesName(dirname = process.cwd()) {
     const packageJson = Package.getPackageJson(dirname);
-    let packages = packageJson.dependencies
+    const packages = packageJson.dependencies
       ? Object.keys(packageJson.dependencies).filter(
           (_package: any) => _package.indexOf('-kodyfire') > -1
         )
@@ -36,18 +36,18 @@ export class Package {
   }
 
   static async getInstalledKodies() {
-    let kodies = [];
-    let packages = Package.getInstalledKodiesName();
-    for (let _package of packages) {
+    const kodies = [];
+    const packages = Package.getInstalledKodiesName();
+    for (const _package of packages) {
       const { isValid, packageInfo } = await this.getPackageInfo(_package);
       if (isValid) kodies.push(packageInfo);
     }
     return kodies;
   }
   static async getInstalledKodiesFromPath(dirname: string) {
-    let kodies = [];
-    let packages = Package.getInstalledKodiesName(dirname);
-    for (let _package of packages) {
+    const kodies = [];
+    const packages = Package.getInstalledKodiesName(dirname);
+    for (const _package of packages) {
       const { isValid, packageInfo } = await this.getPackageInfo(
         _package,
         dirname
@@ -69,6 +69,7 @@ export class Package {
         await Package.getPackageInfo(_package);
       if (isValid) {
         const module = await require(packageJson.name);
+        // eslint-disable-next-line no-prototype-builtins
         if (module.hasOwnProperty('Kody')) {
           const kody = new module.Kody(packageInfo);
           if (kody instanceof BaseKody) {
@@ -88,10 +89,9 @@ export class Package {
     const packageJson = await this.getPackageJson(
       path.join(dirname, 'node_modules', _package)
     );
-    let packageInfo;
-    packageInfo = packageJson.kodyfire;
+    const packageInfo = packageJson.kodyfire;
     packageInfo.name = _package;
-    let isValid =
+    const isValid =
       _.difference(['id', 'type', 'version'], Object.keys(packageInfo))
         .length === 0;
     return { isValid, packageJson, packageInfo };
