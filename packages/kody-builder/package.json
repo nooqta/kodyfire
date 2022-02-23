@@ -1,6 +1,6 @@
 {
   "name": "kodyfire-builder",
-  "version": "0.0.67",
+  "version": "0.0.68",
   "proxy": "http://localhost:3555",
   "repository": {
     "type": "git",
@@ -30,22 +30,22 @@
     "typescript": "^4.5.5"
   },
   "devDependencies": {
-    "cypress": "^9.4.1",
-    "react-scripts": "^3.0.1",
-    "start-server-and-test": "^1.14.0",
-    "glob-parent": ">=5.1.2",
+    "ansi-html": "<= 0.0.7",
+    "ansi-regex": ">=5.0.1",
     "browserslist": ">=4.16.5",
-    "sockjs": ">=0.3.20",
-    "react-dev-utils": ">=11.0.4",
-    "node-notifier": ">=8.0.1",
-    "yargs-parser": ">=13.1.2",
-    "serialize-javascript": ">=3.1.0",
-    "postcss": ">=8.2.13",
-    "nth-check": ">=2.0.1",
+    "cypress": "^9.4.1",
+    "glob-parent": ">=5.1.2",
     "immer": "^9.0.6",
     "node-forge": ">=1.0.0",
-    "ansi-regex": ">=5.0.1",
-    "ansi-html": "<= 0.0.7"
+    "node-notifier": ">=8.0.1",
+    "nth-check": ">=2.0.1",
+    "postcss": ">=8.2.13",
+    "react-dev-utils": ">=11.0.4",
+    "react-scripts": "^3.0.1",
+    "serialize-javascript": ">=3.1.0",
+    "sockjs": ">=0.3.20",
+    "start-server-and-test": "^1.14.0",
+    "yargs-parser": ">=13.1.2"
   },
   "scripts": {
     "start": "react-scripts start",

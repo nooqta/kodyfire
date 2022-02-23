@@ -1,7 +1,5 @@
 {
-  "packages": [
-    "packages/*"
-  ],
+  "packages": ["packages/*"],
   "changelog": {
     "repo": "noqta/kodyfire",
     "labels": {
@@ -14,5 +12,5 @@
     },
     "cacheDir": ".changelog"
   },
-  "version": "0.0.67"
+  "version": "0.0.68"
 }
