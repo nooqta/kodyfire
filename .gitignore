@@ -32,3 +32,4 @@ target/
 #kodyfire
 .kody
 dist
+.env

@@ -62,6 +62,7 @@
   "devDependencies": {
     "@types/jasmine": "~3.8.0",
     "@types/node": "^12.20.43",
+    "dotenv": "^16.0.0",
     "jasmine": "^3.5.0",
     "symbol-observable": "^4.0.0",
     "zx": "^4.2.0"

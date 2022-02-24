@@ -32,59 +32,55 @@ var __awaiter =
       step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
   };
+var __importDefault =
+  (this && this.__importDefault) ||
+  function (mod) {
+    return mod && mod.__esModule ? mod : { default: mod };
+  };
 Object.defineProperty(exports, '__esModule', { value: true });
+const node_fetch_1 = __importDefault(require('node-fetch'));
 const kodyfire_core_1 = require('kodyfire-core');
-const chalk = require('chalk');
-const boxen = require('boxen');
-const Table = require('cli-table');
-const EventEmitter = require('events');
-const ee = new EventEmitter();
-const { Command } = require('commander');
+const dotenv_1 = __importDefault(require('dotenv'));
+dotenv_1.default.config();
 const action = () =>
   __awaiter(void 0, void 0, void 0, function* () {
-    const kodies = yield kodyfire_core_1.Package.getInstalledKodies();
-    // @todo: use event emitter to listen to the event of the runner
-    ee.on('message', text => {
-      console.log(text);
-    });
-    if (kodies.length == 0) {
-      const kody = chalk.greenBright(chalk.bold('kody'));
-      const message = `😞 No ${kody} installed yet.\nInstall a ${kody} to become a Ninja 🚀🚀🚀`;
-      console.log(
-        boxen(message, {
-          padding: 1,
-          margin: 1,
-          align: 'center',
-          borderColor: 'yellow',
-          borderStyle: 'round',
-        })
-      );
-    } else {
-      const table = new Table({
-        head: ['id', 'name', 'type', 'version'],
-        colWidths: [31, 31, 21, 10],
-        style: {
-          'padding-left': 1,
-          'padding-right': 1,
-          head: ['yellow'],
+    // Get current package info
+    const packageInfo = yield kodyfire_core_1.Package.getPackageJson();
+    console.log(packageInfo);
+    const response = yield (0, node_fetch_1.default)(
+      'https://api.github.com/repos/nooqta/kodyfire/labels'
+    );
+    const labels = yield response.json();
+    const requestLabel = labels.find(
+      label => label.name === 'request: listing'
+    );
+    const resp = yield (0, node_fetch_1.default)(
+      `https://api.github.com/repos/nooqta/kodyfire/issues`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `token ${process.env.GITHUB_TOKEN}`,
         },
-      });
-      kodies.forEach(template => {
-        table.push([
-          template.id,
-          template.name,
-          template.type,
-          template.version,
-        ]);
-      });
-      console.log(table.toString());
-    }
+        body: JSON.stringify({
+          title: `Request to publish ${packageInfo.name}`,
+          owner: 'nooqta',
+          repo: 'kodyfire',
+          body: `I would like to publish the following package: ${packageInfo.name} to the kody's repo.
+               The repository url is [${packageInfo.repository.url}](${packageInfo.repository.url}) @anis-marrouchi.`,
+          labels: [requestLabel.name],
+        }),
+      }
+    );
+    const issue = yield resp.json();
+    console.log(issue);
   });
 module.exports = program => {
   program
-    .command('list')
-    .alias('ls')
-    .description('list available technologies')
+    .command('push')
+    .description(
+      'Push your own package to the registry. This will open an issue on Github with a request to include your package to the repository.'
+    )
     .action(_opt =>
       __awaiter(void 0, void 0, void 0, function* () {
         return action();
