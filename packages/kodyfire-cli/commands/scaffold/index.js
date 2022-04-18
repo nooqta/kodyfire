@@ -90,6 +90,8 @@ module.exports = program => {
   program
     .command('scaffold')
     .description('Generate a blank kody project')
+    .option('-n,--name <name>', 'Project name')
+    .option('-t, --type <type>', 'Project type')
     .action(_opt =>
       __awaiter(void 0, void 0, void 0, function* () {
         // await $`schematics @noqta/kodyfire:run --name ${_opt.name} --dry-run`;

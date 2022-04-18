@@ -64,7 +64,8 @@ module.exports = (program: typeof Command) => {
   program
     .command('scaffold')
     .description('Generate a blank kody project')
-
+    .option('-n,--name <name>', 'Project name')
+    .option('-t, --type <type>', 'Project type')
     .action(async (_opt: { name: any }) => {
       // await $`schematics @noqta/kodyfire:run --name ${_opt.name} --dry-run`;
       try {

@@ -39,22 +39,23 @@ export function run(_options: KodyfireOptionsSchema) {
 export function scaffold(_options: any): Observable<Rule> | Rule {
   return async (_tree: Tree, _context: SchematicContext) => {
     const schema = {
-      name: 'sample',
-      technology: 'techno',
+      name: _options.name,
+      technology: _options.type,
       version: '1.0.0',
     };
+    console.log(_options);
     const templateSource = apply(url('./templates/blank'), [
       applyTemplates({
         ...strings,
         ...schema,
       }),
-      move(`./blank-kody`),
+      move(`./${_options.name}`),
     ]);
     const rule = chain([mergeWith(templateSource)]);
     const fs = require('fs-extra');
     fs.move(
-      `${_options.currentPath}/blank-kody`,
-      `${process.cwd()}/blank-kody`,
+      `${_options.currentPath}/${_options.name}`,
+      `${process.cwd()}/${_options.name}`,
       { overwrite: true },
       (err: any) => {
         if (err) return console.error(err);
