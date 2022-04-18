@@ -1,6 +1,6 @@
 {
   "name": "blank-kodyfire",
-  "version": "0.0.68",
+  "version": "0.0.69",
   "description": "Generator for a blank kody to get you riding on a rocket!",
   "main": "index.js",
   "scripts": {
@@ -27,7 +27,7 @@
     "@angular-devkit/schematics": "^12.2.3",
     "ajv": "^8.6.3",
     "fs-extra": "^10.0.0",
-    "kodyfire-core": "^0.0.68",
+    "kodyfire-core": "^0.0.69",
     "typescript": "~4.5.5"
   }
 }
