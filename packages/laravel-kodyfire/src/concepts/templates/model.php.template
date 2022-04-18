@@ -10,8 +10,8 @@ class {{name}} extends Model
 
     protected $fillable = {{{ fillable }}};
 
-    protected $hidden = [{{getHiddenArray}}];
+    protected $hidden = [{{hidden}}];
 
-    {{{getModelRelations}}}
+    {{{relations}}}
 
 }

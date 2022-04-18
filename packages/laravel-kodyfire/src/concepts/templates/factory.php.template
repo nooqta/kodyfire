@@ -3,7 +3,6 @@
 namespace {{ factoryNamespace }};
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use {{ namespacedModel }};
 
 class {{ factory }}Factory extends Factory
 {
@@ -22,7 +21,7 @@ class {{ factory }}Factory extends Factory
     public function definition()
     {
         return [
-            {{{ data }}}
+            {{{ definition }}}
         ];
     }
 }

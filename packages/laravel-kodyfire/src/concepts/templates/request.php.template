@@ -24,7 +24,7 @@ class {{prefix}}{{name}}Request extends FormRequest
     public function rules()
     {
         return [
-            {{{ getRequestValidation }}}
+            {{{ rules }}}
         ];
     }
 }

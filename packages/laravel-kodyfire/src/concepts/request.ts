@@ -11,6 +11,7 @@ import { Engine } from './engine';
 const pluralize = require('pluralize');
 
 export class Request implements IConcept {
+  model: any;
   name: string;
   defaultAction: string;
   source?: Source | undefined;
@@ -18,7 +19,7 @@ export class Request implements IConcept {
   outputDir: string;
   technology: Technology;
   engine: Engine;
-  models: any[];
+  models: any;
   constructor(concept: Partial<IConcept>, technology: ITechnology) {
     this.source = concept.source ?? Source.Template;
     this.outputDir = concept.outputDir ?? '';
@@ -27,10 +28,18 @@ export class Request implements IConcept {
     this.technology = technology;
     this.models = technology.input;
   }
-  generate(_data: any) {
+  setModel(_data: any) {
+    this.model = this.technology.input.model.find(
+      (m: any) => m.name.toLowerCase() == _data.model.toLowerCase()
+    );
+  }
+  async generate(_data: any) {
+    this.setModel(_data);
     this.engine = new Engine();
-
-    const template = this.engine.read(this.template.path, _data.template);
+    _data.relationships = this.model.relationships;
+    _data.controller = this.model.controller;
+    _data.fields = this.model.fields;
+    const template = await this.engine.read(this.template.path, _data.template);
     this.engine.builder.registerHelper('getRequestValidation', () => {
       return this.getRequestValidation(
         _data,
@@ -38,6 +47,11 @@ export class Request implements IConcept {
         _data.prefix === 'Create' ? 'store' : 'update'
       );
     });
+    _data.rules = this.getRequestValidation(
+      _data,
+      _data.relationships,
+      _data.prefix === 'Create' ? 'store' : 'update'
+    );
     const compiled = this.engine.compile(template, _data);
     this.engine.createOrOverwrite(
       this.technology.rootDir,

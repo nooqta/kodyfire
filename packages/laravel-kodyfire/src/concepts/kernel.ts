@@ -22,9 +22,9 @@ export class Kernel implements IConcept {
     this.template = concept.template as TemplateSchema;
     this.technology = technology;
   }
-  generate(_data: any) {
+  async generate(_data: any) {
     this.engine = new Engine();
-    const template = this.engine.read(this.template.path, _data.template);
+    const template = await this.engine.read(this.template.path, _data.template);
     const compiled = this.engine.compile(template, _data);
     this.engine.createOrOverwrite(
       this.technology.rootDir,

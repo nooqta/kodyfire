@@ -15,30 +15,28 @@ export class Migration extends Concept {
 
   initEngine() {
     this.engine = new Engine();
-
-    this.engine.builder.registerHelper('class', () => {
-      return this.getMigrationName(this.model);
-    });
-
-    this.engine.builder.registerHelper('attributes', () => {
-      return this.getMigrationAttributes(this.model);
-    });
   }
   setModel(_data: any) {
     // @todo find a better way to get the model
     if (!this.technology.input.model.some((m: any) => m.name == _data.model)) {
-      throw new Error('Make sure the model exists and is not mispelled.');
+      throw new Error(
+        `Make sure the model ${_data.model} exists and is not mispelled.`
+      );
     }
+
     this.model = this.technology.input.model.find(
       (m: any) => m.name == _data.model
     );
   }
-  generate(_data: any) {
+  async generate(_data: any) {
     this.setModel(_data);
     this.initEngine();
-    const template = this.engine.read(this.template.path, _data.template);
-    const compiled = this.engine.compile(template, this.model);
-    this.engine.createOrOverwrite(
+    const template = await this.engine.read(this.template.path, _data.template);
+    this.model.className = this.getClassName(this.model.name);
+    this.model.table = this.getMigrationName(this.model.name);
+    this.model.attributes = this.getMigrationAttributes(this.model);
+    const compiled = await this.engine.compile(template, this.model);
+    await this.engine.createOrOverwrite(
       this.technology.rootDir,
       this.outputDir,
       this.getFilename(this.model.name),
@@ -68,7 +66,10 @@ export class Migration extends Concept {
   }
 
   getMigrationName(model: any) {
-    return this.underscorize(pluralize(model.name));
+    return this.underscorize(pluralize(model));
+  }
+  getClassName(model: any) {
+    return `Create${strings.classify(model)}Table`;
   }
 
   underscorize(word: any) {

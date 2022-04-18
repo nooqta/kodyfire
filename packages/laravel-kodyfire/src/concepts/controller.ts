@@ -13,6 +13,7 @@ export class Controller implements IConcept {
   defaultAction: string;
   technology: ITechnology;
   engine: Engine;
+  model: any;
   constructor(concept: Partial<IConcept>, technology: ITechnology) {
     this.source = concept.source ?? Source.Template;
     this.outputDir = concept.outputDir ?? '';
@@ -20,17 +21,24 @@ export class Controller implements IConcept {
     this.template = concept.template as TemplateSchema;
     this.technology = technology;
   }
-  generate(_data: any) {
+
+  setModel(_data: any) {
+    this.model = this.technology.input.model.find(
+      (m: any) => m.name.toLowerCase() == _data.model.toLowerCase()
+    );
+  }
+  async generate(_data: any) {
+    this.setModel(_data);
     this.engine = new Engine();
-    this.engine.builder.registerHelper('getControllerMethods', () => {
-      return this.getControllerMethods(_data);
-    });
-    const template = this.engine.read(this.template.path, _data.template);
+
+    const template = await this.engine.read(this.template.path, _data.template);
+    _data.methods = this.getControllerMethods(this.model);
+    _data.name = _data.model;
     const compiled = this.engine.compile(template, _data);
-    this.engine.createOrOverwrite(
+    await this.engine.createOrOverwrite(
       this.technology.rootDir,
       this.outputDir,
-      this.getFilename(_data.name),
+      this.getFilename(_data.model),
       compiled
     );
   }
@@ -122,7 +130,7 @@ public function ${action.name}(Request  $request) {
     ${this.getList(model)}
   } catch (\\Throwable $th) {
     return response()->json([
-    'error' => 'Une erreur est parvenue',
+    'error' => __('app.errorMsg'),
     ], 500);
   }
   return response()->json(['data' => $data]);
@@ -154,7 +162,7 @@ public function ${action.name}(Request  $request) {
       } catch (\\Throwable $th) {
         Log::error($th->getMessage());
           return response()->json([
-              'error' => 'Une erreur est parvenue',
+              'error' => __('app.errorMsg'),
           ], 500);
       }
       return response()->json(['data' => $data]);
@@ -174,7 +182,7 @@ public function ${action.name}(Request  $request) {
       } catch (\\Throwable $th) {
         Log::error($th->getMessage());
           return response()->json([
-              'error' => 'Une erreur est parvenue',
+              'error' => __('app.errorMsg'),
           ], 500);
       }
       return response()->json(['data' => $data]);
@@ -207,7 +215,7 @@ public function ${action.name}(Request  $request) {
     } catch (\\Exception $e) {
         Log::error($e->getMessage());
             return response()->json([
-        'error' => 'Une erreur est parvenue',
+        'error' => __('app.errorMsg'),
         ], 500);
     }
     $message = trans('app.deleteSuccessMsg');
@@ -304,8 +312,8 @@ public function ${action.name}(Request  $request) {
       return response()->download(storage_path('app/public/uploads/${model.name.toLowerCase()}_' . $${model.name.toLowerCase()}->id . '.pdf'))->deleteFileAfterSend(${!action
               .options.save_on_disc});`
           : `ob_end_clean();
-      return response()->download($path)->deleteFileAfterSend(${!action
-        .options.save_on_disc});`
+      return response()->download($path)->deleteFileAfterSend(${!action.options
+        .save_on_disc});`
       }
     }
   

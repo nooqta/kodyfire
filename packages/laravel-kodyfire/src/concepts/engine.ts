@@ -1,6 +1,6 @@
 import { strings } from '@angular-devkit/core';
 import * as builder from 'handlebars';
-import { join, relative } from 'path';
+import { join, relative, dirname } from 'path';
 const fs = require('fs');
 const fsPromises = fs.promises;
 export class Engine {
@@ -59,12 +59,15 @@ export class Engine {
     await fsPromises.writeFile(join(rootDir, outputDir, filename), content);
   }
 
-  createOrOverwrite(
+  async createOrOverwrite(
     rootDir: string,
     outputDir: string,
     filename: any,
     content: string | Buffer
   ) {
-    fsPromises.writeFile(join(rootDir, outputDir, filename), content);
+    filename = join(rootDir, outputDir, filename);
+    // We need to create the directory if it doesn't exist
+    await fsPromises.mkdir(dirname(filename), { recursive: true });
+    await fsPromises.writeFile(filename, content);
   }
 }

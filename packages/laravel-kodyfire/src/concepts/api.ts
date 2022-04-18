@@ -25,7 +25,7 @@ export class Api extends Concept {
     this.initEngine();
     const template = await this.engine.read(this.template.path, _data.template);
     const compiled = this.engine.compile(template, this.model);
-    this.engine.createOrOverwrite(
+    await this.engine.createOrOverwrite(
       this.technology.rootDir,
       this.outputDir,
       this.getFilename(),
@@ -41,7 +41,7 @@ export class Api extends Concept {
     let groups = '';
     const middlewares: any = [];
     models.forEach((el: any) => {
-      if (el.hasController) {
+      if (el.controller) {
         if (el.controller.routeType == 'detailed') {
           el.controller.actions.forEach((action: any) => {
             if (action.middleware != '') {
@@ -57,12 +57,11 @@ export class Api extends Concept {
 
     Array.from(unique).forEach((el: any) => {
       groups += `Route::group([
-    'prefix' => 'v1',
-    'namespace' => 'API\\V1',
-    'middleware' => ${el}
-], function () {
-    
-Route::get('user/current', [UserController::class, 'me']);
+          'prefix' => 'v1',
+          'namespace' => 'API\\V1',
+          'middleware' => ${el}
+        ], function () {
+            Route::get('user/current', [UserController::class, 'me']);
 ${this.getRoutesList(el, models)}
 });\n`;
     });

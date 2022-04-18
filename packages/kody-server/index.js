@@ -29,6 +29,7 @@ router.get('/', function (req, res) {
 
 router.post('/kodies', async (req, res) => {
   const { LERNA_ROOT_PATH: rootPath } = process.env;
+  console.log(rootPath);
   var body = req.body;
   var filePath = join(rootPath, 'kody.json');
   fs.writeFileSync(filePath, JSON.stringify(body, null, 2));

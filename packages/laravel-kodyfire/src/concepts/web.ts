@@ -12,9 +12,9 @@ export class Web extends Concept {
     this.engine = new Engine();
   }
 
-  generate(_data: any) {
+  async generate(_data: any) {
     this.initEngine();
-    const template = this.engine.read(this.template.path, _data.template);
+    const template = await this.engine.read(this.template.path, _data.template);
     const compiled = this.engine.compile(template, {});
     this.engine.createOrOverwrite(
       this.technology.rootDir,

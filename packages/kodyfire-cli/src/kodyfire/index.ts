@@ -11,6 +11,7 @@ import {
   url,
 } from '@angular-devkit/schematics';
 import { join } from 'path';
+import { Observable } from 'rxjs';
 
 import { Package, Runner } from 'kodyfire-core';
 import { KodyfireOptionsSchema } from './schema';
@@ -35,20 +36,31 @@ export function run(_options: KodyfireOptionsSchema) {
   };
 }
 
-export function scaffold(_options: any): Rule {
-  return async (tree: Tree, _context: SchematicContext) => {
-    const fileName = './data.json';
-    const content = tree.read(fileName);
-    const json = content?.toString() ?? '{}';
+export function scaffold(_options: any): Observable<Rule> | Rule {
+  return async (_tree: Tree, _context: SchematicContext) => {
+    const schema = {
+      name: 'sample',
+      technology: 'techno',
+      version: '1.0.0',
+    };
     const templateSource = apply(url('./templates/blank'), [
       applyTemplates({
         ...strings,
-        ...JSON.parse(json),
+        ...schema,
       }),
-      move('./dist/my-kody'),
+      move(`./blank-kody`),
     ]);
     const rule = chain([mergeWith(templateSource)]);
-    console.log(chalk.green('🙌 kody done! '));
+    const fs = require('fs-extra');
+    fs.move(
+      `${_options.currentPath}/blank-kody`,
+      `${process.cwd()}/blank-kody`,
+      { overwrite: true },
+      (err: any) => {
+        if (err) return console.error(err);
+        console.log(chalk.green('🙌 kody done! '));
+      }
+    );
     return rule;
   };
 }

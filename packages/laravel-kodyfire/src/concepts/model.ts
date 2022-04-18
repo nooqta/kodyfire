@@ -23,20 +23,12 @@ export class Model implements IConcept {
     this.template = concept.template as TemplateSchema;
     this.technology = technology;
   }
-  generate(_data: any) {
+  async generate(_data: any) {
     this.engine = new Engine();
-    this.engine.builder.registerHelper('getModelRelations', () => {
-      return this.getModelRelations(_data);
-    });
-    this.engine.builder.registerHelper('getHiddenArray', () => {
-      return this.getHiddenArray(_data);
-    });
-
-    this.engine.builder.registerHelper('fillable', () => {
-      return this.getFillable(_data);
-    });
-
-    const template = this.engine.read(this.template.path, _data.template);
+    const template = await this.engine.read(this.template.path, _data.template);
+    _data.hidden = this.getHiddenArray(_data);
+    _data.fillable = this.getFillable(_data);
+    _data.relations = this.getModelRelations(_data);
     const compiled = this.engine.compile(template, _data);
     this.engine.createOrOverwrite(
       this.technology.rootDir,
@@ -54,11 +46,10 @@ export class Model implements IConcept {
     let relations = '';
     model.relationships.forEach((rel: any) => {
       if (rel.type === 'morphTo') {
-        relations += `
-    public function ${rel.name}()
-    {
-        return $this->${rel.type}();
-    }\n`;
+        relations += `public function ${rel.name}()
+        {
+            return $this->${rel.type}();
+        }\n`;
       } else {
         relations += `
     public function ${rel.name}()

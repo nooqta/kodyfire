@@ -39,7 +39,7 @@ class {{name}}Controller extends Controller
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             return response()->json([
-                'error' => 'Une erreur est parvenue',
+                'error' => __('app.errorMsg'),
             ], 500);
         }
         return response()->json(['data' => $data]);
@@ -77,7 +77,7 @@ class {{name}}Controller extends Controller
     } catch (\Throwable $th) {
             Log::error($th->getMessage());
         return response()->json([
-            'error' => 'Une erreur est parvenue',
+            'error' => __('app.errorMsg'),
         ], 500);
     }
     return response()->json(['data' => $data]);
@@ -116,14 +116,14 @@ class {{name}}Controller extends Controller
     } catch (\Exception $e) {
         Log::error($e->getMessage());
             return response()->json([
-        'error' => 'Une erreur est parvenue',
+        'error' => __('app.errorMsg'),
         ], 500);
     }
     $message = trans('app.deleteSuccessMsg');
     return response()->json(['message' => $message], 200);
     }
     {{else}}
-    {{{ getControllerMethods project model }}}
+    {{{ methods }}}
     {{/ifEquals}}
 }
     

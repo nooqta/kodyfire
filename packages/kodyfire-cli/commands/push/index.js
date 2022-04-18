@@ -47,14 +47,14 @@ const action = () =>
     // Get current package info
     const packageInfo = yield kodyfire_core_1.Package.getPackageJson();
     console.log(packageInfo);
-    const response = yield (0, node_fetch_1.default)(
+    const response = yield node_fetch_1.default(
       'https://api.github.com/repos/nooqta/kodyfire/labels'
     );
     const labels = yield response.json();
     const requestLabel = labels.find(
       label => label.name === 'request: listing'
     );
-    const resp = yield (0, node_fetch_1.default)(
+    const resp = yield node_fetch_1.default(
       `https://api.github.com/repos/nooqta/kodyfire/issues`,
       {
         method: 'POST',

@@ -12,10 +12,6 @@ export class Factory extends Concept {
   initEngine(_data: any) {
     this.engine = new Engine();
 
-    this.engine.builder.registerHelper('data', () => {
-      return this.getData(this.model);
-    });
-
     this.engine.builder.registerHelper('factory', () => {
       return _data.model;
     });
@@ -34,10 +30,11 @@ export class Factory extends Concept {
       (m: any) => m.name == _data.model
     );
   }
-  generate(_data: any) {
+  async generate(_data: any) {
     this.setModel(_data);
     this.initEngine(_data);
-    const template = this.engine.read(this.template.path, _data.template);
+    const template = await this.engine.read(this.template.path, _data.template);
+    this.model.definition = this.getData(this.model);
     const compiled = this.engine.compile(template, this.model);
     this.engine.createOrOverwrite(
       this.technology.rootDir,

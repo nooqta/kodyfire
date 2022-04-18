@@ -9,20 +9,28 @@ const pack = require(join(process.cwd(), 'package.json'));
 function parseSchematicName(_arg: any): {
   collection: string;
   schematic: string;
+  currentPath: string;
 } {
   // All schematics are local to kody
-  const collectionName = 'kodyfire-cli';
-  const collection = pack.name == collectionName ? collectionName : '.';
+  const collectionName = 'kodyfire';
+  const currentPath =
+    pack.name == collectionName
+      ? join(process.cwd(), `packages/${collectionName}-cli`)
+      : process.cwd();
+  const collection =
+    pack.name == collectionName ? `./packages/${collectionName}-cli` : '.';
 
   const schematic = _arg.schematic;
-
-  return { collection, schematic };
+  return { collection, schematic, currentPath };
 }
 
 async function action(args: any): Promise<0 | 1> {
-  const { collection: collectionName, schematic: schematicName } =
-    parseSchematicName(args);
-  args.input = join(process.cwd(), 'data-html.json');
+  const {
+    collection: collectionName,
+    schematic: schematicName,
+    currentPath,
+  } = parseSchematicName(args);
+  args.currentPath = currentPath;
   const root = process.cwd();
   // const dryRun = args.dryRun as boolean;
   const dryRun = false;

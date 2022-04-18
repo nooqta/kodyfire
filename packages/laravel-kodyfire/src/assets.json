@@ -1,7 +1,7 @@
 {
   "name": "Laravel",
   "version": "0.1",
-  "rootDir": "",
+  "rootDir": "dist",
   "concepts": [
     {
       "name": "controller",

@@ -16,11 +16,11 @@
               DB::beginTransaction();
               try {
                   {{#if hasUplodableMorph}}
-                  {{{ getAttachments }}}
+                  {{{ attachments }}}
                   {{/if}}
                   $model = {{name}}::create($data);
-                  {{{ getMorphAttachments }}}
-                  {{{ getAdditionalMethods }}}
+                  {{{ morphAttachments }}}
+                  {{{ additionalMethods }}}
                 } catch (\Exception $e) {
                     DB::rollback();
                     throw new Exception($e->getMessage());
@@ -33,7 +33,7 @@
                 $data = $dataBag->get('data');
                 DB::beginTransaction();
                 try {
-                  {{{getUpdateAttachments}}}
+                  {{{updateAttachments}}}
                   $model->update($data);
               } catch (\Exception $e) {
                   DB::rollback();

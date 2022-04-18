@@ -56,7 +56,7 @@ export class Auth extends Concept {
       filename = 'RedirectIfAuthenticated.php';
     }
 
-    this.engine.createOrOverwrite(
+    await this.engine.createOrOverwrite(
       this.technology.rootDir,
       outputDir,
       filename,

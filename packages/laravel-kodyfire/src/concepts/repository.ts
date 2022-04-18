@@ -38,13 +38,18 @@ export class Repository extends Concept {
   }
   setModel(_data: any) {
     this.model = this.technology.input.model.find(
-      (m: any) => m.name == _data.model
+      (m: any) => m.name.toLowerCase() == _data.model.toLowerCase()
     );
   }
-  generate(_data: any) {
+  async generate(_data: any) {
     this.setModel(_data);
     this.initEngine();
-    const template = this.engine.read(this.template.path, _data.template);
+    const template = await this.engine.read(this.template.path, _data.template);
+    this.model.attachments = this.getAttachments(this.model);
+    this.model.morphAttachments = this.getMorphAttachments(this.model);
+    this.model.additionalMethods = this.getAdditionalMethods(this.model);
+    this.model.updateAttachments = this.getUpdateAttachments(this.model);
+    this.model.uploadAttachment = this.uploadAttachment(this.model);
     const compiled = this.engine.compile(template, this.model);
 
     if (!this.model) {

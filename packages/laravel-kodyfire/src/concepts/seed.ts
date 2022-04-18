@@ -31,10 +31,10 @@ export class Seed extends Concept {
       (m: any) => m.name == _data.model
     );
   }
-  generate(_data: any) {
+  async generate(_data: any) {
     this.setModel(_data);
     this.initEngine(_data);
-    const template = this.engine.read(this.template.path, _data.template);
+    const template = await this.engine.read(this.template.path, _data.template);
     const compiled = this.engine.compile(template, this.model);
     this.engine.createOrOverwrite(
       this.technology.rootDir,

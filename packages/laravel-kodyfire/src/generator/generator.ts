@@ -16,14 +16,14 @@ export class Generator implements IGenerator {
     );
     this.tree = new HostTree(_backend);
   }
-  generate(content: any): Tree {
+  async generate(content: any): Promise<Tree> {
     this.input = content;
     this.technology.input = content;
     // for every concept in concepts list
     for (const [key] of this.technology.concepts) {
       for (const data of content[key]) {
         // do apropriate action
-        this.tree = this.technology.concepts.get(key)?.generate(data);
+        this.tree = await this.technology.concepts.get(key)?.generate(data);
       }
     }
     // return result
