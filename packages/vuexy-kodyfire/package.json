@@ -1,56 +1,32 @@
 {
-  "name": "@noqta/kodyfire",
-  "version": "0.0.22",
-  "description": "Code generator for Laravel, express, Flutter and the list goes on.",
-  "typings": "./kodyfire.d.ts",
-  "directories": {
-    "bin": "./src/bin"
-  },
+  "name": "vuexy-kodyfire",
+  "version": "0.0.69",
+  "description": "Scaffold vuexy theme. This requires a license from the vendor and the vuexy theme to work",
+  "main": "index.js",
   "scripts": {
-    "watch": "tsc -w",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p tsconfig.json",
-    "test": "npm run build && jasmine src/**/*_spec.js",
-    "kody": "node ./src/bin/kody.js"
+    "watch": "tsc -w"
   },
-  "keywords": [
-    "schematics"
-  ],
-  "bin": {
-    "kody": "./src/bin/kody.js",
-    "cody": "./src/bin/kody.js",
-    "kodyfire": "./src/bin/kody.js"
+  "kodyfire": {
+    "id": "vuexy",
+    "type": "vue",
+    "version": "8.0"
   },
-  "repository": "https://gitlab.noqta.tn/noqta/kodyfire.git",
   "author": "NOQTA",
-  "license": "MIT",
-  "schematics": "./src/collection.json",
-  "publishConfig": {
-    "@noqta:registry": "https://gitlab.noqta.tn/api/v4/projects/161/packages/npm/"
-  },
+  "license": "ISC",
   "dependencies": {
     "@angular-devkit/core": "^12.2.3",
     "@angular-devkit/schematics": "^12.2.3",
-    "@noqta/blank-kodyfire": "0.0.8",
-    "@noqta/helloworld-html-kodyfire": "0.0.35",
-    "@noqta/laravel-kodyfire": "0.0.16",
-    "@types/inquirer": "^8.1.1",
     "ajv": "^8.6.3",
-    "ansi-colors": "^4.1.1",
-    "boxen": "^5.1.2",
-    "chalk": "^4.1.2",
-    "cli-table": "^0.3.6",
-    "commander": "^8.2.0",
     "fs-extra": "^10.0.0",
-    "handlebars": "^4.7.7",
-    "inquirer": "^8.1.5",
-    "kodyfire-core": "0.0.16",
-    "minimist": "^1.2.5",
-    "symbol-observable": "^4.0.0",
-    "zx": "^4.2.0"
+    "handlebars-delimiters": "^1.0.0",
+    "kodyfire-core": "^0.0.56",
+    "moment": "^2.29.1",
+    "pluralize": "^8.0.0",
+    "typescript": "~4.5.5"
   },
   "devDependencies": {
-    "@types/jasmine": "~3.8.0",
-    "@types/node": "^12.11.1",
-    "jasmine": "^3.5.0"
+    "@types/pluralize": "0.0.29"
   }
 }

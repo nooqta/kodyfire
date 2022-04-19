@@ -72,6 +72,7 @@
   },
   "dependencies": {
     "helloworld-html-kodyfire": "file:packages/helloworld-html-kodyfire",
-    "laravel-kodyfire": "file:packages/laravel-kodyfire"
+    "laravel-kodyfire": "file:packages/laravel-kodyfire",
+    "vuexy-kodyfire": "file:packages/vuexy-kodyfire"
   }
 }

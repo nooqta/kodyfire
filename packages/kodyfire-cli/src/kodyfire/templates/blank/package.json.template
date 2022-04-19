@@ -6,9 +6,8 @@
   
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "node ./scripts/register.js",
     "build": "tsc -p tsconfig.json",
-    "postuninstall": "node ./scripts/uninstall.js"
+    "watch": "tsc -w"
   },
   "kodyfire": {
     "id": "kodyfire",
@@ -23,7 +22,11 @@
     "ajv": "^8.6.3",
     "fs-extra": "^10.0.0",
     "kodyfire-core": "^0.0.56",
-    "typescript": "~4.5.5",
+    "moment": "^2.29.1",
+    "pluralize": "^8.0.0",
+    "typescript": "~4.5.5"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/pluralize": "0.0.29"
+  }
 }

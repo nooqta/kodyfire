@@ -18,7 +18,7 @@ import { KodyfireOptionsSchema } from './schema';
 const boxen = require('boxen');
 const chalk = require('chalk');
 
-export function run(_options: KodyfireOptionsSchema) {
+export function run(_options: KodyfireOptionsSchema): any {
   return async (tree: Tree, _context: SchematicContext) => {
     // source is passed statically for developing purposes
     const fileName = join(process.cwd(), 'data-html.json');

@@ -1,10 +1,9 @@
-import { apply, applyTemplates, chain, filter, mergeWith, move, noop, Tree, url } from "@angular-devkit/schematics";
-import { IConcept, ITechnology, Source, Technology, TemplateSchema } from "kodyfire-core";
-import { join, relative } from "path";
-import * as handlebars from "handlebars";
-import { strings } from "@angular-devkit/core";
+import { IConcept, ITechnology } from 'kodyfire-core';
+import { Concept } from './concept';
+import { Engine } from './engine';
+import { strings } from '@angular-devkit/core';
 
-export class <%= classify(name) %> implements IConcept {
+export class <%= classify(name) %> implements Concept {
     source?: Source;
   name: string;
   content: string;
