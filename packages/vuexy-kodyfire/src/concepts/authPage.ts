@@ -31,12 +31,12 @@ export class AuthPage extends Concept {
     await this.engine.createOrOverwrite(
       this.technology.rootDir,
       this.outputDir,
-      this.getFilename(_data.name),
+      this.getFilename(_data.outputDir, _data.name),
       compiled
     );
   }
 
-  getFilename(name: string) {
-    return `${strings.classify(name)}.vue`;
+  getFilename(path, name: string) {
+    return `${path}/${strings.classify(name)}.vue`;
   }
 }

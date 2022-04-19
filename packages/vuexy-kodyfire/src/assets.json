@@ -7,7 +7,7 @@
       "name": "page",
       "outputDir": "views",
       "template": {
-        "path": "templates/views/pages",
+        "path": "templates/src/views/pages",
         "options": ["page.vue.template"]
       }
     },
@@ -15,7 +15,7 @@
       "name": "authPage",
       "outputDir": "views/auth",
       "template": {
-        "path": "templates/views/pages/auth"
+        "path": "templates/src/views/pages/auth"
       }
     },
     {
@@ -27,30 +27,30 @@
     },
     {
       "name": "module",
-      "outputDir": "/views/modules",
+      "outputDir": "views/modules",
       "template": {
-        "path": "templates/views/modules"
+        "path": "templates/src/views/modules"
       }
     },
     {
       "name": "navigation",
       "outputDir": "navigation",
       "template": {
-        "path": "templates/navigation"
+        "path": "templates/src/navigation"
       }
     },
     {
       "name": "router",
       "outputDir": "router",
       "template": {
-        "path": "templates/router"
+        "path": "templates/src/router"
       }
     },
     {
       "name": "route",
       "outputDir": "router/routes",
       "template": {
-        "path": "templates/router/routes"
+        "path": "templates/src/router/routes"
       }
     }
   ]

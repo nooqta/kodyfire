@@ -1,6 +1,7 @@
 {
-  "project": "dummy",
+  "project": "invoice-go-frontend",
   "name": "vuexy",
+  "rootDir": "./../invoice-go/frontend/",
   "page": [
     {
       "name": "home",
@@ -10,19 +11,23 @@
   "authPage": [
     {
       "name": "Login",
-      "template": "Login.vue.template"
+      "template": "Login.vue.template",
+      "outputDir": ""
     },
     {
       "name": "Register",
-      "template": "Register.vue.template"
+      "template": "register/Register.vue.template",
+      "outputDir": "register"
     },
     {
       "name": "ResetPassword",
-      "template": "ResetPassword.vue.template"
+      "template": "ResetPassword.vue.template",
+      "outputDir": ""
     },
     {
       "name": "ForgotPassword",
-      "template": "ForgotPassword.vue.template"
+      "template": "ForgotPassword.vue.template",
+      "outputDir": ""
     }
   ],
   "router": [
@@ -67,9 +72,23 @@
       }
     },
     {
-      "path": "libs",
+      "path": "",
+      "filename": "themeConfig.js",
+      "template": "themeConfig.js.template",
+      "data": {
+        "appName": "InvoiceGo",
+        "isRTL": true
+      }
+    },
+    {
+      "path": "src/libs",
       "filename": "axios.js",
-      "template": "libs/axios.js.template"
+      "template": "src/libs/axios.js.template"
+    },
+    {
+      "path": "src/@core/mixins/ui",
+      "filename": "feedback.js",
+      "template": "src/@core/mixins/ui/feedback.js.template"
     }
   ],
   "module": [

@@ -19,7 +19,7 @@ const router = new VueRouter({
   routes: [
     ...auth,
     ...modules,
-    ...pages
+    ...pages,
     {
       path: '/',
       name: 'home',

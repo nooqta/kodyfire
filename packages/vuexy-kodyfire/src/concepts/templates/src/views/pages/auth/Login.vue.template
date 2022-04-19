@@ -13,11 +13,20 @@
         </b-link>
 
         <b-card-title class="mb-1">
-          Welcome to Vuexy! 👋
+             المغامرة تبدأ هنا 🚀
         </b-card-title>
         <b-card-text class="mb-2">
-          Please sign-in to your account and start the adventure
+          لتكلفة لا تقارن بما تقدمه منصة مقيّم من مزايا، ابدأ بالتجربة ولن
+            تندم!
         </b-card-text>
+           <b-alert v-model="showAlertMessage" dismissible variant="danger">
+            <div class="alert-body">
+              <feather-icon class="mr-25" icon="AlertCircleIcon" />
+              <span class="ml-25">
+                {{ errorMessage }}
+              </span>
+            </div>
+          </b-alert>
 
         <!-- form -->
         <validation-observer
@@ -32,16 +41,17 @@
             <!-- email -->
             <b-form-group
               label-for="email"
-              label="Email"
+              label="البريد الالكتروني"
             >
               <validation-provider
-                #default="{ errors }"
-                name="Email"
-                rules="required|email"
+                vid="email"
+                  name="email"
+                  v-slot="{ errors }"
+                rules="required|validEmail"
               >
                 <b-form-input
                   id="email"
-                  v-model="userEmail"
+                  v-model="email"
                   name="login-email"
                   :state="errors.length > 0 ? false:null"
                   placeholder="john@example.com"
@@ -54,15 +64,15 @@
             <!-- password -->
             <b-form-group>
               <div class="d-flex justify-content-between">
-                <label for="password">Password</label>
-                <b-link :to="{name:'auth-forgot-password-v1'}">
-                  <small>Forgot Password?</small>
-                </b-link>
-              </div>
+                  <label for="login-password">كلمة المرور</label>
+                  <b-link :to="{ name: 'auth-forgot-password-v2' }">
+                    <small>هل نسيت كلمة السر؟</small>
+                  </b-link>
+                </div>
               <validation-provider
-                #default="{ errors }"
-                name="Password"
-                rules="required"
+                vid="password"
+                  name="password"
+                  v-slot="{ errors }"
               >
                 <b-input-group
                   class="input-group-merge"
@@ -97,7 +107,7 @@
                 v-model="status"
                 name="checkbox-1"
               >
-                Remember Me
+                تذكرنى
               </b-form-checkbox>
             </b-form-group>
 
@@ -108,17 +118,17 @@
               block
               :disabled="invalid"
             >
-              Sign in
+              تسجيل الدخول
             </b-button>
           </b-form>
         </validation-observer>
 
         <b-card-text class="text-center mt-2">
-          <span>New on our platform? </span>
-          <b-link :to="{name:'auth-register-v1'}">
-            <span>Create an account</span>
-          </b-link>
-        </b-card-text>
+            <span>جديد على منصة فوترة لدينا؟ </span>
+            <b-link :to="{ name: 'register' }">
+              <span>&nbsp;إنشاء حساب</span>
+            </b-link>
+          </b-card-text>
 
         <div class="divider my-2">
           <div class="divider-text">
@@ -162,11 +172,12 @@
 <script>
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import {
-  BButton, BForm, BFormInput, BFormGroup, BCard, BLink, BCardTitle, BCardText, BInputGroup, BInputGroupAppend, BFormCheckbox,
+  BButton, BAlert, BForm, BFormInput, BFormGroup, BCard, BLink, BCardTitle, BCardText, BInputGroup, BInputGroupAppend, BFormCheckbox,
 } from 'bootstrap-vue'
 import VuexyLogo from '@core/layouts/components/Logo.vue'
 import { required, email } from '@validations'
 import { togglePasswordVisibility } from '@core/mixins/ui/forms'
+import { alertMessageMixin } from "@core/mixins/ui/feedback";
 
 export default {
   components: {
@@ -185,16 +196,17 @@ export default {
     BFormCheckbox,
     ValidationProvider,
     ValidationObserver,
+    BAlert
   },
-  mixins: [togglePasswordVisibility],
+  mixins: [togglePasswordVisibility, alertMessageMixin],
   data() {
     return {
-      userEmail: '',
+      email: '',
       password: '',
       status: '',
       // validation rules
       required,
-      email,
+      validEmail: email,
     }
   },
   computed: {
@@ -202,6 +214,58 @@ export default {
       return this.passwordFieldType === 'password' ? 'EyeIcon' : 'EyeOffIcon'
     },
   },
+  methods: {
+    async validationForm() {
+      this.showAlertMessage = false;
+      this.errorMessage = "";
+
+      this.$refs.loginForm.validate().then(async (success) => {
+        if (success) {
+          try {
+            const response = await this.$http.post("/api/login", {
+              email: this.email,
+              password: this.password,
+              remember_me: this.status,
+            });
+
+            this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: "تم التسجيل بنجاح",
+                icon: "CheckCircleIcon",
+                variant: "success",
+              },
+            });
+            this.displayMessage({message: response.data.message, type: "success"});
+            useJwt.setToken(response.data.accessToken);
+            // useJwt.setRefreshToken(response.data.refreshToken)
+            // this.$ability.update(response.data.userData.ability)
+            this.$router.push("/");
+          } catch (error) {
+            let errorMessage = {
+            message: "",
+            type: "danger",
+          };
+          Object.values(errors).forEach((error) => {
+            errorMessage.message += `${error[0]}<br>`;
+          });
+            this.displayMessage(errorMessage);
+            this.$refs.loginForm.setErrors(error.response.data.errors ?? []);
+            this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: error.response.data.message,
+                text: error.response.data.message,
+                icon: "AlertCircleIcon",
+                variant: "danger",
+              },
+            });
+          }
+            return;
+        }
+      });
+    },
+  }
 }
 </script>
 

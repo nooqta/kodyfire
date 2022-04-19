@@ -19,6 +19,8 @@ export class Generator implements IGenerator {
   async generate(content: any): Promise<Tree> {
     this.input = content;
     this.technology.input = content;
+    this.technology.rootDir = content.rootDir || this.technology.rootDir;
+    console.log(content.rootDir);
     // for every concept in concepts list
     for (const [key] of this.technology.concepts) {
       for (const data of content[key]) {
