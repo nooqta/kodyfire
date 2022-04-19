@@ -1,0 +1,35 @@
+export default [
+    <%=#each route %>
+    // *===============================================---*
+    // *--------- <%= name %> -------------------------------*
+    // *===============================================---*
+    {
+      path: '/<%= name %>',
+      name: '<%= name %>-list',
+      component: () => import('@/views/modules/request/requests-list/<%=capitalize name %>List.vue'),
+      meta: {
+        pageTitle: '<%=capitalize name %>',
+        breadcrumb: [
+          {
+            text: '<%=capitalize name %>',
+            active: true,
+          },
+        ],
+      },
+    },
+    {
+        path: '/<%= name %>/:id',
+        name: '<%= name %>-view',
+        component: () => import('@/views/modules/request/<%= name %>-view/<%=capitalize name %>View.vue'),
+        meta: {
+          pageTitle: '<%=capitalize name %>',
+          breadcrumb: [
+            {
+              text: '<%=capitalize name %>',
+              active: true,
+            },
+          ],
+        },
+      },
+      <%=/each %>
+]

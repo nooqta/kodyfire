@@ -1,0 +1,57 @@
+{
+  "name": "Vue",
+  "version": "1.0.0",
+  "rootDir": "vuexy-kodyfire",
+  "concepts": [
+    {
+      "name": "page",
+      "outputDir": "views",
+      "template": {
+        "path": "templates/views/pages",
+        "options": ["page.vue.template"]
+      }
+    },
+    {
+      "name": "authPage",
+      "outputDir": "views/auth",
+      "template": {
+        "path": "templates/views/pages/auth"
+      }
+    },
+    {
+      "name": "asset",
+      "outputDir": "",
+      "template": {
+        "path": "templates"
+      }
+    },
+    {
+      "name": "module",
+      "outputDir": "/views/modules",
+      "template": {
+        "path": "templates/views/modules"
+      }
+    },
+    {
+      "name": "navigation",
+      "outputDir": "navigation",
+      "template": {
+        "path": "templates/navigation"
+      }
+    },
+    {
+      "name": "router",
+      "outputDir": "router",
+      "template": {
+        "path": "templates/router"
+      }
+    },
+    {
+      "name": "route",
+      "outputDir": "router/routes",
+      "template": {
+        "path": "templates/router/routes"
+      }
+    }
+  ]
+}

@@ -33,4 +33,4 @@ target/
 .kody
 dist
 .env
-*-kodyfire
+lerna-debug.log
