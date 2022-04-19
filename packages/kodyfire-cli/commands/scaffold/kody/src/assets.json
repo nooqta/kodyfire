@@ -1,0 +1,13 @@
+{
+  "name": "Kodyfire",
+  "version": "1.0.0",
+  "rootDir": "blank-kodyfire",
+  "concepts": [
+    {
+      "name": "scaffold",
+      "template": {
+        "path": "templates"
+      }
+    }
+  ]
+}

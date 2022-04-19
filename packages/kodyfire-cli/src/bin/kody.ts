@@ -15,7 +15,12 @@ const glob = require('glob'),
 
 program.version('0.0.1', '-v, --version', 'output the current version');
 glob
-  .sync(`${path.resolve(process.mainModule?.path, '../..')}/commands/**/*.js`)
+  .sync(
+    `${path.resolve(
+      process.mainModule?.path,
+      '../..'
+    )}/commands/{list,publish,push,run,scaffold,serve}/index.js`
+  )
   .forEach(function (file: any) {
     const cmd = require(path.resolve(file));
     cmd(program);

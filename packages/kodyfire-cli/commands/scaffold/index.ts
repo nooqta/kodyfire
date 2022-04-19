@@ -1,6 +1,9 @@
 'use strict';
 import { NodeWorkflow } from '@angular-devkit/schematics/tools';
 import { UnsuccessfulWorkflowExecution } from '@angular-devkit/schematics';
+import { Kody } from './kody';
+import * as input from './data.json';
+
 const chalk = require('chalk');
 const { Command } = require('commander');
 const { join } = require('path');
@@ -24,7 +27,16 @@ function parseSchematicName(_arg: any): {
   return { collection, schematic, currentPath };
 }
 
-async function action(args: any): Promise<0 | 1> {
+async function action(args: any): Promise<void> {
+  const kody = new Kody(args);
+
+  // parse source
+  const data = kody.parse(input);
+  const output = await kody.generate(data);
+  return output;
+}
+//@ts-ignore
+async function action1(args: any): Promise<0 | 1> {
   const {
     collection: collectionName,
     schematic: schematicName,
