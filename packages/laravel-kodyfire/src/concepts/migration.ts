@@ -15,6 +15,13 @@ export class Migration extends Concept {
 
   initEngine() {
     this.engine = new Engine();
+    this.engine.builder.registerHelper('hasId', (value: any) => {
+      console.log(value);
+      return value.includes('_id');
+    });
+    this.engine.builder.registerHelper('options', (value: any) => {
+      return this.getCommonOptions(value);
+    });
   }
   setModel(_data: any) {
     // @todo find a better way to get the model
@@ -34,12 +41,13 @@ export class Migration extends Concept {
     const template = await this.engine.read(this.template.path, _data.template);
     this.model.className = this.getClassName(this.model.name);
     this.model.table = this.getMigrationName(this.model.name);
-    this.model.attributes = this.getMigrationAttributes(this.model);
+    this.model.fields = await this.getFields(this.model);
+    this.model.attributes = await this.getMigrationAttributes(this.model);
     const compiled = await this.engine.compile(template, this.model);
     await this.engine.createOrOverwrite(
       this.technology.rootDir,
       this.outputDir,
-      this.getFilename(this.model.name),
+      this.getFilename(this.model),
       compiled
     );
   }
@@ -52,7 +60,8 @@ export class Migration extends Concept {
     } while (!afterXms.isSame(now));
   }
 
-  getFilename(name: any) {
+  getFilename(model: any) {
+    if (model.filename) return model.filename;
     const date = new Date();
     const m = date.getMonth();
     const d = date.getDate();
@@ -61,7 +70,7 @@ export class Migration extends Concept {
     this.wait(1000);
     const ms = moment(date).add(300, 'milliseconds').toDate().getMilliseconds();
     return `${y}_${m}_${d}_${s}${ms}_create_${strings.dasherize(
-      pluralize(name)
+      pluralize(model.name)
     )}_table.php`;
   }
 
@@ -78,34 +87,12 @@ export class Migration extends Concept {
     });
   }
 
-  getMigrationAttributes(model: any) {
+  async getMigrationAttributes(model: any) {
     let data = '';
-    model.fields.forEach((el: any) => {
-      if (el.name.includes('_id')) {
-        data += `$table->unsignedBigInteger('${
-          el.name
-        }')${this.getCommonOptions(el)};\n`;
-      } else {
-        if (el.type == 'enum') {
-          data += `$table->${el.type}('${el.name}', ${JSON.stringify(
-            el.arguments
-          )})${this.getCommonOptions(el)};\n`;
-          // data += `$table->${el.type}('${el.name}',collect(config('${name}.${el.config}'))->pluck('value')->toArray())${this.getCommonOptions(el)};\n`
-          // $table->enum('diploma', config('tanmiah.diplomas'))->nullable();
-        } else if (el.type == 'decimal') {
-          data += `$table->${el.type}('${el.name}', ${el.arguments.join(
-            ', '
-          )})${this.getCommonOptions(el)};\n`;
-        } else {
-          data += `$table->${el.type}('${el.name}')${this.getCommonOptions(
-            el
-          )};\n`;
-        }
-      }
-    });
+    data += await this.getFields(model);
 
     model.foreign_keys.forEach((el: any) => {
-      data += `$table->foreign('${el.column}')->references('${
+      data += `$table->foreignId('${el.column}')->references('${
         el.references
       }')->on('${el.on}')${this.getCascade(el)};\n`;
     });
@@ -119,6 +106,38 @@ export class Migration extends Concept {
     }
 
     return data;
+  }
+  async getFields(model: any) {
+    // model.fields.forEach((el: any) => {
+    //   if (el.name.includes('_id')) {
+    //     data += `$table->unsignedBigInteger('${
+    //       el.name
+    //     }')${this.getCommonOptions(el)};\n`;
+    //   } else {
+    //     if (el.type == 'enum') {
+    //       data += `$table->${el.type}('${el.name}', ${JSON.stringify(
+    //         el.arguments
+    //       )})${this.getCommonOptions(el)};\n`;
+    //       // data += `$table->${el.type}('${el.name}',collect(config('${name}.${el.config}'))->pluck('value')->toArray())${this.getCommonOptions(el)};\n`
+    //       // $table->enum('diploma', config('tanmiah.diplomas'))->nullable();
+    //     } else if (el.type == 'decimal') {
+    //       data += `$table->${el.type}('${el.name}', ${el.arguments.join(
+    //         ', '
+    //       )})${this.getCommonOptions(el)};\n`;
+    //     } else {
+    //       data += `$table->${el.type}('${el.name}')${this.getCommonOptions(
+    //         el
+    //       )};\n`;
+    //     }
+    //   }
+    // });
+    const template = await this.engine.read(
+      this.template.path,
+      'migration/fields.template'
+    );
+
+    const compiled = await this.engine.compile(template, model);
+    return compiled;
   }
 
   getCommonOptions(field: any) {

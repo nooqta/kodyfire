@@ -13,6 +13,12 @@ export class Engine {
     this.builder.registerHelper('lowercase', (value: any) => {
       return value.toLowerCase();
     });
+    this.builder.registerHelper('stringify', (value: any) => {
+      return JSON.stringify(value);
+    });
+    this.builder.registerHelper('join', (value: any) => {
+      return value.join(', ');
+    });
     this.builder.registerHelper(
       'ifEquals',
       function (
@@ -24,6 +30,10 @@ export class Engine {
         return arg1 == arg2 ? options.fn(this) : options.inverse(this);
       }
     );
+    this.builder.registerHelper('equals', function (arg1: any, arg2: any) {
+      /* @ts-ignore */
+      return arg1 == arg2;
+    });
     for (const key in strings) {
       this.builder.registerHelper(key, (value: any) => {
         /* @ts-ignore */

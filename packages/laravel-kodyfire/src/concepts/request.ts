@@ -36,6 +36,7 @@ export class Request implements IConcept {
   async generate(_data: any) {
     this.setModel(_data);
     this.engine = new Engine();
+    console.log(_data.model);
     _data.relationships = this.model.relationships;
     _data.controller = this.model.controller;
     _data.fields = this.model.fields;
