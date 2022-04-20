@@ -1,6 +1,8 @@
 export const alertMessageMixin = {
     data() {
         return {
+            showAlertMessage: false,
+            errorMessage: "",
             showMessage: false,
             messageType: "success",
             message: "",

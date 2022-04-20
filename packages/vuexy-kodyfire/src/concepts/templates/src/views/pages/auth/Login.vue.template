@@ -31,7 +31,6 @@
         <!-- form -->
         <validation-observer
           ref="loginForm"
-          #default="{invalid}"
         >
           <b-form
             class="auth-login-form mt-2"
@@ -115,8 +114,8 @@
             <b-button
               variant="primary"
               type="submit"
+              @click="validationForm"
               block
-              :disabled="invalid"
             >
               تسجيل الدخول
             </b-button>
@@ -175,7 +174,7 @@ import {
   BButton, BAlert, BForm, BFormInput, BFormGroup, BCard, BLink, BCardTitle, BCardText, BInputGroup, BInputGroupAppend, BFormCheckbox,
 } from 'bootstrap-vue'
 import VuexyLogo from '@core/layouts/components/Logo.vue'
-import { required, email } from '@validations'
+import { required, validEmail } from '@validations'
 import { togglePasswordVisibility } from '@core/mixins/ui/forms'
 import { alertMessageMixin } from "@core/mixins/ui/feedback";
 
@@ -206,7 +205,7 @@ export default {
       status: '',
       // validation rules
       required,
-      validEmail: email,
+      validEmail,
     }
   },
   computed: {

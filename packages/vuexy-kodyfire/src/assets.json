@@ -5,7 +5,7 @@
   "concepts": [
     {
       "name": "page",
-      "outputDir": "views",
+      "outputDir": "src/views",
       "template": {
         "path": "templates/src/views/pages",
         "options": ["page.vue.template"]
@@ -13,7 +13,7 @@
     },
     {
       "name": "authPage",
-      "outputDir": "views/auth",
+      "outputDir": "src/views/auth",
       "template": {
         "path": "templates/src/views/pages/auth"
       }
@@ -27,28 +27,28 @@
     },
     {
       "name": "module",
-      "outputDir": "views/modules",
+      "outputDir": "src/views/modules",
       "template": {
         "path": "templates/src/views/modules"
       }
     },
     {
       "name": "navigation",
-      "outputDir": "navigation",
+      "outputDir": "src/navigation",
       "template": {
         "path": "templates/src/navigation"
       }
     },
     {
       "name": "router",
-      "outputDir": "router",
+      "outputDir": "src/router",
       "template": {
         "path": "templates/src/router"
       }
     },
     {
       "name": "route",
-      "outputDir": "router/routes",
+      "outputDir": "src/router/routes",
       "template": {
         "path": "templates/src/router/routes"
       }

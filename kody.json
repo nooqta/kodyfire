@@ -89,6 +89,23 @@
       "path": "src/@core/mixins/ui",
       "filename": "feedback.js",
       "template": "src/@core/mixins/ui/feedback.js.template"
+    },
+    {
+      "path": "public",
+      "filename": "index.html",
+      "template": "public/index.html.template",
+      "data": {
+        "title": "InvoiceGo",
+        "BASE_URL": "<%= BASE_URL %>"
+      }
+    },
+    {
+      "path": "src/@core/scss/base/bootstrap-extended",
+      "filename": "_variables.scss",
+      "template": "src/@core/scss/base/bootstrap-extended/_variables.scss.template",
+      "data": {
+        "fontFamily": "'Readex Pro', sans-serif"
+      }
     }
   ],
   "module": [
