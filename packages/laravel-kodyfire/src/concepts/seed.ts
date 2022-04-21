@@ -19,7 +19,7 @@ export class Seed extends Concept {
     });
 
     this.engine.builder.registerHelper('class', () => {
-      return `${strings.classify(_data.model)}`;
+      return `${pluralize(strings.classify(_data.model))}TableSeeder`;
     });
 
     this.engine.builder.registerHelper('namespace', () => {

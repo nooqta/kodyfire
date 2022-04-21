@@ -251,9 +251,9 @@ public function ${action.name}(Request  $request) {
 
   deleteAttachments(model: any): string {
     let attachmentsToDelete = '';
-    if (model.fields.filter((e: any) => e.extra_type == 'file').length > 0) {
+    if (model.fields.filter((e: any) => e.faker_type == 'file').length > 0) {
       model.fields.forEach((element: any) => {
-        if (element.extra_type == 'file') {
+        if (element.faker_type == 'file') {
           attachmentsToDelete += `
                   if($${model.name.toLowerCase()}->${element.name}){
                       $fileuri = str_replace('/storage', '', $${model.name.toLowerCase()}->${
@@ -269,7 +269,7 @@ public function ${action.name}(Request  $request) {
 
   deleteManyAttachments(model: any): string {
     let attachmentsToDelete = '';
-    if (model.fields.filter((e: any) => e.extra_type == 'file').length > 0) {
+    if (model.fields.filter((e: any) => e.faker_type == 'file').length > 0) {
       attachmentsToDelete = `
           foreach ($ids as $id) {
             $${model.name.toLowerCase()} = ${model.name}::find($id);

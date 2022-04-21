@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\V1\AuthController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
@@ -28,7 +29,7 @@ Route::group(['middleware' => config('fortify.middleware', ['web']), 'prefix' =>
     $limiter = config('fortify.limiters.login');
     $twoFactorLimiter = config('fortify.limiters.two-factor');
 
-    Route::post('/login', [AuthenticatedSessionController::class, 'store'])
+    Route::post('/login', [AuthController::class, 'login'])
         ->middleware(array_filter([
             'guest',
             $limiter ? 'throttle:'.$limiter : null,
@@ -44,7 +45,7 @@ Route::group(['middleware' => config('fortify.middleware', ['web']), 'prefix' =>
             ->middleware(['guest'])
             ->name('auth.password.email');
 
-        Route::post('/reset-password', [NewPasswordController::class, 'store'])
+        Route::post('/reset-password', [AuthController::class, 'resetPassword'])
             ->middleware(['guest'])
             ->name('auth.password.reset');
     }
@@ -52,7 +53,7 @@ Route::group(['middleware' => config('fortify.middleware', ['web']), 'prefix' =>
     // Registration...
     if (Features::enabled(Features::registration())) {
 
-        Route::post('/register', [RegisteredUserController::class, 'store'])
+        Route::post('/register', [AuthController::class, 'register'])
             ->middleware(['guest']);
     }
 

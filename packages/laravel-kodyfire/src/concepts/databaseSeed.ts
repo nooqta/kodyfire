@@ -39,11 +39,11 @@ export class DatabaseSeed extends Concept {
   }
 
   getFilename() {
-    return `DatabaseTableSeeder.php`;
+    return `DatabaseSeeder.php`;
   }
 
   getSeedsList(models: any[], has_roles: boolean) {
-    let seeds = has_roles ? `$this->call(RolesTableSeeder::class);\n` : '';
+    let seeds = has_roles ? `// $this->call(RolesTableSeeder::class);\n` : '';
     if (typeof models.find((el: any) => el.name === 'Country') != 'undefined') {
       seeds += `$this->call(CountriesTableSeeder::class);\n`;
     }

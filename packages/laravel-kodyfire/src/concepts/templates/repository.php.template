@@ -9,7 +9,7 @@
       use App\Storage\DataBag;
       use Illuminate\Support\Facades\Storage;
       
-      class {{name}}Repository extends Repository {
+      class {{name}}Repository {
       
           public function create(DataBag $dataBag) {
               $data = $dataBag->get('data');

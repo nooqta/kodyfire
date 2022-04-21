@@ -3,6 +3,7 @@
 namespace {{ factoryNamespace }};
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+{{ imports }}
 
 class {{ factory }}Factory extends Factory
 {

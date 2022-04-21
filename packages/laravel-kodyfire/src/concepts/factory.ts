@@ -16,6 +16,10 @@ export class Factory extends Concept {
       return _data.model;
     });
 
+    this.engine.builder.registerHelper('imports', () => {
+      return this.getImports();
+    });
+
     this.engine.builder.registerHelper('model', () => {
       return _data.model;
     });
@@ -23,6 +27,17 @@ export class Factory extends Concept {
     this.engine.builder.registerHelper('factoryNamespace', () => {
       return _data.namespace;
     });
+  }
+  getImports() {
+    let data = '';
+    data += `use Faker\\Generator as Faker;\n`;
+    data += `use App\\Models\\${this.model.name};\n`;
+    this.model.relationships.forEach((el: any) => {
+      if (el.type == 'belongsTo') {
+        data += `use App\\Models\\${el.model};\n`;
+      }
+    });
+    return data;
   }
   setModel(_data: any) {
     // @todo find a better way to get the model
@@ -54,6 +69,12 @@ export class Factory extends Concept {
       data += `'${el.name}' => ${this.generateFaker(el)},\n`;
     });
 
+    // @todo add relations
+    model.foreign_keys.forEach((el: any) => {
+      el.name = el.column;
+      data += `'${el.column}' => ${this.generateFaker(el)},\n`;
+    });
+
     if (model.isMorph) {
       data += `'${model.name.toLowerCase()}able_id' => 1,
             '${model.name.toLowerCase()}able_type' => 'App\\Models\\${
@@ -70,23 +91,23 @@ export class Factory extends Concept {
         return `'${el.arguments[0]}'`;
       }
       if (
-        el.extra_type == 'file' ||
-        el.extra_type == 'image' ||
-        el.extra_type == 'video'
+        el.faker_type == 'file' ||
+        el.faker_type == 'image' ||
+        el.faker_type == 'video'
       ) {
         return `${faker}->url()`;
       }
-      if (el.extra_type != 'password') {
+      if (el.faker_type != 'password') {
         if (el.options.includes('unique')) {
-          return `${faker}->unique()->${el.extra_type}`;
+          return `${faker}->unique()->${el.faker_type}`;
         } else {
-          return `${faker}->${el.extra_type}`;
+          return `${faker}->${el.faker_type}`;
         }
       } else {
         return `bcrypt('password')`;
       }
     } else {
-      return 1;
+      return `${el.model}::factory()`;
     }
   }
 }

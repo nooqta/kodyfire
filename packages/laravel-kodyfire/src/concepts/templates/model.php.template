@@ -10,7 +10,7 @@ class {{name}} extends Model
 
     protected $fillable = {{{ fillable }}};
 
-    protected $hidden = [{{hidden}}];
+    protected $hidden = [{{{hidden}}}];
 
     {{{relations}}}
 

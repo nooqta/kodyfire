@@ -16,7 +16,6 @@ export class Migration extends Concept {
   initEngine() {
     this.engine = new Engine();
     this.engine.builder.registerHelper('hasId', (value: any) => {
-      console.log(value);
       return value.includes('_id');
     });
     this.engine.builder.registerHelper('options', (value: any) => {
@@ -41,7 +40,7 @@ export class Migration extends Concept {
     const template = await this.engine.read(this.template.path, _data.template);
     this.model.className = this.getClassName(this.model.name);
     this.model.table = this.getMigrationName(this.model.name);
-    this.model.fields = await this.getFields(this.model);
+    this.model._fields = await this.getFields(this.model);
     this.model.attributes = await this.getMigrationAttributes(this.model);
     const compiled = await this.engine.compile(template, this.model);
     await this.engine.createOrOverwrite(
@@ -89,7 +88,7 @@ export class Migration extends Concept {
 
   async getMigrationAttributes(model: any) {
     let data = '';
-    data += await this.getFields(model);
+    // data += await this.getFields(model);
 
     model.foreign_keys.forEach((el: any) => {
       data += `$table->foreignId('${el.column}')->references('${
@@ -108,29 +107,6 @@ export class Migration extends Concept {
     return data;
   }
   async getFields(model: any) {
-    // model.fields.forEach((el: any) => {
-    //   if (el.name.includes('_id')) {
-    //     data += `$table->unsignedBigInteger('${
-    //       el.name
-    //     }')${this.getCommonOptions(el)};\n`;
-    //   } else {
-    //     if (el.type == 'enum') {
-    //       data += `$table->${el.type}('${el.name}', ${JSON.stringify(
-    //         el.arguments
-    //       )})${this.getCommonOptions(el)};\n`;
-    //       // data += `$table->${el.type}('${el.name}',collect(config('${name}.${el.config}'))->pluck('value')->toArray())${this.getCommonOptions(el)};\n`
-    //       // $table->enum('diploma', config('tanmiah.diplomas'))->nullable();
-    //     } else if (el.type == 'decimal') {
-    //       data += `$table->${el.type}('${el.name}', ${el.arguments.join(
-    //         ', '
-    //       )})${this.getCommonOptions(el)};\n`;
-    //     } else {
-    //       data += `$table->${el.type}('${el.name}')${this.getCommonOptions(
-    //         el
-    //       )};\n`;
-    //     }
-    //   }
-    // });
     const template = await this.engine.read(
       this.template.path,
       'migration/fields.template'

@@ -13,7 +13,7 @@ export class Api extends Concept {
     this.engine = new Engine();
 
     this.engine.builder.registerHelper('namespaces', () => {
-      return this.getNameSpaces(this.technology.input.model);
+      return this.getNameSpaces(this.technology.input.controller);
     });
 
     this.engine.builder.registerHelper('routes', () => {
@@ -164,12 +164,10 @@ ${this.getRoutesList(el, models)}
     return type;
   }
 
-  getNameSpaces(models: any[]) {
+  getNameSpaces(controllers: any[]) {
     let imports = '';
-    models.forEach((el: any) => {
-      if (el.hasController) {
-        imports += `use App\\Http\\Controllers\\API\\V1\\${el.name}Controller;\n`;
-      }
+    controllers.forEach((el: any) => {
+      imports += `use ${el.namespace}\\${el.model}Controller;\n`;
     });
 
     return imports;

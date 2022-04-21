@@ -1,0 +1,1532 @@
+{
+  "project": "invoice-go-backend",
+  "name": "laravel",
+  "rootDir": "./../invoice-go/backend/",
+  "kernel": [
+    {
+      "template": "kernel.php.template"
+    }
+  ],
+  "databag": [
+    {
+      "template": "databag.php.template"
+    }
+  ],
+  "dependency": [
+    {
+      "template": "bash.template",
+      "install": "andreaselia/laravel-api-to-postman",
+      "commands": [
+        "php artisan vendor:publish --provider='AndreasElia\\PostmanGenerator\\PostmanGeneratorServiceProvider' --tag='postman-config'",
+        "php artisan export:postman"
+      ],
+      "middleware": []
+    }
+  ],
+  "config": [
+    {
+      "key": "spa_url",
+      "value": "env('SPA_URL', 'http://localhost:3000')"
+    }
+  ],
+  "roles": ["admin", "company"],
+  "api": [
+    {
+      "template": "api.php.template"
+    }
+  ],
+  "web": [
+    {
+      "template": "web.php.template"
+    }
+  ],
+  "auth": [
+    {
+      "template": "fortify.php.template"
+    },
+    {
+      "template": "sanctum.php.template"
+    },
+    {
+      "template": "cors.php.template"
+    },
+    {
+      "template": "app.php.template"
+    },
+    {
+      "template": "auth.php.template"
+    },
+    {
+      "template": "config.php.template"
+    },
+    {
+      "template": "provider.php.template"
+    },
+    {
+      "template": "reset.php.template"
+    },
+    {
+      "template": "redirectifauthenticated.php.template"
+    }
+  ],
+  "factory": [
+    {
+      "model": "Company",
+      "template": "factory.php.template",
+      "namespace": "Database\\Factories"
+    },
+    {
+      "model": "User",
+      "template": "factory.php.template",
+      "namespace": "Database\\Factories"
+    },
+    {
+      "model": "Address",
+      "template": "factory.php.template",
+      "namespace": "Database\\Factories"
+    },
+    {
+      "model": "Subscription",
+      "template": "factory.php.template",
+      "namespace": "Database\\Factories"
+    },
+    {
+      "model": "CompanySubscription",
+      "template": "factory.php.template",
+      "namespace": "Database\\Factories"
+    },
+    {
+      "model": "Customer",
+      "template": "factory.php.template",
+      "namespace": "Database\\Factories"
+    },
+    {
+      "model": "InvoiceTemplate",
+      "template": "factory.php.template",
+      "namespace": "Database\\Factories"
+    },
+    {
+      "model": "Invoice",
+      "template": "factory.php.template",
+      "namespace": "Database\\Factories"
+    },
+    {
+      "model": "InvoiceAttachment",
+      "template": "factory.php.template",
+      "namespace": "Database\\Factories"
+    },
+    {
+      "model": "Item",
+      "template": "factory.php.template",
+      "namespace": "Database\\Factories"
+    },
+    {
+      "model": "InvoiceItem",
+      "template": "factory.php.template",
+      "namespace": "Database\\Factories"
+    }
+  ],
+  "seed": [
+    {
+      "model": "Company",
+      "template": "seed.php.template",
+      "namespace": "Database\\Seeders"
+    },
+    {
+      "model": "User",
+      "template": "seed.php.template",
+      "namespace": "Database\\Seeders"
+    },
+    {
+      "model": "Address",
+      "template": "seed.php.template",
+      "namespace": "Database\\Seeders"
+    },
+    {
+      "model": "Subscription",
+      "template": "seed.php.template",
+      "namespace": "Database\\Seeders"
+    },
+    {
+      "model": "CompanySubscription",
+      "template": "seed.php.template",
+      "namespace": "Database\\Seeders"
+    },
+    {
+      "model": "Customer",
+      "template": "seed.php.template",
+      "namespace": "Database\\Seeders"
+    },
+    {
+      "model": "InvoiceTemplate",
+      "template": "seed.php.template",
+      "namespace": "Database\\Seeders"
+    },
+    {
+      "model": "Invoice",
+      "template": "seed.php.template",
+      "namespace": "Database\\Seeders"
+    },
+    {
+      "model": "InvoiceAttachment",
+      "template": "seed.php.template",
+      "namespace": "Database\\Seeders"
+    },
+    {
+      "model": "Item",
+      "template": "seed.php.template",
+      "namespace": "Database\\Seeders"
+    },
+    {
+      "model": "InvoiceItem",
+      "template": "seed.php.template",
+      "namespace": "Database\\Seeders"
+    }
+  ],
+  "databaseSeed": [
+    {
+      "template": "databaseSeed.php.template"
+    }
+  ],
+  "repository": [
+    {
+      "model": "Company",
+      "template": "repository.php.template"
+    },
+    {
+      "model": "User",
+      "template": "repository.php.template"
+    },
+    {
+      "model": "Address",
+      "template": "repository.php.template"
+    },
+    {
+      "model": "InvoiceTemplate",
+      "template": "repository.php.template"
+    },
+    {
+      "model": "Invoice",
+      "template": "repository.php.template"
+    },
+    {
+      "model": "InvoiceAttachment",
+      "template": "repository.php.template"
+    },
+    {
+      "model": "Item",
+      "template": "repository.php.template"
+    },
+    {
+      "model": "InvoiceItem",
+      "template": "repository.php.template"
+    },
+    {
+      "model": "Customer",
+      "template": "repository.php.template"
+    },
+    {
+      "model": "Subscription",
+      "template": "repository.php.template"
+    },
+    {
+      "model": "CompanySubscription",
+      "template": "repository.php.template"
+    }
+  ],
+  "migration": [
+    {
+      "model": "User",
+      "template": "migration.php.template"
+    }
+  ],
+  "_migration": [
+    {
+      "model": "Company",
+      "template": "migration.php.template"
+    },
+    {
+      "model": "User",
+      "template": "migration.php.template"
+    },
+    {
+      "model": "Address",
+      "template": "migration.php.template"
+    },
+    {
+      "model": "Customer",
+      "template": "migration.php.template"
+    },
+    {
+      "model": "InvoiceTemplate",
+      "template": "migration.php.template"
+    },
+    {
+      "model": "Invoice",
+      "template": "migration.php.template"
+    },
+    {
+      "model": "InvoiceAttachment",
+      "template": "migration.php.template"
+    },
+    {
+      "model": "Item",
+      "template": "migration.php.template"
+    },
+    {
+      "model": "InvoiceItem",
+      "template": "migration.php.template"
+    },
+    {
+      "model": "Subscription",
+      "template": "migration.php.template"
+    },
+    {
+      "model": "CompanySubscription",
+      "template": "migration.php.template"
+    }
+  ],
+  "model": [
+    {
+      "name": "Company",
+      "namespace": "App\\Models",
+      "filename": "2014_3_17_1650207999106406_create_companies_table.php",
+      "template": "model.php.template",
+      "softDelete": false,
+      "relationships": [
+        {
+          "name": "user",
+          "type": "hasOne",
+          "model": "User"
+        },
+        {
+          "name": "address",
+          "type": "hasOne",
+          "model": "Address"
+        }
+      ],
+      "controller": {
+        "routeType": "detailed",
+        "middleware": [],
+        "actions": [
+          {
+            "name": "getAll",
+            "type": "index",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "get",
+            "type": "show",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "create",
+            "type": "store",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "update",
+            "type": "update",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "delete",
+            "type": "destroy",
+            "middleware": "['auth:sanctum', 'role:company']"
+          }
+        ]
+      },
+      "fields": [
+        {
+          "name": "name",
+          "type": "string",
+          "arguments": [],
+          "options": [],
+          "faker_type": "company"
+        },
+        {
+          "name": "phone",
+          "type": "string",
+          "arguments": [],
+          "options": [],
+          "faker_type": "phoneNumber"
+        },
+        {
+          "name": "email",
+          "type": "string",
+          "arguments": [],
+          "options": [],
+          "faker_type": "email"
+        },
+        {
+          "name": "logo",
+          "type": "string",
+          "arguments": [],
+          "options": [],
+          "faker_type": "imageUrl"
+        },
+        {
+          "name": "vat",
+          "type": "string",
+          "arguments": [],
+          "options": [],
+          "faker_type": "randomNumber(5, true)"
+        },
+        {
+          "name": "cr",
+          "type": "string",
+          "arguments": [],
+          "options": [],
+          "faker_type": "companyIdNumber()"
+        }
+      ],
+      "foreign_keys": [],
+      "fillable": ["name", "phone", "email", "logo", "vat", "cr"]
+    },
+    {
+      "namespace": "App\\Models",
+      "name": "User",
+      "filename": "2014_3_17_1650207999119419_create_users_table.php",
+      "template": "user_model.php.template",
+      "softDelete": false,
+      "relationships": [
+        {
+          "name": "company",
+          "type": "belongsTo",
+          "model": "Company"
+        }
+      ],
+      "controller": {
+        "routeType": "detailed",
+        "middleware": [],
+        "actions": [
+          {
+            "name": "getAll",
+            "type": "index",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "get",
+            "type": "show",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "create",
+            "type": "store",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "update",
+            "type": "update",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "delete",
+            "type": "destroy",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          }
+        ]
+      },
+      "fields": [
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "name",
+          "faker_type": "name"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "phone",
+          "faker_type": "phoneNumber"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "email",
+          "faker_type": "email"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "isHidden": true,
+          "name": "password",
+          "faker_type": "password"
+        },
+        {
+          "arguments": ["active", "inactive"],
+          "options": [
+            {
+              "key": "default",
+              "value": "active"
+            }
+          ],
+          "type": "enum",
+          "name": "status",
+          "faker_type": ""
+        }
+      ],
+      "foreign_keys": [
+        {
+          "model": "Company",
+          "column": "company_id",
+          "references": "id",
+          "on": "companies",
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
+        }
+      ],
+      "fillable": ["name", "phone", "email", "password", "company_id"]
+    },
+    {
+      "namespace": "App\\Models",
+      "name": "Address",
+      "template": "model.php.template",
+      "softDelete": false,
+      "fields": [
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "building_number",
+          "faker_type": "buildingNumber"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "street",
+          "faker_type": "streetAddress"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "second_number",
+          "faker_type": "secondaryAddress"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "district",
+          "faker_type": "subdivision"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "postal_code",
+          "faker_type": "postcode"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "city",
+          "faker_type": "city"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "region",
+          "faker_type": "governorate"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "country",
+          "faker_type": "country"
+        }
+      ],
+      "relationships": [
+        {
+          "name": "company",
+          "type": "belongsTo",
+          "model": "Company"
+        }
+      ],
+      "controller": {
+        "routeType": "detailed",
+        "middleware": [],
+        "actions": [
+          {
+            "name": "getAll",
+            "type": "index",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "get",
+            "type": "show",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "create",
+            "type": "store",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "update",
+            "type": "update",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "delete",
+            "type": "destroy",
+            "middleware": "['auth:sanctum', 'role:company']"
+          }
+        ]
+      },
+      "foreign_keys": [
+        {
+          "model": "Company",
+          "column": "company_id",
+          "references": "id",
+          "on": "companies",
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
+        }
+      ],
+      "fillable": [
+        "building_number",
+        "street",
+        "second_number",
+        "district",
+        "postal_code",
+        "city",
+        "region",
+        "country"
+      ]
+    },
+    {
+      "namespace": "App\\Models",
+      "name": "Customer",
+      "template": "model.php.template",
+      "softDelete": false,
+      "fields": [
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "name",
+          "faker_type": "name"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "display_name",
+          "faker_type": "name"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "phone",
+          "faker_type": "phoneNumber"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "email",
+          "faker_type": "email"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "tax_number",
+          "faker_type": "randomNumber(5, true)"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "address",
+          "faker_type": "address"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "supply_place",
+          "faker_type": "address"
+        }
+      ],
+      "relationships": [
+        {
+          "name": "company",
+          "type": "belongsTo",
+          "model": "Company"
+        }
+      ],
+      "controller": {
+        "routeType": "detailed",
+        "middleware": [],
+        "actions": [
+          {
+            "name": "getAll",
+            "type": "index",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "get",
+            "type": "show",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "create",
+            "type": "store",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "update",
+            "type": "update",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "delete",
+            "type": "destroy",
+            "middleware": "['auth:sanctum', 'role:company']"
+          }
+        ]
+      },
+      "foreign_keys": [
+        {
+          "model": "Company",
+          "column": "company_id",
+          "references": "id",
+          "on": "companies",
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
+        }
+      ],
+      "fillable": [
+        "name",
+        "display_name",
+        "phone",
+        "email",
+        "tax_number",
+        "address",
+        "supply_place",
+        "company_id"
+      ]
+    },
+    {
+      "namespace": "App\\Models",
+      "name": "Subscription",
+      "template": "model.php.template",
+      "softDelete": false,
+      "fields": [
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "name",
+          "faker_type": "name"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "integer",
+          "name": "duration",
+          "faker_type": "randomDigit"
+        },
+        {
+          "arguments": [12, 2],
+          "options": [],
+          "type": "decimal",
+          "name": "price",
+          "faker_type": "randomNumber"
+        }
+      ],
+      "relationships": [],
+      "controller": {
+        "routeType": "detailed",
+        "middleware": [],
+        "actions": [
+          {
+            "name": "getAll",
+            "type": "index",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "get",
+            "type": "show",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "create",
+            "type": "store",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "update",
+            "type": "update",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          },
+          {
+            "name": "delete",
+            "type": "destroy",
+            "middleware": "['auth:sanctum', 'role:admin']"
+          }
+        ]
+      },
+      "foreign_keys": [],
+      "fillable": ["name", "duration", "price"]
+    },
+    {
+      "namespace": "App\\Models",
+      "name": "CompanySubscription",
+      "template": "model.php.template",
+      "softDelete": false,
+      "fields": [
+        {
+          "arguments": [],
+          "options": [],
+          "type": "integer",
+          "name": "duration",
+          "faker_type": "randomDigit"
+        },
+        {
+          "arguments": [12, 2],
+          "options": [],
+          "type": "decimal",
+          "name": "price",
+          "faker_type": "randomNumber"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "datetime",
+          "name": "expires_at",
+          "faker_type": "dateTime"
+        }
+      ],
+      "relationships": [
+        {
+          "name": "subscription",
+          "type": "belongsTo",
+          "model": "Subscription"
+        },
+        {
+          "name": "company",
+          "type": "belongsTo",
+          "model": "Company"
+        }
+      ],
+      "controller": {
+        "routeType": "detailed",
+        "middleware": [],
+        "actions": [
+          {
+            "name": "getAll",
+            "type": "index",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "get",
+            "type": "show",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "create",
+            "type": "store",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "update",
+            "type": "update",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "delete",
+            "type": "destroy",
+            "middleware": "['auth:sanctum', 'role:company']"
+          }
+        ]
+      },
+      "foreign_keys": [
+        {
+          "model": "Subscription",
+          "column": "subscription_id",
+          "references": "id",
+          "on": "subscriptions",
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
+        },
+        {
+          "model": "Company",
+          "column": "company_id",
+          "references": "id",
+          "on": "companies",
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
+        }
+      ],
+      "fillable": [
+        "duration",
+        "price",
+        "expires_at",
+        "subscription_id",
+        "company_id"
+      ]
+    },
+    {
+      "namespace": "App\\Models",
+      "name": "InvoiceTemplate",
+      "template": "model.php.template",
+      "softDelete": false,
+      "fields": [
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "name",
+          "faker_type": "file"
+        }
+      ],
+      "relationships": [],
+      "controller": {
+        "routeType": "detailed",
+        "middleware": [],
+        "actions": [
+          {
+            "name": "getAll",
+            "type": "index",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "get",
+            "type": "show",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "create",
+            "type": "store",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "update",
+            "type": "update",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "delete",
+            "type": "destroy",
+            "middleware": "['auth:sanctum', 'role:company']"
+          }
+        ]
+      },
+      "foreign_keys": [],
+      "fillable": ["name", "model"]
+    },
+    {
+      "namespace": "App\\Models",
+      "name": "Invoice",
+      "template": "model.php.template",
+      "softDelete": false,
+      "fields": [
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "subject",
+          "faker_type": "randomNumber"
+        },
+        {
+          "arguments": [12, 2],
+          "options": [],
+          "type": "decimal",
+          "name": "subtotal",
+          "faker_type": "randomFloat"
+        },
+        {
+          "arguments": [12, 2],
+          "options": [],
+          "type": "string",
+          "name": "vat",
+          "faker_type": "randomNumber(5, true)"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "note",
+          "faker_type": "text"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "terms",
+          "faker_type": "text"
+        },
+        {
+          "arguments": ["type_1", "type_2"],
+          "options": [
+            {
+              "key": "default",
+              "value": "type_1"
+            }
+          ],
+          "type": "enum",
+          "name": "type",
+          "faker_type": "text"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "dateTime",
+          "name": "invoice_date",
+          "faker_type": "dateTime"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "dateTime",
+          "name": "supply_date",
+          "faker_type": "dateTime"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "dateTime",
+          "name": "due_date",
+          "faker_type": "dateTime"
+        },
+        {
+          "arguments": ["draft", "sent", "paid", "canceled"],
+          "options": [
+            {
+              "key": "default",
+              "value": "draft"
+            }
+          ],
+          "type": "enum",
+          "name": "status",
+          "faker_type": ""
+        }
+      ],
+      "relationships": [
+        {
+          "type": "belongsTo",
+          "name": "template",
+          "model": "InvoiceTemplate"
+        },
+        {
+          "type": "belongsTo",
+          "name": "company",
+          "model": "Company"
+        },
+        {
+          "type": "belongsTo",
+          "name": "customer",
+          "model": "Customer"
+        }
+      ],
+      "controller": {
+        "routeType": "detailed",
+        "middleware": [],
+        "actions": [
+          {
+            "name": "getAll",
+            "type": "index",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "get",
+            "type": "show",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "create",
+            "type": "store",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "update",
+            "type": "update",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "delete",
+            "type": "destroy",
+            "middleware": "['auth:sanctum', 'role:company']"
+          }
+        ]
+      },
+      "foreign_keys": [
+        {
+          "model": "InvoiceTemplate",
+          "column": "template_id",
+          "references": "id",
+          "on": "invoice_templates",
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
+        },
+        {
+          "model": "Company",
+          "column": "company_id",
+          "references": "id",
+          "on": "companies",
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
+        },
+        {
+          "model": "Customer",
+          "column": "customer_id",
+          "references": "id",
+          "on": "customers",
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
+        }
+      ],
+      "fillable": [
+        "subject",
+        "subtotal",
+        "vat",
+        "note",
+        "terms",
+        "invoice_date",
+        "supply_date",
+        "due_date",
+        "status",
+        "template_id",
+        "company_id",
+        "customer_id"
+      ]
+    },
+    {
+      "namespace": "App\\Models",
+      "name": "InvoiceAttachment",
+      "template": "model.php.template",
+      "softDelete": false,
+      "fields": [
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "name",
+          "faker_type": "file"
+        }
+      ],
+      "relationships": [
+        {
+          "type": "belongsTo",
+          "name": "invoice",
+          "model": "Invoice"
+        }
+      ],
+      "controller": {
+        "routeType": "detailed",
+        "middleware": [],
+        "actions": [
+          {
+            "name": "getAll",
+            "type": "index",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "get",
+            "type": "show",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "create",
+            "type": "store",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "update",
+            "type": "update",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "delete",
+            "type": "destroy",
+            "middleware": "['auth:sanctum', 'role:company']"
+          }
+        ]
+      },
+      "foreign_keys": [],
+      "fillable": ["name", "invoice_id"]
+    },
+    {
+      "namespace": "App\\Models",
+      "name": "Item",
+      "template": "model.php.template",
+      "softDelete": false,
+      "fields": [
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "name",
+          "faker_type": "name"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "text",
+          "name": "selling_price",
+          "faker_type": "randomFloat"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "mediumText",
+          "name": "description",
+          "faker_type": "text"
+        },
+        {
+          "arguments": [12, 2],
+          "options": [],
+          "type": "decimal",
+          "name": "tax",
+          "faker_type": "randomFloat"
+        },
+        {
+          "arguments": ["product", "service"],
+          "options": [
+            {
+              "key": "default",
+              "value": "product"
+            }
+          ],
+          "type": "enum",
+          "name": "type",
+          "faker_type": ""
+        }
+      ],
+      "relationships": [
+        {
+          "type": "belongsTo",
+          "name": "company",
+          "model": "Company"
+        }
+      ],
+      "controller": {
+        "routeType": "detailed",
+        "middleware": [],
+        "actions": [
+          {
+            "name": "getAll",
+            "type": "index",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "get",
+            "type": "show",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "create",
+            "type": "store",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "update",
+            "type": "update",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "delete",
+            "type": "destroy",
+            "middleware": "['auth:sanctum', 'role:company']"
+          }
+        ]
+      },
+      "foreign_keys": [],
+      "fillable": [
+        "name",
+        "selling_price",
+        "description",
+        "tax",
+        "type",
+        "company_id"
+      ]
+    },
+    {
+      "namespace": "App\\Models",
+      "name": "InvoiceItem",
+      "template": "model.php.template",
+      "softDelete": false,
+      "fields": [
+        {
+          "arguments": [],
+          "options": [],
+          "type": "text",
+          "name": "selling_price",
+          "faker_type": "randomFloat"
+        },
+        {
+          "arguments": [12, 2],
+          "options": [],
+          "type": "decimal",
+          "name": "tax",
+          "faker_type": "randomFloat"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "integer",
+          "name": "quantity",
+          "faker_type": "randomDigit"
+        },
+        {
+          "arguments": [12, 2],
+          "options": [],
+          "type": "decimal",
+          "name": "amount",
+          "faker_type": "randomFloat"
+        },
+        {
+          "arguments": [12, 2],
+          "options": [],
+          "type": "decimal",
+          "name": "discount",
+          "faker_type": "randomFloat"
+        }
+      ],
+      "relationships": [
+        {
+          "type": "belongsTo",
+          "name": "item",
+          "model": "Item"
+        },
+        {
+          "type": "belongsTo",
+          "name": "invoice",
+          "model": "Invoice"
+        }
+      ],
+      "controller": {
+        "routeType": "detailed",
+        "middleware": [],
+        "actions": [
+          {
+            "name": "getAll",
+            "type": "index",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "get",
+            "type": "show",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "create",
+            "type": "store",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "update",
+            "type": "update",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "delete",
+            "type": "destroy",
+            "middleware": "['auth:sanctum', 'role:company']"
+          }
+        ]
+      },
+      "foreign_keys": [],
+      "fillable": [
+        "name",
+        "selling_price",
+        "description",
+        "tax",
+        "type",
+        "company_id"
+      ]
+    }
+  ],
+  "controller": [
+    {
+      "model": "Company",
+      "template": "controller.php.template",
+      "namespace": "App\\Http\\Controllers\\API\\V1"
+    },
+    {
+      "model": "Customer",
+      "template": "controller.php.template",
+      "namespace": "App\\Http\\Controllers\\API\\V1"
+    },
+    {
+      "model": "User",
+      "template": "controller.php.template",
+      "namespace": "App\\Http\\Controllers\\API\\V1"
+    },
+    {
+      "model": "Address",
+      "template": "controller.php.template",
+      "namespace": "App\\Http\\Controllers\\API\\V1"
+    },
+    {
+      "model": "Subscription",
+      "template": "controller.php.template",
+      "namespace": "App\\Http\\Controllers\\API\\V1"
+    },
+    {
+      "model": "CompanySubscription",
+      "template": "controller.php.template",
+      "namespace": "App\\Http\\Controllers\\API\\V1"
+    },
+    {
+      "model": "InvoiceTemplate",
+      "template": "controller.php.template",
+      "namespace": "App\\Http\\Controllers\\API\\V1"
+    },
+    {
+      "model": "Invoice",
+      "template": "controller.php.template",
+      "namespace": "App\\Http\\Controllers\\API\\V1"
+    },
+    {
+      "model": "InvoiceAttachment",
+      "template": "controller.php.template",
+      "namespace": "App\\Http\\Controllers\\API\\V1"
+    },
+    {
+      "model": "Item",
+      "template": "controller.php.template",
+      "namespace": "App\\Http\\Controllers\\API\\V1"
+    },
+    {
+      "model": "InvoiceItem",
+      "template": "controller.php.template",
+      "namespace": "App\\Http\\Controllers\\API\\V1"
+    }
+  ],
+  "request": [
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "Company",
+      "prefix": "Update",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "Company",
+      "prefix": "Create",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "User",
+      "prefix": "Create",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "User",
+      "prefix": "Update",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "Customer",
+      "prefix": "Create",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "Customer",
+      "prefix": "Update",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "Address",
+      "prefix": "Create",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "Address",
+      "prefix": "Update",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "Invoice",
+      "prefix": "Create",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "Invoice",
+      "prefix": "Update",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "Item",
+      "prefix": "Create",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "Item",
+      "prefix": "Update",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "Subscription",
+      "prefix": "Create",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "Subscription",
+      "prefix": "Update",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "CompanySubscription",
+      "prefix": "Create",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "CompanySubscription",
+      "prefix": "Update",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "InvoiceTemplate",
+      "prefix": "Create",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "InvoiceTemplate",
+      "prefix": "Update",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "InvoiceAttachment",
+      "prefix": "Create",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "InvoiceAttachment",
+      "prefix": "Update",
+      "template": "request.php.template"
+    }
+  ]
+}

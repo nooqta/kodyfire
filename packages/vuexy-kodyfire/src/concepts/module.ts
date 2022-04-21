@@ -37,7 +37,6 @@ export class Module extends Concept {
     for (const file of folderContent) {
       const stat = await fs.lstat(join(filePath, file));
       if (stat.isFile()) {
-        console.log(file);
         const template = await this.engine.read(
           this.template.path,
           join(_data.templateFolder, file)
@@ -50,7 +49,6 @@ export class Module extends Concept {
           compiled
         );
       } else if (stat.isDirectory()) {
-        console.log(file);
         await this.generate({
           ..._data,
           templateFolder: join(_data.templateFolder, file),

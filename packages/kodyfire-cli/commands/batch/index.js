@@ -54,16 +54,23 @@ function action(args) {
         );
         process.exit(1);
       }
-      args.name =
-        JSON.parse(fs.readFileSync(args.source).toString()).name || '';
-      const { source } = args;
-      const workflow = new worklfow_1.CliWorkflow(source);
-      const runner = new kodyfire_core_1.Runner(
-        Object.assign(Object.assign({}, args), workflow)
-      );
-      const output = yield runner.run(args);
+      // if
+      const content = JSON.parse(fs.readFileSync(args.source).toString());
+      if (!content.sources) {
+        console.log(chalk.red('No sources found in kody.json'));
+        process.exit(1);
+      }
+      for (const source of content.sources) {
+        args.name = source.name || '';
+        args.source = join(process.cwd(), source.filename);
+        const workflow = new worklfow_1.CliWorkflow(source);
+        const runner = new kodyfire_core_1.Runner(
+          Object.assign(Object.assign({}, args), workflow)
+        );
+        yield runner.run(args);
+      }
       // finish process
-      return output;
+      return 0;
     } catch (error) {
       console.log(chalk.red(error.stack || error.message));
       process.exit(1);
@@ -72,8 +79,8 @@ function action(args) {
 }
 module.exports = program => {
   program
-    .command('run')
-    .description('Generate a digital artifact based on the selected technology')
+    .command('batch')
+    .description('Generate multiple digital artifact')
     .option(
       '-s,--source <source>',
       'Source file to be used as the schema for the generator (default: kody.json)',

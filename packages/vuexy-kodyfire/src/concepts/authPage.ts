@@ -27,7 +27,10 @@ export class AuthPage extends Concept {
   async generate(_data: any) {
     this.initEngine();
     const template = await this.engine.read(this.template.path, _data.template);
-    const compiled = await this.engine.compile(template, this.name);
+    const compiled = await this.engine.compile(template, {
+      name: this.name,
+      ...(_data.data || {}),
+    });
     await this.engine.createOrOverwrite(
       this.technology.rootDir,
       this.outputDir,

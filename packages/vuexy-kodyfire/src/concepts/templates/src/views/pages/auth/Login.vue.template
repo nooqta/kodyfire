@@ -1,58 +1,42 @@
 <template>
   <div class="auth-wrapper auth-v1 px-2">
     <div class="auth-inner py-2">
-
       <!-- Login v1 -->
       <b-card class="mb-0">
         <b-link class="brand-logo">
           <vuexy-logo />
 
-          <h2 class="brand-text text-primary ml-1">
-            Vuexy
-          </h2>
+          <h2 class="brand-text text-primary ml-1"><%= appName %></h2>
         </b-link>
 
-        <b-card-title class="mb-1">
-             المغامرة تبدأ هنا 🚀
-        </b-card-title>
+        <b-card-title class="mb-1"> <%= title %> </b-card-title>
         <b-card-text class="mb-2">
-          لتكلفة لا تقارن بما تقدمه منصة مقيّم من مزايا، ابدأ بالتجربة ولن
-            تندم!
+          التكلفة لا تقارن بما تقدمه منصة <%= appName %> من مزايا، ابدأ بالتجربة
+          ولن تندم!
         </b-card-text>
-           <b-alert v-model="showAlertMessage" dismissible variant="danger">
-            <div class="alert-body">
-              <feather-icon class="mr-25" icon="AlertCircleIcon" />
-              <span class="ml-25">
-                {{ errorMessage }}
-              </span>
-            </div>
-          </b-alert>
+        <b-alert v-model="showMessage" dismissible :variant="messageType">
+          <div class="alert-body">
+            <feather-icon class="mr-25" icon="InfoIcon" />
+            <span class="ml-25" v-html="message"></span>
+          </div>
+        </b-alert>
 
         <!-- form -->
-        <validation-observer
-          ref="loginForm"
-        >
-          <b-form
-            class="auth-login-form mt-2"
-            @submit.prevent
-          >
-
+        <validation-observer ref="loginForm">
+          <b-form class="auth-login-form mt-2" @submit.prevent>
             <!-- email -->
-            <b-form-group
-              label-for="email"
-              label="البريد الالكتروني"
-            >
+            <b-form-group label-for="email" label="البريد الالكتروني">
               <validation-provider
                 vid="email"
-                  name="email"
-                  v-slot="{ errors }"
+                name="email"
+                v-slot="{ errors }"
                 rules="required|validEmail"
               >
                 <b-form-input
                   id="email"
                   v-model="email"
                   name="login-email"
-                  :state="errors.length > 0 ? false:null"
+                  :state="errors.length > 0 ? false : null"
                   placeholder="john@example.com"
                   autofocus
                 />
@@ -63,26 +47,26 @@
             <!-- password -->
             <b-form-group>
               <div class="d-flex justify-content-between">
-                  <label for="login-password">كلمة المرور</label>
-                  <b-link :to="{ name: 'auth-forgot-password-v2' }">
-                    <small>هل نسيت كلمة السر؟</small>
-                  </b-link>
-                </div>
+                <label for="login-password">كلمة المرور</label>
+                <b-link :to="{ name: 'auth-forgot-password-v2' }">
+                  <small>هل نسيت كلمة السر؟</small>
+                </b-link>
+              </div>
               <validation-provider
                 vid="password"
-                  name="password"
-                  v-slot="{ errors }"
+                name="password"
+                v-slot="{ errors }"
               >
                 <b-input-group
                   class="input-group-merge"
-                  :class="errors.length > 0 ? 'is-invalid':null"
+                  :class="errors.length > 0 ? 'is-invalid' : null"
                 >
                   <b-form-input
                     id="password"
                     v-model="password"
                     :type="passwordFieldType"
                     class="form-control-merge"
-                    :state="errors.length > 0 ? false:null"
+                    :state="errors.length > 0 ? false : null"
                     name="login-password"
                     placeholder="Password"
                   />
@@ -103,8 +87,9 @@
             <b-form-group>
               <b-form-checkbox
                 id="remember-me"
-                v-model="status"
-                name="checkbox-1"
+                v-model="remember_me"
+                value="true"
+                name="remember_me"
               >
                 تذكرنى
               </b-form-checkbox>
@@ -123,42 +108,28 @@
         </validation-observer>
 
         <b-card-text class="text-center mt-2">
-            <span>جديد على منصة فوترة لدينا؟ </span>
-            <b-link :to="{ name: 'register' }">
-              <span>&nbsp;إنشاء حساب</span>
-            </b-link>
-          </b-card-text>
+          <span>جديد على منصة فوترة لدينا؟ </span>
+          <b-link :to="{ name: 'register' }">
+            <span>&nbsp;إنشاء حساب</span>
+          </b-link>
+        </b-card-text>
 
         <div class="divider my-2">
-          <div class="divider-text">
-            or
-          </div>
+          <div class="divider-text">or</div>
         </div>
 
         <!-- social button -->
         <div class="auth-footer-btn d-flex justify-content-center">
-          <b-button
-            href="javascript:void(0)"
-            variant="facebook"
-          >
+          <b-button href="javascript:void(0)" variant="facebook">
             <feather-icon icon="FacebookIcon" />
           </b-button>
-          <b-button
-            href="javascript:void(0)"
-            variant="twitter"
-          >
+          <b-button href="javascript:void(0)" variant="twitter">
             <feather-icon icon="TwitterIcon" />
           </b-button>
-          <b-button
-            href="javascript:void(0)"
-            variant="google"
-          >
+          <b-button href="javascript:void(0)" variant="google">
             <feather-icon icon="MailIcon" />
           </b-button>
-          <b-button
-            href="javascript:void(0)"
-            variant="github"
-          >
+          <b-button href="javascript:void(0)" variant="github">
             <feather-icon icon="GithubIcon" />
           </b-button>
         </div>
@@ -169,14 +140,28 @@
 </template>
 
 <script>
-import { ValidationProvider, ValidationObserver } from 'vee-validate'
+import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import {
-  BButton, BAlert, BForm, BFormInput, BFormGroup, BCard, BLink, BCardTitle, BCardText, BInputGroup, BInputGroupAppend, BFormCheckbox,
-} from 'bootstrap-vue'
-import VuexyLogo from '@core/layouts/components/Logo.vue'
-import { required, validEmail } from '@validations'
-import { togglePasswordVisibility } from '@core/mixins/ui/forms'
-import { alertMessageMixin } from "@core/mixins/ui/feedback";
+  BButton,
+  BAlert,
+  BForm,
+  BFormInput,
+  BFormGroup,
+  BCard,
+  BLink,
+  BCardTitle,
+  BCardText,
+  BInputGroup,
+  BInputGroupAppend,
+  BFormCheckbox,
+} from 'bootstrap-vue';
+import VuexyLogo from '@core/layouts/components/Logo.vue';
+import { required, validEmail } from '@validations';
+import { togglePasswordVisibility } from '@core/mixins/ui/forms';
+import { alertMessageMixin } from '@core/mixins/ui/feedback';
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue';
+import useJwt from "@/auth/jwt/useJwt";
+import {  setUserData } from '@/auth/utils'
 
 export default {
   components: {
@@ -195,77 +180,89 @@ export default {
     BFormCheckbox,
     ValidationProvider,
     ValidationObserver,
-    BAlert
+    BAlert,
   },
   mixins: [togglePasswordVisibility, alertMessageMixin],
   data() {
     return {
       email: '',
       password: '',
-      status: '',
+      remember_me: false,
       // validation rules
       required,
       validEmail,
-    }
+    };
   },
   computed: {
     passwordToggleIcon() {
-      return this.passwordFieldType === 'password' ? 'EyeIcon' : 'EyeOffIcon'
+      return this.passwordFieldType === 'password' ? 'EyeIcon' : 'EyeOffIcon';
     },
   },
   methods: {
     async validationForm() {
       this.showAlertMessage = false;
-      this.errorMessage = "";
+      this.errorMessage = '';
 
-      this.$refs.loginForm.validate().then(async (success) => {
+      this.$refs.loginForm.validate().then(async success => {
         if (success) {
           try {
-            const response = await this.$http.post("/api/login", {
+            const response = await this.$http.post('/login', {
               email: this.email,
               password: this.password,
-              remember_me: this.status,
+              remember_me: this.remember_me,
             });
 
             this.$toast({
               component: ToastificationContent,
               props: {
-                title: "تم التسجيل بنجاح",
-                icon: "CheckCircleIcon",
-                variant: "success",
+                title: 'تم التسجيل بنجاح',
+                icon: 'CheckCircleIcon',
+                variant: 'success',
               },
             });
-            this.displayMessage({message: response.data.message, type: "success"});
+            console.log(response.data);
+            this.displayMessage({
+              message: response.data.message,
+              type: 'success',
+            });
             useJwt.setToken(response.data.accessToken);
+            setUserData(response.data.user);
             // useJwt.setRefreshToken(response.data.refreshToken)
             // this.$ability.update(response.data.userData.ability)
-            this.$router.push("/");
+            this.$router.push('/');
           } catch (error) {
             let errorMessage = {
-            message: "",
-            type: "danger",
-          };
-          Object.values(errors).forEach((error) => {
-            errorMessage.message += `${error[0]}<br>`;
-          });
+              message: '',
+              type: 'danger',
+            };
+            
+            const { errors } = error.response.data;
+            if (errors) {
+              Object.values(errors).forEach(error => {
+                errorMessage.message += `${error[0]}<br>`;
+              });
+              this.$refs.loginForm.setErrors(error.response.data.errors ?? []);
+            } else {
+              errorMessage.message = error.response.data.message;
+            }
+            
             this.displayMessage(errorMessage);
-            this.$refs.loginForm.setErrors(error.response.data.errors ?? []);
             this.$toast({
               component: ToastificationContent,
               props: {
                 title: error.response.data.message,
                 text: error.response.data.message,
-                icon: "AlertCircleIcon",
-                variant: "danger",
+                icon: 'AlertCircleIcon',
+                variant: 'danger',
               },
             });
           }
-            return;
+          return;
         }
       });
     },
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss">

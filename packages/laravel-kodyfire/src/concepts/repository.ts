@@ -128,13 +128,13 @@ export class Repository extends Concept {
       ) {
         model.fields.forEach((f: any) => {
           if (
-            f.extra_type == 'file' ||
-            f.extra_type == 'image' ||
-            f.extra_type == 'video'
+            f.faker_type == 'file' ||
+            f.faker_type == 'image' ||
+            f.faker_type == 'video'
           ) {
             attachments += `
                         if(request()->file('${f.name}')){
-                            $path = $this->addAttachment(request()->file('${f.name}'), '${f.extra_type}');
+                            $path = $this->addAttachment(request()->file('${f.name}'), '${f.faker_type}');
                             $model->${element.name}()->create(['uri' => $path]);
                         }\n`;
           }
@@ -148,13 +148,13 @@ export class Repository extends Concept {
     let attachments = '';
     model.fields.forEach((element: any) => {
       if (
-        element.extra_type == 'file' ||
-        element.extra_type == 'image' ||
-        element.extra_type == 'video'
+        element.faker_type == 'file' ||
+        element.faker_type == 'image' ||
+        element.faker_type == 'video'
       ) {
         attachments += `
                 if(isset($data['${element.name}']) && $data['${element.name}']){
-                    $data['${element.name}'] = $this->addAttachment($data['${element.name}'], '${element.extra_type}');
+                    $data['${element.name}'] = $this->addAttachment($data['${element.name}'], '${element.faker_type}');
                 }\n`;
       }
     });
@@ -164,7 +164,7 @@ export class Repository extends Concept {
   getUpdateAttachments(model: any) {
     let attachments = '';
     model.fields.forEach((element: any) => {
-      if (element.extra_type == 'file') {
+      if (element.faker_type == 'file') {
         attachments += `
                 if(isset($data['${element.name}']) && $data['${element.name}']){
                     $data['${element.name}'] = $this->updateAttachment($model, $data['${element.name}'], '${element.name}');
@@ -176,7 +176,7 @@ export class Repository extends Concept {
 
   uploadAttachment(model: any) {
     let uploadMethods = '';
-    if (model.fields.filter((e: any) => e.extra_type == 'file').length > 0) {
+    if (model.fields.filter((e: any) => e.faker_type == 'file').length > 0) {
       uploadMethods = `
             public function addAttachment($file, $type)
             {

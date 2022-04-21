@@ -19,7 +19,7 @@ glob
     `${path.resolve(
       process.mainModule?.path,
       '../..'
-    )}/commands/{list,publish,push,run,scaffold,serve}/index.js`
+    )}/commands/{list,publish,push,run,batch,scaffold,serve,watch}/index.js`
   )
   .forEach(function (file: any) {
     const cmd = require(path.resolve(file));

@@ -121,7 +121,7 @@
           "relation": false,
           "extra_relation": "",
           "hidden": false,
-          "extra_type": "name",
+          "faker_type": "name",
           "translation": {
             "ar": "الإسم الكامل",
             "en": "Name",
@@ -137,7 +137,7 @@
           "relation": false,
           "extra_relation": "",
           "hidden": false,
-          "extra_type": "countryCode",
+          "faker_type": "countryCode",
           "translation": {
             "fr": "Code",
             "ar": "الشفرة",
@@ -160,7 +160,7 @@
           "relation": false,
           "extra_relation": "",
           "hidden": false,
-          "extra_type": "name",
+          "faker_type": "name",
           "translation": {
             "ar": "الإسم",
             "en": "Name",
@@ -176,7 +176,7 @@
           "relation": false,
           "extra_relation": "",
           "hidden": false,
-          "extra_type": "randomDigit",
+          "faker_type": "randomDigit",
           "translation": {
             "fr": "Rate",
             "ar": "الشفرة",
@@ -240,7 +240,7 @@
           "relation": false,
           "extra_relation": "",
           "hidden": false,
-          "extra_type": "name",
+          "faker_type": "name",
           "translation": {
             "ar": "الإسم الكامل",
             "en": "Name",
@@ -256,7 +256,7 @@
           "relation": false,
           "extra_relation": "",
           "hidden": false,
-          "extra_type": "countryCode",
+          "faker_type": "countryCode",
           "translation": {
             "fr": "Code",
             "ar": "الشفرة",
@@ -325,7 +325,7 @@
           "relation": false,
           "extra_relation": "",
           "hidden": false,
-          "extra_type": "name",
+          "faker_type": "name",
           "translation": {
             "ar": "الإسم",
             "en": "Name",
@@ -341,7 +341,7 @@
           "relation": false,
           "extra_relation": "",
           "hidden": false,
-          "extra_type": "randomDigit",
+          "faker_type": "randomDigit",
           "translation": {
             "fr": "Rate",
             "ar": "الشفرة",
@@ -408,7 +408,7 @@
           "relation": false,
           "extra_relation": "",
           "hidden": false,
-          "extra_type": "name",
+          "faker_type": "name",
           "translation": {
             "ar": "الإسم الكامل",
             "en": "Name",
@@ -424,7 +424,7 @@
           "relation": false,
           "extra_relation": "",
           "hidden": false,
-          "extra_type": "countryCode",
+          "faker_type": "countryCode",
           "translation": {
             "fr": "Code",
             "ar": "الشفرة",
@@ -495,7 +495,7 @@
           "relation": false,
           "extra_relation": "",
           "hidden": false,
-          "extra_type": "name",
+          "faker_type": "name",
           "translation": {
             "ar": "الإسم",
             "en": "Name",
@@ -511,7 +511,7 @@
           "relation": false,
           "extra_relation": "",
           "hidden": false,
-          "extra_type": "randomDigit",
+          "faker_type": "randomDigit",
           "translation": {
             "fr": "Rate",
             "ar": "الشفرة",
@@ -551,7 +551,7 @@
           "relation": false,
           "extra_relation": "",
           "hidden": false,
-          "extra_type": "name",
+          "faker_type": "name",
           "translation": {
             "ar": "الإسم الكامل",
             "en": "Name",
@@ -567,7 +567,7 @@
           "relation": false,
           "extra_relation": "",
           "hidden": false,
-          "extra_type": "countryCode",
+          "faker_type": "countryCode",
           "translation": {
             "fr": "Code",
             "ar": "الشفرة",
@@ -630,7 +630,7 @@
           "relation": false,
           "extra_relation": "",
           "hidden": false,
-          "extra_type": "name",
+          "faker_type": "name",
           "translation": {
             "ar": "الإسم الكامل",
             "en": "Name",
@@ -646,7 +646,7 @@
           "relation": false,
           "extra_relation": "",
           "hidden": false,
-          "extra_type": "countryCode",
+          "faker_type": "countryCode",
           "translation": {
             "fr": "Code",
             "ar": "الشفرة",
@@ -709,7 +709,7 @@
           "relation": false,
           "extra_relation": "",
           "hidden": false,
-          "extra_type": "name",
+          "faker_type": "name",
           "translation": {
             "ar": "الإسم",
             "en": "Name",
@@ -725,7 +725,7 @@
           "relation": false,
           "extra_relation": "",
           "hidden": false,
-          "extra_type": "randomDigit",
+          "faker_type": "randomDigit",
           "translation": {
             "fr": "Rate",
             "ar": "الشفرة",
@@ -789,7 +789,7 @@
           "relation": false,
           "extra_relation": "",
           "hidden": false,
-          "extra_type": "name",
+          "faker_type": "name",
           "translation": {
             "ar": "الإسم",
             "en": "Name",
@@ -805,7 +805,7 @@
           "relation": false,
           "extra_relation": "",
           "hidden": false,
-          "extra_type": "randomDigit",
+          "faker_type": "randomDigit",
           "translation": {
             "fr": "Rate",
             "ar": "الشفرة",

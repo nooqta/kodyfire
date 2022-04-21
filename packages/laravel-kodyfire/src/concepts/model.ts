@@ -85,6 +85,11 @@ export class Model implements IConcept {
     if (model.isMorph) {
       hidden = `'${model.name.toLowerCase()}able_id','${model.name.toLowerCase()}able_type'`;
     }
-    return hidden;
+    model.fields.forEach((field: any) => {
+      if (field.isHidden) {
+        hidden += `,'${field.name}'`;
+      }
+    });
+    return hidden.replace(/^,/, '');
   }
 }

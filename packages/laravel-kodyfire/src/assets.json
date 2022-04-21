@@ -7,7 +7,7 @@
       "name": "controller",
       "defaultAction": "create",
       "source": "template",
-      "outputDir": "app/Http/API/V1",
+      "outputDir": "app/Http/Controllers/API/V1",
       "template": {
         "path": "templates/",
         "options": [],
@@ -98,7 +98,7 @@
       "name": "seed",
       "defaultAction": "create",
       "source": "template",
-      "outputDir": "database/Seeders",
+      "outputDir": "database/seeders",
       "template": {
         "path": "templates/",
         "options": ["seed.php.template"]

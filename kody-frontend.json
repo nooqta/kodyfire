@@ -12,22 +12,40 @@
     {
       "name": "Login",
       "template": "Login.vue.template",
-      "outputDir": ""
+      "outputDir": "",
+      "data": {
+        "appName": "فوترة",
+        "title": "تبدأ المغامرة هنا 🚀",
+        "description": "اجعل إدارة فواتيرك سهلة وممتعة!"
+      }
     },
     {
       "name": "Register",
       "template": "register/Register.vue.template",
-      "outputDir": "register"
+      "outputDir": "register",
+      "data": {
+        "appName": "فوترة",
+        "title": "تبدأ المغامرة هنا 🚀",
+        "description": "اجعل إدارة فواتيرك سهلة وممتعة!"
+      }
     },
     {
       "name": "ResetPassword",
       "template": "ResetPassword.vue.template",
-      "outputDir": ""
+      "outputDir": "",
+      "data": {
+        "appName": "فوترة"
+      }
     },
     {
       "name": "ForgotPassword",
       "template": "ForgotPassword.vue.template",
-      "outputDir": ""
+      "outputDir": "",
+      "data": {
+        "appName": "فوترة",
+        "title": "تبدأ المغامرة هنا 🚀",
+        "description": "اجعل إدارة فواتيرك سهلة وممتعة!"
+      }
     }
   ],
   "router": [
@@ -67,8 +85,8 @@
       "data": {
         "locale": "ar",
         "fallbackLocale": "en",
-        "baseUrl": "https://api.invoice-go.noqta.tn",
-        "localBaseUrl": "http://localhost:3000"
+        "baseUrl": "https://api.invoice-go.noqta.tn/api/v1",
+        "localBaseUrl": "http://localhost:8000/api/v1"
       }
     },
     {
@@ -84,6 +102,21 @@
       "path": "src/libs",
       "filename": "axios.js",
       "template": "src/libs/axios.js.template"
+    },
+    {
+      "path": "src/auth",
+      "filename": "utils.js",
+      "template": "src/auth/utils.js.template"
+    },
+    {
+      "path": "src/libs/acl",
+      "filename": "routeProtection.js",
+      "template": "src/libs/acl/routeProtection.js.template"
+    },
+    {
+      "path": "src/layouts/components",
+      "filename": "Navbar.vue",
+      "template": "src/layouts/components/Navbar.vue.template"
     },
     {
       "path": "src/@core/mixins/ui",
