@@ -3,7 +3,7 @@ import * as builder from 'handlebars';
 import { join, relative, dirname } from 'path';
 const fs = require('fs');
 const delimiters = require('handlebars-delimiters');
-
+const pluralize = require('pluralize');
 const fsPromises = fs.promises;
 export class Engine {
   builder: any;
@@ -15,6 +15,12 @@ export class Engine {
   registerPartials() {
     this.builder.registerHelper('lowercase', (value: any) => {
       return value.toLowerCase();
+    });
+    this.builder.registerHelper('uppercase', (value: any) => {
+      return value.toUpperCase();
+    });
+    this.builder.registerHelper('pluralize', (value: any) => {
+      return pluralize(value);
     });
     this.builder.registerHelper(
       'ifEquals',

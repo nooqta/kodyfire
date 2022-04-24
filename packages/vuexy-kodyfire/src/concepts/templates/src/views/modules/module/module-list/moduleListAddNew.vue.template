@@ -1,0 +1,340 @@
+<template>
+  <b-sidebar
+    id="add-new-<%= name %>-sidebar"
+    :visible="isAddNew<%= classify name %>SidebarActive"
+    bg-variant="white"
+    sidebar-class="sidebar-lg"
+    shadow
+    backdrop
+    no-header
+    right
+    @hidden="resetForm"
+    @change="(val) => $emit('update:is-add-new-<%= name %>-sidebar-active', val)"
+  >
+    <template #default="{ hide }">
+      <!-- Header -->
+      <div class="d-flex justify-content-between align-items-center content-sidebar-header px-2 py-1">
+        <h5 class="mb-0">
+          Add New <%= classify name %>
+        </h5>
+
+        <feather-icon
+          class="ml-1 cursor-pointer"
+          icon="XIcon"
+          size="16"
+          @click="hide"
+        />
+
+      </div>
+
+      <!-- BODY -->
+      <validation-observer
+        #default="{ handleSubmit }"
+        ref="refFormObserver"
+      >
+        <!-- Form -->
+        <b-form
+          class="p-2"
+          @submit.prevent="handleSubmit(onSubmit)"
+          @reset.prevent="resetForm"
+        >
+
+          <!-- Full Name -->
+          <validation-provider
+            #default="validationContext"
+            name="Full Name"
+            rules="required"
+          >
+            <b-form-group
+              label="Full Name"
+              label-for="full-name"
+            >
+              <b-form-input
+                id="full-name"
+                v-model="<%= name %>Data.fullName"
+                autofocus
+                :state="getValidationState(validationContext)"
+                trim
+                placeholder="John Doe"
+              />
+
+              <b-form-invalid-feedback>
+                {{ validationContext.errors[0] }}
+              </b-form-invalid-feedback>
+            </b-form-group>
+          </validation-provider>
+
+          <!-- <%= classify name %>name -->
+          <validation-provider
+            #default="validationContext"
+            name="<%= classify name %>name"
+            rules="required|alpha-num"
+          >
+            <b-form-group
+              label="<%= classify name %>name"
+              label-for="<%= name %>name"
+            >
+              <b-form-input
+                id="<%= name %>name"
+                v-model="<%= name %>Data.<%= name %>name"
+                :state="getValidationState(validationContext)"
+                trim
+              />
+
+              <b-form-invalid-feedback>
+                {{ validationContext.errors[0] }}
+              </b-form-invalid-feedback>
+            </b-form-group>
+          </validation-provider>
+
+          <!-- Email -->
+          <validation-provider
+            #default="validationContext"
+            name="Email"
+            rules="required|email"
+          >
+            <b-form-group
+              label="Email"
+              label-for="email"
+            >
+              <b-form-input
+                id="email"
+                v-model="<%= name %>Data.email"
+                :state="getValidationState(validationContext)"
+                trim
+              />
+
+              <b-form-invalid-feedback>
+                {{ validationContext.errors[0] }}
+              </b-form-invalid-feedback>
+            </b-form-group>
+          </validation-provider>
+
+          <!-- Company -->
+          <validation-provider
+            #default="validationContext"
+            name="Contact"
+            rules="required"
+          >
+            <b-form-group
+              label="Contact"
+              label-for="contact"
+            >
+              <b-form-input
+                id="contact"
+                v-model="<%= name %>Data.contact"
+                :state="getValidationState(validationContext)"
+                trim
+              />
+
+              <b-form-invalid-feedback>
+                {{ validationContext.errors[0] }}
+              </b-form-invalid-feedback>
+            </b-form-group>
+          </validation-provider>
+
+          <!-- Company -->
+          <validation-provider
+            #default="validationContext"
+            name="Company"
+            rules="required"
+          >
+            <b-form-group
+              label="Company"
+              label-for="company"
+            >
+              <b-form-input
+                id="company"
+                v-model="<%= name %>Data.company"
+                :state="getValidationState(validationContext)"
+                trim
+              />
+
+              <b-form-invalid-feedback>
+                {{ validationContext.errors[0] }}
+              </b-form-invalid-feedback>
+            </b-form-group>
+          </validation-provider>
+
+          <!-- <%= classify name %> Role -->
+          <validation-provider
+            #default="validationContext"
+            name="<%= classify name %> Role"
+            rules="required"
+          >
+            <b-form-group
+              label="<%= classify name %> Role"
+              label-for="<%= name %>-role"
+              :state="getValidationState(validationContext)"
+            >
+              <v-select
+                v-model="<%= name %>Data.role"
+                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                :options="roleOptions"
+                :reduce="val => val.value"
+                :clearable="false"
+                input-id="<%= name %>-role"
+              />
+              <b-form-invalid-feedback :state="getValidationState(validationContext)">
+                {{ validationContext.errors[0] }}
+              </b-form-invalid-feedback>
+            </b-form-group>
+          </validation-provider>
+
+          <!-- Plan -->
+          <validation-provider
+            #default="validationContext"
+            name="Plan"
+            rules="required"
+          >
+            <b-form-group
+              label="Plan"
+              label-for="plan"
+              :state="getValidationState(validationContext)"
+            >
+              <v-select
+                v-model="<%= name %>Data.currentPlan"
+                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                :options="planOptions"
+                :reduce="val => val.value"
+                :clearable="false"
+                input-id="plan"
+              />
+              <b-form-invalid-feedback :state="getValidationState(validationContext)">
+                {{ validationContext.errors[0] }}
+              </b-form-invalid-feedback>
+            </b-form-group>
+          </validation-provider>
+
+          <!-- Form Actions -->
+          <div class="d-flex mt-2">
+            <b-button
+              v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+              variant="primary"
+              class="mr-2"
+              type="submit"
+            >
+              Add
+            </b-button>
+            <b-button
+              v-ripple.400="'rgba(186, 191, 199, 0.15)'"
+              type="button"
+              variant="outline-secondary"
+              @click="hide"
+            >
+              Cancel
+            </b-button>
+          </div>
+
+        </b-form>
+      </validation-observer>
+    </template>
+  </b-sidebar>
+</template>
+
+<script>
+import {
+  BSidebar, BForm, BFormGroup, BFormInput, BFormInvalidFeedback, BButton,
+} from 'bootstrap-vue'
+import { ValidationProvider, ValidationObserver } from 'vee-validate'
+import { ref } from '@vue/composition-api'
+import { required, alphaNum, email } from '@validations'
+import formValidation from '@core/comp-functions/forms/form-validation'
+import Ripple from 'vue-ripple-directive'
+import vSelect from 'vue-select'
+import store from '@/store'
+
+export default {
+  components: {
+    BSidebar,
+    BForm,
+    BFormGroup,
+    BFormInput,
+    BFormInvalidFeedback,
+    BButton,
+    vSelect,
+
+    // Form Validation
+    ValidationProvider,
+    ValidationObserver,
+  },
+  directives: {
+    Ripple,
+  },
+  model: {
+    prop: 'isAddNew<%= classify name %>SidebarActive',
+    event: 'update:is-add-new-<%= name %>-sidebar-active',
+  },
+  props: {
+    isAddNew<%= classify name %>SidebarActive: {
+      type: Boolean,
+      required: true,
+    },
+    roleOptions: {
+      type: Array,
+      required: true,
+    },
+    planOptions: {
+      type: Array,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      required,
+      alphaNum,
+      email,
+    }
+  },
+  setup(props, { emit }) {
+    const blank<%= classify name %>Data = {
+      fullName: '',
+      <%= name %>name: '',
+      email: '',
+      role: null,
+      currentPlan: null,
+      company: '',
+      country: '',
+      contact: '',
+    }
+
+    const <%= name %>Data = ref(JSON.parse(JSON.stringify(blank<%= classify name %>Data)))
+    const reset<%= name %>Data = () => {
+      <%= name %>Data.value = JSON.parse(JSON.stringify(blank<%= classify name %>Data))
+    }
+
+    const onSubmit = () => {
+      store.dispatch('<%= name %>/add<%= classify name %>', <%= name %>Data.value)
+        .then(() => {
+          emit('refetch-data')
+          emit('update:is-add-new-<%= name %>-sidebar-active', false)
+        })
+    }
+
+    const {
+      refFormObserver,
+      getValidationState,
+      resetForm,
+    } = formValidation(reset<%= name %>Data)
+
+    return {
+      <%= name %>Data,
+      onSubmit,
+
+      refFormObserver,
+      getValidationState,
+      resetForm,
+    }
+  },
+}
+</script>
+
+<style lang="scss">
+@import '@core/scss/vue/libs/vue-select.scss';
+
+#add-new-<%= name %>-sidebar {
+  .vs__dropdown-menu {
+    max-height: 200px !important;
+  }
+}
+</style>

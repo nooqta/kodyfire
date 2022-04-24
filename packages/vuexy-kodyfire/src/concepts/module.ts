@@ -41,11 +41,12 @@ export class Module extends Concept {
           this.template.path,
           join(_data.templateFolder, file)
         );
-        const compiled = await this.engine.compile(template, this.name);
+
+        const compiled = await this.engine.compile(template, _data);
         await this.engine.createOrOverwrite(
           this.technology.rootDir,
           this.outputDir,
-          this.getFilename(_data.templateFolder, file),
+          this.getFilename(_data.templateFolder, file, _data.name),
           compiled
         );
       } else if (stat.isDirectory()) {
@@ -76,7 +77,13 @@ export class Module extends Concept {
     return names;
   }
 
-  getFilename(path, name: string) {
-    return join(path, `${name.replace('.template', '')}`);
+  getFilename(path, name: string, moduleName: string): string {
+    return join(
+      path.replaceAll('module', moduleName),
+      `${name
+        .replace('module', moduleName)
+        .replace('Module', strings.capitalize(moduleName))
+        .replace('.template', '')}`
+    );
   }
 }
