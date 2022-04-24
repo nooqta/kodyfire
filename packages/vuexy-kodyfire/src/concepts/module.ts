@@ -78,11 +78,16 @@ export class Module extends Concept {
   }
 
   getFilename(path, name: string, moduleName: string): string {
+    console.log(
+      name
+        .replace('Module', strings.capitalize(moduleName))
+        .replace('module', moduleName)
+    );
     return join(
       path.replaceAll('module', moduleName),
       `${name
-        .replace('module', moduleName)
         .replace('Module', strings.capitalize(moduleName))
+        .replace('module', moduleName)
         .replace('.template', '')}`
     );
   }

@@ -1,12 +1,34 @@
 export default [
+<%=#each routes %>
   {
-    title: 'Home',
-    route: 'home',
-    icon: 'HomeIcon',
+    title: '<%= header %>',
+    icon: '<%= icon %>Icon',
+    <%=#if children %>
+    children: [
+    <%=#each children %>
+      {
+        title: '<%= title %>',
+        icon: '<%= icon %>Icon',
+        <%=#if children %>
+        children: [
+        <%=#each children %>
+        {
+          title: '<%= title %>',
+          icon: '<%= icon %>Icon',
+          route: '<%= routeName %>'
+        },
+        <%=/each %>
+        ]
+        <%= else %>
+        route: '<%= routeName %>'
+        <%=/if %>
+
+      },
+    <%=/each %>
+    ],
+    <%= else %>
+    route: '<%= routeName %>'
+    <%=/if %>
   },
-  {
-    title: 'Second Page',
-    route: 'second-page',
-    icon: 'FileIcon',
-  },
+<%=/each %>
 ]

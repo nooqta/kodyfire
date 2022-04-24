@@ -14,17 +14,17 @@ export default function use<%= classify name %>List() {
 
   // Table Handlers
   const tableColumns = [
-    { key: '<%= name %>', sortable: true },
-    { key: 'email', sortable: true },
-    { key: 'role', sortable: true },
+    <%=#each  data.columns %>
     {
-      key: 'currentPlan',
-      label: 'Plan',
+      key: '<%= name %>',
+      <%=#if  label %>
+      label: '<%= label %>',
+      <%=/if %>
       formatter: title,
       sortable: true,
     },
-    { key: 'status', sortable: true },
-    { key: 'actions' },
+    <%=/each %>
+    { key: 'actions', label: 'الإجراءات' },
   ]
   const perPage = ref(10)
   const total<%= classify name %> = ref(0)
@@ -67,16 +67,16 @@ export default function use<%= classify name %>List() {
         status: statusFilter.value,
       })
       .then(response => {
-        const { <%= name %>, total } = response.data
+        const { data: <%= pluralize name %>, total } = response.data
 
-        callback(<%= name %>)
+        callback(<%= pluralize name %>)
         total<%= classify name %>.value = total
       })
       .catch(() => {
         toast({
           component: ToastificationContent,
           props: {
-            title: 'Error fetching <%= name %> list',
+            title: 'حدث خطأ عند جلب القائمة',
             icon: 'AlertTriangleIcon',
             variant: 'danger',
           },

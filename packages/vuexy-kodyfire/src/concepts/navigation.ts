@@ -31,7 +31,7 @@ export class Navigation extends Concept {
       this.template.path,
       join(_data.layout, _data.template)
     );
-    const compiled = await this.engine.compile(template, this.name);
+    const compiled = await this.engine.compile(template, _data);
     await this.engine.createOrOverwrite(
       this.technology.rootDir,
       this.outputDir,
@@ -41,6 +41,6 @@ export class Navigation extends Concept {
   }
 
   getFilename(name: string, layout: string) {
-    return join(layout, `${strings.classify(name)}.vue`);
+    return join(layout, `index.js`);
   }
 }

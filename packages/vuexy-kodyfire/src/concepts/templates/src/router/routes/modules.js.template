@@ -1,35 +1,23 @@
 export default [
-    <%=#each route %>
+    <%=#each routes %>
     // *===============================================---*
     // *--------- <%= name %> -------------------------------*
     // *===============================================---*
+    <%=#each children%>
     {
-      path: '/<%= name %>',
-      name: '<%= name %>-list',
-      component: () => import('@/views/modules/request/requests-list/<%=capitalize name %>List.vue'),
+      path: '<%= path %>',
+      name: '<%= pluralize ../name %>-<%= routeName %>',
+      component: () => import('@/views/modules/<%= ../name %>/<%= ../name %>-<%= routeName %>/<%=  classify ../name %>{<%= classify routeName %>}.vue'),
       meta: {
-        pageTitle: '<%=capitalize name %>',
+        pageTitle: '<%=capitalize ../name %>',
         breadcrumb: [
           {
-            text: '<%=capitalize name %>',
+            text: '<%=capitalize ../name %>',
             active: true,
           },
         ],
       },
     },
-    {
-        path: '/<%= name %>/:id',
-        name: '<%= name %>-view',
-        component: () => import('@/views/modules/request/<%= name %>-view/<%=capitalize name %>View.vue'),
-        meta: {
-          pageTitle: '<%=capitalize name %>',
-          breadcrumb: [
-            {
-              text: '<%=capitalize name %>',
-              active: true,
-            },
-          ],
-        },
-      },
+    <%=/each %>
       <%=/each %>
 ]

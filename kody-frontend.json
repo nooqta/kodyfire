@@ -60,21 +60,182 @@
     },
     {
       "name": "modules",
-      "template": "modules.js.template"
+      "template": "modules.js.template",
+      "routes": [
+        {
+          "name": "invoice",
+          "children": [
+            {
+              "path": "/invoice",
+              "routeName": "list"
+            },
+            {
+              "path": "/invoice/create",
+              "routeName": "add"
+            },
+            {
+              "path": "/invoice/:id",
+              "routeName": "view"
+            },
+            {
+              "path": "/invoice/:id/edit",
+              "routeName": "edit"
+            }
+          ]
+        },
+        {
+          "name": "customer",
+          "children": [
+            {
+              "path": "/customer",
+              "routeName": "list"
+            }
+          ]
+        }
+      ]
     },
     {
       "name": "pages",
-      "template": "pages.js.template"
+      "template": "pages.js.template",
+      "routes": [
+        {
+          "name": "home",
+          "path": "/",
+          "routeName": "home"
+        }
+      ]
     }
   ],
   "navigation": [
     {
       "layout": "vertical",
-      "template": "index.js.template"
+      "template": "index.js.template",
+      "routes": [
+        {
+          "header": "الرئيسية",
+          "icon": "Home",
+          "routeName": "home"
+        },
+        {
+          "header": "الفواتير",
+          "icon": "Home",
+          "children": [
+            {
+              "title": "الفواتير",
+              "routeName": "invoices-list"
+            },
+            {
+              "title": "إنشاء فاتورة",
+              "routeName": "invoices-add"
+            },
+            {
+              "title": "العملاء",
+              "routeName": "customers-list"
+            }
+          ]
+        },
+        {
+          "header": "المصاريف",
+          "icon": "Home",
+          "children": [
+            {
+              "title": "المصاريف",
+              "routeName": "invoices-list"
+            },
+            {
+              "title": "إنشاء فاتورة",
+              "routeName": "invoices-add"
+            },
+            {
+              "title": "المزودين",
+              "routeName": "customers-list"
+            }
+          ]
+        },
+        {
+          "header": "الإعدادات",
+          "icon": "Home",
+          "children": [
+            {
+              "title": " إعدادات الشركة",
+              "routeName": "invoices-list"
+            },
+            {
+              "title": "إعدادات الحساب",
+              "routeName": "invoices-add"
+            }
+          ]
+        }
+      ]
     },
     {
       "layout": "horizontal",
-      "template": "index.js.template"
+      "template": "index.js.template",
+      "routes": [
+        {
+          "header": "الرئيسية",
+          "icon": "Home",
+          "routeName": "home"
+        },
+        {
+          "header": "الفواتير",
+          "icon": "Home",
+          "children": [
+            {
+              "title": "الفواتير",
+              "routeName": "invoices-list",
+              "icon": "Home"
+            },
+            {
+              "title": "إنشاء فاتورة",
+              "routeName": "invoices-add",
+              "icon": "Home"
+            },
+            {
+              "title": "العملاء",
+              "routeName": "customers-list",
+              "icon": "User"
+            }
+          ]
+        },
+        {
+          "header": "المصاريف",
+          "icon": "Home",
+          "children": [
+            {
+              "title": "المصاريف",
+              "routeName": "invoices-list",
+              "icon": "Home"
+            },
+            {
+              "title": "إنشاء فاتورة",
+              "routeName": "invoices-add",
+              "icon": "Home"
+            },
+            {
+              "title": "المزودين",
+              "routeName": "customers-list",
+              "icon": "User"
+            }
+          ]
+        },
+        {
+          "header": "الإعدادات",
+          "icon": "Home",
+          "children": [
+            {
+              "title": " إعدادات الشركة",
+              "routeName": "invoices-list",
+              "icon": "Home"
+            },
+            {
+              "title": "إعدادات الحساب",
+              "routeName": "invoices-add",
+              "icon": "Home"
+            }
+          ]
+        }
+      ]
     }
   ],
   "asset": [
@@ -145,6 +306,59 @@
     {
       "name": "invoice",
       "templateFolder": "invoice"
+    },
+    {
+      "name": "customer",
+      "templateFolder": "module",
+      "data": {
+        "columns": [
+          {
+            "name": "name",
+            "label": "الاسم",
+            "type": "text"
+          },
+          {
+            "name": "email",
+            "label": "البريد الإلكتروني",
+            "type": "text"
+          },
+          {
+            "name": "phone",
+            "label": "رقم الهاتف",
+            "type": "text"
+          },
+          {
+            "name": "address",
+            "label": "العنوان",
+            "type": "text"
+          }
+        ],
+        "options": [
+          {
+            "name": "role",
+            "items": [
+              { "label": "مدرير", "value": "admin" },
+              { "label": "شركة", "value": "company" }
+            ]
+          },
+          {
+            "name": "plan",
+            "items": [
+              { "label": "Basic", "value": "basic" },
+              { "label": "Company", "value": "company" },
+              { "label": "Enterprise", "value": "enterprise" },
+              { "label": "Team", "value": "team" }
+            ]
+          },
+          {
+            "name": "status",
+            "items": [
+              { "label": "نشط", "value": "active" },
+              { "label": "غير نشط", "value": "inactive" }
+            ]
+          }
+        ]
+      }
     }
   ]
 }
