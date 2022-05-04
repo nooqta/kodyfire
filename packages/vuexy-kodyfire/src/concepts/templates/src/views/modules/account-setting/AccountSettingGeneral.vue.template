@@ -1,0 +1,179 @@
+<template>
+  <b-card>
+    <!-- form -->
+    <b-form class="mt-2">
+      <b-row>
+        
+<%=#each formGroups %>
+    <!-- Header: <%= classify name %> -->
+    <div class="d-flex">
+      <feather-icon
+        icon="<%= icon %>Icon"
+        size="19"
+      />
+      <h4 class="mb-0 ml-50">
+        <%= classify title %>
+      </h4>
+    </div>
+
+        
+      <b-row>
+        <%=#each fields %>
+        <b-col
+          cols="12"
+          md="6"
+          lg="4"
+        >
+        <!-- Field: <%= name %> -->
+        <b-form-group
+            label="<%= label %>"
+            label-for="<%= dasherize name %>"
+          >
+        <%=#ifEquals type 'datetime' %>
+            <flat-pickr
+              v-model="<%= ../../name %>Data.<%= name %>"
+              class="form-control"
+              :config="{ dateFormat: 'Y-m-d'}"
+              placeholder="YYYY-MM-DD"
+            />
+          <%=/ifEquals %>
+          <%=#ifEquals type 'text' %>
+            <b-form-input
+              id="<%= dasherize name %>"
+              v-model="<%= ../../name %>Data.<%= name %>"
+            />
+          <%=/ifEquals %>
+          <%=#ifEquals type 'select' %>
+            <v-select
+              v-model="<%= ../../name %>Data.<%= name %>"
+              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+              :options="<%= option%>Options"
+              :clearable="false"
+              input-id="<%= dasherize name %>"
+            />
+          <%=/ifEquals %>
+          <%=#ifEquals type 'radio' %>
+            <b-form-radio-group
+              id="<%= dasherize name %>"
+              v-model="<%= ../../name %>Data.<%= name %>"
+              :options="<%= option%>Options"
+              value="male"
+            />
+          <%=/ifEquals %>
+           <%=#ifEquals type 'checkbox' %>
+            <b-form-checkbox-group
+              id="<%= dasherize name %>"
+              v-model="<%= ../../name %>Data.<%= name %>"
+              :options="<%= option%>Options"
+            />
+            <%=/ifEquals %>
+          </b-form-group>
+        </b-col>
+         <%=/each%>
+      </b-row>
+      <%=/each%>
+        <!-- alert -->
+        <b-col
+          cols="12"
+          class="mt-75"
+        >
+          <b-alert
+            show
+            variant="warning"
+            class="mb-50"
+          >
+            <h4 class="alert-heading">
+              لم يتم تأكيد بريدك الإلكتروني.يرجى التحقق من البريد الوارد الخاص بك.
+            </h4>
+            <div class="alert-body">
+              <b-link class="alert-link">
+                أعد إرسال التأكيد
+              </b-link>
+            </div>
+          </b-alert>
+        </b-col>
+        <!--/ alert -->
+
+        <b-col cols="12">
+          <b-button
+            v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+            variant="primary"
+            class="mt-2 mr-1"
+          >
+            حفظ التغييرات
+          </b-button>
+          <b-button
+            v-ripple.400="'rgba(186, 191, 199, 0.15)'"
+            variant="outline-secondary"
+            type="reset"
+            class="mt-2"
+            @click.prevent="resetForm"
+          >
+            إعادة ضبط
+          </b-button>
+        </b-col>
+      </b-row>
+    </b-form>
+  </b-card>
+</template>
+
+<script>
+import {
+  BFormFile, BButton, BForm, BFormGroup, BFormInput, BRow, BCol, BAlert, BCard, BCardText, BMedia, BMediaAside, BMediaBody, BLink, BImg,
+} from 'bootstrap-vue'
+import Ripple from 'vue-ripple-directive'
+import { useInputImageRenderer } from '@core/comp-functions/forms/form-utils'
+import { ref } from '@vue/composition-api'
+
+export default {
+  components: {
+    BButton,
+    BForm,
+    BImg,
+    BFormFile,
+    BFormGroup,
+    BFormInput,
+    BRow,
+    BCol,
+    BAlert,
+    BCard,
+    BCardText,
+    BMedia,
+    BMediaAside,
+    BMediaBody,
+    BLink,
+  },
+  directives: {
+    Ripple,
+  },
+  props: {
+    generalData: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  data() {
+    return {
+      optionsLocal: JSON.parse(JSON.stringify(this.generalData)),
+      profileFile: null,
+    }
+  },
+  methods: {
+    resetForm() {
+      this.optionsLocal = JSON.parse(JSON.stringify(this.generalData))
+    },
+  },
+  setup() {
+    const refInputEl = ref(null)
+    const previewEl = ref(null)
+
+    const { inputImageRenderer } = useInputImageRenderer(refInputEl, previewEl)
+
+    return {
+      refInputEl,
+      previewEl,
+      inputImageRenderer,
+    }
+  },
+}
+</script>

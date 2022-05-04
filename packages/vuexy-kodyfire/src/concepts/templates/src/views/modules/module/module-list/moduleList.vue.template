@@ -10,16 +10,6 @@
       @refetch-data="refetchData"
     />
 
-    <!-- Filters -->
-    <!-- <<%= name %>-list-filters
-      :role-filter.sync="roleFilter"
-      :plan-filter.sync="planFilter"
-      :status-filter.sync="statusFilter"
-      :role-options="roleOptions"
-      :plan-options="planOptions"
-      :status-options="statusOptions"
-    /> -->
-
     <!-- Table Container Card -->
     <b-card
       no-body

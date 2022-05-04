@@ -47,23 +47,28 @@ export class Controller implements IConcept {
     return `${classify(name)}Controller.php`;
   }
 
-  getLoad(fields: any) {
-    return fields && `$data->load(${fields});`;
+  getWith(fields: any) {
+    console.log(fields);
+    return fields && `$data->with(${fields});`;
   }
   getList(model: any): string {
-    let fieldsToLoad = '';
+    let fieldsToLoad = model.load ? `${model.load}` : '';
     if (model.relationships.length > 0) {
-      fieldsToLoad = model.relationships
-        .filter(
-          (relation: any) =>
-            relation.type != 'morphOne' &&
-            relation.type != 'morphTo' &&
-            relation.type != 'morphMany'
-        )
-        .map((field: any) => {
-          const relation: string = field['name'];
-          return `'${relation}'`;
-        })
+      fieldsToLoad = [
+        fieldsToLoad,
+        ...model.relationships
+          .filter(
+            (relation: any) =>
+              relation.type != 'morphOne' &&
+              relation.type != 'morphTo' &&
+              relation.type != 'morphMany'
+          )
+          .map((field: any) => {
+            const relation: string = field['name'];
+            return `'${relation}'`;
+          }),
+      ]
+        .filter(item => item.length > 0)
         .join(',');
     }
     const action = model.controller.actions.find(
@@ -79,26 +84,26 @@ export class Controller implements IConcept {
         ');';
     }
 
-    let data = `
-  if (!$request->has('pagination')) {
-    $data = ${model.name}::all();
-    ${load}
-  } else {
-
-    $pageSize = $request->query('pageSize');
+    let data = `$pageSize = $request->query('pageSize');
     $currentPage = $request->query('currentPage');
-    $search = $request->query('search');
-
+    $search = $request->query('q');
+    ${this.getFilters(action)}
     Paginator::currentPageResolver(function () use ($currentPage) {
       return $currentPage;
     });
-
-    $data = ${model.name}::paginate($pageSize);
+    
+    $data = ${model.name}::query();
+    ${this.getFilterWhereClause(action)}
     if($search != ""){
-      $data = ${model.name}::search($search)->paginate($pageSize);
+      $data = $data->where(function($q) use($search) {
+        ${this.getWhereClause(action)}
+        }
+      );
     }
+    ${this.getWith(fieldsToLoad)}
     ${load}
-  }`;
+    $data = $data->paginate($pageSize);
+    `;
     if (!model.hasPagination) {
       data = `
     if (!$request->has('pagination')) {
@@ -109,12 +114,55 @@ export class Controller implements IConcept {
       if($search != ""){
         $data = ${model.name}::search($search);
       }
-      ${this.getLoad(fieldsToLoad)}
-    }`;
+    ${this.getWith(fieldsToLoad)}
+    `;
     }
     return data;
   }
 
+  getWhereClause(action: any) {
+    return action.searchBy
+      .map(
+        (field: any) =>
+          `$q->orWhere('${field.name}', '${field.type}', "%{$search}%");`
+      )
+      .join(';\n ');
+  }
+
+  getFilters(action: any) {
+    let filters = '';
+    if (action.filterBy) {
+      action.filterBy.forEach((filter: any) => {
+        filters += filter.relation
+          ? `
+        $${filter.relation} = $request->query('${filter.relation}');`
+          : `$${filter.field} = $request->query('${filter.field}');`;
+      });
+    }
+    return filters;
+  }
+
+  getFilterWhereClause(action: any) {
+    let whereClause = '';
+    if (action.filterBy) {
+      action.filterBy.forEach((filter: any) => {
+        if (filter.relation) {
+          whereClause += `
+        if($${filter.relation} != ""){
+          $data->whereHas('${filter.relationName}', function ($q) use ($${filter.relation}) {
+            $q->where('${filter.field}', '${filter.type}', "{$${filter.relation}}");
+          });
+        }\n`;
+        } else {
+          whereClause += `
+          if($${filter.field} != ""){
+            $data->where('${filter.field}', '${filter.type}', "{$${filter.field}}");
+          }\n`;
+        }
+      });
+    }
+    return whereClause;
+  }
   getUserRelations(relations: Array<string>) {
     return relations.join('->');
   }
@@ -130,10 +178,10 @@ public function ${action.name}(Request  $request) {
     ${this.getList(model)}
   } catch (\\Throwable $th) {
     return response()->json([
-    'error' => __('app.errorMsg'),
+    'error' => config('app.env') == 'local'? $th->getMessage(): __('app.errorMsg'),
     ], 500);
   }
-  return response()->json(['data' => $data]);
+  return response()->json($data);
 }\n`;
           break;
         case 'store':

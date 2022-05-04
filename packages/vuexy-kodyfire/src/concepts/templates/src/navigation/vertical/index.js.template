@@ -3,31 +3,41 @@ export default [
   {
     title: '<%= header %>',
     icon: '<%= icon %>Icon',
+    resource: '<%= resource %>',
+    action: '<%= action %>',
     <%=#if children %>
     children: [
     <%=#each children %>
       {
         title: '<%= title %>',
         icon: '<%= icon %>Icon',
+        resource: '<%= resource %>',
+        action: '<%= action %>',
         <%=#if children %>
         children: [
         <%=#each children %>
         {
           title: '<%= title %>',
           icon: '<%= icon %>Icon',
-          route: '<%= routeName %>'
+          route: '<%= routeName %>',
+          resource: '<%= resource %>',
+          action: '<%= action %>',
         },
         <%=/each %>
         ]
         <%= else %>
-        route: '<%= routeName %>'
+        route: '<%= routeName %>',
+        resource: '<%= resource %>',
+        action: '<%= action %>',
         <%=/if %>
 
       },
     <%=/each %>
     ],
     <%= else %>
-    route: '<%= routeName %>'
+    route: '<%= routeName %>',
+    resource: '<%= resource %>',
+    action: '<%= action %>',
     <%=/if %>
   },
 <%=/each %>

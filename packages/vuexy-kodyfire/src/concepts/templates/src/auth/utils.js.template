@@ -16,7 +16,7 @@ export const getUserData = async () => {
     if (userData) {
       return JSON.parse(userData);
     }
-    const response = await http.get("/api/user");
+    const response = await http.get("/api/me");
     return response.data;
 } catch (error) {
     if (error.response && error.response.status === 401) {
@@ -39,7 +39,8 @@ export const setUserData = (userData) => {
  * @param {String} userRole Role of user
  */
 export const getHomeRouteForLoggedInUser = userRole => {
-  if (userRole === 'admin') return '/'
-  if (userRole === 'company_admin') return { name: 'access-control' }
-  return { name: 'auth-login' }
+  return '/'
+  // if (userRole === 'admin') return '/'
+  // if (userRole === 'company_admin') return { name: 'access-control' }
+  // return { name: 'auth-login' }
 }

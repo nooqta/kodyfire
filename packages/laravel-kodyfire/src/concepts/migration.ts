@@ -35,13 +35,9 @@ export class Migration extends Concept {
     );
   }
   async generate(_data: any) {
-    this.setModel(_data);
     this.initEngine();
     const template = await this.engine.read(this.template.path, _data.template);
-    this.model.className = this.getClassName(this.model.name);
-    this.model.table = this.getMigrationName(this.model.name);
-    this.model._fields = await this.getFields(this.model);
-    this.model.attributes = await this.getMigrationAttributes(this.model);
+    await this.appendData(_data);
     const compiled = await this.engine.compile(template, this.model);
     await this.engine.createOrOverwrite(
       this.technology.rootDir,
@@ -49,6 +45,31 @@ export class Migration extends Concept {
       this.getFilename(this.model),
       compiled
     );
+  }
+
+  private async appendData(_data: any) {
+    if (typeof _data.model === 'string') {
+      this.setModel(_data);
+      this.model.className = this.getClassName(this.model.name);
+      this.model.table = this.getMigrationName(this.model.name);
+      this.model._fields = await this.getFields(this.model);
+      this.model.attributes = await this.getMigrationAttributes(this.model);
+    } else {
+      _data.className = this.getClassName(_data.table);
+      _data.attributes = this.getForeignKeysAttributes(_data.columns);
+      this.model = _data;
+    }
+  }
+  getForeignKeysAttributes(columns: any): any {
+    let data = '';
+
+    columns.forEach((el: any) => {
+      data += `$table->foreignId('${el.column}')->references('${
+        el.references
+      }')->on('${el.on}')${this.getCascade(el)};\n`;
+    });
+
+    return data;
   }
 
   wait(ms: number) {

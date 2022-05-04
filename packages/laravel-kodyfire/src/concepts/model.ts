@@ -80,16 +80,7 @@ export class Model implements IConcept {
     return args;
   }
 
-  getHiddenArray(model: any): string {
-    let hidden = '';
-    if (model.isMorph) {
-      hidden = `'${model.name.toLowerCase()}able_id','${model.name.toLowerCase()}able_type'`;
-    }
-    model.fields.forEach((field: any) => {
-      if (field.isHidden) {
-        hidden += `,'${field.name}'`;
-      }
-    });
-    return hidden.replace(/^,/, '');
+  getHiddenArray(data: any): string {
+    return data.hidden || [];
   }
 }

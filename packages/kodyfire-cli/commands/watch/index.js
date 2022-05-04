@@ -48,20 +48,33 @@ const watchFile = (source, kodyName) =>
       __awaiter(void 0, void 0, void 0, function* () {
         if (filename) {
           console.log(`${source} file Changed, running kody ${kodyName}`);
-          yield zx_1.$`kody run ${kodyName} -s ${source}`;
+          yield (0, zx_1.$)`kody run ${kodyName} -s ${source}`;
         }
       })
     );
   });
-const action = () =>
+const action = args =>
   __awaiter(void 0, void 0, void 0, function* () {
-    const argv = process.argv.slice(3);
-    const source = argv[0];
-    if (!source) {
-      console.log(chalk.red('No source file provided'));
+    if (typeof args.source === 'undefined') {
+      args.source = join(process.cwd(), 'kody.json');
+    }
+    if (!fs_1.default.existsSync(args.source)) {
+      console.log(
+        chalk.red(
+          `${chalk.bgRed(
+            chalk.white(args.source)
+          )} not found. Please provide the source file to be used.`
+        )
+      );
       process.exit(1);
     }
+    const { source, build } = args;
+    console.log(args);
     const schema = JSON.parse(fs_1.default.readFileSync(source).toString());
+    if (build) {
+      // build ts files
+      yield (0, zx_1.$)`npm run build`;
+    }
     if (schema.sources) {
       for (const item of schema.sources) {
         yield watchFile(item.filename, item.name);
@@ -74,10 +87,16 @@ module.exports = program => {
   program
     .command('watch')
     .alias('w')
+    .option(
+      '-s,--source <source>',
+      'Source file to be used as the schema for the generator (default: kody.json)',
+      'kody.json'
+    )
+    .option('-b, --build', 'Build source files (default: false)', false)
     .description(chalk.red('Watch for file changes and run kody'))
     .action(_opt =>
       __awaiter(void 0, void 0, void 0, function* () {
-        return yield action();
+        return yield action(_opt);
       })
     );
 };

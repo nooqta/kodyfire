@@ -43,7 +43,7 @@ class Generator {
     this.technology = new technology_1.Technology(params);
     const _backend = new core_1.virtualFs.ScopedHost(
       new node_1.NodeJsSyncHost(),
-      core_1.normalize(process.cwd())
+      (0, core_1.normalize)(process.cwd())
     );
     this.tree = new schematics_1.HostTree(_backend);
   }

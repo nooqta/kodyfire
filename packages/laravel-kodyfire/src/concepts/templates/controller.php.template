@@ -26,13 +26,13 @@ class {{name}}Controller extends Controller
         } else {
             $pageSize = $request->query('pageSize');
             $currentPage = $request->query('currentPage');
-            $search = $request->query('search');
+            $search = $request->query('q');
             Paginator::currentPageResolver(function () use ($currentPage) {
                 return $currentPage;
             });
-            $data = Country::paginate($pageSize);
+            $data = {{ capitalize name }}::paginate($pageSize);
             if ($search != "") {
-                $data = Country::search($search)->paginate($pageSize);
+                $data = {{ capitalize name }}::search($search)->paginate($pageSize);
             }
         }
         try {

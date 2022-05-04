@@ -7,12 +7,15 @@ export default [
     {
       path: '<%= path %>',
       name: '<%= pluralize ../name %>-<%= routeName %>',
-      component: () => import('@/views/modules/<%= ../name %>/<%= ../name %>-<%= routeName %>/<%=  classify ../name %>{<%= classify routeName %>}.vue'),
+      component: () => import('@/views/modules/<%= ../name %>/<%= pluralize ../name %>-<%= routeName %>/<%=  classify ../name %>{<%= classify routeName %>}.vue'),
       meta: {
-        pageTitle: '<%=capitalize ../name %>',
+        pageTitle: '<%= pluralize ../name %>',
+         <%=#each meta %>
+        <%= key %>: '<%= value %>',
+        <%=/each %>
         breadcrumb: [
           {
-            text: '<%=capitalize ../name %>',
+            text: '<%= pluralize ../name %>',
             active: true,
           },
         ],

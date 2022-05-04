@@ -228,7 +228,7 @@ export default {
             useJwt.setToken(response.data.accessToken);
             setUserData(response.data.user);
             // useJwt.setRefreshToken(response.data.refreshToken)
-            // this.$ability.update(response.data.userData.ability)
+            this.$ability.update(response.data.ability)
             this.$router.push('/');
           } catch (error) {
             let errorMessage = {

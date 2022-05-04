@@ -12,14 +12,28 @@ const watchFile = async (source: fs.PathLike, kodyName: string) => {
   });
 };
 
-const action = async () => {
-  const argv = process.argv.slice(3);
-  const source = argv[0];
-  if (!source) {
-    console.log(chalk.red('No source file provided'));
+const action = async (args: any) => {
+  if (typeof args.source === 'undefined') {
+    args.source = join(process.cwd(), 'kody.json');
+  }
+
+  if (!fs.existsSync(args.source)) {
+    console.log(
+      chalk.red(
+        `${chalk.bgRed(
+          chalk.white(args.source)
+        )} not found. Please provide the source file to be used.`
+      )
+    );
     process.exit(1);
   }
+  const { source, build } = args;
+  console.log(args);
   const schema = JSON.parse(fs.readFileSync(source).toString());
+  if (build) {
+    // build ts files
+    await $`npm run build`;
+  }
   if (schema.sources) {
     for (const item of schema.sources) {
       await watchFile(item.filename, item.name);
@@ -33,8 +47,14 @@ module.exports = (program: typeof Command) => {
   program
     .command('watch')
     .alias('w')
+    .option(
+      '-s,--source <source>',
+      'Source file to be used as the schema for the generator (default: kody.json)',
+      'kody.json'
+    )
+    .option('-b, --build', 'Build source files (default: false)', false)
     .description(chalk.red('Watch for file changes and run kody'))
     .action(async (_opt: any) => {
-      return await action();
+      return await action(_opt);
     });
 };

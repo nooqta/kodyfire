@@ -41,6 +41,7 @@ const worklfow_1 = require('../../src/kodyfire/lib/cli/worklfow');
 function action(args) {
   return __awaiter(this, void 0, void 0, function* () {
     try {
+      // @todo: Refactor used by watch command
       if (typeof args.source === 'undefined') {
         args.source = join(process.cwd(), 'kody.json');
       }

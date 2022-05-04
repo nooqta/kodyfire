@@ -7,7 +7,14 @@ export const action = {
   },
 };
 export const model = {
-  type: 'string',
+  anyOf: [
+    {
+      type: 'string',
+    },
+    {
+      type: 'array',
+    },
+  ],
 };
 export const controller = {
   type: 'object',
@@ -92,7 +99,9 @@ export const migration = {
   type: 'object',
   properties: {
     model: model,
-    template: { enum: ['migration.php.template'] },
+    template: {
+      enum: ['migration.php.template', 'blank_migration.php.template'],
+    },
   },
   required: ['model'],
 };

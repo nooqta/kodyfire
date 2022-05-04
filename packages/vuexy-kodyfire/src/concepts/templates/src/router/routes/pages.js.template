@@ -1,2 +1,14 @@
 export default [
+    <%=#each routes %>
+    {
+    path: '<%= path %>',
+    name: '<%= name %>',
+    component: () => import('<%= component %>'),
+    meta: {
+        <%=#each meta %>
+        <%= key %>: '<%= value %>',
+        <%=/each %>
+    },
+  },
+    <%=/each %>
 ]

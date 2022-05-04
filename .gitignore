@@ -32,5 +32,4 @@ target/
 dist
 .env
 lerna-debug.log
-kody-frontend.json
-kody-backend.json
+kody-*.json

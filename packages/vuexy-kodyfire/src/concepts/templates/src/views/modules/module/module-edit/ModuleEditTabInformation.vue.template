@@ -1,0 +1,148 @@
+<template>
+  <div>
+    <!-- Form: <%= classify name %> Info Form -->
+    <b-form class="mt-1">
+    <%=#each formGroups %>
+    <!-- Header: <%= classify name %> -->
+    <div class="d-flex">
+      <feather-icon
+        icon="<%= icon %>Icon"
+        size="19"
+      />
+      <h4 class="mb-0 ml-50">
+        <%= classify title %>
+      </h4>
+    </div>
+
+        
+      <b-row>
+        <%=#each fields %>
+        <b-col
+          cols="12"
+          md="6"
+          lg="4"
+        >
+        <!-- Field: <%= name %> -->
+        <b-form-group
+            label="<%= label %>"
+            label-for="<%= dasherize name %>"
+          >
+        <%=#ifEquals type 'datetime' %>
+            <flat-pickr
+              v-model="<%= ../../name %>Data.<%= name %>"
+              class="form-control"
+              :config="{ dateFormat: 'Y-m-d'}"
+              placeholder="YYYY-MM-DD"
+            />
+          <%=/ifEquals %>
+          <%=#ifEquals type 'text' %>
+            <b-form-input
+              id="<%= dasherize name %>"
+              v-model="<%= ../../name %>Data.<%= name %>"
+            />
+          <%=/ifEquals %>
+          <%=#ifEquals type 'select' %>
+            <v-select
+              v-model="<%= ../../name %>Data.<%= name %>"
+              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+              :options="<%= option%>Options"
+              :clearable="false"
+              input-id="<%= dasherize name %>"
+            />
+          <%=/ifEquals %>
+          <%=#ifEquals type 'radio' %>
+            <b-form-radio-group
+              id="<%= dasherize name %>"
+              v-model="<%= ../../name %>Data.<%= name %>"
+              :options="<%= option%>Options"
+              value="male"
+            />
+          <%=/ifEquals %>
+           <%=#ifEquals type 'checkbox' %>
+            <b-form-checkbox-group
+              id="<%= dasherize name %>"
+              v-model="<%= ../../name %>Data.<%= name %>"
+              :options="<%= option%>Options"
+            />
+            <%=/ifEquals %>
+          </b-form-group>
+        </b-col>
+         <%=/each%>
+      </b-row>
+      <%=/each%>
+      <b-row class="mt-2">
+        <b-col>
+          <b-button
+            variant="primary"
+            class="mb-1 mb-sm-0 mr-0 mr-sm-1"
+            :block="$store.getters['app/currentBreakPoint'] === 'xs'"
+          >
+            حفظ التغييرات
+          </b-button>
+          <b-button
+            variant="outline-secondary"
+            :block="$store.getters['app/currentBreakPoint'] === 'xs'"
+          >
+            إعادة ضبط
+          </b-button>
+        </b-col>
+      </b-row>
+    </b-form>
+  </div>
+</template>
+
+<script>
+import {
+  BRow, BCol, BForm, BFormGroup, BFormInput, BFormRadioGroup, BFormCheckboxGroup, BButton,
+} from 'bootstrap-vue'
+import flatPickr from 'vue-flatpickr-component'
+import { ref } from '@vue/composition-api'
+import vSelect from 'vue-select'
+import { ValidationProvider, ValidationObserver } from 'vee-validate';
+import { required, alphaNum, email } from '@validations';
+import formValidation from '@core/comp-functions/forms/form-validation';
+
+export default {
+  components: {
+    BRow, BCol, BForm, BFormGroup, flatPickr, BFormInput, vSelect, BFormRadioGroup, BFormCheckboxGroup, BButton,
+    // Form Validation
+    ValidationProvider,
+    ValidationObserver,
+  },
+  props: {
+    <%= name %>Data: {
+      type: Object,
+      required: true,
+    }
+  },
+  setup() {
+    <%=#each options %>
+    const <%= name %>Options = [
+     <%=#each data %>
+        <%=#unless hidden %>
+        { label: '<%= label %>', value: '<%= value %>' },
+        <%=/unless %>
+    <%=/each %>
+    <%=/each%>
+
+const old<%= classify name %>Data = JSON.parse(JSON.stringify(props.<%= name %>Data));
+    const reset<%= classify name %>Data = () => {
+      <%= name %>Data.value = JSON.parse(JSON.stringify(old<%= classify name %>Data));
+    };
+
+    const { refFormObserver, getValidationState, resetForm } =
+      formValidation(reset<%= classify name %>Data);
+
+    return {
+      <%= name %>Data,
+      <%=#each options %>
+      <%= name %>Options,
+      <%=/each%>
+    }
+  },
+}
+</script>
+
+<style lang="scss">
+@import '@core/scss/vue/libs/vue-flatpicker.scss';
+</style>

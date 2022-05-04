@@ -18,7 +18,13 @@
                   {{#if hasUplodableMorph}}
                   {{{ attachments }}}
                   {{/if}}
+                  {{#hasBeforeEvent 'create'}}
+                  {{{ beforeEvent 'create' }}}
+                  {{/hasBeforeEvent}}
                   $model = {{name}}::create($data);
+                  {{#hasAfterEvent 'create'}}
+                  {{{afterEvent 'create' }}}
+                  {{/hasAfterEvent}}
                   {{{ morphAttachments }}}
                   {{{ additionalMethods }}}
                 } catch (\Exception $e) {

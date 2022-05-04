@@ -7,6 +7,7 @@ import { Command } from 'commander';
 
 async function action(args: any): Promise<0 | 1> {
   try {
+    // @todo: Refactor used by watch command
     if (typeof args.source === 'undefined') {
       args.source = join(process.cwd(), 'kody.json');
     }

@@ -8,8 +8,6 @@ import {
 } from 'kodyfire-core';
 import { Engine } from './engine';
 
-const pluralize = require('pluralize');
-
 export class Request implements IConcept {
   model: any;
   name: string;
@@ -38,7 +36,7 @@ export class Request implements IConcept {
     this.engine = new Engine();
     _data.relationships = this.model.relationships;
     _data.controller = this.model.controller;
-    _data.fields = this.model.fields;
+    _data.fields = this.model.fields.filter((f: any) => f.required == true);
     const template = await this.engine.read(this.template.path, _data.template);
     this.engine.builder.registerHelper('getRequestValidation', () => {
       return this.getRequestValidation(
@@ -52,6 +50,7 @@ export class Request implements IConcept {
       _data.relationships,
       _data.prefix === 'Create' ? 'store' : 'update'
     );
+
     const compiled = this.engine.compile(template, _data);
     this.engine.createOrOverwrite(
       this.technology.rootDir,
@@ -65,32 +64,14 @@ export class Request implements IConcept {
     return `${classify(name)}Request.php`;
   }
 
-  getValidation(
-    model: any,
-    prefix: any = '',
-    relatedModel: any = null
-  ): string {
+  getValidation(prefix: any = '', _relatedModel: any = null): string {
     let validation = '';
-    model.fields.forEach((f: any) => {
-      if (
-        !relatedModel ||
-        (relatedModel != null && f.name != relatedModel.toLowerCase() + '_id')
-      ) {
-        if (f.options.filter((e: any) => e.key == 'default').length == 0) {
-          if (f.options.filter((e: any) => e.key == 'nullable').length == 0) {
-            if (f.options.filter((e: any) => e.key == 'unique').length > 0) {
-              validation += `'${prefix}${f.name}' => '${this.isEmail(
-                f.name
-              )}required|unique:${this.underscorize(
-                pluralize(model.name)
-              )},${prefix}${f.name}',\n`;
-            } else {
-              validation += `'${prefix}${f.name}' => '${this.isEmail(
-                f.name
-              )}required',\n`;
-            }
-          }
-        }
+    this.model.fields.forEach((f: any) => {
+      console.log(f.validation);
+      if (f.validation) {
+        validation += `'${prefix}${this.underscorize(f.name)}' => '${
+          f.validation
+        }',\n`;
       }
     });
     return validation;
@@ -103,28 +84,12 @@ export class Request implements IConcept {
   }
 
   getRequestValidation(
-    model: any,
-    relationships: any,
+    _model: any,
+    _relationships: any,
     _prefix: any = ''
   ): string {
     let validation = '';
-    validation = this.getValidation(model);
-    //Relations validation
-    if (
-      model.controller &&
-      model.controller != '' &&
-      model.controller.with_additional_relations &&
-      model.controller.with_additional_relations != '' &&
-      model.controller.with_additional_relations.length > 0
-    ) {
-      model.controller.with_additional_relations.forEach((element: any) => {
-        validation += this.getRelationValidation(
-          element,
-          relationships,
-          model.name
-        );
-      });
-    }
+    validation = this.getValidation();
     return validation;
   }
 
@@ -148,7 +113,7 @@ export class Request implements IConcept {
         const prefix = `${this.underscorize(Object.values(relation)[0])}.*.`;
         switch (Object.keys(relation)[0]) {
           case 'hasMany':
-            content += this.getValidation(model, prefix, relatedModel);
+            content += this.getValidation(prefix, relatedModel);
             break;
 
           default:

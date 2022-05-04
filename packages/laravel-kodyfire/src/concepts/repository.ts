@@ -15,6 +15,40 @@ export class Repository extends Concept {
     this.engine.builder.registerHelper('hasUplodableMorph', () => {
       return this.hasUplodableMorph(this.model);
     });
+    this.engine.builder.registerHelper(
+      'hasBeforeEvent',
+      (action: string, options: any) => {
+        const currentAction = this.model.controller.actions.find(
+          (a: any) => a.name == action
+        );
+        if (currentAction && typeof currentAction.beforeEvent != 'undefined')
+          return options.fn(this);
+        return null;
+      }
+    );
+    this.engine.builder.registerHelper('beforeEvent', (action: string) => {
+      const currentAction = this.model.controller.actions.find(
+        (a: any) => a.name == action
+      );
+      return `\\App\\Events\\${currentAction.beforeEvent.name}::dispatch(${currentAction.beforeEvent.args});`;
+    });
+    this.engine.builder.registerHelper(
+      'hasAfterEvent',
+      (action: string, options: any) => {
+        const currentAction = this.model.controller.actions.find(
+          (a: any) => a.name == action
+        );
+        if (currentAction && typeof currentAction.afterEvent != 'undefined')
+          return options.fn(this);
+        return null;
+      }
+    );
+    this.engine.builder.registerHelper('afterEvent', (action: string) => {
+      const currentAction = this.model.controller.actions.find(
+        (a: any) => a.name == action
+      );
+      return `\\App\\Events\\${currentAction.afterEvent.name}::dispatch(${currentAction.afterEvent.args});`;
+    });
 
     this.engine.builder.registerHelper('getAttachments', () => {
       return this.getAttachments(this.model);
