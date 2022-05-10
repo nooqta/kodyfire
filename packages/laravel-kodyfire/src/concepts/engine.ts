@@ -30,6 +30,20 @@ export class Engine {
         return arg1 == arg2 ? options.fn(this) : options.inverse(this);
       }
     );
+    this.builder.registerHelper('includes', function (arg1: any) {
+      /* @ts-ignore */
+      return [
+        'integer',
+        'string',
+        'boolean',
+        'date',
+        'dateTime',
+        'time',
+        'timestamp',
+        'json',
+        'text',
+      ].includes(arg1);
+    });
     this.builder.registerHelper('equals', function (arg1: any, arg2: any) {
       /* @ts-ignore */
       return arg1 == arg2;
@@ -46,6 +60,13 @@ export class Engine {
       join(relative(process.cwd(), __dirname), path, templateName)
     );
     return template?.toString();
+  }
+
+  async getPartial(path: string, template: string, data: any) {
+    const tpl = await this.read(path, template);
+
+    const compiled = await this.compile(tpl, data);
+    return compiled;
   }
 
   compile(template: any, data: any) {

@@ -32,13 +32,13 @@
             <p class="user-name font-weight-bolder mb-0">
               {{ userData.name }}
             </p>
-            <span class="user-status">مدير</span>
+            <span class="user-status">{{ $t(userData.role) }}</span>
           </div>
           <b-avatar
             size="40"
             variant="light-primary"
             badge
-            :src="require('@/assets/images/avatars/13-small.png')"
+            :text="userData.name.substring(0, 1)"
             class="badge-minimal"
             badge-variant="success"
           />
@@ -96,7 +96,7 @@ export default {
   },
   data() {
     return {
-      userData: localStorage.getItem('userData'),
+      userData: JSON.parse(localStorage.getItem('userData')),
     }
   },
   methods: {
@@ -106,7 +106,7 @@ export default {
       // logout from server
 
       // Reset ability
-      // this.$ability.update(initialAbility)
+      this.$ability.update(initialAbility)
 
       // Redirect to login page
       this.$router.push({ name: 'auth-login' })

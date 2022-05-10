@@ -25,6 +25,7 @@ class {{prefix}}{{model}}Request extends FormRequest
     {
         return [
             {{{ rules }}}
+            {{{ relationRules }}}
         ];
     }
 }

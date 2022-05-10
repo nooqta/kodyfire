@@ -18,28 +18,48 @@
           <%= description %>
         </b-card-text>
 
-        <!-- form -->
+  <!-- form -->
         <validation-observer ref="registerForm">
           <b-form
             class="auth-register-form mt-2"
             @submit.prevent="validationForm"
           >
-            <!-- username -->
+            <!-- name -->
             <b-form-group
-              label="Username"
-              label-for="username"
+              label="الاسم"
+              label-for="name"
             >
               <validation-provider
                 #default="{ errors }"
-                name="Username"
+                name="الإسم"
                 rules="required"
               >
                 <b-form-input
-                  id="username"
-                  v-model="username"
+                  id="name"
+                  v-model="user.name"
                   :state="errors.length > 0 ? false:null"
-                  name="register-username"
-                  placeholder="johndoe"
+                  name="register-name"
+                  placeholder="الاسم"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+            <!-- phone -->
+            <b-form-group
+              label="الهاتف"
+              label-for="phone"
+            >
+              <validation-provider
+                #default="{ errors }"
+                name="phone"
+                rules="required"
+              >
+                <b-form-input
+                  id="phone"
+                  v-model="user.phone"
+                  :state="errors.length > 0 ? false:null"
+                  name="register-phone"
+                  placeholder="+9665555555555"
                 />
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
@@ -47,20 +67,20 @@
 
             <!-- email -->
             <b-form-group
-              label="Email"
+              label="بريد الالكتروني"
               label-for="email"
             >
               <validation-provider
                 #default="{ errors }"
                 name="Email"
-                rules="required|email"
+                rules="required|validEmail"
               >
                 <b-form-input
                   id="email"
-                  v-model="regEmail"
+                  v-model="user.email"
                   :state="errors.length > 0 ? false:null"
                   name="register-email"
-                  placeholder="john@example.com"
+                  placeholder="youremail@example.sa"
                 />
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
@@ -68,7 +88,7 @@
 
             <!-- password -->
             <b-form-group
-              label="Password"
+              label="كلمه السر"
               label-for="password"
             >
               <validation-provider
@@ -82,7 +102,7 @@
                 >
                   <b-form-input
                     id="password"
-                    v-model="password"
+                    v-model="user.password"
                     :type="passwordFieldType"
                     :state="errors.length > 0 ? false:null"
                     class="form-control-merge"
@@ -108,8 +128,8 @@
                 v-model="status"
                 name="checkbox-1"
               >
-                I agree to
-                <b-link>privacy policy & terms</b-link>
+                وأنا أوافق على
+                <b-link>سياسة الخصوصية وشروطها</b-link>
               </b-form-checkbox>
             </b-form-group>
 
@@ -119,51 +139,17 @@
               block
               type="submit"
             >
-              Sign up
+              اشتراك
             </b-button>
           </b-form>
         </validation-observer>
 
         <b-card-text class="text-center mt-2">
-          <span>Already have an account? </span>
+          <span>هل لديك حساب؟ </span>
           <b-link :to="{name:'auth-login-v1'}">
-            <span>Sign in instead</span>
+            <span>تسجيل الدخول بدلا من ذلك</span>
           </b-link>
         </b-card-text>
-
-        <div class="divider my-2">
-          <div class="divider-text">
-            or
-          </div>
-        </div>
-
-        <!-- social buttons -->
-        <div class="auth-footer-btn d-flex justify-content-center">
-          <b-button
-            variant="facebook"
-            href="javascript:void(0)"
-          >
-            <feather-icon icon="FacebookIcon" />
-          </b-button>
-          <b-button
-            variant="twitter"
-            href="javascript:void(0)"
-          >
-            <feather-icon icon="TwitterIcon" />
-          </b-button>
-          <b-button
-            variant="google"
-            href="javascript:void(0)"
-          >
-            <feather-icon icon="MailIcon" />
-          </b-button>
-          <b-button
-            variant="github"
-            href="javascript:void(0)"
-          >
-            <feather-icon icon="GithubIcon" />
-          </b-button>
-        </div>
       </b-card>
     <!-- /Register v1 -->
     </div>
@@ -178,9 +164,10 @@ import {
   BButton, BFormInput, BFormGroup, BInputGroup, BInputGroupAppend, BFormCheckbox,
 } from 'bootstrap-vue'
 import VuexyLogo from '@core/layouts/components/Logo.vue'
-import { required, email } from '@validations'
+import { required, validEmail } from '@validations'
 import { togglePasswordVisibility } from '@core/mixins/ui/forms'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+import { alertMessageMixin } from "@core/mixins/ui/feedback";
 
 export default {
   components: {
@@ -201,17 +188,19 @@ export default {
     ValidationProvider,
     ValidationObserver,
   },
-  mixins: [togglePasswordVisibility],
+  mixins: [togglePasswordVisibility, alertMessageMixin],
   data() {
     return {
-      regEmail: '',
-      username: '',
-      password: '',
+      user: {
+        email: '',
+        name: '',
+        password: '',
+        phone: ''
+      },
       status: '',
-
       // validation rules
       required,
-      email,
+      validEmail,
     }
   },
   computed: {
@@ -219,18 +208,43 @@ export default {
       return this.passwordFieldType === 'password' ? 'EyeIcon' : 'EyeOffIcon'
     },
   },
+  
   methods: {
     validationForm() {
-      this.$refs.registerForm.validate().then(success => {
+      this.$refs.registerForm.validate().then(async (success) => {
         if (success) {
-          this.$toast({
-            component: ToastificationContent,
-            props: {
-              title: 'Form Submitted',
-              icon: 'EditIcon',
-              variant: 'success',
-            },
-          })
+          try {
+            const response = await this.$http.post("/register", {
+              ...this.user,
+              password_confirmation: this.user.password,
+            });
+
+            this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: "تم التسجيل بنجاح",
+                icon: "CheckCircleIcon",
+                variant: "success",
+              },
+            });
+            this.showMessage = true;
+            this.message = response.data.message;
+          } catch (error) {
+            if(error.response) {
+            this.$refs.registerForm.setErrors(error.response.data.errors);
+            this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: error.response.data.message,
+                text: error.response.data.message,
+                icon: "AlertCircleIcon",
+                variant: "danger",
+              },
+            });
+            }
+            console.log(error);
+            return;
+          }
         }
       })
     },

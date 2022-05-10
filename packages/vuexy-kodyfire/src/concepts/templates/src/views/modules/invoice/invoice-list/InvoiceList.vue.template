@@ -16,7 +16,7 @@
           md="6"
           class="d-flex align-items-center justify-content-start mb-1 mb-md-0"
         >
-          <label>Entries</label>
+          <label>سجلات</label>
           <v-select
             v-model="perPage"
             :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
@@ -26,9 +26,9 @@
           />
           <b-button
             variant="primary"
-            :to="{ name: 'apps-invoice-add'}"
+            :to="{ name: 'invoices-add'}"
           >
-            Add Record
+            أضف فاتورة جديدة
           </b-button>
         </b-col>
 
@@ -41,14 +41,14 @@
             <b-form-input
               v-model="searchQuery"
               class="d-inline-block mr-1"
-              placeholder="Search..."
+              placeholder="بحث..."
             />
             <v-select
               v-model="statusFilter"
               :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
               :options="statusOptions"
               class="invoice-filter-select"
-              placeholder="Select Status"
+              placeholder="حدد الحالة"
             >
               <template #selected-option="{ label }">
                 <span class="text-truncate overflow-hidden">
@@ -70,127 +70,87 @@
       primary-key="id"
       :sort-by.sync="sortBy"
       show-empty
-      empty-text="No matching records found"
+      empty-text="لم يتم العثور على سجلات مطابقة"
       :sort-desc.sync="isSortDirDesc"
       class="position-relative"
     >
-
-      <template #head(invoiceStatus)>
-        <feather-icon
-          icon="TrendingUpIcon"
-          class="mx-auto"
-        />
-      </template>
-
-      <!-- Column: Id -->
-      <template #cell(id)="data">
+      <%=#each data.columns %>
+      <!-- Column: <%= name %> -->
+        <%=#ifEquals type 'link' %>
+        <%=!-- Column: type link  --%>
+      <template #cell(<%= name %>)="data">
         <b-link
-          :to="{ name: 'apps-invoice-preview', params: { id: data.item.id }}"
+          :to="{<%= link %>}"
           class="font-weight-bold"
         >
           #{{ data.value }}
         </b-link>
       </template>
-
-      <!-- Column: Invoice Status -->
-      <template #cell(invoiceStatus)="data">
-        <b-avatar
-          :id="`invoice-row-${data.item.id}`"
-          size="32"
-          :variant="`light-${resolveInvoiceStatusVariantAndIcon(data.item.invoiceStatus).variant}`"
-        >
-          <feather-icon
-            :icon="resolveInvoiceStatusVariantAndIcon(data.item.invoiceStatus).icon"
-          />
-        </b-avatar>
-        <b-tooltip
-          :target="`invoice-row-${data.item.id}`"
-          placement="top"
-        >
-          <p class="mb-0">
-            {{ data.item.invoiceStatus }}
-          </p>
-          <p class="mb-0">
-            Balance: {{ data.item.balance }}
-          </p>
-          <p class="mb-0">
-            Due Date: {{ data.item.dueDate }}
-          </p>
-        </b-tooltip>
-      </template>
-
-      <!-- Column: Client -->
-      <template #cell(client)="data">
-        <b-media vertical-align="center">
-          <template #aside>
-            <b-avatar
-              size="32"
-              :src="data.item.avatar"
-              :text="avatarText(data.item.client.name)"
-              :variant="`light-${resolveClientAvatarVariant(data.item.invoiceStatus)}`"
-            />
-          </template>
-          <span class="font-weight-bold d-block text-nowrap">
-            {{ data.item.client.name }}
-          </span>
-          <small class="text-muted">{{ data.item.client.companyEmail }}</small>
-        </b-media>
-      </template>
-
-      <!-- Column: Issued Date -->
-      <template #cell(issuedDate)="data">
+        <%=/ifEquals %>
+        <%=#ifEquals type 'text' %>
+ <%=!-- Column: type text  --%>
+      <template #cell(<%= name %>)="data">
         <span class="text-nowrap">
           {{ data.value }}
         </span>
       </template>
+      <%=/ifEquals %>
+        <%=#ifEquals type 'user' %>
+        <%=!-- Column: type user  --%>
+        <template #cell(<%= name %>)="data">
+          <b-media vertical-align="center">
+            <template #aside>
+              <b-avatar
+                size="32"
+                :src="data.item.avatar"
+                :text="avatarText(data.item.<%= name %>)"
+                :variant="`light-${resolve<%= classify ../name %><%= classify name %>Variant(data.item.<%= name %>)}`"
+                :to="{ name: '<%= name %>-view', params: { id: data.item.id } }"
+              />
+            </template>
+            <b-link
+              :to="{ name: '<%= name %>-view', params: { id: data.item.id } }"
+              class="font-weight-bold d-block text-nowrap"
+            >
+              {{ data.item.name }}
+            </b-link>
+            <small class="text-muted">@{{ data.item.email }}</small>
+          </b-media>
+        </template>
+        <%=/ifEquals %>
 
-      <!-- Column: Balance -->
-      <template #cell(balance)="data">
-        <template v-if="data.value === 0">
+        <%=#ifEquals type 'icon' %>
+         <%=!-- Column: type icon --%>
+        <template #cell(<%= name %>)="data">
+          <div class="text-nowrap">
+            <feather-icon
+              :icon="resolve<%= classify ../name %><%= classify name %>Icon(data.item.<%= name %>)"
+              size="18"
+              class="mr-50"
+              :class="`text-${resolve<%= classify ../name %><%= classify name %>Variant(data.item.<%= name %>)}`"
+            />
+            <span class="align-text-top text-capitalize">{{ data.item.<%= name %> }}</span>
+          </div>
+        </template>
+        <%=/ifEquals %>
+        <%=#ifEquals type 'status' %>
+        <%=!-- Column: Status --%>
+        <template #cell(<%= name %>)="data">
           <b-badge
             pill
-            variant="light-success"
+            :variant="`light-${resolve<%= classify ../name %><%= classify name %>Variant(data.item.<%= name %>)}`"
+            class="text-capitalize"
           >
-            Paid
+            {{ data.item.<%= name %> }}
           </b-badge>
         </template>
-        <template v-else>
-          {{ data.value }}
-        </template>
-      </template>
-
-      <!-- Column: Actions -->
-      <template #cell(actions)="data">
-
-        <div class="text-nowrap">
-          <feather-icon
-            :id="`invoice-row-${data.item.id}-send-icon`"
-            icon="SendIcon"
-            class="cursor-pointer"
-            size="16"
-          />
-          <b-tooltip
-            title="Send Invoice"
-            class="cursor-pointer"
-            :target="`invoice-row-${data.item.id}-send-icon`"
-          />
-
-          <feather-icon
-            :id="`invoice-row-${data.item.id}-preview-icon`"
-            icon="EyeIcon"
-            size="16"
-            class="mx-1"
-            @click="$router.push({ name: 'apps-invoice-preview', params: { id: data.item.id }})"
-          />
-          <b-tooltip
-            title="Preview Invoice"
-            :target="`invoice-row-${data.item.id}-preview-icon`"
-          />
-
-          <!-- Dropdown -->
+        <%=/ifEquals %>
+<!-- end Column: <%= name %> -->
+      <%=/each %>
+ <!-- Column: Actions -->
+        <template #cell(actions)="data">
           <b-dropdown
             variant="link"
-            toggle-class="p-0"
             no-caret
             :right="$store.state.appConfig.isRTL"
           >
@@ -202,26 +162,26 @@
                 class="align-middle text-body"
               />
             </template>
-            <b-dropdown-item>
-              <feather-icon icon="DownloadIcon" />
-              <span class="align-middle ml-50">Download</span>
+            <b-dropdown-item :to="{ name: '<%= pluralize name %>-view', params: { id: data.item.id } }">
+              <feather-icon icon="FileTextIcon" />
+              <span class="align-middle ml-50">تفاصيل</span>
             </b-dropdown-item>
-            <b-dropdown-item :to="{ name: 'apps-invoice-edit', params: { id: data.item.id } }">
+
+            <b-dropdown-item :to="{ name: '<%= pluralize name %>-edit', params: { id: data.item.id } }">
               <feather-icon icon="EditIcon" />
-              <span class="align-middle ml-50">Edit</span>
+              <span class="align-middle ml-50">تعديل</span>
             </b-dropdown-item>
-            <b-dropdown-item>
+            <b-dropdown-item @click="download(data.item)">
+              <feather-icon icon="DownloadIcon" />
+              <span class="align-middle ml-50">تنزيل</span>
+            </b-dropdown-item>
+
+            <b-dropdown-item @click="confirmDelete(data.item)">
               <feather-icon icon="TrashIcon" />
-              <span class="align-middle ml-50">Delete</span>
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <feather-icon icon="CopyIcon" />
-              <span class="align-middle ml-50">Duplicate</span>
+              <span class="align-middle ml-50">حذف</span>
             </b-dropdown-item>
           </b-dropdown>
-        </div>
-      </template>
-
+        </template>
     </b-table>
     <div class="mx-2 mb-2">
       <b-row>
@@ -231,7 +191,7 @@
           sm="6"
           class="d-flex align-items-center justify-content-center justify-content-sm-start"
         >
-          <span class="text-muted">Showing {{ dataMeta.from }} to {{ dataMeta.to }} of {{ dataMeta.of }} entries</span>
+            <span class="text-muted">عرض من {{ dataMeta.from }} إلى {{ dataMeta.to }} من {{ dataMeta.of }} مدخلات</span>
         </b-col>
         <!-- Pagination -->
         <b-col
@@ -283,7 +243,8 @@ import { onUnmounted } from '@vue/composition-api'
 import store from '@/store'
 import useInvoicesList from './useInvoiceList'
 
-import invoiceStoreModule from '../invoiceStoreModule'
+import invoiceStore from '../invoiceStore'
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue';
 
 export default {
   components: {
@@ -304,11 +265,78 @@ export default {
 
     vSelect,
   },
+  methods: {
+    download(invoice) {
+      this.$toast.info('جاري التنزيل...', {
+        autoHide: false,
+        appendToast: ToastificationContent,
+      });
+      store.dispatch('app-invoice/downloadInvoice', { id: invoice.id })
+      .then(response => {
+        this.$toast.success('تم التنزيل بنجاح');
+        this.downloadFile(response.data, invoice.invoice_number);
+        })
+      .catch(error => {
+        console.log(error);
+        this.$toast.error('حدث خطأ اثناء التنزيل');
+      })
+
+    },
+    downloadFile(data, filename, type = 'application/pdf') {
+    let a = document.createElement('a');
+    document.body.appendChild(a);
+    a.style = 'display: none';
+    const blob = new Blob([data], { type: 'application/pdf' });
+    const url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = filename+ '.pdf';
+    a.click();
+    window.URL.revokeObjectURL(url);
+  },
+    deleteInvoice(invoice) {
+      store.dispatch('app-invoice/deleteInvoice', { id: invoice.id })
+      .then(response => { 
+        this.$emit('refetch-data')
+        this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'تم حذف الفاتورة بنجاح',
+              icon: 'EditIcon',
+              variant: 'success',
+            },
+          })        
+          })
+      .catch(error => {
+        if (error.response.status === 404) {
+          invoiceData.value = undefined
+        }
+      })
+    },
+    confirmDelete(invoice) {
+      this.$bvModal
+        .msgBoxConfirm(`يرجى تأكيد أنك تريد حذف الفاتورة  ${invoice.subject}.`, {
+          title: 'يرجى التأكيد',
+          size: 'sm',
+          okVariant: 'danger',
+          okTitle: 'نعم',
+          cancelTitle: 'لا',
+          cancelVariant: 'outline-warning',
+          hideHeaderClose: false,
+          centered: true,
+        })
+        .then(value => {
+          if(value){
+            this.deleteInvoice(invoice)
+          }
+        })
+    }
+  },
+ 
   setup() {
     const INVOICE_APP_STORE_MODULE_NAME = 'app-invoice'
 
     // Register module
-    if (!store.hasModule(INVOICE_APP_STORE_MODULE_NAME)) store.registerModule(INVOICE_APP_STORE_MODULE_NAME, invoiceStoreModule)
+    if (!store.hasModule(INVOICE_APP_STORE_MODULE_NAME)) store.registerModule(INVOICE_APP_STORE_MODULE_NAME, invoiceStore)
 
     // UnRegister on leave
     onUnmounted(() => {

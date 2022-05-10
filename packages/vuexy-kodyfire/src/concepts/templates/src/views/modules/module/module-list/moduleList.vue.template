@@ -53,7 +53,7 @@
                 variant="primary"
                 @click="isAddNew<%= classify name %>SidebarActive = true"
               >
-                <span class="text-nowrap">إضافة <%= classify name %></span>
+                <span class="text-nowrap">إضافة {{$t('<%= lowercase name %>')}}</span>
               </b-button>
             </div>
           </b-col>
@@ -70,7 +70,7 @@
         primary-key="id"
         :sort-by.sync="sortBy"
         show-empty
-        empty-text="No matching records found"
+        empty-text="لم يتم العثور على سجلات مطابقة"
         :sort-desc.sync="isSortDirDesc"
       >
       <%=#each data.columns %>
@@ -159,17 +159,13 @@
                 class="align-middle text-body"
               />
             </template>
-            <b-dropdown-item :to="{ name: '-view', params: { id: data.item.id } }">
-              <feather-icon icon="FileTextIcon" />
-              <span class="align-middle ml-50">تفاصيل</span>
-            </b-dropdown-item>
 
             <b-dropdown-item :to="{ name: '-edit', params: { id: data.item.id } }">
               <feather-icon icon="EditIcon" />
               <span class="align-middle ml-50">تعديل</span>
             </b-dropdown-item>
 
-            <b-dropdown-item>
+            <b-dropdown-item  @click="confirmDelete(data.item)">
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">حذف</span>
             </b-dropdown-item>
@@ -238,6 +234,7 @@ import <%= classify name %>ListFilters from './<%= classify name %>ListFilters.v
 import use<%= classify name %>List from './use<%= classify name %>List'
 import <%= name %>Store from '../<%= name %>Store'
 import <%= classify name %>ListAddNew from './<%= classify name %>ListAddNew.vue'
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue';
 
 export default {
   components: {
@@ -258,6 +255,47 @@ export default {
     BPagination,
 
     vSelect,
+  },
+  methods: {
+       delete<%= classify name %>(<%= name %>) {
+      store.dispatch('<%= name %>/delete<%= classify name %>', { id: <%= name %>.id })
+      .then(response => { 
+        this.$emit('refetch-data')
+        this.refetchData();
+        this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'تم الحذف بنجاح',
+              icon: 'EditIcon',
+              variant: 'success',
+            },
+          })        
+          })
+      .catch(error => {
+        if (error.response.status === 404) {
+          <%= name %>Data.value = undefined
+        }
+      })
+    },
+    confirmDelete(<%= name %>) {
+      this.$bvModal
+        .msgBoxConfirm(`يرجى تأكيد أنك تريد حذف العنصر  ${ <%= name %>.id}.`, {
+          title: 'يرجى التأكيد',
+          size: 'sm',
+          okVariant: 'danger',
+          okTitle: 'نعم',
+          cancelTitle: 'لا',
+          cancelVariant: 'outline-warning',
+          hideHeaderClose: false,
+          centered: true,
+        })
+        .then(value => {
+          if(value){
+            this.delete<%= classify name %>(<%= name %>)
+          }
+        })
+    }
+ 
   },
   setup() {
     const <%= uppercase name %>_STORE_MODULE_NAME = '<%= name %>'
@@ -297,14 +335,15 @@ export default {
       refetchData,
 
       // UI
-      resolve<%= classify name %>RoleVariant,
-      resolve<%= classify name %>RoleIcon,
-      resolve<%= classify name %>StatusVariant,
-
-      // Extra Filters
-      roleFilter,
-      planFilter,
-      statusFilter,
+      <%=#each data.options %>
+      <%= name %>Filter,
+      <%=#if hasVariant %>
+      resolve<%= classify name %>Variant,
+      <%=/if %>
+      <%=#if hasIcon %>
+      resolve<%= classify name %>Icon,
+      <%=/if %>
+      <%=/each %>
     } = use<%= classify name %>List()
 
     return {
@@ -329,18 +368,16 @@ export default {
       avatarText,
 
       // UI
-      resolve<%= classify name %>RoleVariant,
-      resolve<%= classify name %>RoleIcon,
-      resolve<%= classify name %>StatusVariant,
-
-      roleOptions,
-      planOptions,
-      statusOptions,
-
-      // Extra Filters
-      roleFilter,
-      planFilter,
-      statusFilter,
+      <%=#each data.options %>
+      <%= name %>Options,
+      <%= name %>Filter,
+      <%=#if hasVariant %>
+      resolve<%= classify name %>Variant,
+      <%=/if %>
+      <%=#if hasIcon %>
+      resolve<%= classify name %>Icon,
+      <%=/if %>
+      <%=/each%>
     }
   },
 }

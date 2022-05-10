@@ -113,7 +113,7 @@
             <span>&nbsp;إنشاء حساب</span>
           </b-link>
         </b-card-text>
-
+        <%=#if false %>
         <div class="divider my-2">
           <div class="divider-text">or</div>
         </div>
@@ -133,6 +133,7 @@
             <feather-icon icon="GithubIcon" />
           </b-button>
         </div>
+        <%=/if %>
       </b-card>
       <!-- /Login v1 -->
     </div>
@@ -215,45 +216,27 @@ export default {
             this.$toast({
               component: ToastificationContent,
               props: {
-                title: 'تم التسجيل بنجاح',
-                icon: 'CheckCircleIcon',
-                variant: 'success',
+                title: "تم التسجيل بنجاح",
+                icon: "CheckCircleIcon",
+                variant: "success",
               },
-            });
-            console.log(response.data);
-            this.displayMessage({
-              message: response.data.message,
-              type: 'success',
             });
             useJwt.setToken(response.data.accessToken);
             setUserData(response.data.user);
-            // useJwt.setRefreshToken(response.data.refreshToken)
-            this.$ability.update(response.data.ability)
-            this.$router.push('/');
+            this.$ability.update(response.data.user.abilities)
+            this.$router.push("/");
           } catch (error) {
-            let errorMessage = {
-              message: '',
-              type: 'danger',
-            };
-            
-            const { errors } = error.response.data;
-            if (errors) {
-              Object.values(errors).forEach(error => {
-                errorMessage.message += `${error[0]}<br>`;
-              });
-              this.$refs.loginForm.setErrors(error.response.data.errors ?? []);
-            } else {
-              errorMessage.message = error.response.data.message;
-            }
-            
-            this.displayMessage(errorMessage);
+        if(!error.response) console.log(error)
+            this.$refs.loginForm.setErrors(error.response.data.errors ?? []);
+            this.showAlertMessage = true;
+            this.errorMessage = error.response.data.message;
             this.$toast({
               component: ToastificationContent,
               props: {
                 title: error.response.data.message,
                 text: error.response.data.message,
-                icon: 'AlertCircleIcon',
-                variant: 'danger',
+                icon: "AlertCircleIcon",
+                variant: "danger",
               },
             });
           }

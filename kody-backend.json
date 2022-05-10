@@ -124,9 +124,28 @@
       "model": "InvoiceItem",
       "template": "factory.php.template",
       "namespace": "Database\\Factories"
+    },
+    {
+      "model": "Vendor",
+      "template": "factory.php.template",
+      "namespace": "Database\\Factories"
+    },
+    {
+      "model": "Expense",
+      "template": "factory.php.template",
+      "namespace": "Database\\Factories"
     }
   ],
   "seed": [
+    {
+      "model": false,
+      "filename": "RolesTableSeeder.php",
+      "template": "database/seeders/RolesTableSeeder.php.template",
+      "namespace": "Database\\Seeders",
+      "data": {
+        "appName": "invoicego"
+      }
+    },
     {
       "model": "Company",
       "template": "seed.php.template",
@@ -134,8 +153,11 @@
     },
     {
       "model": "User",
-      "template": "seed.php.template",
-      "namespace": "Database\\Seeders"
+      "template": "database/seeders/UsersTableSeeder.php.template",
+      "namespace": "Database\\Seeders",
+      "data": {
+        "role": "company"
+      }
     },
     {
       "model": "Address",
@@ -155,17 +177,48 @@
     {
       "model": "Customer",
       "template": "seed.php.template",
-      "namespace": "Database\\Seeders"
+      "namespace": "Database\\Seeders",
+      "data": {
+        "count": 10,
+        "args": [
+          {
+            "key": "company_id",
+            "value": 4
+          }
+        ]
+      }
     },
     {
       "model": "InvoiceTemplate",
       "template": "seed.php.template",
-      "namespace": "Database\\Seeders"
+      "namespace": "Database\\Seeders",
+      "data": {
+        "count": 1,
+        "args": [
+          {
+            "key": "name",
+            "value": "invoices/templates.default"
+          }
+        ]
+      }
     },
     {
       "model": "Invoice",
       "template": "seed.php.template",
-      "namespace": "Database\\Seeders"
+      "namespace": "Database\\Seeders",
+      "data": {
+        "count": 10,
+        "args": [
+          {
+            "key": "company_id",
+            "value": "4"
+          },
+          {
+            "key": "template_id",
+            "value": "1"
+          }
+        ]
+      }
     },
     {
       "model": "InvoiceAttachment",
@@ -175,12 +228,49 @@
     {
       "model": "Item",
       "template": "seed.php.template",
-      "namespace": "Database\\Seeders"
+      "namespace": "Database\\Seeders",
+      "data": {
+        "count": 10,
+        "args": [
+          {
+            "key": "company_id",
+            "value": "4"
+          }
+        ]
+      }
     },
     {
       "model": "InvoiceItem",
       "template": "seed.php.template",
       "namespace": "Database\\Seeders"
+    },
+    {
+      "model": "Vendor",
+      "template": "seed.php.template",
+      "namespace": "Database\\Seeders",
+      "data": {
+        "count": 10,
+        "args": [
+          {
+            "key": "company_id",
+            "value": 4
+          }
+        ]
+      }
+    },
+    {
+      "model": "Expense",
+      "template": "seed.php.template",
+      "namespace": "Database\\Seeders",
+      "data": {
+        "count": 10,
+        "args": [
+          {
+            "key": "company_id",
+            "value": 4
+          }
+        ]
+      }
     }
   ],
   "databaseSeed": [
@@ -223,6 +313,7 @@
     },
     {
       "model": "Customer",
+      "customCreate": "auth()->user()->company->customers()->create",
       "template": "repository.php.template"
     },
     {
@@ -232,11 +323,42 @@
     {
       "model": "CompanySubscription",
       "template": "repository.php.template"
+    },
+    {
+      "model": "Vendor",
+      "customCreate": "auth()->user()->company->vendors()->create",
+      "template": "repository.php.template"
+    },
+    {
+      "model": "Expense",
+      "customCreate": "auth()->user()->company->expenses()->create",
+      "template": "repository.php.template"
     }
   ],
   "migration": [
     {
-      "model": "User",
+      "filename": "2014_3_17_1650207999106406_create_companies_table.php",
+      "model": "Company",
+      "template": "migration.php.template"
+    },
+    {
+      "filename": "2022_3_20_1650493860801101_create_invoices_table.php",
+      "model": "Invoice",
+      "template": "migration.php.template"
+    },
+    {
+      "filename": "2022_3_20_1650493860817117_create_invoice-items_table.php",
+      "model": "InvoiceItem",
+      "template": "migration.php.template"
+    },
+    {
+      "filename": "2022_4_9_1652096341036336_create_vendors_table.php",
+      "model": "Vendor",
+      "template": "migration.php.template"
+    },
+    {
+      "filename": "2022_4_9_1652096341048348_create_expenses_table.php",
+      "model": "Expense",
       "template": "migration.php.template"
     }
   ],
@@ -303,6 +425,31 @@
           "name": "address",
           "type": "hasOne",
           "model": "Address"
+        },
+        {
+          "name": "customers",
+          "type": "hasMany",
+          "model": "Customer"
+        },
+        {
+          "name": "items",
+          "type": "hasMany",
+          "model": "Item"
+        },
+        {
+          "name": "invoices",
+          "type": "hasMany",
+          "model": "Invoice"
+        },
+        {
+          "name": "vendors",
+          "type": "hasMany",
+          "model": "Vendor"
+        },
+        {
+          "name": "expenses",
+          "type": "hasMany",
+          "model": "expense"
         }
       ],
       "controller": {
@@ -310,9 +457,41 @@
         "middleware": [],
         "actions": [
           {
+            "name": "getCustomers",
+            "type": "getUserRelation",
+            "routeName": "company/customers",
+            "relation": "company->customers",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "getVendors",
+            "type": "getUserRelation",
+            "routeName": "company/vendors",
+            "relation": "company->vendors",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "getItems",
+            "type": "getUserRelation",
+            "routeName": "company/items",
+            "relation": "company->items",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
             "name": "getAll",
             "type": "index",
-            "middleware": "['auth:sanctum', 'role:company']"
+            "middleware": "['auth:sanctum', 'role:company']",
+            "searchBy": [
+              {
+                "name": "name",
+                "type": "like"
+              },
+              {
+                "name": "email",
+                "type": "like"
+              }
+            ],
+            "filterBy": []
           },
           {
             "name": "get",
@@ -355,33 +534,60 @@
           "name": "email",
           "type": "string",
           "arguments": [],
-          "options": [],
+          "options": [
+            {
+              "key": "nullable",
+              "value": ""
+            }
+          ],
           "faker_type": "email"
         },
         {
           "name": "logo",
           "type": "string",
           "arguments": [],
-          "options": [],
+          "options": [
+            {
+              "key": "nullable",
+              "value": ""
+            }
+          ],
           "faker_type": "imageUrl"
         },
         {
           "name": "vat",
-          "type": "string",
+          "type": "integer",
           "arguments": [],
-          "options": [],
-          "faker_type": "randomNumber(5, true)"
+          "options": [
+            {
+              "key": "default",
+              "value": 15
+            }
+          ],
+          "faker_type": ""
         },
         {
           "name": "cr",
           "type": "string",
           "arguments": [],
-          "options": [],
+          "options": [
+            {
+              "key": "nullable",
+              "value": ""
+            }
+          ],
           "faker_type": "companyIdNumber()"
+        },
+        {
+          "name": "address",
+          "type": "string",
+          "arguments": [],
+          "options": [],
+          "faker_type": "address"
         }
       ],
       "foreign_keys": [],
-      "fillable": ["name", "phone", "email", "logo", "vat", "cr"]
+      "fillable": ["name", "phone", "email", "logo", "vat", "cr", "address"]
     },
     {
       "namespace": "App\\Models",
@@ -403,7 +609,14 @@
           {
             "name": "getAll",
             "type": "index",
-            "middleware": "['auth:sanctum', 'role:admin']"
+            "middleware": "['auth:sanctum', 'role:admin']",
+            "searchBy": [
+              {
+                "name": "name",
+                "type": "like"
+              }
+            ],
+            "filterBy": []
           },
           {
             "name": "get",
@@ -433,21 +646,24 @@
           "options": [],
           "type": "string",
           "name": "name",
-          "faker_type": "name"
+          "faker_type": "name",
+          "value": "Company Admin"
         },
         {
           "arguments": [],
           "options": [],
           "type": "string",
           "name": "phone",
-          "faker_type": "phoneNumber"
+          "faker_type": "phoneNumber",
+          "value": "9665555555"
         },
         {
           "arguments": [],
           "options": [],
           "type": "string",
           "name": "email",
-          "faker_type": "email"
+          "faker_type": "email",
+          "value": "company@invoicego.sa"
         },
         {
           "arguments": [],
@@ -559,7 +775,14 @@
           {
             "name": "getAll",
             "type": "index",
-            "middleware": "['auth:sanctum', 'role:company']"
+            "middleware": "['auth:sanctum', 'role:company']",
+            "searchBy": [
+              {
+                "name": "name",
+                "type": "like"
+              }
+            ],
+            "filterBy": []
           },
           {
             "name": "get",
@@ -609,13 +832,14 @@
       "name": "Customer",
       "template": "model.php.template",
       "softDelete": false,
+      "scopes": [{ "name": "CompanyScope", "args": "auth()->user()" }],
       "fields": [
         {
           "arguments": [],
           "options": [],
           "type": "string",
           "name": "name",
-          "faker_type": "name"
+          "faker_type": "company()"
         },
         {
           "arguments": [],
@@ -674,7 +898,14 @@
           {
             "name": "getAll",
             "type": "index",
-            "middleware": "['auth:sanctum', 'role:company']"
+            "middleware": "['auth:sanctum', 'role:company']",
+            "searchBy": [
+              {
+                "name": "name",
+                "type": "like"
+              }
+            ],
+            "filterBy": []
           },
           {
             "name": "get",
@@ -755,7 +986,14 @@
           {
             "name": "getAll",
             "type": "index",
-            "middleware": "['auth:sanctum', 'role:admin']"
+            "middleware": "['auth:sanctum', 'role:admin']",
+            "searchBy": [
+              {
+                "name": "name",
+                "type": "like"
+              }
+            ],
+            "filterBy": []
           },
           {
             "name": "get",
@@ -781,6 +1019,262 @@
       },
       "foreign_keys": [],
       "fillable": ["name", "duration", "price"]
+    },
+    {
+      "namespace": "App\\Models",
+      "name": "Vendor",
+      "template": "model.php.template",
+      "softDelete": false,
+      "scopes": [{ "name": "CompanyScope", "args": "auth()->user()" }],
+      "fields": [
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "name",
+          "faker_type": "company()"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "display_name",
+          "faker_type": "name"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "phone",
+          "faker_type": "phoneNumber"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "email",
+          "faker_type": "email"
+        },
+        {
+          "arguments": [],
+          "options": [
+            {
+              "key": "nullable",
+              "value": ""
+            }
+          ],
+          "type": "string",
+          "name": "tax_number",
+          "faker_type": "randomNumber(5, true)"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "string",
+          "name": "address",
+          "faker_type": "address"
+        }
+      ],
+      "relationships": [
+        {
+          "name": "expenses",
+          "type": "hasMany",
+          "model": "Expense"
+        },
+        {
+          "name": "company",
+          "type": "belongsTo",
+          "model": "Company"
+        }
+      ],
+      "controller": {
+        "routeType": "detailed",
+        "middleware": [],
+        "actions": [
+          {
+            "name": "getAll",
+            "type": "index",
+            "middleware": "['auth:sanctum', 'role:company']",
+            "searchBy": [
+              {
+                "name": "name",
+                "type": "like"
+              }
+            ],
+            "filterBy": []
+          },
+          {
+            "name": "get",
+            "type": "show",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "create",
+            "type": "store",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "update",
+            "type": "update",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "delete",
+            "type": "destroy",
+            "middleware": "['auth:sanctum', 'role:company']"
+          }
+        ]
+      },
+      "foreign_keys": [
+        {
+          "model": "Company",
+          "column": "company_id",
+          "references": "id",
+          "on": "companies",
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
+        }
+      ],
+      "fillable": [
+        "name",
+        "display_name",
+        "phone",
+        "email",
+        "tax_number",
+        "address",
+        "company_id"
+      ]
+    },
+    {
+      "namespace": "App\\Models",
+      "name": "Expense",
+      "template": "model.php.template",
+      "softDelete": false,
+      "scopes": [{ "name": "CompanyScope", "args": "auth()->user()" }],
+      "fields": [
+        {
+          "arguments": [12, 2],
+          "options": [],
+          "type": "decimal",
+          "name": "price",
+          "faker_type": "randomNumber"
+        },
+        {
+          "arguments": [],
+          "options": [],
+          "type": "dateTime",
+          "name": "pruchase_date",
+          "faker_type": "dateTime"
+        },
+        {
+          "arguments": [12, 2],
+          "options": [],
+          "type": "decimal",
+          "name": "tax",
+          "faker_type": "randomFloat(2)"
+        },
+        {
+          "arguments": [],
+          "options": [
+            {
+              "key": "nullable",
+              "value": ""
+            }
+          ],
+          "type": "string",
+          "name": "reference",
+          "faker_type": "sentence"
+        },
+        {
+          "arguments": [],
+          "options": [
+            {
+              "key": "nullable",
+              "value": ""
+            }
+          ],
+          "type": "text",
+          "name": "note",
+          "faker_type": "sentence"
+        }
+      ],
+      "relationships": [
+        {
+          "name": "vendor",
+          "type": "belongsTo",
+          "model": "Vendor"
+        },
+        {
+          "name": "company",
+          "type": "belongsTo",
+          "model": "Company"
+        }
+      ],
+      "controller": {
+        "routeType": "detailed",
+        "middleware": [],
+        "actions": [
+          {
+            "name": "getAll",
+            "type": "index",
+            "middleware": "['auth:sanctum', 'role:company']",
+            "searchBy": [
+              {
+                "name": "reference",
+                "type": "like"
+              }
+            ],
+            "filterBy": []
+          },
+          {
+            "name": "get",
+            "type": "show",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "create",
+            "type": "store",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "update",
+            "type": "update",
+            "middleware": "['auth:sanctum', 'role:company']"
+          },
+          {
+            "name": "delete",
+            "type": "destroy",
+            "middleware": "['auth:sanctum', 'role:company']"
+          }
+        ]
+      },
+      "foreign_keys": [
+        {
+          "model": "Company",
+          "column": "company_id",
+          "references": "id",
+          "on": "companies",
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
+        },
+        {
+          "model": "Vendor",
+          "column": "vendor_id",
+          "references": "id",
+          "on": "vendors",
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
+        }
+      ],
+      "fillable": [
+        "price",
+        "pruchase_date",
+        "tax",
+        "reference",
+        "note",
+        "company_id",
+        "vendor_id"
+      ]
     },
     {
       "namespace": "App\\Models",
@@ -829,7 +1323,14 @@
           {
             "name": "getAll",
             "type": "index",
-            "middleware": "['auth:sanctum', 'role:company']"
+            "middleware": "['auth:sanctum', 'role:company']",
+            "searchBy": [
+              {
+                "name": "name",
+                "type": "like"
+              }
+            ],
+            "filterBy": []
           },
           {
             "name": "get",
@@ -901,7 +1402,14 @@
           {
             "name": "getAll",
             "type": "index",
-            "middleware": "['auth:sanctum', 'role:company']"
+            "middleware": "['auth:sanctum', 'role:company']",
+            "searchBy": [
+              {
+                "name": "name",
+                "type": "like"
+              }
+            ],
+            "filterBy": []
           },
           {
             "name": "get",
@@ -933,10 +1441,23 @@
       "name": "Invoice",
       "template": "model.php.template",
       "softDelete": false,
+      "events": ["creating"],
       "fields": [
         {
           "arguments": [],
           "options": [],
+          "type": "string",
+          "name": "invoice_number",
+          "faker_type": "randomNumber"
+        },
+        {
+          "arguments": [],
+          "options": [
+            {
+              "key": "nullable",
+              "value": ""
+            }
+          ],
           "type": "string",
           "name": "subject",
           "faker_type": "randomNumber"
@@ -945,29 +1466,73 @@
           "arguments": [12, 2],
           "options": [],
           "type": "decimal",
+          "rules": "required",
           "name": "subtotal",
           "faker_type": "randomFloat"
         },
         {
           "arguments": [12, 2],
+          "options": [
+            {
+              "key": "default",
+              "value": 0
+            }
+          ],
+          "type": "decimal",
+          "name": "tax",
+          "rules": "required",
+          "faker_type": "randomFloat"
+        },
+        {
+          "arguments": [12, 2],
+          "options": [
+            {
+              "key": "default",
+              "value": 0
+            }
+          ],
+          "type": "decimal",
+          "name": "discount",
+          "faker_type": "randomFloat"
+        },
+        {
+          "arguments": [12, 2],
           "options": [],
-          "type": "string",
-          "name": "vat",
+          "type": "decimal",
+          "name": "total",
+          "rules": "required",
           "faker_type": "randomNumber(5, true)"
         },
         {
           "arguments": [],
-          "options": [],
+          "options": [
+            {
+              "key": "nullable"
+            }
+          ],
           "type": "string",
           "name": "note",
-          "faker_type": "text"
+          "faker_type": "sentence"
+        },
+        {
+          "arguments": ["bank_transfer", "cash", "check"],
+          "options": [
+            {
+              "key": "default",
+              "value": "bank_transfer"
+            }
+          ],
+          "type": "enum",
+          "rules": "in:bank_transfer,cash,check",
+          "name": "payment_method",
+          "faker_type": ""
         },
         {
           "arguments": [],
           "options": [],
           "type": "string",
-          "name": "terms",
-          "faker_type": "text"
+          "name": "payment_terms",
+          "faker_type": "sentence"
         },
         {
           "arguments": ["type_1", "type_2"],
@@ -986,6 +1551,7 @@
           "options": [],
           "type": "dateTime",
           "name": "invoice_date",
+          "rules": "required|date",
           "faker_type": "dateTime"
         },
         {
@@ -993,6 +1559,7 @@
           "options": [],
           "type": "dateTime",
           "name": "supply_date",
+          "rules": "required|date",
           "faker_type": "dateTime"
         },
         {
@@ -1000,6 +1567,7 @@
           "options": [],
           "type": "dateTime",
           "name": "due_date",
+          "rules": "required|date",
           "faker_type": "dateTime"
         },
         {
@@ -1015,6 +1583,7 @@
           "faker_type": ""
         }
       ],
+      "scopes": [{ "name": "CompanyScope", "args": "auth()->user()" }],
       "relationships": [
         {
           "type": "belongsTo",
@@ -1030,16 +1599,30 @@
           "type": "belongsTo",
           "name": "customer",
           "model": "Customer"
+        },
+        {
+          "type": "hasMany",
+          "name": "items",
+          "model": "InvoiceItem"
         }
       ],
       "controller": {
         "routeType": "detailed",
         "middleware": [],
+        "dependencies": ["Barryvdh\\Snappy\\Facades\\SnappyPdf as PDF"],
         "actions": [
           {
             "name": "getAll",
             "type": "index",
-            "middleware": "['auth:sanctum', 'role:company']"
+            "useResource": true,
+            "middleware": "['auth:sanctum', 'role:company']",
+            "searchBy": [
+              {
+                "name": "name",
+                "type": "like"
+              }
+            ],
+            "filterBy": []
           },
           {
             "name": "get",
@@ -1047,14 +1630,38 @@
             "middleware": "['auth:sanctum', 'role:company']"
           },
           {
-            "name": "create",
-            "type": "store",
-            "middleware": "['auth:sanctum', 'role:company']"
+            "name": "downloadPDF",
+            "type": "downloadPDF",
+            "middleware": "['auth:sanctum', 'role:company']",
+            "routeName": "invoice/{invoice}/download",
+            "data": {
+              "relations": "'company', 'customer', 'items'",
+              "template": {
+                "name": "$invoice->template->name",
+                "args": ["invoice"]
+              },
+              "filename": "$invoice->invoice_number"
+            }
           },
           {
-            "name": "update",
-            "type": "update",
-            "middleware": "['auth:sanctum', 'role:company']"
+            "name": "createWithItems",
+            "type": "storeWithManyRelation",
+            "middleware": "['auth:sanctum', 'role:company']",
+            "relations": [
+              {
+                "name": "items"
+              }
+            ]
+          },
+          {
+            "name": "updateWithItems",
+            "type": "updateWithManyRelation",
+            "middleware": "['auth:sanctum', 'role:company']",
+            "relations": [
+              {
+                "name": "items"
+              }
+            ]
           },
           {
             "name": "delete",
@@ -1083,6 +1690,7 @@
         {
           "model": "Customer",
           "column": "customer_id",
+          "required": true,
           "references": "id",
           "on": "customers",
           "onUpdate": "cascade",
@@ -1092,14 +1700,17 @@
       "fillable": [
         "subject",
         "subtotal",
+        "total",
+        "tax",
         "vat",
         "note",
-        "terms",
+        "payment_terms",
         "invoice_date",
         "supply_date",
         "due_date",
         "status",
         "template_id",
+        "payment_method",
         "company_id",
         "customer_id"
       ]
@@ -1132,7 +1743,14 @@
           {
             "name": "getAll",
             "type": "index",
-            "middleware": "['auth:sanctum', 'role:company']"
+            "middleware": "['auth:sanctum', 'role:company']",
+            "searchBy": [
+              {
+                "name": "name",
+                "type": "like"
+              }
+            ],
+            "filterBy": []
           },
           {
             "name": "get",
@@ -1170,7 +1788,7 @@
           "options": [],
           "type": "string",
           "name": "name",
-          "faker_type": "name"
+          "faker_type": "foodName"
         },
         {
           "arguments": [],
@@ -1184,7 +1802,7 @@
           "options": [],
           "type": "mediumText",
           "name": "description",
-          "faker_type": "text"
+          "faker_type": "dairyName"
         },
         {
           "arguments": [12, 2],
@@ -1220,7 +1838,14 @@
           {
             "name": "getAll",
             "type": "index",
-            "middleware": "['auth:sanctum', 'role:company']"
+            "middleware": "['auth:sanctum', 'role:company']",
+            "searchBy": [
+              {
+                "name": "name",
+                "type": "like"
+              }
+            ],
+            "filterBy": []
           },
           {
             "name": "get",
@@ -1244,7 +1869,16 @@
           }
         ]
       },
-      "foreign_keys": [],
+      "foreign_keys": [
+        {
+          "model": "Company",
+          "column": "company_id",
+          "references": "id",
+          "on": "companies",
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
+        }
+      ],
       "fillable": [
         "name",
         "selling_price",
@@ -1261,36 +1895,61 @@
       "softDelete": false,
       "fields": [
         {
-          "arguments": [],
-          "options": [],
-          "type": "text",
-          "name": "selling_price",
-          "faker_type": "randomFloat"
-        },
-        {
           "arguments": [12, 2],
           "options": [],
           "type": "decimal",
-          "name": "tax",
+          "name": "selling_price",
+          "rules": "required",
           "faker_type": "randomFloat"
         },
         {
           "arguments": [],
           "options": [],
+          "type": "text",
+          "name": "description",
+          "faker_type": "foodName"
+        },
+        {
+          "arguments": [],
+          "options": [
+            {
+              "key": "default",
+              "value": 1
+            }
+          ],
           "type": "integer",
-          "name": "quantity",
+          "name": "qty",
+          "rules": "required|integer|min:1",
           "faker_type": "randomDigit"
+        },
+        {
+          "arguments": [12, 2],
+          "options": [
+            {
+              "key": "nullable",
+              "value": ""
+            }
+          ],
+          "type": "decimal",
+          "name": "tax",
+          "faker_type": "randomFloat"
         },
         {
           "arguments": [12, 2],
           "options": [],
           "type": "decimal",
           "name": "amount",
+          "rules": "required",
           "faker_type": "randomFloat"
         },
         {
           "arguments": [12, 2],
-          "options": [],
+          "options": [
+            {
+              "key": "default",
+              "value": "0"
+            }
+          ],
           "type": "decimal",
           "name": "discount",
           "faker_type": "randomFloat"
@@ -1315,7 +1974,14 @@
           {
             "name": "getAll",
             "type": "index",
-            "middleware": "['auth:sanctum', 'role:company']"
+            "middleware": "['auth:sanctum', 'role:company']",
+            "searchBy": [
+              {
+                "name": "name",
+                "type": "like"
+              }
+            ],
+            "filterBy": []
           },
           {
             "name": "get",
@@ -1339,14 +2005,33 @@
           }
         ]
       },
-      "foreign_keys": [],
+      "foreign_keys": [
+        {
+          "model": "Item",
+          "column": "item_id",
+          "references": "id",
+          "on": "items",
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
+        },
+        {
+          "model": "Invoice",
+          "column": "invoice_id",
+          "references": "id",
+          "on": "invoices",
+          "onUpdate": "cascade",
+          "onDelete": "cascade"
+        }
+      ],
       "fillable": [
-        "name",
         "selling_price",
-        "description",
+        "qty",
         "tax",
-        "type",
-        "company_id"
+        "amount",
+        "discount",
+        "description",
+        "item_id",
+        "invoice_id"
       ]
     }
   ],
@@ -1403,6 +2088,16 @@
     },
     {
       "model": "InvoiceItem",
+      "template": "controller.php.template",
+      "namespace": "App\\Http\\Controllers\\API\\V1"
+    },
+    {
+      "model": "Vendor",
+      "template": "controller.php.template",
+      "namespace": "App\\Http\\Controllers\\API\\V1"
+    },
+    {
+      "model": "Expense",
       "template": "controller.php.template",
       "namespace": "App\\Http\\Controllers\\API\\V1"
     }
@@ -1525,6 +2220,30 @@
     {
       "namespace": "App\\Http\\Requests",
       "model": "InvoiceAttachment",
+      "prefix": "Update",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "Vendor",
+      "prefix": "Create",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "Vendor",
+      "prefix": "Update",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "Expense",
+      "prefix": "Create",
+      "template": "request.php.template"
+    },
+    {
+      "namespace": "App\\Http\\Requests",
+      "model": "Expense",
       "prefix": "Update",
       "template": "request.php.template"
     }

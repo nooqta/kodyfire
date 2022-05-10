@@ -219,7 +219,7 @@ import { ref, onUnmounted } from '@vue/composition-api'
 import { avatarText } from '@core/utils/filter'
 import UsersListFilters from './UsersListFilters.vue'
 import useUsersList from './useUsersList'
-import userStoreModule from '../userStoreModule'
+import userStore from '../userStore'
 import UserListAddNew from './UserListAddNew.vue'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue';
 
@@ -287,7 +287,7 @@ export default {
     const USER_APP_STORE_MODULE_NAME = 'app-user'
 
     // Register module
-    if (!store.hasModule(USER_APP_STORE_MODULE_NAME)) store.registerModule(USER_APP_STORE_MODULE_NAME, userStoreModule)
+    if (!store.hasModule(USER_APP_STORE_MODULE_NAME)) store.registerModule(USER_APP_STORE_MODULE_NAME, userStore)
 
     // UnRegister on leave
     onUnmounted(() => {

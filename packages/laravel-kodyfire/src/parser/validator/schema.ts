@@ -136,8 +136,14 @@ export const seed = {
   type: 'object',
   properties: {
     namespace: { type: 'string' },
-    model: { type: 'string' },
-    template: { enum: ['seed.php.template'] },
+    model: { type: ['boolean', 'string'] },
+    template: {
+      enum: [
+        'seed.php.template',
+        'database/seeders/UsersTableSeeder.php.template',
+        'database/seeders/RolesTableSeeder.php.template',
+      ],
+    },
   },
   required: ['model', 'namespace', 'template'],
 };

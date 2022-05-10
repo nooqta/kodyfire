@@ -7,17 +7,17 @@
       :show="<%= name %>Data === undefined"
     >
       <h4 class="alert-heading">
-        خطأ في جلب بيانات المستخدم
+        خطأ في جلب بيانات <%= label %>
       </h4>
       <div class="alert-body">
-        لم يتم العثور على <%= label %> مع معرف المستخدم هذا.الشيك
+        لم يتم العثور على <%= label %> مع معرف <%= label %> هذا.الشيك
         <b-link
           class="alert-link"
           :to="{ name: '<%= pluralize name %>-list'}"
         >
           قائمة <%= label %>
         </b-link>
-        للمستخدمين الآخرين.
+        <%= label %> الآخرين.
       </div>
     </b-alert>
 
@@ -34,7 +34,7 @@
             size="16"
             class="mr-0 mr-sm-50"
           />
-          <span class="d-none d-sm-inline">{{$('<%= label %>')}}</span>
+          <span class="d-none d-sm-inline">{{$('<%= name %>_edit')}}</span>
         </template>
         <<%= name %>-edit-tab-information :<%= name %>-data="<%= name %>Data"
          class="mt-2 pt-75" />
@@ -77,7 +77,7 @@ export default {
     
     store.dispatch('app-<%= name %>/fetch<%= classify name %>', { id: router.currentRoute.params.id })
       .then(response => { 
-        const{data: <%= name %>\} = response.data
+        const{data: <%= name %> } = response.data
         <%= name %>Data.value = <%= name %> 
         })
       .catch(error => {

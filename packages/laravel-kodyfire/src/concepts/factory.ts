@@ -65,9 +65,13 @@ export class Factory extends Concept {
 
   getData(model: any) {
     let data = '';
-    model.fields.forEach((el: any) => {
-      data += `'${el.name}' => ${this.generateFaker(el)},\n`;
-    });
+    model.fields
+      .filter(
+        (f: any) => f.faker_type || ['enum', 'file', 'image'].includes(f.type)
+      )
+      .forEach((el: any) => {
+        data += `'${el.name}' => ${this.generateFaker(el)},\n`;
+      });
 
     // @todo add relations
     model.foreign_keys.forEach((el: any) => {

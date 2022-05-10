@@ -84,7 +84,10 @@ export class Repository extends Concept {
     this.model.additionalMethods = this.getAdditionalMethods(this.model);
     this.model.updateAttachments = this.getUpdateAttachments(this.model);
     this.model.uploadAttachment = this.uploadAttachment(this.model);
-    const compiled = this.engine.compile(template, this.model);
+    this.model.methods = await this.getMethods(this.model, _data);
+    this.model.model = this.model.name;
+    this.model.relations = _data.relations || [];
+    const compiled = this.engine.compile(template, { ...this.model, ..._data });
 
     if (!this.model) {
       const filename =
@@ -105,7 +108,42 @@ export class Repository extends Concept {
       compiled
     );
   }
-
+  async getMethods(model: any, data: any): Promise<string> {
+    let methods = '';
+    for (const action of model.controller.actions) {
+      switch (action.type) {
+        case 'storeWithManyRelation':
+          methods += `${await this.engine.getPartial(
+            this.template.path,
+            'app/Repositories/storeWithManyRelation.template',
+            { ...action, ...data }
+          )}\n`;
+          break;
+        case 'updateWithManyRelation':
+          methods += `${await this.engine.getPartial(
+            this.template.path,
+            'app/Repositories/updateWithManyRelation.template',
+            { ...action, ...data }
+          )}\n`;
+          break;
+        case 'store':
+          methods += `${await this.engine.getPartial(
+            this.template.path,
+            'app/Repositories/store.template',
+            { ...action, ...data }
+          )}\n`;
+          break;
+        case 'update':
+          methods += `${await this.engine.getPartial(
+            this.template.path,
+            'app/Repositories/update.template',
+            { ...action, ...data }
+          )}\n`;
+          break;
+      }
+    }
+    return methods;
+  }
   getFilename(name: any) {
     return `${classify(name)}Repository.php`;
   }
@@ -119,10 +157,7 @@ export class Repository extends Concept {
   getAdditionalMethods(model: any) {
     let content = '';
     if (
-      model.controller &&
-      model.controller != '' &&
       model.controller.with_additional_relations &&
-      model.controller.with_additional_relations != '' &&
       model.controller.with_additional_relations.length > 0
     ) {
       model.controller.with_additional_relations.forEach((element: any) => {
@@ -134,15 +169,13 @@ export class Repository extends Concept {
 
   getMethod(relation: any) {
     let content = '';
-    switch (Object.keys(relation)[0]) {
+    switch (relation.type) {
       case 'hasMany':
-        content = `if(isset($data['${this.underscorize(
-          Object.values(relation)[0]
-        )}'])){
+        content = `if(isset($data['${this.underscorize(relation.name)}'])){
                       $model->${
-                        Object.values(relation)[0]
+                        relation.name
                       }()->createMany($data['${this.underscorize(
-          Object.values(relation)[0]
+          relation.name
         )}']);
                   }\n`;
         break;

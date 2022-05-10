@@ -1,4 +1,5 @@
 /* @ts-nocheck */
+import { strings } from '@angular-devkit/core';
 import { classify } from '@angular-devkit/core/src/utils/strings';
 import { IConcept, ITechnology, Source, TemplateSchema } from 'kodyfire-core';
 import { Engine } from './engine';
@@ -32,8 +33,9 @@ export class Controller implements IConcept {
     this.engine = new Engine();
 
     const template = await this.engine.read(this.template.path, _data.template);
-    _data.methods = this.getControllerMethods(this.model);
+    _data.methods = await this.getControllerMethods(this.model);
     _data.name = _data.model;
+    _data.controller = this.model.controller;
     const compiled = this.engine.compile(template, _data);
     await this.engine.createOrOverwrite(
       this.technology.rootDir,
@@ -48,7 +50,6 @@ export class Controller implements IConcept {
   }
 
   getWith(fields: any) {
-    console.log(fields);
     return fields && `$data->with(${fields});`;
   }
   getList(model: any): string {
@@ -84,7 +85,7 @@ export class Controller implements IConcept {
         ');';
     }
 
-    let data = `$pageSize = $request->query('pageSize');
+    const data = `$pageSize = $request->query('pageSize');
     $currentPage = $request->query('currentPage');
     $search = $request->query('q');
     ${this.getFilters(action)}
@@ -102,22 +103,18 @@ export class Controller implements IConcept {
     }
     ${this.getWith(fieldsToLoad)}
     ${load}
-    $data = $data->paginate($pageSize);
+    ${this.getPaginate(model, action)}
     `;
-    if (!model.hasPagination) {
-      data = `
-    if (!$request->has('pagination')) {
-      $data = ${model.name}::all();
-    } else {
-      $search = $request->query('search');
-      $data = ${model.name}::all();
-      if($search != ""){
-        $data = ${model.name}::search($search);
-      }
-    ${this.getWith(fieldsToLoad)}
-    `;
-    }
+
     return data;
+  }
+  getPaginate(model: any, action: any) {
+    if (action.useResource) {
+      return `$data = new \\App\\Http\\Resources\\${strings.classify(
+        model.name
+      )}Collection($data->paginate($pageSize));`;
+    }
+    return `$data = $data->paginate($pageSize);`;
   }
 
   getWhereClause(action: any) {
@@ -167,10 +164,38 @@ export class Controller implements IConcept {
     return relations.join('->');
   }
 
-  getControllerMethods(model: any): string {
+  async getControllerMethods(model: any): Promise<string> {
     let methods = '';
-    model.controller.actions.forEach((action: any) => {
+    for (const action of model.controller.actions) {
       switch (action.type) {
+        case 'getUserRelation':
+          methods += `${await this.engine.getPartial(
+            this.template.path,
+            'app/Controllers/getUserRelation.template',
+            { ...action, model: model.name }
+          )}\n`;
+          break;
+        case 'storeWithManyRelation':
+          methods += `${await this.engine.getPartial(
+            this.template.path,
+            'app/Controllers/storeWithManyRelation.template',
+            { ...action, model: model.name }
+          )}\n`;
+          break;
+        case 'updateWithManyRelation':
+          methods += `${await this.engine.getPartial(
+            this.template.path,
+            'app/Controllers/updateWithManyRelation.template',
+            { ...action, model: model.name }
+          )}\n`;
+          break;
+        case 'downloadPDF':
+          methods += `${await this.engine.getPartial(
+            this.template.path,
+            'app/Controllers/downloadPDF.template',
+            { ...action, model: model.name }
+          )}\n`;
+          break;
         case 'index':
           methods += `
 public function ${action.name}(Request  $request) {
@@ -293,7 +318,7 @@ public function ${action.name}(Request  $request) {
           break;
         default:
       }
-    });
+    }
     return methods;
   }
 

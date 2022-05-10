@@ -52,7 +52,7 @@ import {
 import { ref, onUnmounted } from '@vue/composition-api'
 import router from '@/router'
 import store from '@/store'
-import userStoreModule from '../userStoreModule'
+import userStore from '../userStore'
 import UserEditTabAccount from './UserEditTabAccount.vue'
 import UserEditTabInformation from './UserEditTabInformation.vue'
 import UserEditTabSocial from './UserEditTabSocial.vue'
@@ -75,7 +75,7 @@ export default {
     const USER_APP_STORE_MODULE_NAME = 'app-user'
 
     // Register module
-    if (!store.hasModule(USER_APP_STORE_MODULE_NAME)) store.registerModule(USER_APP_STORE_MODULE_NAME, userStoreModule)
+    if (!store.hasModule(USER_APP_STORE_MODULE_NAME)) store.registerModule(USER_APP_STORE_MODULE_NAME, userStore)
 
     // UnRegister on leave
     onUnmounted(() => {

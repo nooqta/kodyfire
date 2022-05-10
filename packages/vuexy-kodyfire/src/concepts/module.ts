@@ -56,14 +56,6 @@ export class Module extends Concept {
         });
       }
     }
-    // const template = await this.engine.read(this.template.path, _data.template);
-    // const compiled = await this.engine.compile(template, this.name);
-    // await this.engine.createOrOverwrite(
-    //   this.technology.rootDir,
-    //   this.outputDir,
-    //   this.getFilename(this.name),
-    //   compiled
-    // );
   }
 
   async readFolder(folder: string): any[] {
@@ -81,7 +73,7 @@ export class Module extends Concept {
     return join(
       path.replaceAll('module', moduleName),
       `${name
-        .replace('StoreModule.js.template', 'StoreModule.js')
+        .replace('Module', strings.classify(moduleName))
         .replace('module', moduleName)
         .replace('.template', '')}`
     );

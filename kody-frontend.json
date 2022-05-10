@@ -14,7 +14,7 @@
       "template": "Login.vue.template",
       "outputDir": "",
       "data": {
-        "appName": "فوترة",
+        "appName": "فوترها",
         "title": "تبدأ المغامرة هنا 🚀",
         "description": "اجعل إدارة فواتيرك سهلة وممتعة!"
       }
@@ -24,7 +24,7 @@
       "template": "register/Register.vue.template",
       "outputDir": "register",
       "data": {
-        "appName": "فوترة",
+        "appName": "فوترها",
         "title": "تبدأ المغامرة هنا 🚀",
         "description": "اجعل إدارة فواتيرك سهلة وممتعة!"
       }
@@ -34,7 +34,7 @@
       "template": "ResetPassword.vue.template",
       "outputDir": "",
       "data": {
-        "appName": "فوترة"
+        "appName": "فوترها"
       }
     },
     {
@@ -42,7 +42,7 @@
       "template": "ForgotPassword.vue.template",
       "outputDir": "",
       "data": {
-        "appName": "فوترة",
+        "appName": "فوترها",
         "title": "تبدأ المغامرة هنا 🚀",
         "description": "اجعل إدارة فواتيرك سهلة وممتعة!"
       }
@@ -67,11 +67,31 @@
           "children": [
             {
               "path": "/invoice",
-              "routeName": "list"
+              "routeName": "list",
+              "meta": [
+                {
+                  "key": "action",
+                  "value": "read"
+                },
+                {
+                  "key": "resource",
+                  "value": "invoice"
+                }
+              ]
             },
             {
               "path": "/invoice/create",
-              "routeName": "add"
+              "routeName": "add",
+              "meta": [
+                {
+                  "key": "action",
+                  "value": "create"
+                },
+                {
+                  "key": "resource",
+                  "value": "invoice"
+                }
+              ]
             },
             {
               "path": "/invoice/:id",
@@ -91,6 +111,24 @@
               "routeName": "list"
             }
           ]
+        },
+        {
+          "name": "vendor",
+          "children": [
+            {
+              "path": "/vendor",
+              "routeName": "list"
+            }
+          ]
+        },
+        {
+          "name": "expense",
+          "children": [
+            {
+              "path": "/expense",
+              "routeName": "list"
+            }
+          ]
         }
       ]
     },
@@ -99,9 +137,19 @@
       "template": "pages.js.template",
       "routes": [
         {
-          "name": "home",
           "path": "/",
-          "routeName": "home"
+          "name": "home",
+          "component": "@/views/Home.vue",
+          "meta": [
+            {
+              "key": "resource",
+              "value": "user"
+            },
+            {
+              "key": "action",
+              "value": "read"
+            }
+          ]
         }
       ]
     }
@@ -114,7 +162,9 @@
         {
           "header": "الرئيسية",
           "icon": "Home",
-          "routeName": "home"
+          "routeName": "home",
+          "resource": "user",
+          "action": "read"
         },
         {
           "header": "الفواتير",
@@ -122,15 +172,21 @@
           "children": [
             {
               "title": "الفواتير",
-              "routeName": "invoices-list"
+              "routeName": "invoices-list",
+              "resource": "invoice",
+              "action": "read"
             },
             {
               "title": "إنشاء فاتورة",
-              "routeName": "invoices-add"
+              "routeName": "invoices-add",
+              "resource": "invoice",
+              "action": "create"
             },
             {
               "title": "العملاء",
-              "routeName": "customers-list"
+              "routeName": "customers-list",
+              "resource": "customer",
+              "action": "read"
             }
           ]
         },
@@ -140,15 +196,15 @@
           "children": [
             {
               "title": "المصاريف",
-              "routeName": "invoices-list"
-            },
-            {
-              "title": "إنشاء فاتورة",
-              "routeName": "invoices-add"
+              "routeName": "expenses-list",
+              "resource": "expense",
+              "action": "read"
             },
             {
               "title": "المزودين",
-              "routeName": "customers-list"
+              "routeName": "vendors-list",
+              "resource": "vendor",
+              "action": "read"
             }
           ]
         },
@@ -305,12 +361,86 @@
   "module": [
     {
       "name": "invoice",
-      "templateFolder": "invoice"
+      "templateFolder": "invoice",
+      "data": {
+        "columns": [
+          {
+            "name": "invoice_number",
+            "label": "رقم الفاتورة",
+            "type": "text"
+          },
+          {
+            "name": "subtotal",
+            "label": "المبلغ الفرعي",
+            "type": "text"
+          },
+          {
+            "name": "customer",
+            "label": "العميل",
+            "type": "text"
+          },
+          {
+            "name": "invoice_date",
+            "label": "تاريخ الفاتورة",
+            "type": "text"
+          },
+          {
+            "name": "supply_date",
+            "label": "تاريخ التسليم",
+            "type": "text"
+          }
+        ]
+      }
     },
     {
       "name": "customer",
+      "label": "العملاء",
       "templateFolder": "module",
       "data": {
+        "form_fields": [
+          {
+            "name": "name",
+            "label": "الاسم",
+            "type": "text",
+            "rules": "required"
+          },
+          {
+            "name": "display_name",
+            "label": "الاسم المعروض",
+            "type": "text",
+            "rules": "required"
+          },
+          {
+            "name": "email",
+            "label": "البريد الإلكتروني",
+            "type": "text",
+            "rules": "required|validEmail"
+          },
+          {
+            "name": "phone",
+            "label": "رقم الهاتف",
+            "type": "text",
+            "rules": "required"
+          },
+          {
+            "name": "tax_number",
+            "label": "رقم الضريبة",
+            "type": "text",
+            "rules": "required"
+          },
+          {
+            "name": "address",
+            "label": "العنوان",
+            "type": "text",
+            "rules": "required"
+          },
+          {
+            "name": "supply_place",
+            "label": "مكان التوريد",
+            "type": "text",
+            "rules": "required"
+          }
+        ],
         "columns": [
           {
             "name": "name",
@@ -337,7 +467,7 @@
           {
             "name": "role",
             "items": [
-              { "label": "مدرير", "value": "admin" },
+              { "label": "مدير", "value": "admin" },
               { "label": "شركة", "value": "company" }
             ]
           },
@@ -356,6 +486,143 @@
               { "label": "نشط", "value": "active" },
               { "label": "غير نشط", "value": "inactive" }
             ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "vendor",
+      "label": "المزودين",
+      "templateFolder": "module",
+      "data": {
+        "form_fields": [
+          {
+            "name": "name",
+            "label": "الاسم الشركة",
+            "type": "text",
+            "rules": "required"
+          },
+          {
+            "name": "display_name",
+            "label": "الاسم المعروض",
+            "type": "text",
+            "rules": "required"
+          },
+          {
+            "name": "email",
+            "label": "البريد الإلكتروني",
+            "type": "text",
+            "rules": "required|validEmail"
+          },
+          {
+            "name": "phone",
+            "label": "رقم الهاتف",
+            "type": "text",
+            "rules": "required"
+          },
+          {
+            "name": "tax_number",
+            "label": "رقم الضريبة",
+            "type": "text",
+            "rules": "required"
+          },
+          {
+            "name": "address",
+            "label": "العنوان",
+            "type": "text",
+            "rules": "required"
+          }
+        ],
+        "columns": [
+          {
+            "name": "name",
+            "label": "الاسم",
+            "type": "text"
+          },
+          {
+            "name": "email",
+            "label": "البريد الإلكتروني",
+            "type": "text"
+          },
+          {
+            "name": "phone",
+            "label": "رقم الهاتف",
+            "type": "text"
+          },
+          {
+            "name": "address",
+            "label": "العنوان",
+            "type": "text"
+          }
+        ],
+        "options": []
+      }
+    },
+    {
+      "name": "expense",
+      "label": "المصروفات",
+      "templateFolder": "module",
+      "data": {
+        "form_fields": [
+          {
+            "name": "price",
+            "label": "المبلغ",
+            "type": "text",
+            "rules": "required"
+          },
+          {
+            "name": "pruchase_date",
+            "label": "تاريخ الإقتناء",
+            "type": "dateTime",
+            "rules": "required"
+          },
+          {
+            "name": "tax",
+            "label": "الضريبة",
+            "type": "text",
+            "rules": "required"
+          },
+          {
+            "name": "reference",
+            "label": "المرجع",
+            "type": "text",
+            "rules": "required"
+          },
+          {
+            "name": "note",
+            "label": "الملاحظات",
+            "type": "textarea",
+            "rules": "required"
+          },
+          {
+            "name": "vendor",
+            "label": "المزود",
+            "type": "select",
+            "rules": "required"
+          }
+        ],
+        "columns": [
+          {
+            "name": "reference",
+            "label": "المرجع",
+            "type": "text"
+          },
+          {
+            "name": "vendor_name",
+            "label": "المزود",
+            "type": "text"
+          },
+          {
+            "name": "price",
+            "label": "المبلغ",
+            "type": "text"
+          }
+        ],
+        "options": [],
+        "remote_options": [
+          {
+            "name": "vendor",
+            "url": "/company/vendors"
           }
         ]
       }

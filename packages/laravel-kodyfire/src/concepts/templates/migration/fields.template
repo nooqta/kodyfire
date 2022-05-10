@@ -1,19 +1,14 @@
-{{#if isBelongsToMany}}
 {{#each fields}}
 {{#if (hasId name)}}
 $table->unsignedBigInteger('{{name}}'){{options this}};
 {{/if}}
 {{#if (equals type 'enum')}}
-$table->{{type}}('{{name}}',
-{{{stringify arguments}}}){{{options this}}};
-{{else}}
+$table->{{type}}('{{name}}', {{{stringify arguments}}}){{{options this}}};
+{{/if}}
 {{#if (equals type 'decimal')}}
 $table->{{type}}('{{name}}', {{join arguments}}){{{options this}}};
-{{else}}
+{{/if}}
+{{#if (includes type)}}
 $table->{{type}}('{{name}}'){{{options this}}};
 {{/if}}
-  {{/if}}
 {{/each}}
-{{#else}}
-{{{ columns}}}
-{{/if}}

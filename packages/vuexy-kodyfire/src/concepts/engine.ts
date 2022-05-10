@@ -22,12 +22,17 @@ export class Engine {
     this.builder.registerHelper('pluralize', (value: any) => {
       return pluralize(value);
     });
+    this.builder.registerHelper(
+      'join',
+      (value: any, field: any, suffix = '') => {
+        if (value.length === 0) return;
+        else return value.map((f: any) => `${f[field]}${suffix}`).join(', ');
+      }
+    );
     this.builder.registerHelper('stringify', (value: any) => {
       return JSON.stringify(value);
     });
     this.builder.registerHelper('isEmpty', (value: any) => {
-      console.log(value);
-      console.log(typeof value);
       return typeof value == 'undefined' || value.length == 0;
     });
     this.builder.registerHelper(

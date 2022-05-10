@@ -99,10 +99,16 @@ ${this.getRoutesList(el, models)}
           r.modelName
         }Controller::class);\n`;
       } else {
-        routes += `Route::${this.getRouteType(r.type)}('${this.getRouteUrl(
-          r.type,
-          r.modelName
-        )}', [${r.modelName}Controller::class, '${r.name}']);\n`;
+        if (r.routeName) {
+          routes += `Route::${this.getRouteType(r.type)}('${r.routeName}', [${
+            r.modelName
+          }Controller::class, '${r.name}']);\n`;
+        } else {
+          routes += `Route::${this.getRouteType(r.type)}('${this.getRouteUrl(
+            r.type,
+            r.modelName
+          )}', [${r.modelName}Controller::class, '${r.name}']);\n`;
+        }
       }
     });
 
@@ -114,6 +120,7 @@ ${this.getRoutesList(el, models)}
     switch (routeType) {
       case 'index':
       case 'store':
+      case 'storeWithManyRelation':
         url = strings.dasherize(modelName);
         break;
       case 'getByUser':
@@ -122,6 +129,7 @@ ${this.getRoutesList(el, models)}
       case 'show':
       case 'destroy':
       case 'update':
+      case 'updateWithManyRelation':
         url = `${strings.dasherize(modelName)}/{${modelName.toLowerCase()}}`;
         break;
       case 'deleteMany':
@@ -147,6 +155,7 @@ ${this.getRoutesList(el, models)}
         type = 'get';
         break;
       case 'store':
+      case 'storeWithManyRelation':
         type = 'post';
         break;
       case 'destroy':
@@ -154,6 +163,7 @@ ${this.getRoutesList(el, models)}
         type = 'delete';
         break;
       case 'update':
+      case 'updateWithManyRelation':
         type = 'put';
         break;
       default:

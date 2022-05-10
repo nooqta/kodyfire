@@ -27,7 +27,6 @@ export class Route extends Concept {
   async generate(_data: any) {
     this.initEngine();
     const template = await this.engine.read(this.template.path, _data.template);
-    console.log(_data);
     const compiled = await this.engine.compile(template, _data);
     await this.engine.createOrOverwrite(
       this.technology.rootDir,

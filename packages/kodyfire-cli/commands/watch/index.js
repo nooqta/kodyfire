@@ -41,12 +41,17 @@ Object.defineProperty(exports, '__esModule', { value: true });
 const fs_1 = __importDefault(require('fs'));
 const zx_1 = require('zx');
 const chalk = require('chalk');
-const watchFile = (source, kodyName) =>
+const watchFile = (source, kodyName, build = false) =>
   __awaiter(void 0, void 0, void 0, function* () {
     console.log(`Watching for file changes on ${source} for kody ${kodyName}`);
     fs_1.default.watchFile(source, (_event, filename) =>
       __awaiter(void 0, void 0, void 0, function* () {
         if (filename) {
+          if (build) {
+            console.log(`Building ${kodyName}`);
+            // build ts files
+            yield (0, zx_1.$)`npm run build`;
+          }
           console.log(`${source} file Changed, running kody ${kodyName}`);
           yield (0, zx_1.$)`kody run ${kodyName} -s ${source}`;
         }
@@ -69,18 +74,13 @@ const action = args =>
       process.exit(1);
     }
     const { source, build } = args;
-    console.log(args);
     const schema = JSON.parse(fs_1.default.readFileSync(source).toString());
-    if (build) {
-      // build ts files
-      yield (0, zx_1.$)`npm run build`;
-    }
     if (schema.sources) {
       for (const item of schema.sources) {
-        yield watchFile(item.filename, item.name);
+        yield watchFile(item.filename, item.name, build);
       }
     } else {
-      yield watchFile(source, schema.name);
+      yield watchFile(source, schema.name, build);
     }
   });
 module.exports = program => {

@@ -50,10 +50,13 @@ export class Migration extends Concept {
   private async appendData(_data: any) {
     if (typeof _data.model === 'string') {
       this.setModel(_data);
+      if (_data.filename) {
+        this.model.filename = _data.filename;
+      }
       this.model.className = this.getClassName(this.model.name);
       this.model.table = this.getMigrationName(this.model.name);
-      this.model._fields = await this.getFields(this.model);
       this.model.attributes = await this.getMigrationAttributes(this.model);
+      this.model._fields = await this.getFields(this.model);
     } else {
       _data.className = this.getClassName(_data.table);
       _data.attributes = this.getForeignKeysAttributes(_data.columns);
@@ -144,7 +147,7 @@ export class Migration extends Concept {
         commonOptions += `->${op.key}()`;
       }
       if (op.key == 'default') {
-        if (field.type == 'boolean') {
+        if (['boolean', 'integer', 'decimal'].includes(field.type)) {
           commonOptions += `->default(${op.value})`;
         } else {
           commonOptions += `->default("${op.value}")`;

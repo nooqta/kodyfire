@@ -1,22 +1,30 @@
 <template>
   <section class="invoice-add-wrapper">
+    <validation-observer
+        #default="{ handleSubmit }"
+        ref="refFormObserver"
+      >
+        <b-form
+         @submit.prevent="handleSubmit(onSubmit)"
+          @reset.prevent="resetForm"
+         >
     <!-- Alert: No item found -->
     <b-alert
       variant="danger"
       :show="invoiceData === undefined"
     >
       <h4 class="alert-heading">
-        Error fetching invoice data
+        خطأ جلب بيانات الفاتورة
       </h4>
       <div class="alert-body">
-        No invoice found with this invoice id. Check
+        لم يتم العثور على فاتورة مع معرف الفاتورة هذا. راجع
         <b-link
           class="alert-link"
           :to="{ name: 'apps-invoice-list'}"
         >
-          Invoice List
+          قائمة الفاتورة
         </b-link>
-        for other invoices.
+        لفواتير أخرى.
       </div>
     </b-alert>
 
@@ -31,7 +39,6 @@
         xl="9"
         md="8"
       >
-        <b-form @submit.prevent>
           <b-card
             no-body
             class="invoice-preview-card"
@@ -42,21 +49,18 @@
               <div class="d-flex justify-content-between flex-md-row flex-column invoice-spacing mt-0">
 
                 <!-- Header: Left Content -->
-                <div>
+                 <div>
                   <div class="logo-wrapper">
-                    <logo />
+                    <%=!-- <logo /> --%>
                     <h3 class="text-primary invoice-logo">
-                      Vuexy
+                      {{ company.name}}
                     </h3>
                   </div>
                   <b-card-text class="mb-25">
-                    Office 149, 450 South Brand Brooklyn
-                  </b-card-text>
-                  <b-card-text class="mb-25">
-                    San Diego County, CA 91905, USA
+                   {{ company.address }}
                   </b-card-text>
                   <b-card-text class="mb-0">
-                    +1 (123) 456 7891, +44 (876) 543 2198
+                    {{ company.phone }}
                   </b-card-text>
                 </div>
 
@@ -64,7 +68,7 @@
                 <div class="invoice-number-date mt-md-0 mt-2">
                   <div class="d-flex align-items-center justify-content-md-end mb-1">
                     <h4 class="invoice-title">
-                      Invoice
+                      {{$t('invoice')}}
                     </h4>
                     <b-input-group class="input-group-merge invoice-edit-input-group disabled">
                       <b-input-group-prepend is-text>
@@ -79,21 +83,37 @@
                   </div>
                   <div class="d-flex align-items-center mb-1">
                     <span class="title">
-                      Date:
+                      تاريخ:
                     </span>
+                    <validation-provider
+                      vid="supply_date"
+                      name="supply_date"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
                     <flat-pickr
-                      v-model="invoiceData.issuedDate"
+                      v-model="invoiceData.supply_date"
                       class="form-control invoice-edit-input"
                     />
+                    <small class="text-danger">{{ errors[0] }}</small>
+                    </validation-provider>
                   </div>
                   <div class="d-flex align-items-center">
                     <span class="title">
-                      Due Date:
+                      تاريخ التسليم:
                     </span>
+                    <validation-provider
+                      vid="due_date"
+                      name="due_date"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
                     <flat-pickr
-                      v-model="invoiceData.dueDate"
+                      v-model="invoiceData.due_date"
                       class="form-control invoice-edit-input"
                     />
+                    <small class="text-danger">{{ errors[0] }}</small>
+                    </validation-provider>
                   </div>
                 </div>
               </div>
@@ -115,28 +135,50 @@
                   class="mb-lg-1"
                 >
                   <h6 class="mb-2">
-                    Invoice To:
+                    فاتورة إلى:
                   </h6>
+                  <!-- Select Client -->
+                  <v-select
+                    v-model="invoiceData.customer"
+                    @input="customerChanged" 
+                    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                    :options="customers"
+                    input-id="invoice-data-client"
+                    :clearable="false"
+                  >
+                    <template #list-header>
+                      <li
+                        v-b-toggle.sidebar-invoice-add-new-customer
+                        class="add-new-client-header d-flex align-items-center my-50"
+                      >
+                        <feather-icon
+                          icon="PlusIcon"
+                          size="16"
+                        />
+                        <span class="align-middle ml-25">أضف عميلًا جديدًا</span>
+                      </li>
+                    </template>
+                  </v-select>
 
                   <!-- Selected Client -->
                   <div
-                    v-if="invoiceData.client"
+                    v-if="invoiceData.customer"
                     class="mt-1"
                   >
                     <h6 class="mb-25">
-                      {{ invoiceData.client.name }}
+                      {{ invoiceData.customer.display_name }}
                     </h6>
                     <b-card-text class="mb-25">
-                      {{ invoiceData.client.company }}
+                      {{ invoiceData.customer.name }}
                     </b-card-text>
                     <b-card-text class="mb-25">
-                      {{ invoiceData.client.address }}, {{ invoiceData.client.country }}
+                      {{ invoiceData.customer.address }}, {{ invoiceData.customer.country }}
                     </b-card-text>
                     <b-card-text class="mb-25">
-                      {{ invoiceData.client.contact }}
+                      {{ invoiceData.customer.phone }}
                     </b-card-text>
                     <b-card-text class="mb-0">
-                      {{ invoiceData.client.companyEmail }}
+                      {{ invoiceData.customer.email }}
                     </b-card-text>
                   </div>
                 </b-col>
@@ -149,17 +191,17 @@
                 >
                   <div>
                     <h6 class="mb-2">
-                      Payment Details:
+                      بيانات الدفع:
                     </h6>
                     <table>
                       <tbody>
                         <tr>
                           <td class="pr-1">
-                            Total Due:
+                            الاجمالي المستحق:
                           </td>
-                          <td><span class="font-weight-bold">$12,110.55</span></td>
+                          <td><span class="font-weight-bold">{{getInvoiceTotal()}} ريال</span></td>
                         </tr>
-                        <tr>
+                        <%=!-- <tr>
                           <td class="pr-1">
                             Bank name:
                           </td>
@@ -182,7 +224,7 @@
                             SWIFT code:
                           </td>
                           <td>BR91905</td>
-                        </tr>
+                        </tr> --%>
                       </tbody>
                     </table>
                   </div>
@@ -216,25 +258,25 @@
                           cols="12"
                           lg="5"
                         >
-                          Item
+                          المنتج
                         </b-col>
                         <b-col
                           cols="12"
                           lg="3"
                         >
-                          Cost
+                          التكلفة
                         </b-col>
                         <b-col
                           cols="12"
                           lg="2"
                         >
-                          Qty
+                          الكمية
                         </b-col>
                         <b-col
                           cols="12"
                           lg="2"
                         >
-                          Price
+                          السعر
                         </b-col>
                       </b-row>
                       <div class="form-item-action-col" />
@@ -249,63 +291,113 @@
                           cols="12"
                           lg="5"
                         >
-                          <label class="d-inline d-lg-none">Item</label>
+                        <b-form-group
+                        label="المنتج/ الخدمة"
+                    :label-for="`item-${index}-name`"
+                        >
+                          <validation-provider
+                      vid="item.name"
+                      name="item.name"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
                           <v-select
-                            v-model="item.itemTitle"
+                            v-model="item.item"
+                            :id="`item-${index}-name`"
                             :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                            :options="itemsOptions"
-                            label="itemTitle"
+                            :options="items"
                             :clearable="false"
-                            class="mb-2 item-selector-title"
-                            placeholder="Select Item"
+                            :state="errors.length > 0 ? false : null"
+                            placeholder="إختر المنتج/ الخدمة"
                             @input="val => updateItemForm(index, val)"
                           />
+                          <small class="text-danger">{{ errors[0] }}</small>
+                    </validation-provider>
+                    </b-form-group>
                         </b-col>
                         <b-col
                           cols="12"
                           lg="3"
                         >
-                          <label class="d-inline d-lg-none">Cost</label>
+                        <b-form-group
+                        label="الكلفة"
+                    :label-for="`item-${index}-selling_price`"
+                        >
+                          <validation-provider
+                      vid="item.selling_price"
+                      name="item.selling_price"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
                           <b-form-input
-                            v-model="item.cost"
+                          :id="`item-${index}-selling_price`"
+                            v-model="item.selling_price"
+                            :state="errors.length > 0 ? false : null"
                             type="number"
-                            class="mb-2"
+                            step="any"
                           />
+                           <small class="text-danger">{{ errors[0] }}</small>
+                          </validation-provider>
+                          </b-form-group>
                         </b-col>
                         <b-col
                           cols="12"
                           lg="2"
                         >
-                          <label class="d-inline d-lg-none">Qty</label>
+                        <b-form-group
+                        label="الكمّية"
+                    :label-for="`item-${index}-selling_price`"
+                        >
+                          <validation-provider
+                      vid="item.qty"
+                      name="item.qty"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
                           <b-form-input
+                          :id="`item-${index}-qty`"
+                          :state="errors.length > 0 ? false : null"
                             v-model="item.qty"
                             type="number"
-                            class="mb-2"
                           />
+                           <small class="text-danger">{{ errors[0] }}</small>
+                          </validation-provider>
+                        </b-form-group>
                         </b-col>
                         <b-col
                           cols="12"
                           lg="2"
                         >
-                          <label class="d-inline d-lg-none">Price</label>
-                          <p class="mb-1">
-                            ${{ item.cost * item.qty }}
+                          <label class="d-inline d-lg-none">السعر</label>
+                          <p class="mt-1">
+                            {{ item.selling_price * item.qty }} ريال
                           </p>
                         </b-col>
                         <b-col
                           cols="12"
                           lg="5"
                         >
-                          <label class="d-inline d-lg-none">Description</label>
+                        <b-form-group
+                        label="وصف"
+                    :label-for="`item-${index}-description`"
+                        >
+                          <validation-provider
+                      vid="item.description"
+                      name="item.description"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
                           <b-form-textarea
+                          :id="`item-${index}-description`"
+                          :state="errors.length > 0 ? false : null"
                             v-model="item.description"
                             class="mb-2 mb-lg-0"
                           />
+                          <small class="text-danger">{{ errors[0] }}</small>
+                          </validation-provider>
+                          </b-form-group> 
                         </b-col>
                         <b-col>
-                          <p class="mb-0">
-                            Discount: 0% 0% 0%
-                          </p>
                         </b-col>
                       </b-row>
                       <div class="d-flex flex-column justify-content-between border-left py-50 px-25">
@@ -315,89 +407,6 @@
                           class="cursor-pointer"
                           @click="removeItem(index)"
                         />
-                        <feather-icon
-                          :id="`form-item-settings-icon-${index}`"
-                          size="16"
-                          icon="SettingsIcon"
-                          class="cursor-pointer"
-                        />
-
-                        <!-- Setting Item Form -->
-                        <b-popover
-                          :ref="`form-item-settings-popover-${index}`"
-                          :target="`form-item-settings-icon-${index}`"
-                          triggers="click"
-                          placement="lefttop"
-                        >
-                          <b-form @submit.prevent>
-                            <b-row>
-
-                              <!-- Field: Discount -->
-                              <b-col cols="12">
-                                <b-form-group
-                                  label="Discount(%)"
-                                  :label-for="`setting-item-${index}-discount`"
-                                >
-                                  <b-form-input
-                                    :id="`setting-item-${index}-discount`"
-                                    :value="null"
-                                    type="number"
-                                  />
-                                </b-form-group>
-                              </b-col>
-
-                              <!-- Field: Tax 1 -->
-                              <b-col cols="6">
-                                <b-form-group
-                                  label="Tax 1"
-                                  :label-for="`setting-item-${index}-tax-1`"
-                                >
-                                  <v-select
-                                    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                                    :value="'10%'"
-                                    :options="['0%', '1%', '10%', '14%', '18%']"
-                                    :input-id="`setting-item-${index}-tax-1`"
-                                    :clearable="false"
-                                  />
-                                </b-form-group>
-                              </b-col>
-
-                              <!-- Field: Tax 2 -->
-                              <b-col cols="6">
-                                <b-form-group
-                                  label="Tax 2"
-                                  :label-for="`setting-item-${index}-tax-2`"
-                                >
-                                  <v-select
-                                    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                                    :value="'10%'"
-                                    :options="['0%', '1%', '10%', '14%', '18%']"
-                                    :input-id="`setting-item-${index}-tax-2`"
-                                    :clearable="false"
-                                  />
-                                </b-form-group>
-                              </b-col>
-
-                              <b-col
-                                cols="12"
-                                class="d-flex justify-content-between mt-1"
-                              >
-                                <b-button
-                                  variant="outline-primary"
-                                  @click="() => {$refs[`form-item-settings-popover-${index}`][0].$emit('close')}"
-                                >
-                                  Apply
-                                </b-button>
-                                <b-button
-                                  variant="outline-secondary"
-                                  @click="() => {$refs[`form-item-settings-popover-${index}`][0].$emit('close')}"
-                                >
-                                  Cancel
-                                </b-button>
-                              </b-col>
-                            </b-row>
-                          </b-form>
-                        </b-popover>
                       </div>
                     </div>
                   </b-col>
@@ -409,37 +418,17 @@
                 variant="primary"
                 @click="addNewItemInItemForm"
               >
-                Add Item
+                اضافة منتج/خدمة
               </b-button>
             </b-card-body>
 
             <!-- Invoice Description: Total -->
             <b-card-body class="invoice-padding pb-0">
               <b-row>
-
-                <!-- Col: Sales Persion -->
-                <b-col
-                  cols="12"
-                  md="6"
-                  class="mt-md-0 mt-3 d-flex align-items-center"
-                  order="2"
-                  order-md="1"
-                >
-                  <label
-                    for="invoice-data-sales-person"
-                    class="text-nowrap mr-50"
-                  >Sales Person:</label>
-                  <b-form-input
-                    id="invoice-data-sales-person"
-                    v-model="invoiceData.salesPerson"
-                    placeholder="Edward Crowley"
-                  />
-                </b-col>
-
                 <!-- Col: Total -->
                 <b-col
                   cols="12"
-                  md="6"
+                  md="12"
                   class="mt-md-6 d-flex justify-content-end"
                   order="1"
                   order-md="2"
@@ -447,35 +436,27 @@
                   <div class="invoice-total-wrapper">
                     <div class="invoice-total-item">
                       <p class="invoice-total-title">
-                        Subtotal:
+                       المجموع قبل الضريبة:
                       </p>
                       <p class="invoice-total-amount">
-                        $1800
+                        {{getInvoiceSubtotal()}} ريال
                       </p>
                     </div>
                     <div class="invoice-total-item">
                       <p class="invoice-total-title">
-                        Discount:
+                        ضريبة:
                       </p>
                       <p class="invoice-total-amount">
-                        $28
-                      </p>
-                    </div>
-                    <div class="invoice-total-item">
-                      <p class="invoice-total-title">
-                        Tax:
-                      </p>
-                      <p class="invoice-total-amount">
-                        21%
+                        {{getInvoiceTax() }} ريال (5%)
                       </p>
                     </div>
                     <hr class="my-50">
                     <div class="invoice-total-item">
                       <p class="invoice-total-title">
-                        Total:
+                        المجموع:
                       </p>
                       <p class="invoice-total-amount">
-                        $1690
+                         {{getInvoiceTotal()}} ريال
                       </p>
                     </div>
                   </div>
@@ -488,11 +469,10 @@
 
             <!-- Note -->
             <b-card-body class="invoice-padding pt-0">
-              <span class="font-weight-bold">Note: </span>
+              <span class="font-weight-bold">ملحوظة: </span>
               <b-form-textarea v-model="invoiceData.note" />
             </b-card-body>
           </b-card>
-        </b-form>
       </b-col>
 
       <!-- Right Col: Card -->
@@ -514,7 +494,7 @@
             class="mb-75"
             block
           >
-            Send Invoice
+           إرسال الفاتورة
           </b-button>
 
           <!-- Button: DOwnload -->
@@ -524,80 +504,80 @@
             class="mb-75"
             block
           >
-            Preview
+            معاينة الفاتورة
           </b-button>
 
           <!-- Button: Print -->
           <b-button
             v-ripple.400="'rgba(113, 102, 240, 0.15)'"
             variant="outline-primary"
+            type="submit"
             block
           >
-            Save
-          </b-button>
-
-          <!-- Button: Add Payment -->
-          <b-button
-            v-b-toggle.sidebar-invoice-add-payment
-            v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-            variant="success"
-            class="mb-75"
-            block
-          >
-            Add Payment
+            حفظ
           </b-button>
         </b-card>
 
         <!-- Payment Method -->
         <div class="mt-2">
           <b-form-group
-            label="Accept Payment Via"
-            label-for="payment-method"
+            label="قبول الدفع عبر"
+            label-for="payment_method"
           >
+          <validation-provider
+                      vid="payment_method"
+                      name="payment_method"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
             <v-select
-              v-model="invoiceData.paymentMethod"
+            id="payment_method"
+              v-model="invoiceData.payment_method"
               :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
               :options="paymentMethods"
-              input-id="payment-method"
+              label="label"
+              input-id="payment_method"
               class="payment-selector"
               :clearable="false"
-            />
+            /><small class="text-danger">{{ errors[0] }}</small>
+</validation-provider>
           </b-form-group>
 
           <!-- ? Below values are not adding invoiceData to keep invoiceData more generic and less confusing  -->
 
           <!-- Payment Terms -->
-          <div class="d-flex justify-content-between align-items-center">
-            <label for="patymentTerms">Payment Terms</label>
+          <!-- <div class="d-flex justify-content-between align-items-center">
+            <label for="patymentTerms">شروط الدفع</label>
             <b-form-checkbox
-              id="patymentTerms"
+              id="paymentTerms"
               :checked="true"
               switch
             />
-          </div>
+          </div> -->
 
           <!-- Client Notes -->
-          <div class="d-flex justify-content-between align-items-center my-1">
-            <label for="clientNotes">Client Notes</label>
+          <!-- <div class="d-flex justify-content-between align-items-center my-1">
+            <label for="clientNotes">ملاحظات العميل</label>
             <b-form-checkbox
               id="clientNotes"
               :checked="true"
               switch
             />
-          </div>
+          </div> -->
 
           <!-- Payment Stub -->
-          <div class="d-flex justify-content-between align-items-center">
-            <label for="paymentStub">Payment Stub</label>
+          <!-- <div class="d-flex justify-content-between align-items-center">
+            <label for="paymentStub">وصل الدفع</label>
             <b-form-checkbox
               id="paymentStub"
               switch
             />
-          </div>
+          </div> -->
         </div>
       </b-col>
     </b-row>
-
+</b-form>
+         </validation-observer>
     <invoice-sidebar-send-invoice />
     <invoice-sidebar-add-payment />
   </section>
@@ -608,17 +588,20 @@ import Logo from '@core/layouts/components/Logo.vue'
 import { ref, onUnmounted } from '@vue/composition-api'
 import { heightTransition } from '@core/mixins/ui/transition'
 import Ripple from 'vue-ripple-directive'
-import store from '@/store'
-import router from '@/router'
 import {
   BRow, BCol, BCard, BCardBody, BButton, BCardText, BForm, BFormGroup, BFormInput, BInputGroup, BInputGroupPrepend, BFormTextarea, BFormCheckbox, BPopover, BAlert, BLink, VBToggle,
 } from 'bootstrap-vue'
 import vSelect from 'vue-select'
 import flatPickr from 'vue-flatpickr-component'
-import invoiceStoreModule from '../invoiceStoreModule'
+import invoiceStore from '../invoiceStore'
 import InvoiceSidebarSendInvoice from '../InvoiceSidebarSendInvoice.vue'
 import InvoiceSidebarAddPayment from '../InvoiceSidebarAddPayment.vue'
-
+import formValidation from '@core/comp-functions/forms/form-validation'
+import { ValidationProvider, ValidationObserver } from 'vee-validate'
+import { required, alphaNum, validEmail } from '@validations'
+import store from '@/store'
+import router from '@/router'
+const moment = require('moment');
 export default {
   components: {
     BRow,
@@ -642,6 +625,9 @@ export default {
     Logo,
     InvoiceSidebarSendInvoice,
     InvoiceSidebarAddPayment,
+    // Form Validation
+    ValidationProvider,
+    ValidationObserver,
   },
   directives: {
     Ripple,
@@ -666,6 +652,68 @@ export default {
     window.removeEventListener('resize', this.initTrHeight)
   },
   methods: {
+    getInvoiceSubtotal() {
+      return this.invoiceData.items.reduce((a, b) => a + b.selling_price * b.qty, 0);
+    },
+    getInvoiceTax() {
+      return this.getInvoiceSubtotal() * 0.05;
+    },
+    getInvoiceTotal() {
+      return this.getInvoiceSubtotal() + this.getInvoiceTax();
+    },
+    prepareData(){
+      let data = {};
+      data.id = this.invoiceData.id;
+      data.total = this.getInvoiceTotal();
+          data.subtotal = this.getInvoiceSubtotal();
+          data.tax = this.getInvoiceTax();
+          data.note = this.invoiceData.note;
+          data.payment_terms  = 'الدفع عند الإستلام';
+          data.payment_method = this.invoiceData.payment_method.value;
+          data.customer_id = this.invoiceData.customer_id
+          data.company_id = this.company.id
+          data.supply_date = this.invoiceData.supply_date;
+          data.due_date = this.invoiceData.due_date;
+          data.invoice_date = moment().format('YYYY-MM-DD');
+          data.items = this.invoiceData.items.map(item => {
+            return {
+              item_id: item.item_id,
+              selling_price: item.selling_price,
+              qty: item.qty,
+              description: item.description,
+              amount: item.selling_price * item.qty,
+              tax: (item.selling_price * item.qty) * 0.05
+            }
+          });
+          return data;
+    },
+        onSubmit() {
+      this.$refs.refFormObserver.validate().then(async (success) => {
+          let data = this.prepareData();
+            if (success) {
+          store.dispatch('app-invoice/updateInvoice', data)
+            .then((response) => {
+                this.$toast.success(response.data.message)
+              router.push('/invoice').catch(() => {})
+            })
+            .catch((err) => {
+              if(err.response) {
+                if(err.response.status === 422) {
+                this.$toast.error(err.response.data.message)
+                this.$refs.refFormObserver.setErrors(err.response.data.errors)
+                } else {
+                this.$toast.error(err.response.data.error)
+                }
+              }
+              console.log(err);
+            })
+        }
+      })
+    },
+    customerChanged(customer) {
+      this.invoiceData.customer = this.customers.find(c => c.id === customer.value);
+      this.invoiceData.customer_id = customer.value;
+    },
     addNewItemInItemForm() {
       this.$refs.form.style.overflow = 'hidden'
       this.invoiceData.items.push(JSON.parse(JSON.stringify(this.itemFormBlankItem)))
@@ -692,89 +740,103 @@ export default {
     const INVOICE_APP_STORE_MODULE_NAME = 'app-invoice'
 
     // Register module
-    if (!store.hasModule(INVOICE_APP_STORE_MODULE_NAME)) store.registerModule(INVOICE_APP_STORE_MODULE_NAME, invoiceStoreModule)
+    if (!store.hasModule(INVOICE_APP_STORE_MODULE_NAME)) store.registerModule(INVOICE_APP_STORE_MODULE_NAME, invoiceStore)
 
     // UnRegister on leave
     onUnmounted(() => {
       if (store.hasModule(INVOICE_APP_STORE_MODULE_NAME)) store.unregisterModule(INVOICE_APP_STORE_MODULE_NAME)
     })
 
-    const invoiceData = ref(null)
-    const paymentDetails = ref({})
+    let customers = ref([])
+    const res =  store.dispatch('app-invoice/fetchCustomers')
+    .then(response => {
+      const res = response.data 
+      customers.value = res.map(c => ({
+        label: c.name, value: c.id, ...c}))
+      })
+        
 
+  
+  
+  // Fetch items
+   const items = ref([])
+    store
+      .dispatch('app-invoice/fetchItems')
+      .then(response => { 
+        const res = response.data
+        items.value = res.map(c => ({
+        label: c.name, value: c.id, selling_price: c.selling_price, qty: 1, ...c}))
+      })
+
+  // Get user company
+  const userData = JSON.parse(localStorage.getItem('userData'));
+   const company = ref()
+   company.value = userData.company;
+    const invoiceData = ref(null)
+let originalInvoiceData = {};
     store.dispatch('app-invoice/fetchInvoice', { id: router.currentRoute.params.id })
       .then(response => {
-        invoiceData.value = response.data.invoice
-        paymentDetails.value = response.data.paymentDetails
-
-        // ? We are adding some extra data in response for data purpose
-        // * Your response will contain this extra data
-        // ? [Purpose is to make it more API friendly and less static as possible]
-        invoiceData.value.items = [{
-          itemTitle: 'App Design',
-          cost: 24,
-          qty: 2,
-          description: 'Designed UI kit & app pages.',
-        }]
-        invoiceData.value.note = 'It was a pleasure working with you and your team. We hope you will keep us in mind for future freelance projects. Thank You!'
-        invoiceData.value.paymentMethod = 'Bank Account'
+        let {data: invoice } = response.data;
+        invoice.customer = customers.value.find(c => c.id === invoice.customer_id);
+        invoice.items = invoice.items.map(item => {
+          item.item = items.value.find(i => i.id === item.item_id);
+          return item;
+        });
+        originalInvoiceData = invoice;
+        invoiceData.value = invoice
       })
       .catch(error => {
-        if (error.response.status === 404) {
+        if (error.response && error.response.status === 404) {
           invoiceData.value = undefined
         }
+        console.log(error);
       })
 
     const itemFormBlankItem = {
       item: null,
-      cost: 0,
+      selling_price: 0,
       qty: 0,
       description: '',
     }
 
-    const itemsOptions = [
-      {
-        itemTitle: 'App Design',
-        cost: 24,
-        qty: 1,
-        description: 'Designed UI kit & app pages.',
-      },
-      {
-        itemTitle: 'App Customization',
-        cost: 26,
-        qty: 1,
-        description: 'Customization & Bug Fixes.',
-      },
-      {
-        itemTitle: 'ABC Template',
-        cost: 28,
-        qty: 1,
-        description: 'Bootstrap 4 admin template.',
-      },
-      {
-        itemTitle: 'App Development',
-        cost: 32,
-        qty: 1,
-        description: 'Native App Development.',
-      },
-    ]
-
     const updateItemForm = (index, val) => {
-      const { cost, qty, description } = val
-      invoiceData.value.items[index].cost = cost
+      const { selling_price, qty, description, id } = val
+      invoiceData.value.items[index].item_id = id
+      invoiceData.value.items[index].selling_price = selling_price
       invoiceData.value.items[index].qty = qty
       invoiceData.value.items[index].description = description
     }
 
     const paymentMethods = [
-      'Bank Account',
-      'PayPal',
-      'UPI Transfer',
+    {
+      value: 'cash',
+      label: 'نقدا',
+    },
+    {
+      value: 'bank_transfer',
+      label: 'تحويل بنكي',
+    },
+    {
+      value: 'check',
+      label: 'شيك',
+    }
     ]
-
+    const resetinvoiceData = () => {
+      invoiceData.value = JSON.parse(JSON.stringify(originalInvoiceData))
+    }
+const {
+      refFormObserver,
+      getValidationState,
+      resetForm,
+    } = formValidation(resetinvoiceData) 
     return {
+      refFormObserver,
+      getValidationState,
+      resetForm,
       invoiceData,
-      itemsOptions,
+      items,
+      company,
+      customers,
       updateItemForm,
       itemFormBlankItem,
       paymentMethods,

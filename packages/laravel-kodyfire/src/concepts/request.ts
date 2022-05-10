@@ -6,6 +6,7 @@ import {
   Technology,
   TemplateSchema,
 } from 'kodyfire-core';
+// import pluralize from 'pluralize';
 import { Engine } from './engine';
 
 export class Request implements IConcept {
@@ -36,7 +37,9 @@ export class Request implements IConcept {
     this.engine = new Engine();
     _data.relationships = this.model.relationships;
     _data.controller = this.model.controller;
-    _data.fields = this.model.fields.filter((f: any) => f.required == true);
+    _data.fields = this.model.fields.filter(
+      (f: any) => typeof f.rules != 'undefined'
+    );
     const template = await this.engine.read(this.template.path, _data.template);
     this.engine.builder.registerHelper('getRequestValidation', () => {
       return this.getRequestValidation(
@@ -50,6 +53,7 @@ export class Request implements IConcept {
       _data.relationships,
       _data.prefix === 'Create' ? 'store' : 'update'
     );
+    _data.relationRules = this.getRelationValidation();
 
     const compiled = this.engine.compile(template, _data);
     this.engine.createOrOverwrite(
@@ -67,10 +71,9 @@ export class Request implements IConcept {
   getValidation(prefix: any = '', _relatedModel: any = null): string {
     let validation = '';
     this.model.fields.forEach((f: any) => {
-      console.log(f.validation);
-      if (f.validation) {
+      if (f.rules) {
         validation += `'${prefix}${this.underscorize(f.name)}' => '${
-          f.validation
+          f.rules
         }',\n`;
       }
     });
@@ -93,34 +96,30 @@ export class Request implements IConcept {
     return validation;
   }
 
-  getRelationValidation(relation: any, relationships: any, relatedModel: any) {
-    let content = `'${this.underscorize(
-      Object.values(relation)[0]
-    )}' => 'required',\n`;
-    let modelName = '';
-    let model = null;
-    relationships.forEach((r: any) => {
-      if (
-        r.name == Object.values(relation)[0] &&
-        r.type == Object.keys(relation)[0]
-      ) {
-        modelName = r.model;
+  getRelationValidation() {
+    let content = '';
+    this.model.foreign_keys.forEach((r: any) => {
+      if (r.required) {
+        content += `'${this.underscorize(r.column)}' => 'required|exists:${
+          r.on
+        },${r.references}',\n`;
       }
     });
-    if (modelName != '') {
-      model = this.models.find((m: any) => m.name == modelName);
-      if (typeof model != 'undefined') {
-        const prefix = `${this.underscorize(Object.values(relation)[0])}.*.`;
-        switch (Object.keys(relation)[0]) {
-          case 'hasMany':
-            content += this.getValidation(prefix, relatedModel);
-            break;
-
-          default:
-            break;
-        }
+    this.model.relationships.forEach((r: any) => {
+      const relatedModel = this.technology.input.model.find(
+        (m: any) => m.name.toLowerCase() == r.model.toLowerCase()
+      );
+      if (r.type == 'hasMany' && relatedModel) {
+        content += `'${this.underscorize(r.name)}' => 'array',\n`;
+        relatedModel.fields.forEach((f: any) => {
+          if (f.rules) {
+            content += `'${this.underscorize(r.name)}.*.${this.underscorize(
+              f.name
+            )}' => '${f.rules}',\n`;
+          }
+        });
       }
-    }
+    });
     return content;
   }
 

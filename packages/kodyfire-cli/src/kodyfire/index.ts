@@ -43,7 +43,7 @@ export function scaffold(_options: any): Observable<Rule> | Rule {
       technology: _options.type,
       version: '1.0.0',
     };
-    console.log(_options);
+
     const templateSource = apply(url('./templates/blank'), [
       applyTemplates({
         ...strings,

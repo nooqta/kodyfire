@@ -2,52 +2,14 @@
       
       namespace App\Repositories;
       
-      use DB;
       use Log;
       use Exception;
       use App\Models\\{{name}};
       use App\Storage\DataBag;
       use Illuminate\Support\Facades\Storage;
+      use Illuminate\Support\Facades\DB;
       
-      class {{name}}Repository {
-      
-          public function create(DataBag $dataBag) {
-              $data = $dataBag->get('data');
-              DB::beginTransaction();
-              try {
-                  {{#if hasUplodableMorph}}
-                  {{{ attachments }}}
-                  {{/if}}
-                  {{#hasBeforeEvent 'create'}}
-                  {{{ beforeEvent 'create' }}}
-                  {{/hasBeforeEvent}}
-                  $model = {{name}}::create($data);
-                  {{#hasAfterEvent 'create'}}
-                  {{{afterEvent 'create' }}}
-                  {{/hasAfterEvent}}
-                  {{{ morphAttachments }}}
-                  {{{ additionalMethods }}}
-                } catch (\Exception $e) {
-                    DB::rollback();
-                    throw new Exception($e->getMessage());
-                }
-                DB::commit();
-                return $model;
-            }
-            
-            public function update({{name}} $model, DataBag $dataBag) {
-                $data = $dataBag->get('data');
-                DB::beginTransaction();
-                try {
-                  {{{updateAttachments}}}
-                  $model->update($data);
-              } catch (\Exception $e) {
-                  DB::rollback();
-                  throw new Exception($e->getMessage());
-              }
-              DB::commit();
-              return $model;
-          }
-    
+      class {{name}}Repository extends Repository {
+          {{{methods}}}
           {{{uploadAttachment}}}
       }

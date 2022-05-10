@@ -1,0 +1,13 @@
+        public function update({{model}} $model, DataBag $dataBag) {
+            $data = $dataBag->get('data');
+            DB::beginTransaction();
+            try {
+                {{{updateAttachments}}}
+                $model->update($data);
+            } catch (\Exception $e) {
+                DB::rollback();
+                throw new Exception($e->getMessage());
+            }
+            DB::commit();
+            return $model;
+        }

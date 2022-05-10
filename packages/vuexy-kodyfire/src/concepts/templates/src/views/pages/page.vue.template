@@ -1,6 +1,6 @@
 <template>
-  <b-card title="Create Awesome pages 🙌">
-    <b-card-text>This is your page.</b-card-text>
+  <b-card title="قم بإنشاء صفحات رائعة 🙌 ">
+    <b-card-text>هذه صفحتك.</b-card-text>
   </b-card>
 </template>
 

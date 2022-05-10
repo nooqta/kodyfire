@@ -33,10 +33,9 @@ export default function use<%= classify name %>List() {
   const searchQuery = ref('')
   const sortBy = ref('id')
   const isSortDirDesc = ref(true)
-  const roleFilter = ref(null)
-  const planFilter = ref(null)
-  const statusFilter = ref(null)
-
+  <%=#each data.options %>
+  const <%= name %>Filter = ref(null)
+  <%=/each %>
   const dataMeta = computed(() => {
     const localItemsCount = ref<%= classify name %>ListTable.value ? ref<%= classify name %>ListTable.value.localItems.length : 0
     return {
@@ -50,7 +49,7 @@ export default function use<%= classify name %>List() {
     ref<%= classify name %>ListTable.value.refresh()
   }
 
-  watch([currentPage, perPage, searchQuery, roleFilter, planFilter, statusFilter], () => {
+  watch([currentPage, perPage, searchQuery, <%= join data.options 'name' 'Filter' %>], () => {
     refetchData()
   })
 
@@ -62,11 +61,12 @@ export default function use<%= classify name %>List() {
         page: currentPage.value,
         sortBy: sortBy.value,
         sortDesc: isSortDirDesc.value,
-        role: roleFilter.value,
-        plan: planFilter.value,
-        status: statusFilter.value,
+        <%=#each data.options %>
+        <%= name %>: <%= name %>Filter.value,
+        <%=/each %>
       })
       .then(response => {
+        console.log(response.data)
         const { data: <%= pluralize name %>, total } = response.data
 
         callback(<%= pluralize name %>)
@@ -87,31 +87,25 @@ export default function use<%= classify name %>List() {
   // *===============================================---*
   // *--------- UI ---------------------------------------*
   // *===============================================---*
-
-  const resolve<%= classify name %>RoleVariant = role => {
-    if (role === 'subscriber') return 'primary'
-    if (role === 'author') return 'warning'
-    if (role === 'maintainer') return 'success'
-    if (role === 'editor') return 'info'
-    if (role === 'admin') return 'danger'
+  <%=#each data.options %>
+  <%=#if hasVariant %>
+  const resolve<%= classify name %>Variant = <%= ../name %> => {
+    <%=#each items %>
+    if (<%= ../name %> === '<%= value %>') return '<%= variant %>'
+    <%=/each %>
     return 'primary'
   }
+  <%=/if %>
+  <%=/each %>
 
-  const resolve<%= classify name %>RoleIcon = role => {
-    if (role === 'subscriber') return '<%= classify name %>Icon'
-    if (role === 'author') return 'SettingsIcon'
-    if (role === 'maintainer') return 'DatabaseIcon'
-    if (role === 'editor') return 'Edit2Icon'
-    if (role === 'admin') return 'ServerIcon'
-    return '<%= classify name %>Icon'
+  <%=#each data.options %>
+  <%=#if hasIcon %>
+  const resolve<%= classify name %>Icon = <%= ../name %> => {
+    if (<%= ../name %> === '<%= value %>') return '<%= classify icon %>'
+    return ../defaultIcon'
   }
-
-  const resolve<%= classify name %>StatusVariant = status => {
-    if (status === 'pending') return 'warning'
-    if (status === 'active') return 'success'
-    if (status === 'inactive') return 'secondary'
-    return 'primary'
-  }
+  <%=/if %>
+  <%=/each %>
 
   return {
     fetch<%= classify ( pluralize name) %>,
@@ -125,15 +119,19 @@ export default function use<%= classify name %>List() {
     sortBy,
     isSortDirDesc,
     ref<%= classify name %>ListTable,
-
-    resolve<%= classify name %>RoleVariant,
-    resolve<%= classify name %>RoleIcon,
-    resolve<%= classify name %>StatusVariant,
+    <%=#each data.options %>
+    <%=#if hasVariant %>
+    resolve<%= classify name %>Variant,
+    <%=/if %>
+    <%=#if hasIcon %>
+    resolve<%= classify name %>Icon,
+    <%=/if %>
+    <%=/each %>
     refetchData,
 
     // Extra Filters
-    roleFilter,
-    planFilter,
-    statusFilter,
+    <%=#each data.options %>
+    <%= name %>Filter,
+    <%=/each %>
   }
 }

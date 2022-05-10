@@ -1,5 +1,6 @@
 import { ref, watch, computed } from '@vue/composition-api'
 import store from '@/store'
+import { title } from '@core/utils/filter'
 
 // Notification
 import { useToast } from 'vue-toastification/composition'
@@ -11,15 +12,19 @@ export default function useInvoicesList() {
 
   const refInvoiceListTable = ref(null)
 
-  // Table Handlers
+   // Table Handlers
   const tableColumns = [
-    { key: 'id', label: '#', sortable: true },
-    { key: 'invoiceStatus', sortable: true },
-    { key: 'client', sortable: true },
-    { key: 'total', sortable: true, formatter: val => `$${val}` },
-    { key: 'issuedDate', sortable: true },
-    { key: 'balance', sortable: true },
-    { key: 'actions' },
+    <%=#each  data.columns %>
+    {
+      key: '<%= name %>',
+      <%=#if  label %>
+      label: '<%= label %>',
+      <%=/if %>
+      formatter: title,
+      sortable: true,
+    },
+    <%=/each %>
+    { key: 'actions', label: 'الإجراءات' },
   ]
   const perPage = ref(10)
   const totalInvoices = ref(0)
@@ -58,7 +63,7 @@ export default function useInvoicesList() {
         status: statusFilter.value,
       })
       .then(response => {
-        const { invoices, total } = response.data
+        const { data: invoices, total } = response.data
 
         callback(invoices)
         totalInvoices.value = total
@@ -67,13 +72,14 @@ export default function useInvoicesList() {
         toast({
           component: ToastificationContent,
           props: {
-            title: "Error fetching invoices' list",
+            title: "حدث خطأ عند جلب القائمة",
             icon: 'AlertTriangleIcon',
             variant: 'danger',
           },
         })
       })
   }
+
 
   // *===============================================---*
   // *--------- UI ---------------------------------------*

@@ -10,6 +10,9 @@ use App\Http\Requests\Update{{name}}Request;
 use App\Storage\DataBag;
 use App\Models\\{{name}};
 use App\Repositories\\{{name}}Repository;
+{{#each controller.dependencies }}
+use {{this}};
+{{/each}}
 
 class {{name}}Controller extends Controller
 {

@@ -68,7 +68,7 @@ import { ref, onUnmounted } from '@vue/composition-api'
 import {
   BRow, BCol, BAlert, BLink,
 } from 'bootstrap-vue'
-import userStoreModule from '../userStoreModule'
+import userStore from '../userStore'
 import UserViewUserInfoCard from './UserViewUserInfoCard.vue'
 import UserViewUserPlanCard from './UserViewUserPlanCard.vue'
 import UserViewUserTimelineCard from './UserViewUserTimelineCard.vue'
@@ -94,7 +94,7 @@ export default {
     const USER_APP_STORE_MODULE_NAME = 'app-user'
 
     // Register module
-    if (!store.hasModule(USER_APP_STORE_MODULE_NAME)) store.registerModule(USER_APP_STORE_MODULE_NAME, userStoreModule)
+    if (!store.hasModule(USER_APP_STORE_MODULE_NAME)) store.registerModule(USER_APP_STORE_MODULE_NAME, userStore)
 
     // UnRegister on leave
     onUnmounted(() => {
