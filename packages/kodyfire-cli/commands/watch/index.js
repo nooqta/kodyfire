@@ -93,7 +93,7 @@ module.exports = program => {
       'kody.json'
     )
     .option('-b, --build', 'Build source files (default: false)', false)
-    .description(chalk.red('Watch for file changes and run kody'))
+    .description(chalk.green('Watch for file changes and run kody'))
     .action(_opt =>
       __awaiter(void 0, void 0, void 0, function* () {
         return yield action(_opt);

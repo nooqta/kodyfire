@@ -59,6 +59,7 @@
     "node-fetch": "^2.6.0",
     "npmlog": "^6.0.0",
     "pluralize": "^8.0.0",
+    "prompts": "^2.4.2",
     "symbol-observable": "^4.0.0"
   },
   "devDependencies": {

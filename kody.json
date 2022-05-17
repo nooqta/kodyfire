@@ -10,5 +10,6 @@
       "name": "laravel",
       "filename": "kody-backend.json"
     }
-  ]
+  ],
+  "scripts": ["pwd"]
 }

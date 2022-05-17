@@ -57,7 +57,7 @@ module.exports = (program: typeof Command) => {
       'kody.json'
     )
     .option('-b, --build', 'Build source files (default: false)', false)
-    .description(chalk.red('Watch for file changes and run kody'))
+    .description(chalk.green('Watch for file changes and run kody'))
     .action(async (_opt: any) => {
       return await action(_opt);
     });

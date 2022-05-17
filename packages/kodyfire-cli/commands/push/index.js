@@ -40,8 +40,8 @@ var __importDefault =
 Object.defineProperty(exports, '__esModule', { value: true });
 const node_fetch_1 = __importDefault(require('node-fetch'));
 const kodyfire_core_1 = require('kodyfire-core');
-const dotenv_1 = __importDefault(require('dotenv'));
-dotenv_1.default.config();
+// import dotenv from 'dotenv';
+// dotenv.config();
 const action = () =>
   __awaiter(void 0, void 0, void 0, function* () {
     // Get current package info

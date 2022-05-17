@@ -4,9 +4,10 @@ const { join } = require('path');
 import { Runner } from 'kodyfire-core';
 import { CliWorkflow } from '../../src/kodyfire/lib/cli/worklfow';
 import { Command } from 'commander';
-import runScript from './../run-script/helper';
+import runScript from '../run-script/helper';
 async function action(args: any): Promise<0 | 1> {
   try {
+    // @todo: Refactor used by watch command
     if (typeof args.source === 'undefined') {
       args.source = join(process.cwd(), 'kody.json');
     }
@@ -20,22 +21,23 @@ async function action(args: any): Promise<0 | 1> {
       );
       process.exit(1);
     }
-    // if
-    const content = JSON.parse(fs.readFileSync(args.source).toString());
-    if (!content.sources) {
-      console.log(chalk.red('No sources found in kody.json'));
-      process.exit(1);
+
+    await runScript(args);
+    args.name = JSON.parse(fs.readFileSync(args.source).toString()).name || '';
+    const { source } = args;
+    let { condition = false } = args;
+    if (condition) {
+      condition = await import(join(process.cwd(), condition));
     }
-    for (const source of content.sources) {
-      args.name = source.name || '';
-      args.source = join(process.cwd(), source.filename);
-      await runScript(args);
-      const workflow = new CliWorkflow(source.filename);
-      const runner = new Runner({ ...args, ...workflow });
-      await runner.run(args);
+    const workflow = new CliWorkflow(source);
+    const runner = new Runner({ ...args, ...workflow });
+    let output = await runner.run(args);
+    while (await condition) {
+      output = await runner.run(args);
     }
+
     // finish process
-    return 0;
+    return output;
   } catch (error) {
     console.log(chalk.red(error.stack || error.message));
     process.exit(1);
@@ -43,18 +45,22 @@ async function action(args: any): Promise<0 | 1> {
 }
 module.exports = (program: Command) => {
   program
-    .command('batch')
-    .description('Generate multiple digital artifact')
+    .command('live')
+    .alias('∞')
+    .description('keeps running a kody based on a condition')
     .option(
       '-s,--source <source>',
       'Source file to be used as the schema for the generator (default: kody.json)',
       'kody.json'
     )
-    .option('--templates-path', 'overrides the templates path')
+    .option(
+      '-c,--condition <condition>',
+      'condition file to be used as source to decide when to stop running a kody',
+      'kody.json'
+    )
     .action(async (_opt: { name: any }) => {
-      // await $`schematics @noqta/kodyfire:run --name ${_opt.name} --dry-run`;
       try {
-        action({ ..._opt, schematic: 'run', dryRun: false });
+        action(_opt);
       } catch (error) {
         console.log(error);
       }

@@ -13,13 +13,13 @@ const ee = new EventEmitter();
 const glob = require('glob'),
   path = require('path');
 
-program.version('0.0.1', '-v, --version', 'output the current version');
+program.version('0.0.1', '-v, --version', 'Output the current version');
 glob
   .sync(
     `${path.resolve(
       process.mainModule?.path,
       '../..'
-    )}/commands/{list,publish,push,run,batch,scaffold,serve,watch}/index.js`
+    )}/commands/{list,publish,push,run,batch,scaffold,serve,watch,run-script,ride,live}/index.js`
   )
   .forEach(function (file: any) {
     const cmd = require(path.resolve(file));

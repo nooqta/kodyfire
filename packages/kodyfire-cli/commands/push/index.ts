@@ -1,8 +1,8 @@
 import { Command } from 'commander';
 import fetch from 'node-fetch';
 import { Package } from 'kodyfire-core';
-import dotenv from 'dotenv';
-dotenv.config();
+// import dotenv from 'dotenv';
+// dotenv.config();
 
 const action = async () => {
   // Get current package info

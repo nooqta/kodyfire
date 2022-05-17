@@ -1,4 +1,41 @@
 'use strict';
+var __createBinding =
+  (this && this.__createBinding) ||
+  (Object.create
+    ? function (o, m, k, k2) {
+        if (k2 === undefined) k2 = k;
+        Object.defineProperty(o, k2, {
+          enumerable: true,
+          get: function () {
+            return m[k];
+          },
+        });
+      }
+    : function (o, m, k, k2) {
+        if (k2 === undefined) k2 = k;
+        o[k2] = m[k];
+      });
+var __setModuleDefault =
+  (this && this.__setModuleDefault) ||
+  (Object.create
+    ? function (o, v) {
+        Object.defineProperty(o, 'default', { enumerable: true, value: v });
+      }
+    : function (o, v) {
+        o['default'] = v;
+      });
+var __importStar =
+  (this && this.__importStar) ||
+  function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null)
+      for (var k in mod)
+        if (k !== 'default' && Object.prototype.hasOwnProperty.call(mod, k))
+          __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+  };
 var __awaiter =
   (this && this.__awaiter) ||
   function (thisArg, _arguments, P, generator) {
@@ -43,10 +80,11 @@ const fs = require('fs');
 const { join } = require('path');
 const kodyfire_core_1 = require('kodyfire-core');
 const worklfow_1 = require('../../src/kodyfire/lib/cli/worklfow');
-const helper_1 = __importDefault(require('./../run-script/helper'));
+const helper_1 = __importDefault(require('../run-script/helper'));
 function action(args) {
   return __awaiter(this, void 0, void 0, function* () {
     try {
+      // @todo: Refactor used by watch command
       if (typeof args.source === 'undefined') {
         args.source = join(process.cwd(), 'kody.json');
       }
@@ -60,24 +98,26 @@ function action(args) {
         );
         process.exit(1);
       }
-      // if
-      const content = JSON.parse(fs.readFileSync(args.source).toString());
-      if (!content.sources) {
-        console.log(chalk.red('No sources found in kody.json'));
-        process.exit(1);
-      }
-      for (const source of content.sources) {
-        args.name = source.name || '';
-        args.source = join(process.cwd(), source.filename);
-        yield helper_1.default(args);
-        const workflow = new worklfow_1.CliWorkflow(source.filename);
-        const runner = new kodyfire_core_1.Runner(
-          Object.assign(Object.assign({}, args), workflow)
+      yield helper_1.default(args);
+      args.name =
+        JSON.parse(fs.readFileSync(args.source).toString()).name || '';
+      const { source } = args;
+      let { condition = false } = args;
+      if (condition) {
+        condition = yield Promise.resolve().then(() =>
+          __importStar(require(join(process.cwd(), condition)))
         );
-        yield runner.run(args);
+      }
+      const workflow = new worklfow_1.CliWorkflow(source);
+      const runner = new kodyfire_core_1.Runner(
+        Object.assign(Object.assign({}, args), workflow)
+      );
+      let output = yield runner.run(args);
+      while (yield condition) {
+        output = yield runner.run(args);
       }
       // finish process
-      return 0;
+      return output;
     } catch (error) {
       console.log(chalk.red(error.stack || error.message));
       process.exit(1);
@@ -86,24 +126,23 @@ function action(args) {
 }
 module.exports = program => {
   program
-    .command('batch')
-    .description('Generate multiple digital artifact')
+    .command('live')
+    .alias('∞')
+    .description('keeps running a kody based on a condition')
     .option(
       '-s,--source <source>',
       'Source file to be used as the schema for the generator (default: kody.json)',
       'kody.json'
     )
-    .option('--templates-path', 'overrides the templates path')
+    .option(
+      '-c,--condition <condition>',
+      'condition file to be used as source to decide when to stop running a kody',
+      'kody.json'
+    )
     .action(_opt =>
       __awaiter(void 0, void 0, void 0, function* () {
-        // await $`schematics @noqta/kodyfire:run --name ${_opt.name} --dry-run`;
         try {
-          action(
-            Object.assign(Object.assign({}, _opt), {
-              schematic: 'run',
-              dryRun: false,
-            })
-          );
+          action(_opt);
         } catch (error) {
           console.log(error);
         }
