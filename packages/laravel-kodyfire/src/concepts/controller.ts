@@ -238,6 +238,7 @@ public function ${action.name}(Request  $request) {
               'error' => __('app.errorMsg'),
           ], 500);
       }
+      ${action.useResource ? this.useResource(action, model) : ''}
       return response()->json(['data' => $data]);
     }\n`;
           break;
@@ -320,6 +321,13 @@ public function ${action.name}(Request  $request) {
       }
     }
     return methods;
+  }
+  useResource(action: any, model: any) {
+    if (action.useResource) {
+      return `$data = new \\App\\Http\\Resources\\${strings.classify(
+        model.name
+      )}Resource($data);`;
+    }
   }
 
   deleteAttachments(model: any): string {

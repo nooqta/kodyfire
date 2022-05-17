@@ -109,6 +109,23 @@
             {
               "path": "/customer",
               "routeName": "list"
+            },
+            {
+              "path": "/customer/:id/edit",
+              "routeName": "edit"
+            }
+          ]
+        },
+        {
+          "name": "item",
+          "children": [
+            {
+              "path": "/item",
+              "routeName": "list"
+            },
+            {
+              "path": "/item/:id/edit",
+              "routeName": "edit"
             }
           ]
         },
@@ -118,6 +135,10 @@
             {
               "path": "/vendor",
               "routeName": "list"
+            },
+            {
+              "path": "/vendor/:id/edit",
+              "routeName": "edit"
             }
           ]
         },
@@ -127,6 +148,10 @@
             {
               "path": "/expense",
               "routeName": "list"
+            },
+            {
+              "path": "/expense/:id/edit",
+              "routeName": "edit"
             }
           ]
         }
@@ -165,6 +190,20 @@
           "routeName": "home",
           "resource": "user",
           "action": "read"
+        },
+        {
+          "header": "المنتجات",
+          "icon": "Home",
+          "resource": "item",
+          "action": "read",
+          "children": [
+            {
+              "title": "المنتجات",
+              "routeName": "items-list",
+              "resource": "item",
+              "action": "read"
+            }
+          ]
         },
         {
           "header": "الفواتير",
@@ -491,6 +530,66 @@
       }
     },
     {
+      "name": "item",
+      "label": "المنتجات",
+      "templateFolder": "module",
+      "data": {
+        "form_fields": [
+          {
+            "name": "name",
+            "label": "الاسم المنتج",
+            "type": "text",
+            "rules": "required"
+          },
+          {
+            "name": "selling_price",
+            "label": "السعر",
+            "type": "text",
+            "rules": "required"
+          },
+          {
+            "name": "description",
+            "label": "الوصف",
+            "type": "text",
+            "rules": "required"
+          },
+          {
+            "name": "tax",
+            "label": "معدل الضريبة",
+            "type": "text",
+            "rules": "required"
+          },
+          {
+            "name": "type",
+            "label": "طبيعة المنتج",
+            "type": "select",
+            "rules": "required"
+          }
+        ],
+        "columns": [
+          {
+            "name": "name",
+            "label": "الاسم",
+            "type": "text"
+          },
+          {
+            "name": "selling_price",
+            "label": "سعر البيع",
+            "type": "text"
+          }
+        ],
+        "options": [
+          {
+            "name": "type",
+            "items": [
+              { "label": "خدمة", "value": "service" },
+              { "label": "منتج", "value": "product" }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "name": "vendor",
       "label": "المزودين",
       "templateFolder": "module",
@@ -599,6 +698,50 @@
             "label": "المزود",
             "type": "select",
             "rules": "required"
+          }
+        ],
+        "form_groups": [
+          {
+            "title": "المصاريف",
+            "icon": "User",
+            "fields": [
+              {
+                "name": "price",
+                "label": "المبلغ",
+                "type": "text",
+                "rules": "required"
+              },
+              {
+                "name": "pruchase_date",
+                "label": "تاريخ الإقتناء",
+                "type": "dateTime",
+                "rules": "required"
+              },
+              {
+                "name": "tax",
+                "label": "الضريبة",
+                "type": "text",
+                "rules": "required"
+              },
+              {
+                "name": "reference",
+                "label": "المرجع",
+                "type": "text",
+                "rules": "required"
+              },
+              {
+                "name": "note",
+                "label": "الملاحظات",
+                "type": "textarea",
+                "rules": "required"
+              },
+              {
+                "name": "vendor",
+                "label": "المزود",
+                "type": "select",
+                "rules": "required"
+              }
+            ]
           }
         ],
         "columns": [

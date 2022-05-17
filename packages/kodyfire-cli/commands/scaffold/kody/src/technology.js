@@ -54,7 +54,7 @@ class Technology {
       this.assets = assets;
       // add dynamic property for technology
       for (const concept of this.assets.concepts) {
-        const className = (0, kodyfire_core_1.capitalize)(concept.name);
+        const className = kodyfire_core_1.capitalize(concept.name);
         this.concepts.set(concept.name, new classes[className](concept, this));
       }
     } catch (error) {

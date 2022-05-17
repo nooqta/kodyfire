@@ -1,0 +1,272 @@
+<template>
+  <div>
+    <!-- Role Info: Input Fields -->
+    <b-form>
+      <b-row>
+         <b-col cols="12" md="12">
+        <b-alert v-model="showMessage" dismissible :variant="messageType">
+          <div class="alert-body">
+            <feather-icon class="mr-25" icon="InfoIcon" />
+            <span class="ml-25" v-html="message"></span>
+          </div>
+        </b-alert>
+       </b-col>
+       </b-row>
+      <b-row>
+        <!-- Field: Name -->
+        <b-col cols="12" md="6">
+          <b-form-group label="اسم الدور (English)" label-for="name">
+            <b-form-input id="name" v-model="roleData.name" />
+          </b-form-group>
+        </b-col>
+
+        <!-- Field: Email -->
+        <b-col cols="12" md="6">
+          <b-form-group label="اسم الدور بالعربي" label-for="name_arabic">
+            <b-form-input id="name_arabic" v-model="roleData.name_arabic"  />
+          </b-form-group>
+        </b-col>
+      </b-row>
+    </b-form>
+
+    <!-- PERMISSION TABLE -->
+    <b-card no-body class="border mt-1">
+      <b-card-header class="p-1">
+        <b-card-title class="font-medium-2">
+          <feather-icon icon="LockIcon" size="18" />
+          <span class="align-middle ml-50">الأذونات</span>
+        </b-card-title>
+      </b-card-header>
+      <b-table striped responsive class="mb-0" :items="items" :fields="fields">
+        <template #cell(module)="data">
+          {{ $t(data.value) }}
+        </template>
+        <template #cell()="data">
+          <b-form-checkbox
+            @change="setPermission($event, data)"
+            :checked="data.value"
+          />
+        </template>
+      </b-table>
+    </b-card>
+
+    <!-- Action Buttons -->
+    <b-button
+      variant="primary"
+      class="mb-1 mb-sm-0 mr-0 mr-sm-1"
+      @click="addRole"
+      :block="$store.getters['app/currentBreakPoint'] === 'xs'"
+    >
+      حفظ التغييرات
+    </b-button>
+    <b-button
+      variant="outline-secondary"
+      type="reset"
+      :block="$store.getters['app/currentBreakPoint'] === 'xs'"
+    >
+      إعادة ضبط
+    </b-button>
+  </div>
+</template>
+
+<script>
+import {
+  BButton,
+  BMedia,
+  BAlert,
+  BRow,
+  BCol,
+  BFormGroup,
+  BFormInput,
+  BFormInvalidFeedback,
+  BForm,
+  BTable,
+  BCard,
+  BCardHeader,
+  BCardTitle,
+  BFormCheckbox,
+} from "bootstrap-vue";
+import { alertMessageMixin } from "@core/mixins/ui/feedback";
+
+import vSelect from "vue-select";
+import { useInputImageRenderer } from "@core/comp-functions/forms/form-utils";
+import { ref, onUnmounted } from '@vue/composition-api'
+import useRolesList from "../roles-list/useRolesList";
+import { ValidationProvider, ValidationObserver } from "vee-validate";
+import { required, alphaNum, email } from "@validations";
+import formValidation from "@core/comp-functions/forms/form-validation";
+import router from '@/router'
+import store from '@/store'
+import roleStoreModule from '../roleStoreModule'
+import ToastificationContent from "@core/components/toastification/ToastificationContent.vue";
+
+export default {
+  components: {
+    BButton,
+    BAlert,
+    BMedia,
+    BRow,
+    BCol,
+    BFormGroup,
+    BFormInput,
+    BFormInvalidFeedback,
+    BForm,
+    BTable,
+    BCard,
+    BCardHeader,
+    BCardTitle,
+    BFormCheckbox,
+    vSelect,
+    // Form Validation
+    ValidationProvider,
+    ValidationObserver,
+  },
+  mixins: [alertMessageMixin],
+  methods: {
+    setPermission(event, data) {
+      if(!this.roleData.abilities.hasOwnProperty(data.item.module)) {
+        this.roleData.abilities[data.item.module] = {};
+      }
+      this.roleData.abilities[data.item.module][data.field.key] = event;
+    },
+    addRole() {
+      this.roleData.permissions = Object.keys(this.roleData.abilities)
+        .map((key) =>
+          this.permissionOptions
+            .filter((value) => this.roleData.abilities[key][value] === true)
+            .map((value) => `${key}_${value}`)
+        )
+        .flat();
+      this.$store
+        .dispatch("app-role/addRole", this.roleData)
+        .then((response) => {
+          this.$toast.success(response.data.message);
+          router.push("/role").catch(() => {});
+        })
+        .catch((err) => {
+          if (err.response) {
+            if (err.response.status === 422) {
+              this.$toast.error(err.response.data.message);
+              let { message, errors } = err.response.data;
+              if (errors) {
+                let errorMessage = {
+                  message: "",
+                  type: "danger",
+                };
+                Object.values(errors).forEach((error) => {
+                  errorMessage.message += `${error[0]}<br>`;
+                });
+                this.displayMessage(errorMessage);
+              }
+              this.$toast({
+                component: ToastificationContent,
+                props: {
+                  title: message,
+                  text: message,
+                  icon: "AlertCircleIcon",
+                  variant: "danger",
+                },
+              });
+            } else {
+              this.$toast.error(err.response.data.error);
+            }
+          }
+          console.log(err);
+        });
+    },
+  },
+  setup() {
+    const roleData = ref(null)
+
+    const ROLE_APP_STORE_MODULE_NAME = 'app-role'
+
+    // Register module
+    if (!store.hasModule(ROLE_APP_STORE_MODULE_NAME)) store.registerModule(ROLE_APP_STORE_MODULE_NAME, roleStoreModule)
+
+    // UnRegister on leave
+    onUnmounted(() => {
+      if (store.hasModule(ROLE_APP_STORE_MODULE_NAME)) store.unregisterModule(ROLE_APP_STORE_MODULE_NAME)
+    })
+    
+    const permissionOptions = ref([]);
+    const moduleOptions = ref([]);
+    const items = ref([]);
+    store
+      .dispatch("app-role/fetchRoleOptions")
+      .then((response) => {
+        const { permissions, modules } = response.data;
+        permissionOptions.value = permissions;
+        moduleOptions.value = modules;
+        items.value = Object.keys(modules).reduce((acc, module) => {
+          let m = {module: module};
+          permissions.forEach((permission) => {
+            m[permission] = false;
+          });
+          acc.push(m);
+          return acc;
+        }, []);
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 404) {
+          permissionOptions.value = undefined;
+        }
+        console.log(error);
+      });
+
+
+    const fields = [
+      {
+        key: "module",
+        label: "الوحدة",
+      },
+      {
+        key: "read",
+        label: "قراءة",
+      },
+      {
+        key: "update",
+        label: "كتابة",
+      },
+      {
+        key: "create",
+        label: "إنشاء",
+      },
+      {
+        key: "delete",
+        label: "حذف",
+      },
+    ];
+
+    const initialRoleData = {
+      name: null,
+      name_arabic: null,
+      permissions: [],
+      abilities: {},
+    };
+    
+    roleData.value = JSON.parse(JSON.stringify(initialRoleData));
+
+    const resetroleData = () => {
+      roleData.value = JSON.parse(JSON.stringify(initialRoleData));
+    };
+
+    const { refFormObserver, getValidationState, resetForm } =
+      formValidation(resetroleData);
+
+    return {
+      roleData,
+      fields,
+      permissionOptions,
+      moduleOptions,
+      items,
+      refFormObserver,
+      getValidationState,
+      resetForm,
+    };
+  },
+};
+</script>
+
+<style lang="scss">
+@import "@core/scss/vue/libs/vue-select.scss";
+</style>

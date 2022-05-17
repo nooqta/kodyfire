@@ -38,43 +38,44 @@ var __importDefault =
     return mod && mod.__esModule ? mod : { default: mod };
   };
 Object.defineProperty(exports, '__esModule', { value: true });
-exports.isPackageInstalled = void 0;
-const boxen_1 = __importDefault(require('boxen'));
-const zx_1 = require('zx');
-const isPackageInstalled = _name => {
-  try {
-    return true;
-  } catch (_a) {
-    return false;
-  }
-};
-exports.isPackageInstalled = isPackageInstalled;
-const action = () => {
-  const isInstalled = exports.isPackageInstalled('kodyfire-builder');
-  let message = 'Starting web server...';
-  if (!isInstalled) {
-    message = `😞 Kodyfire server not installed yet.\nInstall the web builder to quickly generate your schema 🚀🚀🚀\n
-      npm install -g kodyfire-builder`;
-  }
-  // const kody = chalk.greenBright(chalk.bold("kody"));
-  console.log(
-    boxen_1.default(message, {
-      padding: 1,
-      margin: 1,
-      align: 'center',
-      borderColor: 'yellow',
-      borderStyle: 'round',
-    })
-  );
-  zx_1.$`npm run start:builder`;
-};
+const chalk_1 = __importDefault(require('chalk'));
+const { Command } = require('commander');
+const action = args =>
+  __awaiter(void 0, void 0, void 0, function* () {
+    // @todo: Refactor used by watch command
+    if (typeof args.source === 'undefined') {
+      args.source = join(process.cwd(), 'kody.json');
+    }
+    if (!fs.existsSync(args.source)) {
+      console.log(
+        chalk_1.default.red(
+          `${chalk_1.default.bgRed(
+            chalk_1.default.white(args.source)
+          )} not found. Please provide the source file to be used.`
+        )
+      );
+      process.exit(1);
+    }
+    const content = JSON.parse(fs.readFileSync(args.source));
+    const { scripts = [] } = content;
+    if (scripts.length === 0) {
+      console.log(
+        chalk_1.default.red(
+          `no scripts found. Please add scripts array to your kody.`
+        )
+      );
+      process.exit(1);
+    }
+    console.log(scripts);
+  });
 module.exports = program => {
   program
-    .command('serve')
-    .description('Build your schema on the fly using web interface')
+    .command('run-script')
+    .alias('rs')
+    .description('run scripts')
     .action(_opt =>
       __awaiter(void 0, void 0, void 0, function* () {
-        return action();
+        return action(_opt);
       })
     );
 };

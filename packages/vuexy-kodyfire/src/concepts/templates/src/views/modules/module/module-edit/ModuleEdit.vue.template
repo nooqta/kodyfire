@@ -10,7 +10,7 @@
         خطأ في جلب بيانات <%= label %>
       </h4>
       <div class="alert-body">
-        لم يتم العثور على <%= label %> مع معرف <%= label %> هذا.الشيك
+        لم يتم العثور على <%= label %> مع معرف <%= label %> هذا.راجع
         <b-link
           class="alert-link"
           :to="{ name: '<%= pluralize name %>-list'}"
@@ -34,7 +34,7 @@
             size="16"
             class="mr-0 mr-sm-50"
           />
-          <span class="d-none d-sm-inline">{{$('<%= name %>_edit')}}</span>
+          <span class="d-none d-sm-inline">{{ $t('<%= name %>_edit') }}</span>
         </template>
         <<%= name %>-edit-tab-information :<%= name %>-data="<%= name %>Data"
          class="mt-2 pt-75" />

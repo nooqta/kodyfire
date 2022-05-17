@@ -2,14 +2,6 @@
 
   <div>
 
-    <<%= name %>-list-add-new
-      :is-add-new-<%= name %>-sidebar-active.sync="isAddNew<%= classify name %>SidebarActive"
-      <%=#each data.options %>
-      :<%=name%>-options="<%=name%>Options"
-      <%=/each %>
-      @refetch-data="refetchData"
-    />
-
     <!-- Table Container Card -->
     <b-card
       no-body
@@ -35,7 +27,7 @@
               :clearable="false"
               class="per-page-selector d-inline-block mx-50"
             />
-            <label>مدخلات</label>
+            <label>بيانات</label>
           </b-col>
 
           <!-- Search -->
@@ -50,10 +42,10 @@
                 placeholder="بحث..."
               />
               <b-button
+              :to="{ name: 'roles-add' }"
                 variant="primary"
-                @click="isAddNew<%= classify name %>SidebarActive = true"
               >
-                <span class="text-nowrap">إضافة {{$t('<%= lowercase name %>')}}</span>
+                <span class="text-nowrap">إضافة دور</span>
               </b-button>
             </div>
           </b-col>
@@ -62,9 +54,9 @@
       </div>
 
       <b-table
-        ref="ref<%= classify name %>ListTable"
+        ref="refRoleListTable"
         class="position-relative"
-        :items="fetch<%= classify ( pluralize name) %>"
+        :items="fetchRoles"
         responsive
         :fields="tableColumns"
         primary-key="id"
@@ -73,77 +65,33 @@
         empty-text="لم يتم العثور على سجلات مطابقة"
         :sort-desc.sync="isSortDirDesc"
       >
-      <%=#each data.columns %>
-        <%=#ifEquals type 'link' %>
-        <!-- Column: type link -->
-      <template #cell(<%= name %>)="data">
-        <b-link
-          :to="{<%= link %>}"
-          class="font-weight-bold"
-        >
-          #{{ data.value }}
-        </b-link>
-      </template>
-        <%=/ifEquals %>
-        <%=#ifEquals type 'text' %>
-<!-- Column: type text -->
-      <template #cell(<%= name %>)="data">
-        <span class="text-nowrap">
-          {{ data.value }}
-        </span>
-      </template>
-      <%=/ifEquals %>
-        <%=#ifEquals type 'user' %>
-        <template #cell(<%= name %>)="data">
+
+        <!-- Column: id -->
+        <template #cell(id)="data">
           <b-media vertical-align="center">
-            <template #aside>
-              <b-avatar
-                size="32"
-                :src="data.item.avatar"
-                :text="avatarText(data.item.<%= name %>)"
-                :variant="`light-${resolve<%= classify ../name %><%= classify name %>Variant(data.item.<%= name %>)}`"
-                :to="{ name: '<%= name %>-view', params: { id: data.item.id } }"
-              />
-            </template>
             <b-link
-              :to="{ name: '<%= name %>-view', params: { id: data.item.id } }"
+              to="#"
               class="font-weight-bold d-block text-nowrap"
             >
-              {{ data.item.name }}
+              {{ data.item.id }}
             </b-link>
-            <small class="text-muted">@{{ data.item.email }}</small>
           </b-media>
         </template>
-        <%=/ifEquals %>
-        <!-- Column: type icon -->
 
-        <%=#ifEquals type 'icon' %>
-        <template #cell(<%= name %>)="data">
-          <div class="text-nowrap">
-            <feather-icon
-              :icon="resolve<%= classify ../name %><%= classify name %>Icon(data.item.<%= name %>)"
-              size="18"
-              class="mr-50"
-              :class="`text-${resolve<%= classify ../name %><%= classify name %>Variant(data.item.<%= name %>)}`"
-            />
-            <span class="align-text-top text-capitalize">{{ data.item.<%= name %> }}</span>
-          </div>
+        <!-- Column: name -->
+        <template #cell(name_arabic)="data">
+          <span class="text-nowrap">
+          {{ data.item.name_arabic }}
+        </span>
         </template>
-        <%=/ifEquals %>
-        <!-- Column: Status -->
-        <%=#ifEquals type 'status' %>
-        <template #cell(<%= name %>)="data">
-          <b-badge
-            pill
-            :variant="`light-${resolve<%= classify ../name %><%= classify name %>Variant(data.item.<%= name %>)}`"
-            class="text-capitalize"
-          >
-            {{ data.item.<%= name %> }}
-          </b-badge>
+       
+       <!-- Column: total_users -->
+        <template #cell(total_users)="data">
+          <span class="text-nowrap">
+          {{ data.item.total_users }}
+        </span>
         </template>
-        <%=/ifEquals %>
 
-      <%=/each %>
         <!-- Column: Actions -->
         <template #cell(actions)="data">
           <b-dropdown
@@ -159,18 +107,23 @@
                 class="align-middle text-body"
               />
             </template>
+            <!-- <b-dropdown-item :to="{ name: 'roles-view', params: { id: data.item.id } }">
+              <feather-icon icon="FileTextIcon" />
+              <span class="align-middle ml-50">تفاصيل</span>
+            </b-dropdown-item> -->
 
-            <b-dropdown-item :to="{ name: '<%= pluralize name %>-edit', params: { id: data.item.id } }">
+            <b-dropdown-item :to="{ name: 'roles-edit', params: { id: data.item.id } }">
               <feather-icon icon="EditIcon" />
               <span class="align-middle ml-50">تعديل</span>
             </b-dropdown-item>
 
-            <b-dropdown-item  @click="confirmDelete(data.item)">
+            <b-dropdown-item :disabled="data.item.is_system_role"  @click="confirmDelete(data.item)">
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">حذف</span>
             </b-dropdown-item>
-          </b-dropdown>
+          </b-dropdown> 
         </template>
+
       </b-table>
       <div class="mx-2 mb-2">
         <b-row>
@@ -180,7 +133,7 @@
             sm="6"
             class="d-flex align-items-center justify-content-center justify-content-sm-start"
           >
-            <span class="text-muted">عرض من {{ dataMeta.from }} إلى {{ dataMeta.to }} من {{ dataMeta.of }} مدخلات</span>
+            <span class="text-muted">عرض من {{ dataMeta.from }} إلى {{ dataMeta.to }}  من مجموع {{ dataMeta.of }} </span>
           </b-col>
           <!-- Pagination -->
           <b-col
@@ -191,7 +144,7 @@
 
             <b-pagination
               v-model="currentPage"
-              :total-rows="total<%= classify name %>"
+              :total-rows="totalRoles"
               :per-page="perPage"
               first-number
               last-number
@@ -230,16 +183,13 @@ import vSelect from 'vue-select'
 import store from '@/store'
 import { ref, onUnmounted } from '@vue/composition-api'
 import { avatarText } from '@core/utils/filter'
-import <%= classify name %>ListFilters from './<%= classify name %>ListFilters.vue'
-import use<%= classify name %>List from './use<%= classify name %>List'
-import <%= name %>Store from '../<%= name %>Store'
-import <%= classify name %>ListAddNew from './<%= classify name %>ListAddNew.vue'
+import useRolesList from './useRolesList'
+import roleStoreModule from '../roleStoreModule'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue';
 
 export default {
   components: {
-    <%= classify name %>ListFilters,
-    <%= classify name %>ListAddNew,
+
     BCard,
     BRow,
     BCol,
@@ -257,29 +207,42 @@ export default {
     vSelect,
   },
   methods: {
-       delete<%= classify name %>(<%= name %>) {
-      store.dispatch('<%= name %>/delete<%= classify name %>', { id: <%= name %>.id })
+    deleteRole(role) {
+      store.dispatch('app-role/deleteRole', { id: role.id })
       .then(response => { 
         this.$emit('refetch-data')
         this.refetchData();
         this.$toast({
             component: ToastificationContent,
             props: {
-              title: 'تم الحذف بنجاح',
+              title: 'تم حذف المستخدم بنجاح',
               icon: 'EditIcon',
               variant: 'success',
             },
           })        
           })
       .catch(error => {
+          let message = 'لم يتم حذف الدور. حدث خطأ أثناء الحذف';
+          if(error.response) {
+            message = error.response.data.message;
+          }
+          this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: message,
+                text: message,
+                icon: "AlertCircleIcon",
+                variant: "danger",
+              },
+            });
         if (error.response.status === 404) {
-          <%= name %>Data.value = undefined
+          roleData.value = undefined
         }
       })
     },
-    confirmDelete(<%= name %>) {
+    confirmDelete(role) {
       this.$bvModal
-        .msgBoxConfirm(`يرجى تأكيد أنك تريد حذف العنصر  ${ <%= name %>.id}.`, {
+        .msgBoxConfirm(`يرجى تأكيد أنك تريد حذف دور ${role.name_arabic}.`, {
           title: 'يرجى التأكيد',
           size: 'sm',
           okVariant: 'danger',
@@ -291,93 +254,60 @@ export default {
         })
         .then(value => {
           if(value){
-            this.delete<%= classify name %>(<%= name %>)
+            this.deleteRole(role)
+
           }
         })
     }
- 
   },
   setup() {
-    const <%= uppercase name %>_STORE_MODULE_NAME = '<%= name %>'
+    const ROLE_APP_STORE_MODULE_NAME = 'app-role'
 
-    // Register <%= name %>
-    if (!store.hasModule(<%= uppercase name %>_STORE_MODULE_NAME)) store.registerModule(<%= uppercase name %>_STORE_MODULE_NAME, <%= name %>Store)
+    // Register module
+    if (!store.hasModule(ROLE_APP_STORE_MODULE_NAME)) store.registerModule(ROLE_APP_STORE_MODULE_NAME, roleStoreModule)
 
     // UnRegister on leave
     onUnmounted(() => {
-      if (store.hasModule(<%= uppercase name %>_STORE_MODULE_NAME)) store.unregisterModule(<%= uppercase name %>_STORE_MODULE_NAME)
+      if (store.hasModule(ROLE_APP_STORE_MODULE_NAME)) store.unregisterModule(ROLE_APP_STORE_MODULE_NAME)
     })
 
-    const isAddNew<%= classify name %>SidebarActive = ref(false)
-    <%=#each data.options %>
-    const <%= name %>Options = [
-    <%=#each items %>
-      {
-        label: '<%= label %>',
-        value: '<%= value %>',
-      },
-      <%=/each %>
-      ]
-      <%=/each %>
+    const isAddNewRoleSidebarActive = ref(false)
 
     const {
-      fetch<%= classify (pluralize name) %>,
+      fetchRoles,
       tableColumns,
       perPage,
       currentPage,
-      total<%= classify name %>,
+      totalRoles,
       dataMeta,
       perPageOptions,
       searchQuery,
       sortBy,
       isSortDirDesc,
-      ref<%= classify name %>ListTable,
+      refRoleListTable,
       refetchData,
-
-      // UI
-      <%=#each data.options %>
-      <%= name %>Filter,
-      <%=#if hasVariant %>
-      resolve<%= classify name %>Variant,
-      <%=/if %>
-      <%=#if hasIcon %>
-      resolve<%= classify name %>Icon,
-      <%=/if %>
-      <%=/each %>
-    } = use<%= classify name %>List()
+    } = useRolesList()
 
     return {
 
       // Sidebar
-      isAddNew<%= classify name %>SidebarActive,
+      isAddNewRoleSidebarActive,
 
-      fetch<%= classify (pluralize name)  %>,
+      fetchRoles,
       tableColumns,
       perPage,
       currentPage,
-      total<%= classify name %>,
+      totalRoles,
       dataMeta,
       perPageOptions,
       searchQuery,
       sortBy,
       isSortDirDesc,
-      ref<%= classify name %>ListTable,
+      refRoleListTable,
       refetchData,
 
       // Filter
       avatarText,
-
-      // UI
-      <%=#each data.options %>
-      <%= name %>Options,
-      <%= name %>Filter,
-      <%=#if hasVariant %>
-      resolve<%= classify name %>Variant,
-      <%=/if %>
-      <%=#if hasIcon %>
-      resolve<%= classify name %>Icon,
-      <%=/if %>
-      <%=/each%>
     }
   },
 }

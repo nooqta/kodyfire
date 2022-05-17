@@ -1,5 +1,6 @@
 {
   "project": "invoice-go",
+  "rootDir": "./../invoice-go/",
   "sources": [
     {
       "name": "vuexy",

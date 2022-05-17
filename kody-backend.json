@@ -1217,6 +1217,7 @@
           {
             "name": "getAll",
             "type": "index",
+            "useResource": true,
             "middleware": "['auth:sanctum', 'role:company']",
             "searchBy": [
               {
@@ -1229,6 +1230,7 @@
           {
             "name": "get",
             "type": "show",
+            "useResource": true,
             "middleware": "['auth:sanctum', 'role:company']"
           },
           {
@@ -1886,7 +1888,8 @@
         "tax",
         "type",
         "company_id"
-      ]
+      ],
+      "hidden": "'created_at', 'updated_at'"
     },
     {
       "namespace": "App\\Models",

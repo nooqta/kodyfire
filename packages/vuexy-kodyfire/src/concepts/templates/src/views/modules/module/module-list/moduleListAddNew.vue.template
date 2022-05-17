@@ -70,7 +70,7 @@
           </validation-provider>
           
           <%=/ifEquals %>
-          <%=#ifEquals type 'dateTime' %>
+          
           <%=#ifEquals type 'textarea' %>
           <validation-provider
             #default="validationContext"
@@ -83,9 +83,9 @@
               :state="getValidationState(validationContext)"
             >
                           <b-form-textarea
-                          :id="`item-${index}-description`"
-                          :state="errors.length > 0 ? false : null"
-                            v-model="item.description"
+                          id="<%= name %>"
+                            v-model="<%= ../name %>Data.<%= name %>"
+                            rows="4"
                             class="mb-2 mb-lg-0"
                           />
             <b-form-invalid-feedback :state="getValidationState(validationContext)">
@@ -94,6 +94,7 @@
            </b-form-group> 
           </validation-provider>
           <%=/ifEquals %>
+          <%=#ifEquals type 'dateTime' %>
            <validation-provider
            #default="validationContext"
                       vid="<%= name %>"
@@ -171,7 +172,7 @@
 
 <script>
 import {
-  BSidebar, BForm, BFormGroup, BFormInput, BFormInvalidFeedback, BButton,
+  BSidebar, BForm, BFormGroup, BFormInput, BFormInvalidFeedback, BFormTextarea, BButton,
 } from 'bootstrap-vue'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import { ref } from '@vue/composition-api'
@@ -191,6 +192,7 @@ export default {
     BFormGroup,
     BFormInput,
     BFormInvalidFeedback,
+    BFormTextarea,
     BButton,
     vSelect,
     flatPickr,
@@ -223,6 +225,10 @@ export default {
   },
   methods: {
     <%=#each data.remote_options %>
+    <%= name %>Changed(<%= name %>) {
+      this.<%= ../name%>Data.<%= name %>_id = <%= name %>;
+    },<%=/each%>
+    <%=#each data.options %>
     <%= name %>Changed(<%= name %>) {
       this.<%= ../name%>Data.<%= name %>_id = <%= name %>;
     },<%=/each%>
@@ -272,6 +278,17 @@ export default {
       })
       <%=/each %>
 
+    <%=#each data.options %>
+    const <%= pluralize name %> = [
+    <%=#each items %>
+      {
+        label: '<%= label %>',
+        value: '<%= value %>',
+      },
+      <%=/each %>
+      ]
+      <%=/each %>
+
     const {
       refFormObserver,
       getValidationState,
@@ -281,6 +298,9 @@ export default {
     return {
       <%= name %>Data,
       <%=#each data.remote_options %>
+      <%= pluralize name %>,
+      <%=/each %>
+      <%=#each data.options %>
       <%= pluralize name %>,
       <%=/each %>
       refFormObserver,
