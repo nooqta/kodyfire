@@ -1,6 +1,6 @@
 {
   "name": "laravel-kodyfire",
-  "version": "0.0.77",
+  "version": "0.0.78",
   "description": "Generator for laravel API",
   "main": "index.js",
   "repository": {
