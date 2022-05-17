@@ -1,6 +1,6 @@
 {
   "name": "helloworld-html-kodyfire",
-  "version": "0.0.79",
+  "version": "0.0.80",
   "description": "Generator for HTML Hello World!",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,7 @@
     "@angular-devkit/schematics": "^12.2.3",
     "ajv": "^8.6.3",
     "fs-extra": "^10.0.0",
-    "kodyfire-core": "^0.0.79",
+    "kodyfire-core": "^0.0.80",
     "typescript": "~4.5.5"
   },
   "devDependencies": {
