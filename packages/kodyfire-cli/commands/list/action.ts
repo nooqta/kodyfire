@@ -1,4 +1,5 @@
 import { Package, Template } from 'kodyfire-core';
+import fs from 'fs';
 const chalk = require('chalk');
 const boxen = require('boxen');
 const Table = require('cli-table');
