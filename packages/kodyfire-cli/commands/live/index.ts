@@ -4,7 +4,6 @@ const { join } = require('path');
 import { Runner } from 'kodyfire-core';
 import { CliWorkflow } from '../../src/kodyfire/lib/cli/worklfow';
 import { Command } from 'commander';
-import runScript from '../run-script/helper';
 async function action(args: any): Promise<0 | 1> {
   try {
     // @todo: Refactor used by watch command
@@ -22,10 +21,10 @@ async function action(args: any): Promise<0 | 1> {
       process.exit(1);
     }
 
-    await runScript(args);
     args.name = JSON.parse(fs.readFileSync(args.source).toString()).name || '';
     const { source } = args;
     let { condition = false } = args;
+    // @todo Check if file exists
     if (condition) {
       condition = await import(join(process.cwd(), condition));
     }
@@ -55,8 +54,8 @@ module.exports = (program: Command) => {
     )
     .option(
       '-c,--condition <condition>',
-      'condition file to be used as source to decide when to stop running a kody',
-      'kody.json'
+      'condition file to be used as source to decide when to stop running a kody (default: false)',
+      false
     )
     .action(async (_opt: { name: any }) => {
       try {

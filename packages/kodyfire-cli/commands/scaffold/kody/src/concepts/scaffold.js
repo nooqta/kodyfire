@@ -48,19 +48,19 @@ class Scaffold extends concept_1.Concept {
   generate(_data) {
     return __awaiter(this, void 0, void 0, function* () {
       this.initEngine();
-      const filePath = path_1.join(
-        path_1.relative(process.cwd(), __dirname),
+      const filePath = (0, path_1.join)(
+        (0, path_1.relative)(process.cwd(), __dirname),
         this.template.path,
         _data.templateFolder
       );
       const folderContent = yield this.readFolder(filePath);
       for (const file of folderContent) {
-        const stat = yield fs.lstat(path_1.join(filePath, file));
+        const stat = yield fs.lstat((0, path_1.join)(filePath, file));
         if (stat.isFile()) {
           console.log(`copying file: ${_data.templateFolder}/${file}`);
           const template = yield this.engine.read(
             this.template.path,
-            path_1.join(_data.templateFolder, file)
+            (0, path_1.join)(_data.templateFolder, file)
           );
           const compiled = yield this.engine.compile(template, _data);
           yield this.engine.createOrOverwrite(
@@ -73,7 +73,7 @@ class Scaffold extends concept_1.Concept {
           console.log(`creating folder: ${_data.templateFolder}/${file}`);
           yield this.generate(
             Object.assign(Object.assign({}, _data), {
-              templateFolder: path_1.join(_data.templateFolder, file),
+              templateFolder: (0, path_1.join)(_data.templateFolder, file),
             })
           );
         }
@@ -93,7 +93,7 @@ class Scaffold extends concept_1.Concept {
     });
   }
   getFilename(path, name) {
-    return path_1.join(path, `${name.replace('.template', '')}`);
+    return (0, path_1.join)(path, `${name.replace('.template', '')}`);
   }
 }
 exports.Scaffold = Scaffold;

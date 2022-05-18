@@ -12,14 +12,14 @@ class Parser {
     };
     this.extractor = () => {
       // @todo: v.x for source code, reverse engineer websites or other sources that requires an extractor
-      return extractor_1.extract();
+      return (0, extractor_1.extract)();
     };
     this.transformer = () => {
       // @todo: v.x for source code, reverse engineer websites or other sources that requires an extractor
-      return transformer_1.transform();
+      return (0, transformer_1.transform)();
     };
     this.loader = () => {
-      return loader_1.load();
+      return (0, loader_1.load)();
     };
     this.validator = validator;
     this.requiresExtract = false;

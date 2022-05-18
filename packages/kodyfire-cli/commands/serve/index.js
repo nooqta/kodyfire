@@ -50,7 +50,7 @@ const isPackageInstalled = _name => {
 };
 exports.isPackageInstalled = isPackageInstalled;
 const action = () => {
-  const isInstalled = exports.isPackageInstalled('kodyfire-builder');
+  const isInstalled = (0, exports.isPackageInstalled)('kodyfire-builder');
   let message = 'Starting web server...';
   if (!isInstalled) {
     message = `😞 Kodyfire server not installed yet.\nInstall the web builder to quickly generate your schema 🚀🚀🚀\n
@@ -58,7 +58,7 @@ const action = () => {
   }
   // const kody = chalk.greenBright(chalk.bold("kody"));
   console.log(
-    boxen_1.default(message, {
+    (0, boxen_1.default)(message, {
       padding: 1,
       margin: 1,
       align: 'center',
@@ -66,7 +66,7 @@ const action = () => {
       borderStyle: 'round',
     })
   );
-  zx_1.$`npm run start:builder`;
+  (0, zx_1.$)`npm run start:builder`;
 };
 module.exports = program => {
   program

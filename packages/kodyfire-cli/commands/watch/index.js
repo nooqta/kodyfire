@@ -50,10 +50,10 @@ const watchFile = (source, kodyName, build = false) =>
           if (build) {
             console.log(`Building ${kodyName}`);
             // build ts files
-            yield zx_1.$`npm run build`;
+            yield (0, zx_1.$)`npm run build`;
           }
           console.log(`${source} file Changed, running kody ${kodyName}`);
-          yield zx_1.$`kody run ${kodyName} -s ${source}`;
+          yield (0, zx_1.$)`kody run ${kodyName} -s ${source}`;
         }
       })
     );

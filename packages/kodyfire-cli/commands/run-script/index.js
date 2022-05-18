@@ -42,7 +42,7 @@ const { Command } = require('commander');
 const helper_1 = __importDefault(require('./helper'));
 const action = args =>
   __awaiter(void 0, void 0, void 0, function* () {
-    yield helper_1.default(args);
+    yield (0, helper_1.default)(args);
   });
 module.exports = program => {
   program

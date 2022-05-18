@@ -101,8 +101,8 @@ class Engine {
   read(path, templateName) {
     return __awaiter(this, void 0, void 0, function* () {
       const template = yield fsPromises.readFile(
-        path_1.join(
-          path_1.relative(process.cwd(), __dirname),
+        (0, path_1.join)(
+          (0, path_1.relative)(process.cwd(), __dirname),
           path,
           templateName
         )
@@ -119,7 +119,7 @@ class Engine {
   create(rootDir, outputDir, filename, content) {
     return __awaiter(this, void 0, void 0, function* () {
       yield fsPromises.writeFile(
-        path_1.join(rootDir, outputDir, filename),
+        (0, path_1.join)(rootDir, outputDir, filename),
         content
       );
     });
@@ -127,16 +127,18 @@ class Engine {
   overwrite(rootDir, outputDir, filename, content) {
     return __awaiter(this, void 0, void 0, function* () {
       yield fsPromises.writeFile(
-        path_1.join(rootDir, outputDir, filename),
+        (0, path_1.join)(rootDir, outputDir, filename),
         content
       );
     });
   }
   createOrOverwrite(rootDir, outputDir, filename, content) {
     return __awaiter(this, void 0, void 0, function* () {
-      filename = path_1.join(rootDir, outputDir, filename);
+      filename = (0, path_1.join)(rootDir, outputDir, filename);
       // We need to create the directory if it doesn't exist
-      yield fsPromises.mkdir(path_1.dirname(filename), { recursive: true });
+      yield fsPromises.mkdir((0, path_1.dirname)(filename), {
+        recursive: true,
+      });
       yield fsPromises.writeFile(filename, content);
     });
   }

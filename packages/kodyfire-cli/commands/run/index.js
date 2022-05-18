@@ -32,18 +32,13 @@ var __awaiter =
       step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
   };
-var __importDefault =
-  (this && this.__importDefault) ||
-  function (mod) {
-    return mod && mod.__esModule ? mod : { default: mod };
-  };
 Object.defineProperty(exports, '__esModule', { value: true });
+exports.action = void 0;
 const chalk = require('chalk');
 const fs = require('fs');
 const { join } = require('path');
 const kodyfire_core_1 = require('kodyfire-core');
 const worklfow_1 = require('../../src/kodyfire/lib/cli/worklfow');
-const helper_1 = __importDefault(require('./../run-script/helper'));
 function action(args) {
   return __awaiter(this, void 0, void 0, function* () {
     try {
@@ -61,7 +56,6 @@ function action(args) {
         );
         process.exit(1);
       }
-      yield helper_1.default(args);
       args.name =
         JSON.parse(fs.readFileSync(args.source).toString()).name || '';
       const { source } = args;
@@ -78,6 +72,7 @@ function action(args) {
     }
   });
 }
+exports.action = action;
 module.exports = program => {
   program
     .command('run')

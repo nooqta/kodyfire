@@ -4,8 +4,7 @@ const { join } = require('path');
 import { Runner } from 'kodyfire-core';
 import { CliWorkflow } from '../../src/kodyfire/lib/cli/worklfow';
 import { Command } from 'commander';
-import runScript from './../run-script/helper';
-async function action(args: any): Promise<0 | 1> {
+export async function action(args: any): Promise<0 | 1> {
   try {
     // @todo: Refactor used by watch command
     if (typeof args.source === 'undefined') {
@@ -22,7 +21,6 @@ async function action(args: any): Promise<0 | 1> {
       process.exit(1);
     }
 
-    await runScript(args);
     args.name = JSON.parse(fs.readFileSync(args.source).toString()).name || '';
     const { source } = args;
     const workflow = new CliWorkflow(source);

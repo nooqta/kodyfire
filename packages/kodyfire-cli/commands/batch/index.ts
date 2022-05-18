@@ -4,7 +4,7 @@ const { join } = require('path');
 import { Runner } from 'kodyfire-core';
 import { CliWorkflow } from '../../src/kodyfire/lib/cli/worklfow';
 import { Command } from 'commander';
-import runScript from './../run-script/helper';
+
 async function action(args: any): Promise<0 | 1> {
   try {
     if (typeof args.source === 'undefined') {
@@ -29,7 +29,6 @@ async function action(args: any): Promise<0 | 1> {
     for (const source of content.sources) {
       args.name = source.name || '';
       args.source = join(process.cwd(), source.filename);
-      await runScript(args);
       const workflow = new CliWorkflow(source.filename);
       const runner = new Runner({ ...args, ...workflow });
       await runner.run(args);

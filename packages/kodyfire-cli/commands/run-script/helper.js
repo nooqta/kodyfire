@@ -64,11 +64,11 @@ exports.default = args =>
     // We access rootDir if it was specified
     const currentDir = process.cwd();
     const rootDir = schema.rootDir || currentDir;
-    zx_1.cd(rootDir);
+    (0, zx_1.cd)(rootDir);
     for (const script of scripts) {
       console.log(`running script ${script}`);
-      yield zx_1.$`${script}`;
+      yield (0, zx_1.$)`${script}`;
     }
-    zx_1.cd(currentDir);
+    (0, zx_1.cd)(currentDir);
   });
 //# sourceMappingURL=helper.js.map
