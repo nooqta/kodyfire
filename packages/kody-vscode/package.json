@@ -10,16 +10,99 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:kodyfire.list"
+    "onCommand:kodyfire.list",
+    "onView:kodyfire-view"
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "kodyfire-explorer",
+          "title": "Kodyfire Explorer",
+          "icon": "$(code)"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "kodyfire.list",
         "title": "List installed kodyfire packages"
+      },
+      {
+        "command": "kodyfire.install",
+        "title": "Install kodyfire package",
+        "icon": {
+          "light": "resources/light/download.svg",
+          "dark": "resources/dark/download.svg"
+        }
+      },
+      {
+        "command": "kodyfire.init",
+        "title": "Initialize a new kodyfire project",
+        "icon": {
+          "light": "resources/light/activity.svg",
+          "dark": "resources/dark/activity.svg"
+        }
+      },
+      {
+        "command": "kodyfire.clone",
+        "title": "Git clone a boilerplate",
+        "icon": {
+          "light": "resources/light/add.svg",
+          "dark": "resources/dark/add.svg"
+        }
       }
-    ]
+    ],
+    "viewsWelcome": [
+      {
+        "view": "kodyfire-inspector",
+        "contents": "No node kodies found [learn more](https://www.npmjs.com/).\n[Add Kody](command:kody.install)"
+      }
+    ],
+    "views": {
+      "kodyfire-explorer": [
+        {
+          "id": "kodyfire-view",
+          "name": "Repository Explorer"
+        },
+        {
+          "id": "kodyfire-inspector",
+          "name": "Inspector"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "kodyfire.init",
+          "when": "view == kodyfire-view",
+          "group": "navigation"
+        },
+        {
+          "command": "kodyfire.clone",
+          "when": "view == kodyfire-view",
+          "group": "navigation"
+        },
+        {
+          "command": "kodyfire.clone",
+          "when": "view == kodyfire-inspector",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "kodyfire.install",
+          "when": "view == kodyfire-view",
+          "group": "inline"
+        },
+        {
+          "command": "kodyfire.install",
+          "when": "view == kodyfire-inspector",
+          "group": "inline"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

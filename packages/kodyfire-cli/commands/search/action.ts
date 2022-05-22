@@ -43,21 +43,12 @@ export class Action {
   }
   static async execute(_args: any) {
     try {
-      // We check if package.json exists
-      let kodies = JSON.parse((await $`npm search kodyfire -j -l`).toString());
-
       // @todo: use event emitter to listen to the event of the runner
       ee.on('message', (text: string) => {
         console.log(text);
       });
-      kodies = await Promise.all(
-        kodies.map(async (kody: any) => {
-          const kodyData = await $`npm view ${kody.name} --json`;
-          const kodyJson = JSON.parse(kodyData.toString());
-          kody = { ...kody, version: kodyJson.version, ...kodyJson.kodyfire };
-          return kody;
-        })
-      );
+      // We check if package.json exists
+      const kodies = await this.getKodies();
       console.log(kodies);
       if (kodies.length == 0) {
         const kody = chalk.greenBright(chalk.bold('kody'));
@@ -69,6 +60,20 @@ export class Action {
     } catch (error) {
       this.displayMessage(error.message);
     }
+  }
+
+  public static async getKodies() {
+    const kodies = JSON.parse((await $`npm search kodyfire -j -l`).toString());
+
+    // kodies = await Promise.all(
+    //   kodies.map(async (kody: any) => {
+    //     const kodyData = await $`npm view ${kody.name} --json`;
+    //     const kodyJson = JSON.parse(kodyData.toString());
+    //     kody = { ...kody, version: kodyJson.version, ...kodyJson.kodyfire };
+    //     return kody;
+    //   })
+    // );
+    return kodies;
   }
 }
 export const action = async (_args: any) => {

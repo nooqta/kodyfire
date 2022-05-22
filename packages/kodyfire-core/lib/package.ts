@@ -35,9 +35,9 @@ export class Package {
     );
   }
 
-  static async getInstalledKodies() {
+  static async getInstalledKodies(dirname = process.cwd()) {
     const kodies = [];
-    const packages = Package.getInstalledKodiesName();
+    const packages = Package.getInstalledKodiesName(dirname);
     for (const _package of packages) {
       const { isValid, packageInfo } = await this.getPackageInfo(_package);
       if (isValid) kodies.push(packageInfo);

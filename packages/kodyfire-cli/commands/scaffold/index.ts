@@ -7,13 +7,13 @@ import * as input from './data.json';
 const chalk = require('chalk');
 const { Command } = require('commander');
 const { join } = require('path');
-const pack = require(join(process.cwd(), 'package.json'));
 
 function parseSchematicName(_arg: any): {
   collection: string;
   schematic: string;
   currentPath: string;
 } {
+  const pack = require(join(process.cwd(), 'package.json'));
   // All schematics are local to kody
   const collectionName = 'kodyfire';
   const currentPath =

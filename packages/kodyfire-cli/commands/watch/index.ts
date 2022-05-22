@@ -1,6 +1,8 @@
 import fs from 'fs';
 import { $ } from 'zx';
 const chalk = require('chalk');
+const { Command } = require('commander');
+const { join } = require('path');
 
 const watchFile = async (
   source: fs.PathLike,

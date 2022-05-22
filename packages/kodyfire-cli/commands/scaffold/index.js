@@ -77,8 +77,8 @@ const input = __importStar(require('./data.json'));
 const chalk = require('chalk');
 const { Command } = require('commander');
 const { join } = require('path');
-const pack = require(join(process.cwd(), 'package.json'));
 function parseSchematicName(_arg) {
+  const pack = require(join(process.cwd(), 'package.json'));
   // All schematics are local to kody
   const collectionName = 'kodyfire';
   const currentPath =

@@ -41,6 +41,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 const fs_1 = __importDefault(require('fs'));
 const zx_1 = require('zx');
 const chalk = require('chalk');
+const { Command } = require('commander');
+const { join } = require('path');
 const watchFile = (source, kodyName, build = false) =>
   __awaiter(void 0, void 0, void 0, function* () {
     console.log(`Watching for file changes on ${source} for kody ${kodyName}`);
