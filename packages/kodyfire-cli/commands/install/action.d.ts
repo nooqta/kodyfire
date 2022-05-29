@@ -16,7 +16,7 @@ export declare const questions: (
     }
 )[];
 export declare class Action {
-  static prompter(): Promise<void>;
+  static prompter(): Promise<void | any>;
   static runCommand(
     project:
       | {
@@ -41,5 +41,13 @@ export declare class Action {
   ): Promise<void>;
   static displayMessage(message: string): void;
   static execute(): Promise<void>;
+  static conceptToQuestion(
+    name: string,
+    concept: {
+      type?: string;
+      enum?: any;
+    },
+    concepts: string[]
+  ): Promise<any | void>;
 }
 //# sourceMappingURL=action.d.ts.map

@@ -172,6 +172,33 @@ class Action {
       }
     });
   }
+  static conceptToQuestion(name, concept, concepts) {
+    return __awaiter(this, void 0, void 0, function* () {
+      if (concepts.includes(name)) {
+        return {
+          type: 'select',
+          name: name,
+          message: `Select the value for ${name}?`,
+          choices: concepts.map(c => ({ title: c, value: c })),
+        };
+      }
+      if (typeof concept.enum !== 'undefined') {
+        return {
+          type: 'select',
+          name: name,
+          message: `Select the value for ${name}?`,
+          choices: concept.enum.map(c => ({ title: c, value: c })),
+        };
+      }
+      if (concept.type === 'text') {
+        return {
+          type: 'text',
+          name: name,
+          message: `What is the value for ${name}?`,
+        };
+      }
+    });
+  }
 }
 exports.Action = Action;
 //# sourceMappingURL=action.js.map

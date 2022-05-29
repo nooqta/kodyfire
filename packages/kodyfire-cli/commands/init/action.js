@@ -127,6 +127,8 @@ class Action {
             const { schema } = yield Promise.resolve().then(() =>
               __importStar(require(`${dep}/src/parser/validator/schema`))
             );
+            const concepts = yield this.getDependencyConcepts(dep);
+            console.log(concepts);
             for (const prop of Object.keys(schema.properties)) {
               entries[prop] = [];
             }
@@ -148,6 +150,69 @@ class Action {
             data
           );
         }
+      } catch (error) {
+        this.displayMessage(error.message);
+      }
+    });
+  }
+  static getDependencyConcepts(dependency) {
+    return __awaiter(this, void 0, void 0, function* () {
+      try {
+        const entries = {};
+        // get the deb package schema file
+        const { schema } = yield Promise.resolve().then(() =>
+          __importStar(require(`${dependency}/src/parser/validator/schema`))
+        );
+        for (const prop of Object.keys(schema.properties)) {
+          const attributes = yield this.getConceptAttributes(
+            schema.properties[prop]
+          );
+          if (attributes) {
+            entries[prop] = attributes;
+          }
+        }
+        return { name: dependency, concepts: entries };
+      } catch (error) {
+        this.displayMessage(error.message);
+      }
+    });
+  }
+  static getConceptAttributes(schema) {
+    return __awaiter(this, void 0, void 0, function* () {
+      try {
+        if (Object.prototype.hasOwnProperty.call(schema, 'properties')) {
+          return schema.properties;
+        }
+        if (Object.prototype.hasOwnProperty.call(schema, 'items')) {
+          return yield this.getConceptAttributes(schema.items);
+        }
+      } catch (error) {
+        this.displayMessage(error.message);
+      }
+      return false;
+    });
+  }
+  static addConcept(dependency, concept, data, rootDir = process.cwd()) {
+    return __awaiter(this, void 0, void 0, function* () {
+      try {
+        let content = JSON.parse(
+          zx_1.fs.readFileSync(
+            (0, path_1.join)(
+              rootDir,
+              `kody-${dependency.replace('-kodyfire', '')}.json`
+            ),
+            'utf8'
+          )
+        );
+        content[concept] = [...content[concept], data];
+        content = JSON.stringify(content, null, '\t');
+        zx_1.fs.writeFileSync(
+          (0, path_1.join)(
+            rootDir,
+            `kody-${dependency.replace('-kodyfire', '')}.json`
+          ),
+          content
+        );
       } catch (error) {
         this.displayMessage(error.message);
       }

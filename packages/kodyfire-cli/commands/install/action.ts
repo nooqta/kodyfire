@@ -91,7 +91,7 @@ export const questions = [
 ];
 
 export class Action {
-  static async prompter() {
+  static async prompter(): Promise<void | any> {
     // get user choices
     (async () => {
       const response = await prompts(questions);
@@ -153,6 +153,36 @@ export class Action {
       await this.prompter();
     } catch (error) {
       this.displayMessage(error.message);
+    }
+  }
+
+  static async conceptToQuestion(
+    name: string,
+    concept: { type?: string; enum?: any },
+    concepts: string[]
+  ): Promise<any | void> {
+    if (concepts.includes(name)) {
+      return {
+        type: 'select',
+        name: name,
+        message: `Select the value for ${name}?`,
+        choices: concepts.map(c => ({ title: c, value: c })),
+      };
+    }
+    if (typeof concept.enum !== 'undefined') {
+      return {
+        type: 'select',
+        name: name,
+        message: `Select the value for ${name}?`,
+        choices: concept.enum.map((c: any) => ({ title: c, value: c })),
+      };
+    }
+    if (concept.type === 'text') {
+      return {
+        type: 'text',
+        name: name,
+        message: `What is the value for ${name}?`,
+      };
     }
   }
 }

@@ -53,9 +53,10 @@ export class Action {
             name: dep.replace('-kodyfire', ''),
             filename: `kody-${dep.replace('-kodyfire', '')}.json`,
           });
-
           // get the deb package schema file
           const { schema } = await import(`${dep}/src/parser/validator/schema`);
+          const concepts = await this.getDependencyConcepts(dep);
+          console.log(concepts);
           for (const prop of Object.keys(schema.properties)) {
             entries[prop] = [];
           }
@@ -73,6 +74,64 @@ export class Action {
         const data = JSON.stringify(kody, null, '\t');
         fs.writeFileSync(join(_args.rootDir, 'kody.json'), data);
       }
+    } catch (error) {
+      this.displayMessage(error.message);
+    }
+  }
+  static async getDependencyConcepts(dependency: string) {
+    try {
+      const entries: any = {};
+      // get the deb package schema file
+      const { schema } = await import(
+        `${dependency}/src/parser/validator/schema`
+      );
+      for (const prop of Object.keys(schema.properties)) {
+        const attributes = await this.getConceptAttributes(
+          schema.properties[prop]
+        );
+        if (attributes) {
+          entries[prop] = attributes;
+        }
+      }
+      return { name: dependency, concepts: entries };
+    } catch (error) {
+      this.displayMessage(error.message);
+    }
+  }
+
+  static async getConceptAttributes(schema: any): Promise<any> {
+    try {
+      if (Object.prototype.hasOwnProperty.call(schema, 'properties')) {
+        return schema.properties;
+      }
+      if (Object.prototype.hasOwnProperty.call(schema, 'items')) {
+        return await this.getConceptAttributes(schema.items);
+      }
+    } catch (error) {
+      this.displayMessage(error.message);
+    }
+    return false;
+  }
+
+  static async addConcept(
+    dependency: string,
+    concept: string,
+    data: any,
+    rootDir: string = process.cwd()
+  ) {
+    try {
+      let content = JSON.parse(
+        fs.readFileSync(
+          join(rootDir, `kody-${dependency.replace('-kodyfire', '')}.json`),
+          'utf8'
+        )
+      );
+      content[concept] = [...content[concept], data];
+      content = JSON.stringify(content, null, '\t');
+      fs.writeFileSync(
+        join(rootDir, `kody-${dependency.replace('-kodyfire', '')}.json`),
+        content
+      );
     } catch (error) {
       this.displayMessage(error.message);
     }
