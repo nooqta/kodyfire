@@ -25,6 +25,66 @@ export const controller = {
   },
   required: ['template', 'namespace', 'model'],
 };
+export const baseModel = {
+  type: 'object',
+  properties: {
+    name: { type: 'string' },
+    namespace: { type: 'string', default: 'App\\Models' },
+    template: {
+      enum: ['controller.php.template'],
+      default: 'controller.php.template',
+    },
+    relationships: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          type: {
+            type: 'enum',
+            enum: [
+              'hasOne',
+              'hasMany',
+              'belongsTo',
+              'belongsToMany',
+              'morphTo',
+            ],
+          },
+          model: model,
+        },
+      },
+    },
+    controller: {
+      type: 'object',
+      properties: {
+        routeType: { type: 'enum', enum: ['resource', 'apiResource'] },
+        middleware: {
+          type: 'array',
+          items: {
+            type: 'string',
+          },
+        },
+        actions: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              name: { type: 'string' },
+              type: {
+                type: 'enum',
+                enum: ['index', 'store', 'show', 'update', 'destroy'],
+              },
+              routeName: { type: 'string' },
+              relation: { type: 'string' },
+              middleware: { type: 'string' },
+            },
+          },
+        },
+      },
+    },
+  },
+  required: ['template', 'namespace', 'model'],
+};
 export const controllerArray = {
   type: 'array',
   items: controller,
@@ -206,6 +266,11 @@ export const webArray = {
   items: web,
 };
 
+export const modelArray = {
+  type: 'array',
+  items: baseModel,
+};
+
 export const factoryArray = {
   type: 'array',
   items: factory,
@@ -240,6 +305,7 @@ export const schema = {
   type: 'object',
   properties: {
     project: { type: 'string' },
+    model: modelArray,
     controller: controllerArray,
     request: requestArray,
     kernel: kernelArray,
