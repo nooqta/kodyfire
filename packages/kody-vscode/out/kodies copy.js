@@ -111,4 +111,4 @@ class Kody extends vscode.TreeItem {
   }
 }
 exports.Kody = Kody;
-//# sourceMappingURL=kodies.js.map
+//# sourceMappingURL=kodies%20copy.js.map

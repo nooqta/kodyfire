@@ -42,7 +42,7 @@ export class KodiesProvider implements vscode.TreeDataProvider<Kody> {
     };
 
     const treeItems = kodies
-      ? kodies.map(kody => toTreeItem(kody.name, kody.description))
+      ? kodies.map(kody => toTreeItem(kody.name, kody.id))
       : [];
     return treeItems;
   }

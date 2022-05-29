@@ -54,10 +54,10 @@ export class InstallAction extends Action {
       `${project.command} ${project.args.join(' ').toString()}`
     );
   }
-  static async prompter() {
+  static async prompter(questionsList = questions) {
     let answers = [];
-    for (let i = 0; i < questions.length; i++) {
-      const question = questions[i];
+    for (let i = 0; i < questionsList.length; i++) {
+      const question = questionsList[i];
       if (question.type === 'select' && question.choices) {
         let option: vscode.QuickPickOptions = {
           title: question.message,
@@ -73,8 +73,8 @@ export class InstallAction extends Action {
         const answer = await this.showInputBox(question);
         answers.push(answer);
       }
-      // const [question.name] = await vscode.window.showInputBox({
     }
+    return answers;
   }
   static async showQuickPick(
     items: readonly string[] | Thenable<readonly string[]>,

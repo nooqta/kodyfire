@@ -5,15 +5,11 @@ import { KodiesProvider } from './kodies';
 import { ListAction } from './commands/ListAction';
 import { SearchAction } from './commands/SearchAction';
 import { InstallAction } from './commands/InstallAction';
-import { Action } from 'kodyfire-cli/commands/init/action';
+import { InitAction } from './commands/InitAction';
 import { promises as fs } from 'fs';
 import { Package } from 'kodyfire-core';
+import { ConceptsProvider } from './concepts';
 
-export class InitAction extends Action {
-  displayMessage(message: string): void {
-    vscode.window.showInformationMessage(message);
-  }
-}
 const cloneCommand = vscode.commands.registerCommand(
   'kodyfire.install',
   async (moduleName: any) => {
@@ -32,7 +28,7 @@ const cloneCommand = vscode.commands.registerCommand(
           ['Yes', 'No'],
           option
         );
-        vscode.window.createOutputChannel;
+
         if (createPackageJsonFile) {
           await InstallAction.runCommand({
             command: 'npm',
@@ -60,12 +56,10 @@ export async function activate(context: vscode.ExtensionContext) {
     const kodies = await SearchAction.getKodies();
     const kodiesProvider = new KodiesProvider(kodies);
     vscode.window.registerTreeDataProvider('kodyfire-view', kodiesProvider);
-    const projectRoot =
-      vscode.workspace.workspaceFolders?.[0].uri.fsPath || '/';
-    const installedKodies = await Package.getInstalledKodiesFromPath(
-      projectRoot
-    );
-    const inspectorProvider = new KodiesProvider(installedKodies);
+    let concepts = await getConcepts();
+
+    // const resolvedConcepts = await Promise.all(concepts);
+    const inspectorProvider = new ConceptsProvider(concepts);
     vscode.window.registerTreeDataProvider(
       'kodyfire-inspector',
       inspectorProvider
@@ -127,6 +121,45 @@ export async function activate(context: vscode.ExtensionContext) {
       }
     }
   );
+  let conceptDisposable = vscode.commands.registerCommand(
+    'kodyfire.addConcept',
+    async args => {
+      try {
+        const [dependency, concept] = args.command.arguments;
+        const concepts = await getConcepts();
+        const dependencyConcepts = concepts.find(
+          d =>
+            d.name === dependency &&
+            Object.keys(d.concepts?.concepts).find(c => c === concept)
+        );
+        if (!dependencyConcepts) {
+          vscode.window.showErrorMessage(
+            `${dependency} does not have concept ${concept}`
+          );
+          return;
+        }
+
+        const dependencyConcept =
+          dependencyConcepts.concepts?.concepts[concept];
+        let questions = [];
+        for (let i = 0; i < Object.keys(dependencyConcept).length; i++) {
+          const question = await InstallAction.conceptToQuestion(
+            Object.keys(dependencyConcept)[i],
+            dependencyConcept[Object.keys(dependencyConcept)[i]],
+            Object.keys(dependencyConcepts.concepts?.concepts)
+          );
+          if (question) {
+            questions.push(question);
+          }
+        }
+        const answers = await InstallAction.prompter(questions);
+        InstallAction.output.append(JSON.stringify(answers));
+      } catch (error: any) {
+        InstallAction.output.show();
+        InstallAction.output.append(JSON.stringify(error));
+      }
+    }
+  );
   let initDisposable = vscode.commands.registerCommand(
     'kodyfire.init',
     async () => {
@@ -145,7 +178,7 @@ export async function activate(context: vscode.ExtensionContext) {
             ['Yes', 'No'],
             option
           );
-          vscode.window.createOutputChannel;
+
           if (createPackageJsonFile) {
             await InstallAction.runCommand({
               command: 'npm',
@@ -171,6 +204,19 @@ export async function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(disposable);
+}
+
+async function getConcepts() {
+  const projectRoot = vscode.workspace.workspaceFolders?.[0].uri.fsPath || '/';
+  const installedKodies = await Package.getInstalledKodiesFromPath(projectRoot);
+  let concepts = [];
+  for (let i = 0; i < installedKodies.length; i++) {
+    const concept = await InitAction.getDependencyConcepts(
+      installedKodies[i].name
+    );
+    concepts.push({ name: installedKodies[i].name, concepts: concept });
+  }
+  return concepts;
 }
 
 // this method is called when your extension is deactivated

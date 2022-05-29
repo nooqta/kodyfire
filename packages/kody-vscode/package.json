@@ -38,6 +38,14 @@
         }
       },
       {
+        "command": "kodyfire.addConcept",
+        "title": "Add a kody concept",
+        "icon": {
+          "light": "resources/light/add.svg",
+          "dark": "resources/dark/add.svg"
+        }
+      },
+      {
         "command": "kodyfire.init",
         "title": "Initialize a new kodyfire project",
         "icon": {
@@ -97,8 +105,8 @@
           "group": "inline"
         },
         {
-          "command": "kodyfire.install",
-          "when": "view == kodyfire-inspector",
+          "command": "kodyfire.addConcept",
+          "when": "view == kodyfire-inspector && viewItem == concept",
           "group": "inline"
         }
       ]
