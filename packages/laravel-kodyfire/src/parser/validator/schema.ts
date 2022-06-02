@@ -54,34 +54,34 @@ export const baseModel = {
         },
       },
     },
-    controller: {
-      type: 'object',
-      properties: {
-        routeType: { type: 'enum', enum: ['resource', 'apiResource'] },
-        middleware: {
-          type: 'array',
-          items: {
-            type: 'string',
-          },
-        },
-        actions: {
-          type: 'array',
-          items: {
-            type: 'object',
-            properties: {
-              name: { type: 'string' },
-              type: {
-                type: 'enum',
-                enum: ['index', 'store', 'show', 'update', 'destroy'],
-              },
-              routeName: { type: 'string' },
-              relation: { type: 'string' },
-              middleware: { type: 'string' },
-            },
-          },
-        },
-      },
-    },
+    // controller: {
+    //   type: 'object',
+    //   properties: {
+    //     routeType: { type: 'enum', enum: ['resource', 'apiResource'] },
+    //     middleware: {
+    //       type: 'array',
+    //       items: {
+    //         type: 'string',
+    //       },
+    //     },
+    //     actions: {
+    //       type: 'array',
+    //       items: {
+    //         type: 'object',
+    //         properties: {
+    //           name: { type: 'string' },
+    //           type: {
+    //             type: 'enum',
+    //             enum: ['index', 'store', 'show', 'update', 'destroy'],
+    //           },
+    //           routeName: { type: 'string' },
+    //           relation: { type: 'string' },
+    //           middleware: { type: 'string' },
+    //         },
+    //       },
+    //     },
+    //   },
+    // },
   },
   required: ['template', 'namespace', 'model'],
 };
