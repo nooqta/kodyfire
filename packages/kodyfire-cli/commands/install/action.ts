@@ -1,4 +1,6 @@
 // import { $ } from "zx";
+import { join } from 'path';
+import { fs } from 'zx';
 
 const prompts = require('prompts');
 // import { $ } from 'zx';
@@ -156,17 +158,51 @@ export class Action {
     }
   }
 
+  static async addConcept(
+    dependency: string,
+    concept: string,
+    data: any,
+    rootDir: string = process.cwd()
+  ) {
+    try {
+      let content = this.getSchemaDefinition(dependency, rootDir);
+      if (content[concept]) {
+        content[concept] = [...content[concept], data];
+      } else {
+        content[concept] = [data];
+      }
+      content = JSON.stringify(content, null, '\t');
+      fs.writeFileSync(
+        join(rootDir, `kody-${dependency.replace('-kodyfire', '')}.json`),
+        content
+      );
+    } catch (error) {
+      this.displayMessage(error.message);
+    }
+  }
+  static getSchemaDefinition(dependency: string, rootDir: string) {
+    return JSON.parse(
+      fs.readFileSync(
+        join(rootDir, `kody-${dependency.replace('-kodyfire', '')}.json`),
+        'utf8'
+      )
+    );
+  }
   static async conceptToQuestion(
     name: string,
     concept: { type?: string; enum?: any },
-    concepts: string[]
+    concepts: any = {}
   ): Promise<any | void> {
-    if (concepts.includes(name)) {
+    if (concepts[name] && typeof concepts[name] != 'string') {
+      const choices = concepts[name].map((c: any) => ({
+        title: c.name,
+        value: c.name,
+      }));
       return {
         type: 'select',
         name: name,
         message: `Select the value for ${name}?`,
-        choices: concepts.map(c => ({ title: c, value: c })),
+        choices: choices,
       };
     }
     if (typeof concept.enum !== 'undefined') {
