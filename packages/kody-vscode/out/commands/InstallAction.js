@@ -76,37 +76,32 @@ class InstallAction extends action_1.Action {
     );
   }
   static async prompter(questionsList = action_1.questions) {
-    let answers = [];
+    let answers = {};
     for (let i = 0; i < questionsList.length; i++) {
       const question = questionsList[i];
       if (question.type === 'select' && question.choices) {
         let option = {
           title: question.message,
-          onDidSelectItem: item =>
-            vscode.window.showInformationMessage(`Focus ${++i}: ${item}`),
         };
-        const answer = await this.showQuickPick(
-          question.choices?.map(choice => choice.title),
-          option
-        );
-        answers.push(answer);
+        let choices = question.choices?.map(choice => choice.title);
+        const answer = await this.showQuickPick(choices, option);
+        answers[question.name] = answer;
       } else {
         const answer = await this.showInputBox(question);
-        answers.push(answer);
+        answers[question.name] = answer;
       }
     }
     return answers;
   }
   static async showQuickPick(items, option) {
     const result = await vscode.window.showQuickPick(items, option);
-    vscode.window.showInformationMessage(`Got: ${result}`);
     return result;
   }
   static async showInputBox(options) {
     const result = await vscode.window.showInputBox({
       prompt: options.message,
       validateInput: text => {
-        return options.validateInput(text);
+        return text !== '' ? null : 'Please enter a value';
         //return !(/^[A-Za-z\s]+$/.test(text)) ? 'Project name not valid' : null;
       },
     });

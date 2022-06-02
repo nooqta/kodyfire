@@ -142,18 +142,25 @@ export async function activate(context: vscode.ExtensionContext) {
         const dependencyConcept =
           dependencyConcepts.concepts?.concepts[concept];
         let questions = [];
-        for (let i = 0; i < Object.keys(dependencyConcept).length; i++) {
+        const conceptNames = Object.keys(dependencyConcept);
+        const projectRoot =
+          vscode.workspace.workspaceFolders?.[0].uri.fsPath || '/';
+        const schemaDefiniton = InstallAction.getSchemaDefinition(
+          dependency,
+          projectRoot
+        );
+        for (let i = 0; i < conceptNames.length; i++) {
           const question = await InstallAction.conceptToQuestion(
-            Object.keys(dependencyConcept)[i],
-            dependencyConcept[Object.keys(dependencyConcept)[i]],
-            Object.keys(dependencyConcepts.concepts?.concepts)
+            conceptNames[i],
+            dependencyConcept[conceptNames[i]],
+            schemaDefiniton
           );
           if (question) {
             questions.push(question);
           }
         }
         const answers = await InstallAction.prompter(questions);
-        InstallAction.output.append(JSON.stringify(answers));
+        InstallAction.addConcept(dependency, concept, answers, projectRoot);
       } catch (error: any) {
         InstallAction.output.show();
         InstallAction.output.append(JSON.stringify(error));
