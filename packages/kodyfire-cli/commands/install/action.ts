@@ -180,6 +180,36 @@ export class Action {
       this.displayMessage(error.message);
     }
   }
+  static async addConceptProperty(
+    dependency: string,
+    concept: string,
+    property: string,
+    data: any,
+    rootDir: string = process.cwd()
+  ) {
+    try {
+      let content = this.getSchemaDefinition(dependency, rootDir);
+      const currentConcept = content[concept].findIndex(
+        (c: { name: any }) => c.name === data['concept']
+      );
+      delete data['concept'];
+      if (typeof content[concept][currentConcept][property] !== 'undefined') {
+        content[concept][currentConcept][property] = [
+          ...content[concept][currentConcept][property],
+          data,
+        ];
+      } else {
+        content[concept][currentConcept][property] = [data];
+      }
+      content = JSON.stringify(content, null, '\t');
+      fs.writeFileSync(
+        join(rootDir, `kody-${dependency.replace('-kodyfire', '')}.json`),
+        content
+      );
+    } catch (error) {
+      this.displayMessage(error.message);
+    }
+  }
   static getSchemaDefinition(dependency: string, rootDir: string) {
     return JSON.parse(
       fs.readFileSync(
@@ -191,12 +221,13 @@ export class Action {
   static async conceptToQuestion(
     name: string,
     concept: { type?: string; enum?: any },
-    concepts: any = {}
+    concepts: any = {},
+    useIndex = false
   ): Promise<any | void> {
     if (concepts[name] && typeof concepts[name] != 'string') {
-      const choices = concepts[name].map((c: any) => ({
+      const choices = concepts[name].map((c: any, index: any) => ({
         title: c.name,
-        value: c.name,
+        value: useIndex ? index : c.name,
       }));
       return {
         type: 'select',
@@ -213,9 +244,16 @@ export class Action {
         choices: concept.enum.map((c: any) => ({ title: c, value: c })),
       };
     }
-    if (concept.type === 'text') {
+    if (concept.type === 'string') {
       return {
         type: 'text',
+        name: name,
+        message: `What is the value for ${name}?`,
+      };
+    }
+    if (concept.type === 'array') {
+      return {
+        type: 'array',
         name: name,
         message: `What is the value for ${name}?`,
       };
