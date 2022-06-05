@@ -22,6 +22,29 @@ export const controller = {
     model: model,
     namespace: { type: 'string' },
     template: { enum: ['controller.php.template'] },
+    routeType: { type: 'enum', enum: ['resource', 'apiResource'] },
+    middleware: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+    },
+    actions: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          type: {
+            type: 'enum',
+            enum: ['index', 'store', 'show', 'update', 'destroy'],
+          },
+          routeName: { type: 'string' },
+          relation: { type: 'string' },
+          middleware: { type: 'string' },
+        },
+      },
+    },
   },
   required: ['template', 'namespace', 'model'],
 };
@@ -31,8 +54,8 @@ export const baseModel = {
     name: { type: 'string' },
     namespace: { type: 'string', default: 'App\\Models' },
     template: {
-      enum: ['controller.php.template'],
-      default: 'controller.php.template',
+      enum: ['model.php.template'],
+      default: 'model.php.template',
     },
     relationships: {
       type: 'array',
@@ -54,34 +77,6 @@ export const baseModel = {
         },
       },
     },
-    // controller: {
-    //   type: 'object',
-    //   properties: {
-    //     routeType: { type: 'enum', enum: ['resource', 'apiResource'] },
-    //     middleware: {
-    //       type: 'array',
-    //       items: {
-    //         type: 'string',
-    //       },
-    //     },
-    //     actions: {
-    //       type: 'array',
-    //       items: {
-    //         type: 'object',
-    //         properties: {
-    //           name: { type: 'string' },
-    //           type: {
-    //             type: 'enum',
-    //             enum: ['index', 'store', 'show', 'update', 'destroy'],
-    //           },
-    //           routeName: { type: 'string' },
-    //           relation: { type: 'string' },
-    //           middleware: { type: 'string' },
-    //         },
-    //       },
-    //     },
-    //   },
-    // },
   },
   required: ['template', 'namespace', 'model'],
 };
