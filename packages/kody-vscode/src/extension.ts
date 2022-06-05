@@ -167,6 +167,70 @@ export async function activate(context: vscode.ExtensionContext) {
       }
     }
   );
+  let conceptPropDisposable = vscode.commands.registerCommand(
+    'kodyfire.addConceptProperty',
+    async args => {
+      try {
+        const [dependency, concept, property] = args.command.arguments;
+        const concepts = await getConcepts();
+        const dependencyConcepts = concepts.find(
+          d =>
+            d.name === dependency &&
+            Object.keys(d.concepts?.concepts).find(c => c === concept)
+        );
+        if (!dependencyConcepts) {
+          vscode.window.showErrorMessage(
+            `${dependency} does not have concept ${concept}`
+          );
+          return;
+        }
+
+        const dependencyConcept =
+          dependencyConcepts.concepts?.concepts[concept];
+        const conceptProperty = dependencyConcept[property];
+        let questions = [];
+        const conceptNames = Object.keys(conceptProperty.items.properties);
+        const projectRoot =
+          vscode.workspace.workspaceFolders?.[0].uri.fsPath || '/';
+        const schemaDefiniton = InstallAction.getSchemaDefinition(
+          dependency,
+          projectRoot
+        );
+        // We prompt to choose the concept
+        let question = await InstallAction.conceptToQuestion(
+          concept,
+          conceptProperty,
+          schemaDefiniton,
+          true
+        );
+        if (question) {
+          question.name = 'concept';
+          questions.push(question);
+        }
+        for (let i = 0; i < conceptNames.length; i++) {
+          const question = await InstallAction.conceptToQuestion(
+            conceptNames[i],
+            dependencyConcept[property].items.properties[conceptNames[i]],
+            schemaDefiniton
+          );
+          if (question) {
+            questions.push(question);
+          }
+        }
+        const answers = await InstallAction.prompter(questions);
+        InstallAction.addConceptProperty(
+          dependency,
+          concept,
+          property,
+          answers,
+          projectRoot
+        );
+      } catch (error: any) {
+        InstallAction.output.show();
+        InstallAction.output.append(JSON.stringify(error));
+      }
+    }
+  );
   let initDisposable = vscode.commands.registerCommand(
     'kodyfire.init',
     async () => {

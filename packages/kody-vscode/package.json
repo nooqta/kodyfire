@@ -46,6 +46,14 @@
         }
       },
       {
+        "command": "kodyfire.addConceptProperty",
+        "title": "Add a kody concept property",
+        "icon": {
+          "light": "resources/light/add.svg",
+          "dark": "resources/dark/add.svg"
+        }
+      },
+      {
         "command": "kodyfire.init",
         "title": "Initialize a new kodyfire project",
         "icon": {
@@ -107,6 +115,11 @@
         {
           "command": "kodyfire.addConcept",
           "when": "view == kodyfire-inspector && viewItem == concept",
+          "group": "inline"
+        },
+        {
+          "command": "kodyfire.addConceptProperty",
+          "when": "view == kodyfire-inspector && viewItem == conceptProperty",
           "group": "inline"
         }
       ]

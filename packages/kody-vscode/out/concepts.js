@@ -44,7 +44,11 @@ var __importStar =
     return result;
   };
 Object.defineProperty(exports, '__esModule', { value: true });
-exports.Kody = exports.Concept = exports.ConceptsProvider = void 0;
+exports.Kody =
+  exports.ConceptProperty =
+  exports.Concept =
+  exports.ConceptsProvider =
+    void 0;
 const vscode = __importStar(require('vscode'));
 class ConceptsProvider {
   constructor(concepts) {
@@ -63,6 +67,13 @@ class ConceptsProvider {
     output.show();
     output.append(JSON.stringify(element));
     if (element) {
+      if (element instanceof Concept) {
+        const dependency = this.concepts.find(c => c.name === element.kody);
+        const concept = dependency.concepts.concepts[element.label];
+        return Promise.resolve(
+          this.getConceptPropsAsTreeItems(concept, element)
+        );
+      }
       const concept = this.concepts.find(c => c.name === element.label);
       if (!concept) {
         return Promise.resolve([]);
@@ -73,7 +84,7 @@ class ConceptsProvider {
             name: c,
             dependency: element.label,
           })),
-          vscode.TreeItemCollapsibleState.None
+          vscode.TreeItemCollapsibleState.Collapsed
         )
       );
     }
@@ -114,19 +125,47 @@ class ConceptsProvider {
         collapsibleState === vscode.TreeItemCollapsibleState.None
           ? cmd
           : undefined;
-      return new Concept(concept, collapsibleState, command);
+      return new Concept(concept, dependency, collapsibleState, command);
     };
     const treeItems = concepts
       ? concepts.map(kody => conceptToTreeItem(kody.dependency, kody.name))
       : [];
     return treeItems;
   }
+  getConceptPropsAsTreeItems(
+    concept,
+    item,
+    collapsibleState = vscode.TreeItemCollapsibleState.None
+  ) {
+    const conceptPropsToTreeItem = (dependency, concept, property) => {
+      const cmd = {
+        command: 'kodyfire.addConceptProperty',
+        title: `Add ${property} to ${concept}`,
+        arguments: [dependency, concept, property],
+      };
+      const command =
+        collapsibleState === vscode.TreeItemCollapsibleState.None
+          ? cmd
+          : undefined;
+      return new ConceptProperty(property, collapsibleState, command);
+    };
+    const properties = Object.keys(concept).filter(
+      p => concept[p].type === 'array'
+    );
+    const treeItems = properties
+      ? properties.map(prop =>
+          conceptPropsToTreeItem(item.kody, item.label, prop)
+        )
+      : [];
+    return treeItems;
+  }
 }
 exports.ConceptsProvider = ConceptsProvider;
 class Concept extends vscode.TreeItem {
-  constructor(label, collapsibleState, command) {
+  constructor(label, kody, collapsibleState, command) {
     super(label, collapsibleState);
     this.label = label;
+    this.kody = kody;
     this.collapsibleState = collapsibleState;
     this.command = command;
     // iconPath = {
@@ -138,6 +177,21 @@ class Concept extends vscode.TreeItem {
   }
 }
 exports.Concept = Concept;
+class ConceptProperty extends vscode.TreeItem {
+  constructor(label, collapsibleState, command) {
+    super(label, collapsibleState);
+    this.label = label;
+    this.collapsibleState = collapsibleState;
+    this.command = command;
+    // iconPath = {
+    //   light: path.join(__filename, '..', '..', 'resources', 'light', 'play.svg'),
+    //   dark: path.join(__filename, '..', '..', 'resources', 'dark', 'play.svg'),
+    // };
+    this.contextValue = 'conceptProperty';
+    this.tooltip = `${this.label}`;
+  }
+}
+exports.ConceptProperty = ConceptProperty;
 class Kody extends vscode.TreeItem {
   constructor(label, collapsibleState, command) {
     super(label, collapsibleState);

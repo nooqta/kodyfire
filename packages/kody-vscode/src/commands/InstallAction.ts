@@ -65,6 +65,8 @@ export class InstallAction extends Action {
         let choices = question.choices?.map(choice => choice.title);
         const answer = await this.showQuickPick(choices, option);
         answers[question.name] = answer;
+      } else if (question.type === 'array') {
+        answers[question.name] = [];
       } else {
         const answer = await this.showInputBox(question);
         answers[question.name] = answer;
