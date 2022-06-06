@@ -62,6 +62,7 @@ export declare class Action {
       enum?: any;
     },
     concepts?: any,
+    message?: boolean | string,
     useIndex?: boolean
   ): Promise<any | void>;
 }

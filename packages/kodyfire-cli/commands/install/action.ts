@@ -1,4 +1,5 @@
 // import { $ } from "zx";
+import { capitalize } from 'kodyfire-core';
 import { join } from 'path';
 import { fs } from 'zx';
 
@@ -189,10 +190,10 @@ export class Action {
   ) {
     try {
       let content = this.getSchemaDefinition(dependency, rootDir);
-      const currentConcept = content[concept].findIndex(
-        (c: { name: any }) => c.name === data['concept']
-      );
+      const currentConcept = data['concept'];
+      // tweak the data for array for now
       delete data['concept'];
+      data = data[property] ? data[property] : data;
       if (typeof content[concept][currentConcept][property] !== 'undefined') {
         content[concept][currentConcept][property] = [
           ...content[concept][currentConcept][property],
@@ -222,17 +223,18 @@ export class Action {
     name: string,
     concept: { type?: string; enum?: any },
     concepts: any = {},
+    message: boolean | string = false,
     useIndex = false
   ): Promise<any | void> {
     if (concepts[name] && typeof concepts[name] != 'string') {
       const choices = concepts[name].map((c: any, index: any) => ({
-        title: c.name,
+        title: c.name || `${capitalize(name)} ${index}`,
         value: useIndex ? index : c.name,
       }));
       return {
         type: 'select',
         name: name,
-        message: `Select the value for ${name}?`,
+        message: message || `Select the value for ${name}?`,
         choices: choices,
       };
     }
@@ -240,7 +242,7 @@ export class Action {
       return {
         type: 'select',
         name: name,
-        message: `Select the value for ${name}?`,
+        message: message || `Select the value for ${name}?`,
         choices: concept.enum.map((c: any) => ({ title: c, value: c })),
       };
     }
@@ -248,14 +250,14 @@ export class Action {
       return {
         type: 'text',
         name: name,
-        message: `What is the value for ${name}?`,
+        message: message || `What is the value for ${name}?`,
       };
     }
     if (concept.type === 'array') {
       return {
         type: 'array',
         name: name,
-        message: `What is the value for ${name}?`,
+        message: message || `What is the value for ${name}?`,
       };
     }
   }

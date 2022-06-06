@@ -35,6 +35,7 @@ var __awaiter =
 Object.defineProperty(exports, '__esModule', { value: true });
 exports.Action = exports.questions = void 0;
 // import { $ } from "zx";
+const kodyfire_core_1 = require('kodyfire-core');
 const path_1 = require('path');
 const zx_1 = require('zx');
 const prompts = require('prompts');
@@ -206,10 +207,10 @@ class Action {
     return __awaiter(this, void 0, void 0, function* () {
       try {
         let content = this.getSchemaDefinition(dependency, rootDir);
-        const currentConcept = content[concept].findIndex(
-          c => c.name === data['concept']
-        );
+        const currentConcept = data['concept'];
+        // tweak the data for array for now
         delete data['concept'];
+        data = data[property] ? data[property] : data;
         if (typeof content[concept][currentConcept][property] !== 'undefined') {
           content[concept][currentConcept][property] = [
             ...content[concept][currentConcept][property],
@@ -242,17 +243,23 @@ class Action {
       )
     );
   }
-  static conceptToQuestion(name, concept, concepts = {}, useIndex = false) {
+  static conceptToQuestion(
+    name,
+    concept,
+    concepts = {},
+    message = false,
+    useIndex = false
+  ) {
     return __awaiter(this, void 0, void 0, function* () {
       if (concepts[name] && typeof concepts[name] != 'string') {
         const choices = concepts[name].map((c, index) => ({
-          title: c.name,
+          title: c.name || `${(0, kodyfire_core_1.capitalize)(name)} ${index}`,
           value: useIndex ? index : c.name,
         }));
         return {
           type: 'select',
           name: name,
-          message: `Select the value for ${name}?`,
+          message: message || `Select the value for ${name}?`,
           choices: choices,
         };
       }
@@ -260,7 +267,7 @@ class Action {
         return {
           type: 'select',
           name: name,
-          message: `Select the value for ${name}?`,
+          message: message || `Select the value for ${name}?`,
           choices: concept.enum.map(c => ({ title: c, value: c })),
         };
       }
@@ -268,14 +275,14 @@ class Action {
         return {
           type: 'text',
           name: name,
-          message: `What is the value for ${name}?`,
+          message: message || `What is the value for ${name}?`,
         };
       }
       if (concept.type === 'array') {
         return {
           type: 'array',
           name: name,
-          message: `What is the value for ${name}?`,
+          message: message || `What is the value for ${name}?`,
         };
       }
     });
