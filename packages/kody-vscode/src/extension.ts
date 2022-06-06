@@ -24,7 +24,7 @@ const cloneCommand = vscode.commands.registerCommand(
         let option: vscode.QuickPickOptions = {
           title: 'Create package.json?',
         };
-        const createPackageJsonFile = await InstallAction.showQuickPick(
+        const createPackageJsonFile = await InstallAction.showQuickPickAsString(
           ['Yes', 'No'],
           option
         );
@@ -189,7 +189,10 @@ export async function activate(context: vscode.ExtensionContext) {
           dependencyConcepts.concepts?.concepts[concept];
         const conceptProperty = dependencyConcept[property];
         let questions = [];
-        const conceptNames = Object.keys(conceptProperty.items.properties);
+        const conceptNames =
+          conceptProperty.items.type === 'string'
+            ? [property]
+            : Object.keys(conceptProperty.items.properties);
         const projectRoot =
           vscode.workspace.workspaceFolders?.[0].uri.fsPath || '/';
         const schemaDefiniton = InstallAction.getSchemaDefinition(
@@ -201,6 +204,7 @@ export async function activate(context: vscode.ExtensionContext) {
           concept,
           conceptProperty,
           schemaDefiniton,
+          'Choose the index of the concept?',
           true
         );
         if (question) {
@@ -210,7 +214,9 @@ export async function activate(context: vscode.ExtensionContext) {
         for (let i = 0; i < conceptNames.length; i++) {
           const question = await InstallAction.conceptToQuestion(
             conceptNames[i],
-            dependencyConcept[property].items.properties[conceptNames[i]],
+            dependencyConcept[property].items.properties
+              ? dependencyConcept[property].items.properties[conceptNames[i]]
+              : dependencyConcept[property].items,
             schemaDefiniton
           );
           if (question) {
@@ -246,7 +252,10 @@ export async function activate(context: vscode.ExtensionContext) {
             title: 'Package.json required. Create package.json?',
           };
           const createPackageJsonFile = await InstallAction.showQuickPick(
-            ['Yes', 'No'],
+            [
+              { label: 'Yes', description: 'Yes' },
+              { label: 'No', description: 'No' },
+            ],
             option
           );
 

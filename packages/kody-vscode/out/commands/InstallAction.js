@@ -81,16 +81,26 @@ class InstallAction extends action_1.Action {
       const question = questionsList[i];
       if (question.type === 'select' && question.choices) {
         let option = {
-          title: question.message,
+          placeHolder: question.message,
         };
-        let choices = question.choices?.map(choice => choice.title);
+        let choices = question.choices?.map(choice => {
+          return {
+            label: choice.value.toString(),
+            description: choice.title,
+            target: choice.value,
+          };
+        });
         const answer = await this.showQuickPick(choices, option);
-        answers[question.name] = answer;
+        if (answer) {
+          answers[question.name] = answer?.target;
+        }
       } else if (question.type === 'array') {
         answers[question.name] = [];
       } else {
         const answer = await this.showInputBox(question);
-        answers[question.name] = answer;
+        if (answer) {
+          answers[question.name] = answer;
+        }
       }
     }
     return answers;
@@ -99,12 +109,17 @@ class InstallAction extends action_1.Action {
     const result = await vscode.window.showQuickPick(items, option);
     return result;
   }
+  static async showQuickPickAsString(items, option) {
+    const result = await vscode.window.showQuickPick(items, option);
+    return result;
+  }
   static async showInputBox(options) {
     const result = await vscode.window.showInputBox({
       prompt: options.message,
       validateInput: text => {
-        return text !== '' ? null : 'Please enter a value';
-        //return !(/^[A-Za-z\s]+$/.test(text)) ? 'Project name not valid' : null;
+        return null;
+        // return text !== '' ? null : 'Please enter a value';
+        //return !(/^[A-Za-z\s]+$/.test(text)) ? 'Name not valid' : null;
       },
     });
     return result;

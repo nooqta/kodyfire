@@ -72,7 +72,7 @@ const cloneCommand = vscode.commands.registerCommand(
           title: 'Create package.json?',
         };
         const createPackageJsonFile =
-          await InstallAction_1.InstallAction.showQuickPick(
+          await InstallAction_1.InstallAction.showQuickPickAsString(
             ['Yes', 'No'],
             option
           );
@@ -243,7 +243,10 @@ async function activate(context) {
           dependencyConcepts.concepts?.concepts[concept];
         const conceptProperty = dependencyConcept[property];
         let questions = [];
-        const conceptNames = Object.keys(conceptProperty.items.properties);
+        const conceptNames =
+          conceptProperty.items.type === 'string'
+            ? [property]
+            : Object.keys(conceptProperty.items.properties);
         const projectRoot =
           vscode.workspace.workspaceFolders?.[0].uri.fsPath || '/';
         const schemaDefiniton =
@@ -256,6 +259,7 @@ async function activate(context) {
           concept,
           conceptProperty,
           schemaDefiniton,
+          'Choose the index of the concept?',
           true
         );
         if (question) {
@@ -266,7 +270,9 @@ async function activate(context) {
           const question =
             await InstallAction_1.InstallAction.conceptToQuestion(
               conceptNames[i],
-              dependencyConcept[property].items.properties[conceptNames[i]],
+              dependencyConcept[property].items.properties
+                ? dependencyConcept[property].items.properties[conceptNames[i]]
+                : dependencyConcept[property].items,
               schemaDefiniton
             );
           if (question) {
@@ -304,7 +310,10 @@ async function activate(context) {
           };
           const createPackageJsonFile =
             await InstallAction_1.InstallAction.showQuickPick(
-              ['Yes', 'No'],
+              [
+                { label: 'Yes', description: 'Yes' },
+                { label: 'No', description: 'No' },
+              ],
               option
             );
           if (createPackageJsonFile) {

@@ -60,24 +60,38 @@ export class InstallAction extends Action {
       const question = questionsList[i];
       if (question.type === 'select' && question.choices) {
         let option: vscode.QuickPickOptions = {
-          title: question.message,
+          placeHolder: question.message,
         };
-        let choices = question.choices?.map(choice => choice.title);
-        const answer = await this.showQuickPick(choices, option);
-        answers[question.name] = answer;
+        let choices: vscode.QuickPickItem[] = question.choices?.map(choice => {
+          return {
+            label: choice.value.toString(),
+            description: choice.title,
+            target: choice.value,
+          };
+        });
+        const answer: any = await this.showQuickPick(choices, option);
+        if (answer) {
+          answers[question.name] = answer?.target;
+        }
       } else if (question.type === 'array') {
         answers[question.name] = [];
       } else {
         const answer = await this.showInputBox(question);
-        answers[question.name] = answer;
+        if (answer) {
+          answers[question.name] = answer;
+        }
       }
     }
     return answers;
   }
   static async showQuickPick(
-    items: readonly string[] | Thenable<readonly string[]>,
-    option: any
+    items: vscode.QuickPickItem[],
+    option: vscode.QuickPickOptions
   ) {
+    const result = await vscode.window.showQuickPick(items, option);
+    return result;
+  }
+  static async showQuickPickAsString(items: string[], option: any) {
     const result = await vscode.window.showQuickPick(items, option);
     return result;
   }
@@ -85,8 +99,9 @@ export class InstallAction extends Action {
     const result = await vscode.window.showInputBox({
       prompt: options.message,
       validateInput: text => {
-        return text !== '' ? null : 'Please enter a value';
-        //return !(/^[A-Za-z\s]+$/.test(text)) ? 'Project name not valid' : null;
+        return null;
+        // return text !== '' ? null : 'Please enter a value';
+        //return !(/^[A-Za-z\s]+$/.test(text)) ? 'Name not valid' : null;
       },
     });
     return result;
