@@ -88,28 +88,9 @@ class Action {
   }
   static execute(_args = { rootDir: process.cwd() }) {
     return __awaiter(this, void 0, void 0, function* () {
-      const packageJsonFile = yield zx_1.fs.readFile(
-        (0, path_1.join)(_args.rootDir, 'package.json'),
-        'utf8'
+      const { name, dependencies } = yield this.getPackageDependencies(
+        _args.rootDir
       );
-      const packageJson = JSON.parse(packageJsonFile);
-      const name = packageJson.name;
-      let dependencies = [];
-      if (
-        packageJson.dependencies &&
-        Object.keys(packageJson.dependencies).length > 0
-      ) {
-        dependencies = Object.keys(packageJson.dependencies);
-      }
-      if (
-        packageJson.devDependencies &&
-        Object.keys(packageJson.devDependencies).length > 0
-      ) {
-        dependencies = dependencies.concat(
-          Object.keys(packageJson.devDependencies)
-        );
-      }
-      dependencies = dependencies.filter(dep => dep.includes('-kodyfire'));
       try {
         const kody = {
           project: name,
@@ -153,6 +134,33 @@ class Action {
       } catch (error) {
         this.displayMessage(error.message);
       }
+    });
+  }
+  static getPackageDependencies(rootDir = process.cwd()) {
+    return __awaiter(this, void 0, void 0, function* () {
+      const packageJsonFile = yield zx_1.fs.readFile(
+        (0, path_1.join)(rootDir, 'package.json'),
+        'utf8'
+      );
+      const packageJson = JSON.parse(packageJsonFile);
+      const name = packageJson.name;
+      let dependencies = [];
+      if (
+        packageJson.dependencies &&
+        Object.keys(packageJson.dependencies).length > 0
+      ) {
+        dependencies = Object.keys(packageJson.dependencies);
+      }
+      if (
+        packageJson.devDependencies &&
+        Object.keys(packageJson.devDependencies).length > 0
+      ) {
+        dependencies = dependencies.concat(
+          Object.keys(packageJson.devDependencies)
+        );
+      }
+      dependencies = dependencies.filter(dep => dep.includes('-kodyfire'));
+      return { name, dependencies };
     });
   }
   static getDependencyConcepts(dependency) {

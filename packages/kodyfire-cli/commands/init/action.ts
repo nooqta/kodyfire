@@ -16,30 +16,8 @@ export class Action {
     );
   }
   static async execute(_args: any = { rootDir: process.cwd() }) {
-    const packageJsonFile = await fs.readFile(
-      join(_args.rootDir, 'package.json'),
-      'utf8'
-    );
-    const packageJson = JSON.parse(packageJsonFile);
-    const name = packageJson.name;
-    let dependencies: string[] = [];
-    if (
-      packageJson.dependencies &&
-      Object.keys(packageJson.dependencies).length > 0
-    ) {
-      dependencies = Object.keys(packageJson.dependencies);
-    }
-
-    if (
-      packageJson.devDependencies &&
-      Object.keys(packageJson.devDependencies).length > 0
-    ) {
-      dependencies = dependencies.concat(
-        Object.keys(packageJson.devDependencies)
-      );
-    }
-
-    dependencies = dependencies.filter(dep => dep.includes('-kodyfire'));
+    const { name, dependencies }: { name: any; dependencies: string[] } =
+      await this.getPackageDependencies(_args.rootDir);
     try {
       const kody: any = {
         project: name,
@@ -78,6 +56,34 @@ export class Action {
       this.displayMessage(error.message);
     }
   }
+  static async getPackageDependencies(rootDir = process.cwd()): Promise<any> {
+    const packageJsonFile = await fs.readFile(
+      join(rootDir, 'package.json'),
+      'utf8'
+    );
+    const packageJson = JSON.parse(packageJsonFile);
+    const name = packageJson.name;
+    let dependencies: string[] = [];
+    if (
+      packageJson.dependencies &&
+      Object.keys(packageJson.dependencies).length > 0
+    ) {
+      dependencies = Object.keys(packageJson.dependencies);
+    }
+
+    if (
+      packageJson.devDependencies &&
+      Object.keys(packageJson.devDependencies).length > 0
+    ) {
+      dependencies = dependencies.concat(
+        Object.keys(packageJson.devDependencies)
+      );
+    }
+
+    dependencies = dependencies.filter(dep => dep.includes('-kodyfire'));
+    return { name, dependencies };
+  }
+
   static async getDependencyConcepts(dependency: string) {
     try {
       const entries: any = {};
