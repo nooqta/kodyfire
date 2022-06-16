@@ -1,9 +1,26 @@
 export declare class Action {
   static kody: any;
   static concept: any;
-  static property: any;
+  static properties: any;
+  static isCanceled: boolean;
+  static onCancel(_prompt: any): Promise<boolean>;
+  static getDependencyConcepts(dependency: string): Promise<any>;
   static getPackageDependencies(rootDir?: string): Promise<any>;
   static prompter(): Promise<void | any>;
+  static getCurrentConcept(): Promise<any>;
+  static getPropertiesAnswers(concept: any): Promise<any>;
+  static getConceptQuestion(): Promise<
+    | false
+    | {
+        type: string;
+        name: string;
+        message: string;
+        choices: {
+          title: string;
+          value: string;
+        }[];
+      }
+  >;
   static getKodyQuestion(): Promise<
     | false
     | {
@@ -28,16 +45,23 @@ export declare class Action {
     data: any,
     rootDir?: string
   ): Promise<void>;
-  static getSchemaDefinition(dependency: string, rootDir: string): any;
+  static getSchemaDefinition(dependency: string, rootDir?: string): any;
   static conceptToQuestion(
     name: string,
     concept: {
+      description: {
+        description: any;
+      };
+      default?: any;
       type?: string;
       enum?: any;
+      items?: any;
     },
     concepts?: any,
     message?: boolean | string,
-    useIndex?: boolean
+    useIndex?: boolean,
+    label?: string,
+    useValueAsName?: boolean
   ): Promise<any | void>;
 }
 //# sourceMappingURL=action.d.ts.map

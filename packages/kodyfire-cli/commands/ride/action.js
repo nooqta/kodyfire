@@ -38,44 +38,22 @@ exports.Action = void 0;
 const kodyfire_core_1 = require('kodyfire-core');
 const path_1 = require('path');
 const zx_1 = require('zx');
+const action_1 = require('./../init/action');
 const prompts = require('prompts');
 const boxen = require('boxen');
-const questions =
-  // Does kody.json file exist
-  // Are there any kodies installed
-  // If no list kodies the user can install
-  // If yes, list the kodies
-  // Choose kody
-  // If done selecting kodies, save the kody.json file
-  // Ask the user if she/he wants to watch the build process
-  // For every selected kody
-  // Install project from scratch if applicable
-  // Select destination
-  //  Define concepts
-  [
-    {
-      type: 'select',
-      name: 'technology',
-      message: `What are you building today?`,
-      choices: [
-        // Installed kodies list
-        { title: 'A Backend using Laravel (php)', value: 'laravel' },
-        { title: 'A frontend using Vuexy (vue)', value: 'vuexy' },
-        { title: 'Both', value: ['laravel', 'vuexy'] },
-      ],
-    },
-    {
-      type: 'multiselect',
-      name: 'color',
-      message: 'Pick colors',
-      choices: [
-        { title: 'Red', value: '#ff0000' },
-        { title: 'Green', value: '#00ff00' },
-        { title: 'Blue', value: '#0000ff' },
-      ],
-    },
-  ];
 class Action {
+  static onCancel(_prompt) {
+    return __awaiter(this, void 0, void 0, function* () {
+      this.isCanceled = true;
+      return true;
+    });
+  }
+  static getDependencyConcepts(dependency) {
+    return __awaiter(this, void 0, void 0, function* () {
+      const dep = yield action_1.Action.getDependencyConcepts(dependency);
+      return dep === null || dep === void 0 ? void 0 : dep.concepts;
+    });
+  }
   // @todo: refactor into a Base Action class. used by init/action.ts
   static getPackageDependencies(rootDir = process.cwd()) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -108,6 +86,7 @@ class Action {
     return __awaiter(this, void 0, void 0, function* () {
       (() =>
         __awaiter(this, void 0, void 0, function* () {
+          var _a, _b;
           if (!this.kody) {
             const kodyQuestion = yield this.getKodyQuestion();
             if (!kodyQuestion) {
@@ -116,11 +95,307 @@ class Action {
               );
               process.exit(1);
             }
-            this.kody = yield prompts(kodyQuestion);
+            const { kody } = yield prompts(kodyQuestion);
+            this.kody = kody;
           }
-          const response = yield prompts(questions);
-          console.log(response);
+          if (!this.concept) {
+            // set concept
+            const conceptQuestion = yield this.getConceptQuestion();
+            if (!conceptQuestion) {
+              this.displayMessage(
+                'No concepts selected. Please select a concept to proceed.'
+              );
+              process.exit(1);
+            }
+            const { concept } = yield prompts(conceptQuestion);
+            this.concept = concept;
+          }
+          if (!this.properties) {
+            // set properties
+            const currentConcept = yield this.getCurrentConcept();
+            const answers = yield this.getPropertiesAnswers(currentConcept);
+            // Prompt to add children-property if it has children-property of type array
+            const childrenProps = Object.keys(currentConcept).filter(c =>
+              ['array', 'object'].includes(currentConcept[c].type)
+            );
+            if (childrenProps.length > 0) {
+              for (let k = 0; k < childrenProps.length; k++) {
+                const question = {
+                  type: 'confirm',
+                  name: 'value',
+                  message: `Would like to add ${childrenProps[k]}?`,
+                  initial: true,
+                };
+                const { value } = yield prompts(question);
+                if (value) {
+                  if (currentConcept[childrenProps[k]].type === 'array') {
+                    let addMore = true;
+                    while (addMore) {
+                      const currentProp = currentConcept[childrenProps[k]].items
+                        .properties
+                        ? currentConcept[childrenProps[k]].items.properties
+                        : currentConcept[childrenProps[k]].items;
+                      let moreAnswers = {};
+                      if (currentConcept[childrenProps[k]].type == 'array') {
+                        moreAnswers = yield this.getPropertiesAnswers(
+                          currentProp
+                        );
+                        if (answers[childrenProps[k]]) {
+                          answers[childrenProps[k]].push(moreAnswers);
+                        } else {
+                          answers[childrenProps[k]] = [moreAnswers];
+                        }
+                      } else if (
+                        currentConcept[childrenProps[k]].type == 'object'
+                      ) {
+                        const currentPropNames = Object.keys(currentProp);
+                        for (let m = 0; m < currentPropNames.length; m++) {
+                          const question = {
+                            type: 'confirm',
+                            name: 'value',
+                            message: `Would like to add ${currentPropNames[m]}?`,
+                            initial: true,
+                          };
+                          const { value } = yield prompts(question);
+                          if (value) {
+                            let addMoreMore = true;
+                            while (addMoreMore) {
+                              if (
+                                currentProp[currentPropNames[m]].type ==
+                                  'array' &&
+                                ((_a =
+                                  currentProp[currentPropNames[m]].items) ===
+                                  null || _a === void 0
+                                  ? void 0
+                                  : _a.type) == 'object'
+                              ) {
+                                const currentPropItems =
+                                  yield this.getPropertiesAnswers(
+                                    currentProp[currentPropNames[m]].items
+                                      .properties
+                                  );
+                                if (moreAnswers[currentPropNames[m]]) {
+                                  moreAnswers[currentPropNames[m]].push(
+                                    currentPropItems
+                                  );
+                                } else {
+                                  moreAnswers[currentPropNames[m]] = [
+                                    currentPropItems,
+                                  ];
+                                }
+                              } else {
+                                moreAnswers[currentPropNames[m]] =
+                                  yield this.getPropertiesAnswers(currentProp);
+                              }
+                              const question = {
+                                type: 'confirm',
+                                name: 'value',
+                                message: `Would like to add more ${currentPropNames[m]}?`,
+                                initial: true,
+                              };
+                              const { value } = yield prompts(question);
+                              if (!value) {
+                                addMoreMore = false;
+                              }
+                            }
+                          }
+                        }
+                        if (answers[childrenProps[k]]) {
+                          answers[childrenProps[k]] =
+                            answers[childrenProps[k]].concat(moreAnswers);
+                        } else {
+                          answers[childrenProps[k]] = [moreAnswers];
+                        }
+                      }
+                      const question = {
+                        type: 'confirm',
+                        name: 'value',
+                        message: `Would like to add more ${childrenProps[k]}?`,
+                        initial: true,
+                      };
+                      const { value } = yield prompts(question);
+                      if (!value) {
+                        addMore = false;
+                      }
+                    }
+                  } else {
+                    const currentProp =
+                      currentConcept[childrenProps[k]].properties;
+                    let moreAnswers = {};
+                    if (currentConcept[childrenProps[k]].type == 'array') {
+                      moreAnswers = yield this.getPropertiesAnswers(
+                        currentProp
+                      );
+                      if (answers[childrenProps[k]]) {
+                        answers[childrenProps[k]].push(moreAnswers);
+                      } else {
+                        answers[childrenProps[k]] = [moreAnswers];
+                      }
+                    } else if (
+                      currentConcept[childrenProps[k]].type == 'object'
+                    ) {
+                      const currentPropNames = Object.keys(currentProp);
+                      for (let m = 0; m < currentPropNames.length; m++) {
+                        const question = {
+                          type: 'confirm',
+                          name: 'value',
+                          message: `Would like to add ${currentPropNames[m]}?`,
+                          initial: true,
+                        };
+                        const { value } = yield prompts(question);
+                        if (value) {
+                          let addMoreMore = true;
+                          while (addMoreMore) {
+                            if (
+                              currentProp[currentPropNames[m]].type ==
+                                'array' &&
+                              ((_b = currentProp[currentPropNames[m]].items) ===
+                                null || _b === void 0
+                                ? void 0
+                                : _b.type) == 'object'
+                            ) {
+                              const currentPropItems =
+                                yield this.getPropertiesAnswers(
+                                  currentProp[currentPropNames[m]].items
+                                    .properties
+                                );
+                              if (moreAnswers[currentPropNames[m]]) {
+                                moreAnswers[currentPropNames[m]].push(
+                                  currentPropItems
+                                );
+                              } else {
+                                moreAnswers[currentPropNames[m]] = [
+                                  currentPropItems,
+                                ];
+                              }
+                            } else {
+                              moreAnswers[currentPropNames[m]] =
+                                yield this.getPropertiesAnswers(currentProp);
+                            }
+                            const question = {
+                              type: 'confirm',
+                              name: 'value',
+                              message: `Would like to add more ${currentPropNames[m]}?`,
+                              initial: true,
+                            };
+                            const { value } = yield prompts(question);
+                            if (!value) {
+                              addMoreMore = false;
+                            }
+                          }
+                        }
+                      }
+                      if (answers[childrenProps[k]]) {
+                        answers[childrenProps[k]] =
+                          answers[childrenProps[k]].concat(moreAnswers);
+                      } else {
+                        answers[childrenProps[k]] = moreAnswers;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            this.addConcept(this.kody, this.concept, answers);
+          }
         }))();
+    });
+  }
+  static getCurrentConcept() {
+    return __awaiter(this, void 0, void 0, function* () {
+      const concepts = yield this.getDependencyConcepts(this.kody);
+      return concepts[this.concept];
+    });
+  }
+  static getPropertiesAnswers(concept) {
+    var _a, _b;
+    return __awaiter(this, void 0, void 0, function* () {
+      const schemaDefinition = this.getSchemaDefinition(this.kody);
+      const conceptNames = Object.keys(concept || {});
+      if (conceptNames.length == 0) {
+        return [];
+      }
+      const answers = {};
+      for (let i = 0; i < conceptNames.length; i++) {
+        const currentConcept = concept[conceptNames[i]];
+        if (
+          currentConcept.type !== 'array' &&
+          ((_a = currentConcept.items) === null || _a === void 0
+            ? void 0
+            : _a.type) !== 'object'
+        ) {
+          const question = yield this.conceptToQuestion(
+            conceptNames[i],
+            concept[conceptNames[i]],
+            schemaDefinition,
+            false,
+            false,
+            `${conceptNames[i]}`,
+            true
+          );
+          if (question) {
+            const answer = yield prompts(question);
+            answers[conceptNames[i]] = answer.value;
+          }
+        }
+        if (
+          currentConcept.type === 'array' &&
+          ((_b = currentConcept.items) === null || _b === void 0
+            ? void 0
+            : _b.type) === 'object'
+        ) {
+          const question = {
+            type: 'confirm',
+            name: 'value',
+            message: `Would you like to add ${conceptNames[i]}?`,
+            initial: true,
+          };
+          const { value } = yield prompts(question);
+          if (value) {
+            let addMore = true;
+            while (addMore) {
+              const childConcept = yield this.getPropertiesAnswers(
+                currentConcept.items.properties
+              );
+              if (answers[conceptNames[i]]) {
+                answers[conceptNames[i]].push(childConcept);
+              } else {
+                answers[conceptNames[i]] = [childConcept];
+              }
+              const question = {
+                type: 'confirm',
+                name: 'value',
+                message: `Would you like to add more ${conceptNames[i]}?`,
+                initial: true,
+              };
+              const { value } = yield prompts(question);
+              if (!value) {
+                addMore = false;
+              }
+            }
+          }
+        }
+      }
+      return answers;
+    });
+  }
+  static getConceptQuestion() {
+    return __awaiter(this, void 0, void 0, function* () {
+      const concepts = yield this.getDependencyConcepts(this.kody);
+      const conceptNames = Object.keys(concepts || {});
+      if (conceptNames.length == 0) {
+        return false;
+      }
+      const question = {
+        type: 'select',
+        name: 'concept',
+        message: `Select the concept you want to add?`,
+        choices: conceptNames.map(concept => ({
+          title: (0, kodyfire_core_1.capitalize)(concept),
+          value: concept,
+        })),
+      };
+      return question;
     });
   }
   static getKodyQuestion() {
@@ -133,7 +408,10 @@ class Action {
         type: 'select',
         name: 'kody',
         message: `Select the kody package?`,
-        choices: dependencies,
+        choices: dependencies.map(dep => ({
+          title: (0, kodyfire_core_1.capitalize)(dep.replace('-kodyfire', '')),
+          value: dep,
+        })),
       };
       return question;
     });
@@ -215,7 +493,7 @@ class Action {
       }
     });
   }
-  static getSchemaDefinition(dependency, rootDir) {
+  static getSchemaDefinition(dependency, rootDir = process.cwd()) {
     return JSON.parse(
       zx_1.fs.readFileSync(
         (0, path_1.join)(
@@ -231,9 +509,12 @@ class Action {
     concept,
     concepts = {},
     message = false,
-    useIndex = false
+    useIndex = false,
+    label = '',
+    useValueAsName = false
   ) {
     return __awaiter(this, void 0, void 0, function* () {
+      label = label || name;
       if (concepts[name] && typeof concepts[name] != 'string') {
         const choices = concepts[name].map((c, index) => ({
           title: c.name || `${(0, kodyfire_core_1.capitalize)(name)} ${index}`,
@@ -241,35 +522,60 @@ class Action {
         }));
         return {
           type: 'select',
-          name: name,
-          message: message || `Select the value for ${name}?`,
+          name: useValueAsName ? 'value' : name,
+          message: message || `Select the value for ${label}?`,
           choices: choices,
         };
       }
       if (typeof concept.enum !== 'undefined') {
-        return {
-          type: 'select',
-          name: name,
-          message: message || `Select the value for ${name}?`,
-          choices: concept.enum.map(c => ({ title: c, value: c })),
-        };
+        return Object.assign(
+          Object.assign(
+            {
+              type: 'select',
+              name: useValueAsName ? 'value' : name,
+              message: message || `Select the value for ${label}?`,
+            },
+            concept.description && { description: concept.description }
+          ),
+          { choices: concept.enum.map(c => ({ title: c, value: c })) }
+        );
       }
       if (concept.type === 'string') {
-        return {
-          type: 'text',
-          name: name,
-          message: message || `What is the value for ${name}?`,
-        };
+        return concept.default
+          ? Object.assign(
+              Object.assign(
+                {
+                  type: 'text',
+                  name: useValueAsName ? 'value' : name,
+                  initial: concept.default,
+                },
+                concept.description && { description: concept.description }
+              ),
+              { message: message || `What is the value for ${label}?` }
+            )
+          : Object.assign(
+              Object.assign(
+                { type: 'text', name: useValueAsName ? 'value' : name },
+                concept.description && { description: concept.description }
+              ),
+              { message: message || `What is the value for ${label}?` }
+            );
       }
       if (concept.type === 'array') {
-        return {
-          type: 'array',
-          name: name,
-          message: message || `What is the value for ${name}?`,
-        };
+        if (concept.items.type == 'string') {
+          return Object.assign(
+            Object.assign(
+              { type: 'text', name: useValueAsName ? 'value' : name },
+              concept.description && { description: concept.description }
+            ),
+            { message: message || `What is the value for ${label}?` }
+          );
+        }
       }
+      return false;
     });
   }
 }
 exports.Action = Action;
+Action.isCanceled = false;
 //# sourceMappingURL=action.js.map

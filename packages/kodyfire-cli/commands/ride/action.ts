@@ -2,50 +2,24 @@
 import { capitalize } from 'kodyfire-core';
 import { join } from 'path';
 import { fs } from 'zx';
-
+import { Action as InitAction } from './../init/action';
 const prompts = require('prompts');
 const boxen = require('boxen');
-
-const questions =
-  // Does kody.json file exist
-  // Are there any kodies installed
-  // If no list kodies the user can install
-  // If yes, list the kodies
-  // Choose kody
-  // If done selecting kodies, save the kody.json file
-  // Ask the user if she/he wants to watch the build process
-  // For every selected kody
-  // Install project from scratch if applicable
-  // Select destination
-  //  Define concepts
-  [
-    {
-      type: 'select',
-      name: 'technology',
-      message: `What are you building today?`,
-      choices: [
-        // Installed kodies list
-        { title: 'A Backend using Laravel (php)', value: 'laravel' },
-        { title: 'A frontend using Vuexy (vue)', value: 'vuexy' },
-        { title: 'Both', value: ['laravel', 'vuexy'] },
-      ],
-    },
-    {
-      type: 'multiselect',
-      name: 'color',
-      message: 'Pick colors',
-      choices: [
-        { title: 'Red', value: '#ff0000' },
-        { title: 'Green', value: '#00ff00' },
-        { title: 'Blue', value: '#0000ff' },
-      ],
-    },
-  ];
 
 export class Action {
   static kody: any;
   static concept: any;
-  static property: any;
+  static properties: any;
+  static isCanceled = false;
+
+  static async onCancel(_prompt: any) {
+    this.isCanceled = true;
+    return true;
+  }
+  static async getDependencyConcepts(dependency: string) {
+    const dep = await InitAction.getDependencyConcepts(dependency);
+    return dep?.concepts;
+  }
   // @todo: refactor into a Base Action class. used by init/action.ts
   static async getPackageDependencies(rootDir = process.cwd()): Promise<any> {
     const packageJsonFile = await fs.readFile(
@@ -74,6 +48,7 @@ export class Action {
     dependencies = dependencies.filter(dep => dep.includes('-kodyfire'));
     return { name, dependencies };
   }
+
   static async prompter(): Promise<void | any> {
     (async () => {
       if (!this.kody) {
@@ -84,13 +59,286 @@ export class Action {
           );
           process.exit(1);
         }
-        this.kody = await prompts(kodyQuestion);
+        const { kody } = await prompts(kodyQuestion);
+        this.kody = kody;
       }
-      const response = await prompts(questions);
-      console.log(response);
+      if (!this.concept) {
+        // set concept
+        const conceptQuestion = await this.getConceptQuestion();
+        if (!conceptQuestion) {
+          this.displayMessage(
+            'No concepts selected. Please select a concept to proceed.'
+          );
+          process.exit(1);
+        }
+        const { concept } = await prompts(conceptQuestion);
+        this.concept = concept;
+      }
+      if (!this.properties) {
+        // set properties
+        const currentConcept = await this.getCurrentConcept();
+        const answers = await this.getPropertiesAnswers(currentConcept);
+        // Prompt to add children-property if it has children-property of type array
+        const childrenProps = Object.keys(currentConcept).filter(c =>
+          ['array', 'object'].includes(currentConcept[c].type)
+        );
+        if (childrenProps.length > 0) {
+          for (let k = 0; k < childrenProps.length; k++) {
+            const question = {
+              type: 'confirm',
+              name: 'value',
+              message: `Would like to add ${childrenProps[k]}?`,
+              initial: true,
+            };
+            const { value } = await prompts(question);
+            if (value) {
+              if (currentConcept[childrenProps[k]].type === 'array') {
+                let addMore = true;
+                while (addMore) {
+                  const currentProp = currentConcept[childrenProps[k]].items
+                    .properties
+                    ? currentConcept[childrenProps[k]].items.properties
+                    : currentConcept[childrenProps[k]].items;
+                  let moreAnswers: any = {};
+                  if (currentConcept[childrenProps[k]].type == 'array') {
+                    moreAnswers = await this.getPropertiesAnswers(currentProp);
+                    if (answers[childrenProps[k]]) {
+                      answers[childrenProps[k]].push(moreAnswers);
+                    } else {
+                      answers[childrenProps[k]] = [moreAnswers];
+                    }
+                  } else if (
+                    currentConcept[childrenProps[k]].type == 'object'
+                  ) {
+                    const currentPropNames = Object.keys(currentProp);
+                    for (let m = 0; m < currentPropNames.length; m++) {
+                      const question = {
+                        type: 'confirm',
+                        name: 'value',
+                        message: `Would like to add ${currentPropNames[m]}?`,
+                        initial: true,
+                      };
+                      const { value } = await prompts(question);
+                      if (value) {
+                        let addMoreMore = true;
+                        while (addMoreMore) {
+                          if (
+                            currentProp[currentPropNames[m]].type == 'array' &&
+                            currentProp[currentPropNames[m]].items?.type ==
+                              'object'
+                          ) {
+                            const currentPropItems =
+                              await this.getPropertiesAnswers(
+                                currentProp[currentPropNames[m]].items
+                                  .properties
+                              );
+                            if (moreAnswers[currentPropNames[m]]) {
+                              moreAnswers[currentPropNames[m]].push(
+                                currentPropItems
+                              );
+                            } else {
+                              moreAnswers[currentPropNames[m]] = [
+                                currentPropItems,
+                              ];
+                            }
+                          } else {
+                            moreAnswers[currentPropNames[m]] =
+                              await this.getPropertiesAnswers(currentProp);
+                          }
+                          const question = {
+                            type: 'confirm',
+                            name: 'value',
+                            message: `Would like to add more ${currentPropNames[m]}?`,
+                            initial: true,
+                          };
+                          const { value } = await prompts(question);
+                          if (!value) {
+                            addMoreMore = false;
+                          }
+                        }
+                      }
+                    }
+                    if (answers[childrenProps[k]]) {
+                      answers[childrenProps[k]] =
+                        answers[childrenProps[k]].concat(moreAnswers);
+                    } else {
+                      answers[childrenProps[k]] = [moreAnswers];
+                    }
+                  }
+
+                  const question = {
+                    type: 'confirm',
+                    name: 'value',
+                    message: `Would like to add more ${childrenProps[k]}?`,
+                    initial: true,
+                  };
+                  const { value } = await prompts(question);
+                  if (!value) {
+                    addMore = false;
+                  }
+                }
+              } else {
+                const currentProp = currentConcept[childrenProps[k]].properties;
+                let moreAnswers: any = {};
+                if (currentConcept[childrenProps[k]].type == 'array') {
+                  moreAnswers = await this.getPropertiesAnswers(currentProp);
+                  if (answers[childrenProps[k]]) {
+                    answers[childrenProps[k]].push(moreAnswers);
+                  } else {
+                    answers[childrenProps[k]] = [moreAnswers];
+                  }
+                } else if (currentConcept[childrenProps[k]].type == 'object') {
+                  const currentPropNames = Object.keys(currentProp);
+                  for (let m = 0; m < currentPropNames.length; m++) {
+                    const question = {
+                      type: 'confirm',
+                      name: 'value',
+                      message: `Would like to add ${currentPropNames[m]}?`,
+                      initial: true,
+                    };
+                    const { value } = await prompts(question);
+                    if (value) {
+                      let addMoreMore = true;
+                      while (addMoreMore) {
+                        if (
+                          currentProp[currentPropNames[m]].type == 'array' &&
+                          currentProp[currentPropNames[m]].items?.type ==
+                            'object'
+                        ) {
+                          const currentPropItems =
+                            await this.getPropertiesAnswers(
+                              currentProp[currentPropNames[m]].items.properties
+                            );
+                          if (moreAnswers[currentPropNames[m]]) {
+                            moreAnswers[currentPropNames[m]].push(
+                              currentPropItems
+                            );
+                          } else {
+                            moreAnswers[currentPropNames[m]] = [
+                              currentPropItems,
+                            ];
+                          }
+                        } else {
+                          moreAnswers[currentPropNames[m]] =
+                            await this.getPropertiesAnswers(currentProp);
+                        }
+                        const question = {
+                          type: 'confirm',
+                          name: 'value',
+                          message: `Would like to add more ${currentPropNames[m]}?`,
+                          initial: true,
+                        };
+                        const { value } = await prompts(question);
+                        if (!value) {
+                          addMoreMore = false;
+                        }
+                      }
+                    }
+                  }
+                  if (answers[childrenProps[k]]) {
+                    answers[childrenProps[k]] =
+                      answers[childrenProps[k]].concat(moreAnswers);
+                  } else {
+                    answers[childrenProps[k]] = moreAnswers;
+                  }
+                }
+              }
+            }
+          }
+        }
+        this.addConcept(this.kody, this.concept, answers);
+      }
     })();
   }
+  static async getCurrentConcept() {
+    const concepts = await this.getDependencyConcepts(this.kody);
+    return concepts[this.concept];
+  }
 
+  static async getPropertiesAnswers(concept: any) {
+    const schemaDefinition = this.getSchemaDefinition(this.kody);
+
+    const conceptNames = Object.keys(concept || {});
+
+    if (conceptNames.length == 0) {
+      return [];
+    }
+    const answers: any = {};
+    for (let i = 0; i < conceptNames.length; i++) {
+      const currentConcept = concept[conceptNames[i]];
+      if (
+        currentConcept.type !== 'array' &&
+        currentConcept.items?.type !== 'object'
+      ) {
+        const question = await this.conceptToQuestion(
+          conceptNames[i],
+          concept[conceptNames[i]],
+          schemaDefinition,
+          false,
+          false,
+          `${conceptNames[i]}`,
+          true
+        );
+        if (question) {
+          const answer = await prompts(question);
+          answers[conceptNames[i]] = answer.value;
+        }
+      }
+      if (
+        currentConcept.type === 'array' &&
+        currentConcept.items?.type === 'object'
+      ) {
+        const question = {
+          type: 'confirm',
+          name: 'value',
+          message: `Would you like to add ${conceptNames[i]}?`,
+          initial: true,
+        };
+        const { value } = await prompts(question);
+        if (value) {
+          let addMore = true;
+          while (addMore) {
+            const childConcept = await this.getPropertiesAnswers(
+              currentConcept.items.properties
+            );
+            if (answers[conceptNames[i]]) {
+              answers[conceptNames[i]].push(childConcept);
+            } else {
+              answers[conceptNames[i]] = [childConcept];
+            }
+            const question = {
+              type: 'confirm',
+              name: 'value',
+              message: `Would you like to add more ${conceptNames[i]}?`,
+              initial: true,
+            };
+            const { value } = await prompts(question);
+            if (!value) {
+              addMore = false;
+            }
+          }
+        }
+      }
+    }
+    return answers;
+  }
+  static async getConceptQuestion() {
+    const concepts = await this.getDependencyConcepts(this.kody);
+    const conceptNames = Object.keys(concepts || {});
+    if (conceptNames.length == 0) {
+      return false;
+    }
+    const question = {
+      type: 'select',
+      name: 'concept',
+      message: `Select the concept you want to add?`,
+      choices: conceptNames.map((concept: string) => ({
+        title: capitalize(concept),
+        value: concept,
+      })),
+    };
+    return question;
+  }
   static async getKodyQuestion() {
     const { dependencies } = await this.getPackageDependencies();
     if (dependencies.length == 0) {
@@ -100,7 +348,10 @@ export class Action {
       type: 'select',
       name: 'kody',
       message: `Select the kody package?`,
-      choices: dependencies,
+      choices: dependencies.map((dep: string) => ({
+        title: capitalize(dep.replace('-kodyfire', '')),
+        value: dep,
+      })),
     };
     return question;
   }
@@ -175,7 +426,7 @@ export class Action {
       this.displayMessage(error.message);
     }
   }
-  static getSchemaDefinition(dependency: string, rootDir: string) {
+  static getSchemaDefinition(dependency: string, rootDir = process.cwd()) {
     return JSON.parse(
       fs.readFileSync(
         join(rootDir, `kody-${dependency.replace('-kodyfire', '')}.json`),
@@ -185,11 +436,20 @@ export class Action {
   }
   static async conceptToQuestion(
     name: string,
-    concept: { type?: string; enum?: any },
+    concept: {
+      description: { description: any };
+      default?: any;
+      type?: string;
+      enum?: any;
+      items?: any;
+    },
     concepts: any = {},
     message: boolean | string = false,
-    useIndex = false
+    useIndex = false,
+    label = '',
+    useValueAsName = false
   ): Promise<any | void> {
+    label = label || name;
     if (concepts[name] && typeof concepts[name] != 'string') {
       const choices = concepts[name].map((c: any, index: any) => ({
         title: c.name || `${capitalize(name)} ${index}`,
@@ -197,32 +457,46 @@ export class Action {
       }));
       return {
         type: 'select',
-        name: name,
-        message: message || `Select the value for ${name}?`,
+        name: useValueAsName ? 'value' : name,
+        message: message || `Select the value for ${label}?`,
         choices: choices,
       };
     }
     if (typeof concept.enum !== 'undefined') {
       return {
         type: 'select',
-        name: name,
-        message: message || `Select the value for ${name}?`,
+        name: useValueAsName ? 'value' : name,
+        message: message || `Select the value for ${label}?`,
+        ...(concept.description && { description: concept.description }),
         choices: concept.enum.map((c: any) => ({ title: c, value: c })),
       };
     }
     if (concept.type === 'string') {
-      return {
-        type: 'text',
-        name: name,
-        message: message || `What is the value for ${name}?`,
-      };
+      return concept.default
+        ? {
+            type: 'text',
+            name: useValueAsName ? 'value' : name,
+            initial: concept.default,
+            ...(concept.description && { description: concept.description }),
+            message: message || `What is the value for ${label}?`,
+          }
+        : {
+            type: 'text',
+            name: useValueAsName ? 'value' : name,
+            ...(concept.description && { description: concept.description }),
+            message: message || `What is the value for ${label}?`,
+          };
     }
     if (concept.type === 'array') {
-      return {
-        type: 'array',
-        name: name,
-        message: message || `What is the value for ${name}?`,
-      };
+      if (concept.items.type == 'string') {
+        return {
+          type: 'text',
+          name: useValueAsName ? 'value' : name,
+          ...(concept.description && { description: concept.description }),
+          message: message || `What is the value for ${label}?`,
+        };
+      }
     }
+    return false;
   }
 }
