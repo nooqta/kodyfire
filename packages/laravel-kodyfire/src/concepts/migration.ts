@@ -142,6 +142,9 @@ export class Migration extends Concept {
 
   getCommonOptions(field: any) {
     let commonOptions = '';
+    if (!field.options) {
+      return commonOptions;
+    }
     field.options.forEach((op: any) => {
       if (['unique', 'nullable', 'unsigned'].includes(op.key)) {
         commonOptions += `->${op.key}()`;

@@ -22,7 +22,10 @@ export const controller = {
     model: model,
     namespace: { type: 'string' },
     template: { enum: ['controller.php.template'] },
-    routeType: { type: 'enum', enum: ['resource', 'apiResource'] },
+    routeType: {
+      type: 'string',
+      enum: ['detailed', 'resource', 'apiResource'],
+    },
     middleware: {
       type: 'array',
       items: {
@@ -36,17 +39,70 @@ export const controller = {
         properties: {
           name: { type: 'string' },
           type: {
-            type: 'enum',
-            enum: ['index', 'store', 'show', 'update', 'destroy'],
+            type: 'string',
+            enum: [
+              'index',
+              'store',
+              'show',
+              'update',
+              'destroy',
+              'deleteMany',
+              'getByUser',
+              'getUserRelation',
+              'storeWithManyRelation',
+              'updateWithManyRelation',
+              'downloadPDF',
+              'generate',
+            ],
+          },
+          options: {
+            type: 'object',
+            properties: {
+              template: { type: 'string' },
+              data: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    placeholder: { type: 'string' },
+                    value: { type: 'string' },
+                    convert_to_pdf: { type: 'boolean', default: false },
+                    save_on_disc: { type: 'boolean', default: true },
+                  },
+                },
+              },
+            },
           },
           routeName: { type: 'string' },
           relation: { type: 'string' },
           middleware: { type: 'string' },
+          searchBy: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                name: { type: 'string' },
+                type: { type: 'string' },
+              },
+            },
+          },
+          filterBy: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                relation: { type: 'string' },
+                relationName: { type: 'string' },
+                field: { type: 'string' },
+                type: { type: 'string' },
+              },
+            },
+          },
         },
       },
     },
   },
-  required: ['template', 'namespace', 'model'],
+  required: ['template', 'model'],
 };
 export const baseModel = {
   type: 'object',
@@ -57,6 +113,7 @@ export const baseModel = {
       enum: ['model.php.template'],
       default: 'model.php.template',
     },
+    softDelete: { type: 'boolean', default: false },
     relationships: {
       type: 'array',
       items: {
@@ -64,7 +121,7 @@ export const baseModel = {
         properties: {
           name: { type: 'string' },
           type: {
-            type: 'enum',
+            type: 'string',
             enum: [
               'hasOne',
               'hasMany',
@@ -77,8 +134,93 @@ export const baseModel = {
         },
       },
     },
+    fields: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          type: {
+            type: 'string',
+            enum: [
+              'string',
+              'integer',
+              'enum',
+              'decimal',
+              'dateTime',
+              'date',
+              'time',
+              'boolean',
+              'json',
+              'text',
+            ],
+          },
+          faker_type: {
+            type: 'string',
+            description: 'Checkout https://phpfaker.com/ for reference',
+            enum: [
+              'name',
+              'email',
+              'phoneNumber',
+              'dateTime',
+              'address',
+              'randomDigit',
+              'randomNumber',
+              'randomFloat',
+              'sentence',
+              'text',
+              'company',
+              'buildingNumber',
+              'streetAddress',
+              'secondaryAddress',
+              'subdivision',
+              'city',
+              'governorate',
+              'country',
+              'postcode',
+            ],
+          },
+          arguments: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
+          options: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                key: { type: 'string' },
+                value: { type: 'string' },
+              },
+            },
+          },
+        },
+      },
+    },
+    foreign_keys: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          model: model,
+          column: { type: 'string' },
+          reference: { type: 'string', default: 'id' },
+          on: { type: 'string' },
+          onUpdate: { type: 'string', default: 'cascade' },
+          onDelete: { type: 'string', default: 'cascade' },
+        },
+      },
+    },
+    fillable: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
+    },
   },
-  required: ['template', 'namespace', 'model'],
+  required: ['template', 'namespace', 'name'],
 };
 export const controllerArray = {
   type: 'array',

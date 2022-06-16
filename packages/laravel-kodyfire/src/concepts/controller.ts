@@ -27,10 +27,12 @@ export class Controller implements IConcept {
     this.model = this.technology.input.model.find(
       (m: any) => m.name.toLowerCase() == _data.model.toLowerCase()
     );
+    this.model.controller = _data;
   }
   async generate(_data: any) {
     this.setModel(_data);
     this.engine = new Engine();
+    console.log(_data);
 
     const template = await this.engine.read(this.template.path, _data.template);
     _data.methods = await this.getControllerMethods(this.model);
@@ -73,7 +75,7 @@ export class Controller implements IConcept {
         .join(',');
     }
     const action = model.controller.actions.find(
-      (a: any) => a.name === 'getAll'
+      (a: any) => a.name === 'getAll' || a.name === 'index'
     );
 
     let load = '';
@@ -366,7 +368,7 @@ public function ${action.name}(Request  $request) {
     } $${model.name.toLowerCase()})
     {
       $data = $this->prepareData($${model.name.toLowerCase()});
-      $template = storage_path('app/public/uploads/${action.options.template}');
+      $template = resource_path('templates/${action.options.template}');
       $templateProcessor = new \\PhpOffice\\PhpWord\\TemplateProcessor($template);
   
       // Replace variables

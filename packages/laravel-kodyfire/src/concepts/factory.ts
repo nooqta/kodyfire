@@ -102,7 +102,7 @@ export class Factory extends Concept {
         return `${faker}->url()`;
       }
       if (el.faker_type != 'password') {
-        if (el.options.includes('unique')) {
+        if (el.options && el.options.includes('unique')) {
           return `${faker}->unique()->${el.faker_type}`;
         } else {
           return `${faker}->${el.faker_type}`;
