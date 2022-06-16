@@ -11,6 +11,7 @@ export class Package {
     this.kody = kody;
     this.registeredKodies = new Map();
   }
+
   async registerPackages() {
     const packages = Package.getInstalledKodiesName();
     for (const _package of packages) {
