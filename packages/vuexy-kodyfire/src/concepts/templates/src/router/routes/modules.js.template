@@ -7,7 +7,7 @@ export default [
     {
       path: '<%= path %>',
       name: '<%= pluralize ../name %>-<%= routeName %>',
-      component: () => import('@/views/modules/<%= ../name %>/<%= ../name %>-<%= routeName %>/<%=  classify ../name %>{<%= classify routeName %>}.vue'),
+      component: () => import('@/views/modules/<%= ../name %>/<%= pluralize ../name %>-<%= routeName %>/<%=  classify (pluralize ../name) %>{<%= classify routeName %>}.vue'),
       meta: {
         pageTitle: '<%= pluralize ../name %>',
          <%=#each meta %>

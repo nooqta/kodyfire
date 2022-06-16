@@ -27,6 +27,7 @@
     </b-tab>
     <!--/ general tab -->
 
+    <%=!-- 
     <!-- change password tab -->
     <b-tab>
 
@@ -41,8 +42,9 @@
       </template>
 
       <account-setting-password />
-    </b-tab>
+    </b-tab> 
     <!--/ change password tab -->
+    --%>
 
     <!-- notification -->
     <b-tab>
@@ -70,7 +72,6 @@ import { BTabs, BTab } from 'bootstrap-vue'
 import AccountSettingGeneral from './AccountSettingGeneral.vue'
 import AccountSettingPassword from './AccountSettingPassword.vue'
 import AccountSettingInformation from './AccountSettingInformation.vue'
-import AccountSettingSocial from './AccountSettingSocial.vue'
 import AccountSettingNotification from './AccountSettingNotification.vue'
 
 export default {
@@ -80,7 +81,6 @@ export default {
     AccountSettingGeneral,
     AccountSettingPassword,
     AccountSettingInformation,
-    AccountSettingSocial,
     AccountSettingNotification,
   },
   data() {
@@ -89,7 +89,7 @@ export default {
     }
   },
   beforeCreate() {
-    this.$http.get('/account-setting/data').then(res => { this.options = res.data })
+    this.$http.get('/account-setting').then(res => { this.options = res.data })
   },
 }
 </script>

@@ -4,8 +4,8 @@
     <b-form class="mt-2">
       <b-row>
         
-<%=#each formGroups %>
-    <!-- Header: <%= classify name %> -->
+<%=#each data.form_groups %>
+    <!-- Header: <%= classify title %> -->
     <div class="d-flex">
       <feather-icon
         icon="<%= icon %>Icon"
@@ -29,7 +29,7 @@
             label="<%= label %>"
             label-for="<%= dasherize name %>"
           >
-        <%=#ifEquals type 'datetime' %>
+        <%=#ifEquals type 'dateTime' %>
             <flat-pickr
               v-model="<%= ../../name %>Data.<%= name %>"
               class="form-control"
