@@ -38,8 +38,6 @@ export class Action {
           });
           // get the deb package schema file
           const { schema } = await import(`${dep}/src/parser/validator/schema`);
-          const concepts = await this.getDependencyConcepts(dep);
-          console.log(concepts);
           for (const prop of Object.keys(schema.properties)) {
             entries[prop] = [];
           }

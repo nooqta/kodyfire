@@ -42,7 +42,7 @@ export class Runner implements IKodyWorkflow {
     for (const key in data) {
       for (const concept of data[key]) {
         if (typeof concept.domino !== 'undefined') {
-          for (const related of concept.generateRelated) {
+          for (const related of concept.domino) {
             const relatedConcept = data[related].find(
               (item: any) => item[key] === concept.name
             );

@@ -572,6 +572,26 @@ class Action {
           );
         }
       }
+      if (concept.type === 'boolean') {
+        return Object.assign(
+          Object.assign(
+            Object.assign(
+              Object.assign(
+                { type: 'select', name: useValueAsName ? 'value' : name },
+                concept.description && { description: concept.description }
+              ),
+              { message: message || `What is the value for ${label}?` }
+            ),
+            concept.default && { initial: concept.default }
+          ),
+          {
+            choices: [
+              { title: 'true', value: true },
+              { title: 'false', value: false },
+            ],
+          }
+        );
+      }
       return false;
     });
   }

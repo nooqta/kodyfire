@@ -1,0 +1,25 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\\{{classify name}};
+use Tests\ApiV1;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
+use Tests\TestCase;
+
+class {{name}}Test extends TestCase
+{
+    use RefreshDatabase, ApiV1;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->artisan('migrate:fresh --env=testing');
+        $this->artisan('db:seed --env=testing');
+        $this->apiSetUp();
+    }
+
+    {{{ getTests }}}
+
+}

@@ -32,7 +32,6 @@ export class Controller implements IConcept {
   async generate(_data: any) {
     this.setModel(_data);
     this.engine = new Engine();
-    console.log(_data);
 
     const template = await this.engine.read(this.template.path, _data.template);
     _data.methods = await this.getControllerMethods(this.model);

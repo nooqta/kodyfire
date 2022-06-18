@@ -13,3 +13,4 @@ export { DatabaseSeed } from './concepts/databaseSeed';
 export { Auth } from './concepts/auth';
 export { Dependency } from './concepts/dependency';
 export { Databag } from './concepts/databag';
+export { Test } from './concepts/test';

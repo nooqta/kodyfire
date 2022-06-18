@@ -113,8 +113,6 @@ class Action {
             const { schema } = yield Promise.resolve().then(() =>
               __importStar(require(`${dep}/src/parser/validator/schema`))
             );
-            const concepts = yield this.getDependencyConcepts(dep);
-            console.log(concepts);
             for (const prop of Object.keys(schema.properties)) {
               entries[prop] = [];
             }

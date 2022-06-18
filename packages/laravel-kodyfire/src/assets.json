@@ -95,6 +95,16 @@
       }
     },
     {
+      "name": "test",
+      "defaultAction": "create",
+      "source": "template",
+      "outputDir": "tests",
+      "template": {
+        "path": "templates/",
+        "options": ["test.php.template"]
+      }
+    },
+    {
       "name": "seed",
       "defaultAction": "create",
       "source": "template",

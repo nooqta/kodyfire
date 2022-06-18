@@ -20,7 +20,7 @@ export const controller = {
   type: 'object',
   properties: {
     model: model,
-    namespace: { type: 'string' },
+    namespace: { type: 'string', default: 'App\\Http\\Controllers' },
     template: { enum: ['controller.php.template'] },
     routeType: {
       type: 'string',
@@ -234,7 +234,7 @@ export const request = {
   type: 'object',
   properties: {
     model: model,
-    namespace: { type: 'string' },
+    namespace: { type: 'string', default: 'App\\Requests' },
     template: { enum: ['request.php.template'] },
     prefix: { type: 'string', default: 'Create' },
   },
@@ -283,7 +283,7 @@ export const repository = {
   type: 'object',
   properties: {
     model: model,
-    namespace: { type: 'string' },
+    namespace: { type: 'string', default: 'App\\Repositories' },
     template: {
       enum: [
         'repository.php.template',
@@ -325,18 +325,35 @@ export const web = {
 export const factory = {
   type: 'object',
   properties: {
-    namespace: { type: 'string' },
+    namespace: { type: 'string', default: 'Database\\Factories' },
     model: { type: 'string' },
     template: { enum: ['factory.php.template'] },
   },
   required: ['model', 'namespace', 'template'],
 };
+export const test = {
+  type: 'object',
+  properties: {
+    model: { type: 'string' },
+    template: { enum: ['test.php.template'] },
+  },
+  required: ['model', 'template'],
+};
 
 export const seed = {
   type: 'object',
   properties: {
-    namespace: { type: 'string' },
-    model: { type: ['boolean', 'string'] },
+    namespace: { type: 'string', default: 'Database\\Seeds' },
+    model: {
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'boolean',
+        },
+      ],
+    },
     template: {
       enum: [
         'seed.php.template',
@@ -415,6 +432,10 @@ export const factoryArray = {
   type: 'array',
   items: factory,
 };
+export const testArray = {
+  type: 'array',
+  items: test,
+};
 
 export const seedArray = {
   type: 'array',
@@ -447,6 +468,7 @@ export const schema = {
     project: { type: 'string' },
     model: modelArray,
     controller: controllerArray,
+    test: testArray,
     request: requestArray,
     kernel: kernelArray,
     repository: repositoryArray,
