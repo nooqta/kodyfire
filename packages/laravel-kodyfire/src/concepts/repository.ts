@@ -160,8 +160,8 @@ export class Repository extends Concept {
       model.controller.with_additional_relations &&
       model.controller.with_additional_relations.length > 0
     ) {
-      model.controller.with_additional_relations.forEach((element: any) => {
-        content += this.getMethod(element);
+      model.controller.with_additional_relations.forEach((relation: any) => {
+        content += this.getMethod(relation);
       });
     }
     return content;
@@ -177,6 +177,13 @@ export class Repository extends Concept {
                       }()->createMany($data['${this.underscorize(
           relation.name
         )}']);
+                  }\n`;
+        break;
+      case 'hasOne':
+        content = `if(isset($data['${this.underscorize(relation.name)}'])){
+                      $model->${
+                        relation.name
+                      }()->create($data['${this.underscorize(relation.name)}']);
                   }\n`;
         break;
 
