@@ -24,6 +24,11 @@ export class Action {
         rootDir: _args.rootDir,
         sources: [],
       };
+      if (dependencies.length == 0) {
+        this.displayMessage(
+          'No dependencies found. Install kody dependencies first. Use kody search to find the dependencies.'
+        );
+      }
       if (dependencies.length > 0) {
         for (const dep of dependencies) {
           const entries: any = {};
