@@ -49,7 +49,7 @@ export class InstallAction extends Action {
     }
 
     this.terminal.show();
-    const cmd = `${project.command} ${project.args.join(' ')}`;
+    // const cmd = `${project.command} ${project.args.join(' ')}`;
     this.terminal.sendText(
       `${project.command} ${project.args.join(' ').toString()}`
     );
@@ -98,7 +98,7 @@ export class InstallAction extends Action {
   static async showInputBox(options: any) {
     const result = await vscode.window.showInputBox({
       prompt: options.message,
-      validateInput: text => {
+      validateInput: (_text: string) => {
         return null;
         // return text !== '' ? null : 'Please enter a value';
         //return !(/^[A-Za-z\s]+$/.test(text)) ? 'Name not valid' : null;

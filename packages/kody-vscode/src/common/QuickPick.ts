@@ -136,7 +136,7 @@ export async function multiStepInput(context: ExtensionContext) {
 
   function shouldResume() {
     // Could show a notification with the option to resume.
-    return new Promise<boolean>((resolve, reject) => {
+    return new Promise<boolean>((_resolve, _reject) => {
       // noop
     });
   }
@@ -148,8 +148,8 @@ export async function multiStepInput(context: ExtensionContext) {
   }
 
   async function getAvailableRuntimes(
-    resourceGroup: QuickPickItem | string,
-    token?: CancellationToken
+    _resourceGroup: QuickPickItem | string,
+    _token?: CancellationToken
   ): Promise<QuickPickItem[]> {
     // ...retrieve...
     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -195,7 +195,7 @@ interface InputBoxParameters {
 }
 
 class MultiStepInput {
-  static async run<T>(start: InputStep) {
+  static async run(start: InputStep) {
     const input = new MultiStepInput();
     return input.stepThrough(start);
   }
@@ -203,7 +203,7 @@ class MultiStepInput {
   private current?: QuickInput;
   private steps: InputStep[] = [];
 
-  private async stepThrough<T>(start: InputStep) {
+  private async stepThrough(start: InputStep) {
     let step: InputStep | void = start;
     while (step) {
       this.steps.push(step);

@@ -1,0 +1,1 @@
+{"version":3,"file":"SearchAction.d.ts","sourceRoot":"","sources":["SearchAction.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,MAAM,IAAI,gBAAgB,EAAE,MAAM,qCAAqC,CAAC;AAEjF,qBAAa,YAAa,SAAQ,gBAAgB;IAChD,MAAM,CAAC,cAAc,CAAC,OAAO,EAAE,MAAM,GAAG,IAAI;CAG7C"}

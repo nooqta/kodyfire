@@ -6,7 +6,6 @@ import { ListAction } from './commands/ListAction';
 import { SearchAction } from './commands/SearchAction';
 import { InstallAction } from './commands/InstallAction';
 import { InitAction } from './commands/InitAction';
-import { promises as fs } from 'fs';
 import { Package } from 'kodyfire-core';
 import { ConceptsProvider } from './concepts';
 
@@ -41,7 +40,7 @@ const cloneCommand = vscode.commands.registerCommand(
           return;
         }
       }
-      const cmd = await InstallAction.runCommand({
+      await InstallAction.runCommand({
         command: 'npm',
         args: ['install', moduleName.label],
       });
@@ -69,6 +68,8 @@ export async function activate(context: vscode.ExtensionContext) {
     InstallAction.output.append(error);
   }
   let disposableInstall = cloneCommand;
+  context.subscriptions.push(disposableInstall);
+
   let disposableBoilerPlate = vscode.commands.registerCommand(
     'kodyfire.clone',
     async () => {
@@ -101,7 +102,7 @@ export async function activate(context: vscode.ExtensionContext) {
                 : null;
             },
           })) || '.';
-        const cmd = await InstallAction.runCommand({
+        await InstallAction.runCommand({
           command: 'git',
           args: ['clone', repoUrl, repoName],
         });
@@ -110,6 +111,7 @@ export async function activate(context: vscode.ExtensionContext) {
       }
     }
   );
+  context.subscriptions.push(disposableBoilerPlate);
   let disposable = vscode.commands.registerCommand(
     'kodyfire.list',
     async () => {
@@ -121,6 +123,8 @@ export async function activate(context: vscode.ExtensionContext) {
       }
     }
   );
+  context.subscriptions.push(disposable);
+
   let conceptDisposable = vscode.commands.registerCommand(
     'kodyfire.addConcept',
     async args => {
@@ -167,6 +171,8 @@ export async function activate(context: vscode.ExtensionContext) {
       }
     }
   );
+  context.subscriptions.push(conceptDisposable);
+
   let conceptPropDisposable = vscode.commands.registerCommand(
     'kodyfire.addConceptProperty',
     async args => {
@@ -237,6 +243,7 @@ export async function activate(context: vscode.ExtensionContext) {
       }
     }
   );
+  context.subscriptions.push(conceptPropDisposable);
   let initDisposable = vscode.commands.registerCommand(
     'kodyfire.init',
     async () => {
@@ -282,8 +289,7 @@ export async function activate(context: vscode.ExtensionContext) {
       }
     }
   );
-
-  context.subscriptions.push(disposable);
+  context.subscriptions.push(initDisposable);
 }
 
 async function getConcepts() {
