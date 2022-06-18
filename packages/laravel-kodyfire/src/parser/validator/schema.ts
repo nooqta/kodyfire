@@ -109,6 +109,7 @@ export const baseModel = {
   properties: {
     name: { type: 'string' },
     namespace: { type: 'string', default: 'App\\Models' },
+    isMorph: { type: 'boolean', default: false },
     template: {
       enum: ['model.php.template'],
       default: 'model.php.template',
@@ -145,12 +146,12 @@ export const baseModel = {
             enum: [
               'string',
               'integer',
+              'boolean',
               'enum',
               'decimal',
               'dateTime',
               'date',
               'time',
-              'boolean',
               'json',
               'text',
             ],
@@ -159,8 +160,10 @@ export const baseModel = {
             type: 'string',
             description: 'Checkout https://phpfaker.com/ for reference',
             enum: [
+              'word',
               'name',
               'email',
+              'boolean',
               'phoneNumber',
               'dateTime',
               'address',

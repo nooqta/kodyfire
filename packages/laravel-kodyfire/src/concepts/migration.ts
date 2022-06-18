@@ -39,10 +39,11 @@ export class Migration extends Concept {
     const template = await this.engine.read(this.template.path, _data.template);
     await this.appendData(_data);
     const compiled = await this.engine.compile(template, this.model);
+    const filename = await this.getFilename(this.model);
     await this.engine.createOrOverwrite(
       this.technology.rootDir,
       this.outputDir,
-      this.getFilename(this.model),
+      filename,
       compiled
     );
   }
@@ -83,8 +84,20 @@ export class Migration extends Concept {
     } while (!afterXms.isSame(now));
   }
 
-  getFilename(model: any) {
+  async getFilename(model: any) {
     if (model.filename) return model.filename;
+    // Check if a file exists in the migration folder
+    const files = await this.engine.getFiles(
+      this.technology.rootDir,
+      this.outputDir
+    );
+    const suffix = `_create_${strings.dasherize(
+      pluralize(model.name)
+    )}_table.php`;
+    const file = files.find((f: any) => f.includes(suffix));
+    if (file) {
+      return file;
+    }
     const date = new Date();
     const m = date.getMonth();
     const d = date.getDate();
@@ -92,9 +105,7 @@ export class Migration extends Concept {
     const s = date.getTime();
     this.wait(1000);
     const ms = moment(date).add(300, 'milliseconds').toDate().getMilliseconds();
-    return `${y}_${m}_${d}_${s}${ms}_create_${strings.dasherize(
-      pluralize(model.name)
-    )}_table.php`;
+    return `${y}_${m}_${d}_${s}${ms}${suffix}`;
   }
 
   getMigrationName(model: any) {
@@ -113,12 +124,13 @@ export class Migration extends Concept {
   async getMigrationAttributes(model: any) {
     let data = '';
     // data += await this.getFields(model);
-
-    model.foreign_keys.forEach((el: any) => {
-      data += `$table->foreignId('${el.column}')->references('${
-        el.references
-      }')->on('${el.on}')${this.getCascade(el)};\n`;
-    });
+    if (model.foreign_keys) {
+      model.foreign_keys.forEach((el: any) => {
+        data += `$table->foreignId('${el.column}')->references('${
+          el.references
+        }')->on('${el.on}')${this.getCascade(el)};\n`;
+      });
+    }
 
     if (model.isMorph) {
       data += `$table->morphs('${model.name.toLowerCase()}able');\n`;

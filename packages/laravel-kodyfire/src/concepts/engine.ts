@@ -101,4 +101,9 @@ export class Engine {
     await fsPromises.mkdir(dirname(filename), { recursive: true });
     await fsPromises.writeFile(filename, content);
   }
+
+  async getFiles(rootDir: string, outputDir: string) {
+    const files = await fsPromises.readdir(join(rootDir, outputDir));
+    return files;
+  }
 }

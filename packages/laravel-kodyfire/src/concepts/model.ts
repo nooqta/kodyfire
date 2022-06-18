@@ -44,6 +44,9 @@ export class Model implements IConcept {
 
   getModelRelations(model: any): string {
     let relations = '';
+    if (!model.relationships) {
+      return relations;
+    }
     model.relationships.forEach((rel: any) => {
       if (rel.type === 'morphTo') {
         relations += `public function ${rel.name}()

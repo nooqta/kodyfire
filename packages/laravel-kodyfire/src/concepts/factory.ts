@@ -32,11 +32,13 @@ export class Factory extends Concept {
     let data = '';
     data += `use Faker\\Generator as Faker;\n`;
     data += `use App\\Models\\${this.model.name};\n`;
-    this.model.relationships.forEach((el: any) => {
-      if (el.type == 'belongsTo') {
-        data += `use App\\Models\\${el.model};\n`;
-      }
-    });
+    if (this.model.relationships) {
+      this.model.relationships.forEach((el: any) => {
+        if (el.type == 'belongsTo') {
+          data += `use App\\Models\\${el.model};\n`;
+        }
+      });
+    }
     return data;
   }
   setModel(_data: any) {
@@ -74,10 +76,12 @@ export class Factory extends Concept {
       });
 
     // @todo add relations
-    model.foreign_keys.forEach((el: any) => {
-      el.name = el.column;
-      data += `'${el.column}' => ${this.generateFaker(el)},\n`;
-    });
+    if (model.foreign_keys) {
+      model.foreign_keys.forEach((el: any) => {
+        el.name = el.column;
+        data += `'${el.column}' => ${this.generateFaker(el)},\n`;
+      });
+    }
 
     if (model.isMorph) {
       data += `'${model.name.toLowerCase()}able_id' => 1,
