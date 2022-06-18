@@ -100,6 +100,10 @@ export class Action {
       const response = await prompts(questions);
       const { name, technology } = response;
       // create project
+      if (!technology || !name) {
+        this.displayMessage('Missing required fields');
+        return;
+      }
       const project = projects.find(project => project.name === technology);
       if (!project) {
         this.displayMessage(`Project ${technology} not found`);
