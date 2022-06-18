@@ -1,28 +1,94 @@
 <template>
-  <b-card>
-    <!-- form -->
+ <b-card>
     <b-form class="mt-2">
       <b-row>
-        
-<%=#each data.form_groups %>
-    <!-- Header: <%= classify title %> -->
-    <div class="d-flex">
-      <feather-icon
-        icon="<%= icon %>Icon"
-        size="19"
-      />
-      <h4 class="mb-0 ml-50">
-        <%= classify title %>
-      </h4>
-    </div>
+        <b-col
+          cols="12"
+          md="12"
+        >
+          <b-alert
+            v-model="showMessage"
+            dismissible
+            :variant="messageType"
+          >
+            <div class="alert-body">
+              <feather-icon
+                class="mr-25"
+                icon="InfoIcon"
+              />
+              <span
+                class="ml-25"
+                v-html="message"
+              />
+            </div>
+          </b-alert>
+        </b-col>
+      </b-row>
+      <!-- media -->
+      <b-media no-body>
+        <b-media-aside>
+          <b-link>
+            <b-img
+              v-if="optionsLocal.logo"
+              ref="previewEl"
+              rounded
+              :src="optionsLocal.logo"
+              height="80"
+            />
+            <b-img
+              v-if="!optionsLocal.logo"
+              ref="previewEl"
+              rounded
+              src="/logo-placeholder.png"
+              height="80"
+            />
+          </b-link>
+        <!--/ avatar -->
+        </b-media-aside>
 
+        <b-media-body class="mt-75 ml-75">
+          <!-- upload button -->
+          <b-button
+            v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+            variant="primary"
+            size="sm"
+            class="mb-75 mr-75"
+            @click="$refs.refInputEl.$el.click()"
+          >
+            تحميل
+          </b-button>
+          <b-form-file
+            ref="refInputEl"
+            v-model="profileFile"
+            accept=".jpg, .png, .gif"
+            :hidden="true"
+            plain
+            @input="inputImageRenderer"
+          />
+          <!--/ upload button -->
+
+          <!-- reset -->
+          <b-button
+            v-ripple.400="'rgba(186, 191, 199, 0.15)'"
+            variant="outline-secondary"
+            size="sm"
+            class="mb-75 mr-75"
+          >
+            إعادة ضبط
+          </b-button>
+          <!--/ reset -->
+          <b-card-text>السيغة المسموح بها JPG أو GIF أو PNG.بحد أقصى 2 ميجابايت</b-card-text>
+        </b-media-body>
+      </b-media>
+      <!--/ media -->
         
-      <b-row>
-        <%=#each fields %>
+      <!-- form -->
+      <b-row class="mt-2">
+        <%=#each form_fields %>
         <b-col
           cols="12"
           md="6"
-          lg="4"
+          lg="6"
         >
         <!-- Field: <%= name %> -->
         <b-form-group
@@ -71,28 +137,6 @@
         </b-col>
          <%=/each%>
       </b-row>
-      <%=/each%>
-        <!-- alert -->
-        <b-col
-          cols="12"
-          class="mt-75"
-        >
-          <b-alert
-            show
-            variant="warning"
-            class="mb-50"
-          >
-            <h4 class="alert-heading">
-              لم يتم تأكيد بريدك الإلكتروني.يرجى التحقق من البريد الوارد الخاص بك.
-            </h4>
-            <div class="alert-body">
-              <b-link class="alert-link">
-                أعد إرسال التأكيد
-              </b-link>
-            </div>
-          </b-alert>
-        </b-col>
-        <!--/ alert -->
 
         <b-col cols="12">
           <b-button
@@ -124,6 +168,8 @@ import {
 import Ripple from 'vue-ripple-directive'
 import { useInputImageRenderer } from '@core/comp-functions/forms/form-utils'
 import { ref } from '@vue/composition-api'
+import { alertMessageMixin } from '@core/mixins/ui/feedback'
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
 export default {
   components: {
@@ -143,14 +189,24 @@ export default {
     BMediaBody,
     BLink,
   },
-  directives: {
-    Ripple,
-  },
   props: {
+
     generalData: {
       type: Object,
       default: () => {},
     },
+  },
+  mixins: [alertMessageMixin],
+  directives: {
+    Ripple,
+  },
+  props: {
+    <%=#each options %>
+    <%= option %>Data: {
+      type: Object,
+      default: () => {},
+    },
+    <%=/each%>
   },
   data() {
     return {
@@ -159,6 +215,43 @@ export default {
     }
   },
   methods: {
+     update<%= capitalize name %>() {
+      this.$http.put(`/api/<%= name %>/${this.<%= name %>Data.id}`, this.<%= name %>Data).then(response => {
+        console.log(response)
+        this.$toast.success(response.data.message)
+        // router.push("/user").catch(() => {});
+      })
+        .catch(err => {
+          if (err.response) {
+            if (err.response.status === 422) {
+              this.$toast.error(err.response.data.message)
+              const { message, errors } = err.response.data
+              if (errors) {
+                const errorMessage = {
+                  message: '',
+                  type: 'danger',
+                }
+                Object.values(errors).forEach(error => {
+                  errorMessage.message += `${error[0]}<br>`
+                })
+                this.displayMessage(errorMessage)
+              }
+              this.$toast({
+                component: ToastificationContent,
+                props: {
+                  title: message,
+                  text: message,
+                  icon: 'AlertCircleIcon',
+                  variant: 'danger',
+                },
+              })
+            } else {
+              this.$toast.error(err.response.data.error)
+            }
+          }
+          console.log(err)
+        })
+    },
     resetForm() {
       this.optionsLocal = JSON.parse(JSON.stringify(this.generalData))
     },
