@@ -105,6 +105,16 @@
       }
     },
     {
+      "name": "lang",
+      "defaultAction": "create",
+      "source": "template",
+      "outputDir": "resources/lang",
+      "template": {
+        "path": "templates/",
+        "options": ["lang.php.template"]
+      }
+    },
+    {
       "name": "seed",
       "defaultAction": "create",
       "source": "template",

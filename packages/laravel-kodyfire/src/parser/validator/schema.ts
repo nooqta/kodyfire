@@ -340,6 +340,83 @@ export const test = {
   required: ['model', 'template'],
 };
 
+export const lang = {
+  type: 'object',
+  properties: {
+    model: { type: 'string' },
+    template: { enum: ['lang.php.template'] },
+    language: {
+      type: 'string',
+      enum: [
+        'ar',
+        'en',
+        'es',
+        'fr',
+        'de',
+        'it',
+        'pt',
+        'nl',
+        'ru',
+        'pl',
+        'ja',
+        'zh',
+        'ko',
+        'tr',
+        'uk',
+        'vi',
+        'id',
+        'fa',
+        'he',
+        'cs',
+        'sv',
+        'fi',
+        'ro',
+        'hu',
+        'ca',
+        'hr',
+        'el',
+        'sk',
+        'sl',
+        'sr',
+        'bg',
+        'da',
+        'lt',
+        'eo',
+        'et',
+        'gl',
+        'hi',
+        'is',
+        'kk',
+        'lv',
+        'mk',
+        'no',
+        'pa',
+        'pt_BR',
+        'pt_PT',
+        'ro_RO',
+        'sq',
+        'sv_SE',
+        'th',
+        'uk_UA',
+        'zh_CN',
+        'zh_TW',
+      ],
+      default: 'ar',
+    },
+    texts: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          key: { type: 'string' },
+          value: { type: 'string' },
+        },
+      },
+    },
+  },
+  required: ['model', 'template'],
+};
+
 export const seed = {
   type: 'object',
   properties: {
@@ -437,6 +514,11 @@ export const testArray = {
   items: test,
 };
 
+export const langArray = {
+  type: 'array',
+  items: lang,
+};
+
 export const seedArray = {
   type: 'array',
   items: seed,
@@ -469,6 +551,7 @@ export const schema = {
     model: modelArray,
     controller: controllerArray,
     test: testArray,
+    lang: langArray,
     request: requestArray,
     kernel: kernelArray,
     repository: repositoryArray,
