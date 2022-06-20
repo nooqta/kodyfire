@@ -15,3 +15,4 @@ export { Dependency } from './concepts/dependency';
 export { Databag } from './concepts/databag';
 export { Test } from './concepts/test';
 export { Lang } from './concepts/lang';
+export { CustomConcept } from './concepts/customConcept';

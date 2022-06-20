@@ -115,6 +115,16 @@
       }
     },
     {
+      "name": "customConcept",
+      "defaultAction": "create",
+      "source": "template",
+      "outputDir": "",
+      "template": {
+        "path": "templates/custom/",
+        "options": ["resources/lang/lang.php.template"]
+      }
+    },
+    {
       "name": "seed",
       "defaultAction": "create",
       "source": "template",

@@ -544,6 +544,33 @@ export const databagArray = {
   items: databag,
 };
 
+export const customConcept = {
+  type: 'object',
+  properties: {
+    name: { type: 'string' },
+    model: {
+      anyOf: [
+        {
+          type: 'string',
+        },
+        {
+          type: 'boolean',
+        },
+      ],
+    },
+    template: {
+      type: 'string',
+      enum: ['resources/lang/lang.php.template'],
+    },
+    outputDir: { type: 'string' },
+  },
+};
+
+export const customConceptArray = {
+  type: 'array',
+  items: customConcept,
+};
+
 export const schema = {
   type: 'object',
   properties: {
@@ -564,5 +591,6 @@ export const schema = {
     auth: authArray,
     dependency: dependencyArray,
     databag: databagArray,
+    customConcept: customConceptArray,
   },
 };
