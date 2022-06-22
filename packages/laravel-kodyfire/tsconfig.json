@@ -13,7 +13,7 @@
     "noImplicitThis": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "rootDir": "src/",
+    "rootDir": "/",
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "sourceMap": true,
@@ -21,6 +21,6 @@
     "target": "es6",
     "types": []
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "index.ts", "kody.ts"],
   "exclude": ["src/*/files/**/*", "node_modules"]
 }

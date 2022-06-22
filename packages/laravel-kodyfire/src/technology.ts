@@ -47,4 +47,27 @@ export class Technology implements ITechnology {
       console.log(error, 'error');
     }
   }
+  //@todo: refactor. exists in kodyfire-core technology.ts
+  async prepareConcept(
+    dependency: string,
+    conceptName: string,
+    preparedConcept: any
+  ) {
+    const { schema } = await import(
+      `${dependency}/src/parser/validator/schema`
+    );
+    const conceptSchema = schema.properties[conceptName];
+    const requirements: string[] = conceptSchema.items.required;
+    for (const requirement of requirements) {
+      // if(!Object.prototype.hasOwnProperty.call(conceptSchema, requirement)) {
+      //   throw new Error(`${conceptName} requires ${requirement}`);
+      // }
+      preparedConcept = {
+        ...preparedConcept,
+        [requirement]:
+          conceptSchema.items.properties[requirement].default || '',
+      };
+    }
+    return preparedConcept;
+  }
 }

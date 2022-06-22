@@ -14,4 +14,3 @@ export { DatabaseSeed } from './src/concepts/databaseSeed';
 export { Auth } from './src/concepts/auth';
 export { Dependency } from './src/concepts/dependency';
 export { Databag } from './src/concepts/databag';
-//# sourceMappingURL=index.d.ts.map

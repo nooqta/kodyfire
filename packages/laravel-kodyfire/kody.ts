@@ -29,9 +29,15 @@ export class Kody extends BaseKody implements IKody {
   parse(content: any) {
     return this.parser.parse(content);
   }
+
   read(source: any) {
     return this.parser.reader(source);
   }
+
+  write(source: string, content: any) {
+    return this.parser.write(source, content);
+  }
+
   get errors() {
     return this.parser.validator.errors;
   }

@@ -17,9 +17,9 @@ export declare class Kody extends BaseKody implements IKody {
   generate(_content: any): void;
   parse(content: any): any;
   read(source: any): any;
+  write(source: string, content: any): any;
   get errors(): any;
   get data(): any;
   whereami(): string;
   whoami(): string;
 }
-//# sourceMappingURL=kody.d.ts.map

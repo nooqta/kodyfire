@@ -12,7 +12,7 @@ const _1 = require('.');
 class Kody extends kodyfire_core_1.BaseKody {
   constructor(params) {
     super();
-    let validator = new _1.Validator();
+    const validator = new _1.Validator();
     this.params = params;
     this.parser = new _1.Parser(validator);
     this.generator = new _1.Generator(params);
@@ -27,6 +27,9 @@ class Kody extends kodyfire_core_1.BaseKody {
   }
   read(source) {
     return this.parser.reader(source);
+  }
+  write(source, content) {
+    return this.parser.write(source, content);
   }
   get errors() {
     return this.parser.validator.errors;

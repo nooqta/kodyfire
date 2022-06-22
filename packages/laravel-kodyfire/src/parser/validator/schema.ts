@@ -301,9 +301,10 @@ export const migration = {
     model: model,
     template: {
       enum: ['migration.php.template', 'blank_migration.php.template'],
+      default: 'migration.php.template',
     },
   },
-  required: ['model'],
+  required: ['model', 'template'],
 };
 
 export const api = {
@@ -327,7 +328,10 @@ export const factory = {
   properties: {
     namespace: { type: 'string', default: 'Database\\Factories' },
     model: { type: 'string' },
-    template: { enum: ['factory.php.template'] },
+    template: {
+      enum: ['factory.php.template'],
+      default: 'factory.php.template',
+    },
   },
   required: ['model', 'namespace', 'template'],
 };
@@ -437,6 +441,7 @@ export const seed = {
         'database/seeders/UsersTableSeeder.php.template',
         'database/seeders/RolesTableSeeder.php.template',
       ],
+      default: 'seed.php.template',
     },
   },
   required: ['model', 'namespace', 'template'],

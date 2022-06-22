@@ -1,8 +1,8 @@
 import { IConcept, ITechnology } from 'kodyfire-core';
-import { Concept as BaseConcept } from './concept';
+import { Concept } from './concept';
 import { Engine } from './engine';
 
-export class Concept extends BaseConcept {
+export class CustomConcept extends Concept {
   model: any;
   constructor(concept: Partial<IConcept>, technology: ITechnology) {
     super(concept, technology);
