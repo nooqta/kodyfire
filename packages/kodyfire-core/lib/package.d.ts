@@ -15,5 +15,6 @@ export declare class Package {
   private static getPackageInfo;
   registerPackage(_package: any): Promise<void>;
   registerListeners(_package: IPackage): void;
+  getRecipeSchema(dependency: string, dirname?: string): Promise<any>;
 }
 //# sourceMappingURL=package.d.ts.map

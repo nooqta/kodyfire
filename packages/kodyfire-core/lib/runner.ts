@@ -1,5 +1,6 @@
+import path from 'path';
 import { IKody, IKodyWorkflow, Package } from '..';
-
+import { fs } from 'zx';
 export class Runner implements IKodyWorkflow {
   options: any;
   input: any;
@@ -31,14 +32,21 @@ export class Runner implements IKodyWorkflow {
     }
 
     // Pre-execute
-    const updatedData = await this.preExecute(kody.data);
+    const updatedData = await this.preExecute(
+      currentKody.name,
+      kody,
+      kody.data
+    );
 
     // generate artifacts | execute action
     const output = kody.generate(updatedData);
+
+    // @todo: Post-execute
     this.handleKodySuccess();
     return output;
   }
-  async preExecute(data: any[]) {
+
+  async preExecute(dependency: string, kody: IKody, data: any[]) {
     for (const key in data) {
       for (const concept of data[key]) {
         if (typeof concept.domino !== 'undefined') {
@@ -46,18 +54,27 @@ export class Runner implements IKodyWorkflow {
             const relatedConcept = data[related].find(
               (item: any) => item[key] === concept.name
             );
+
             if (!relatedConcept) {
-              const relatedData = {
+              // @todo: no need to pass relatedConcept to prepareConcept
+              let relatedData = {};
+              relatedData = await kody.technology.prepareConcept(
+                dependency,
+                related,
+                relatedData
+              );
+              relatedData = {
+                ...relatedData,
                 [key]: concept.name,
-                template: `${related}.php.template`,
               };
               data[related].push(relatedData);
+              // update kody.json file
+              kody.write(this.input, data);
             }
           }
         }
       }
     }
-    // @todo: update kody.json file
     return data;
   }
 

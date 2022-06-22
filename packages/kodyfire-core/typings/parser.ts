@@ -10,5 +10,6 @@ export interface IParser {
   requiresLoad: boolean;
   validator: IValidator;
   reader(filename: string): any;
+  write(filename: string, data: any): any;
   parse(data: any): any;
 }

@@ -1,10 +1,11 @@
-import { IKodyWorkflow } from '..';
+import { IKody, IKodyWorkflow } from '..';
 export declare class Runner implements IKodyWorkflow {
   options: any;
   input: any;
   constructor(options: any);
   run(_options: any): Promise<any>;
-  preExecute(data: any[]): Promise<any[]>;
+  postExecute(dependency: string, kody: IKody): Promise<void>;
+  preExecute(dependency: string, kody: IKody, data: any[]): Promise<any[]>;
   handleKodyNotFound(name: any): void;
   getKody(name: any): Promise<any>;
   handleSourceNotValid(errors: any): void;

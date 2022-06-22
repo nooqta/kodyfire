@@ -11,6 +11,7 @@ export interface ITechnology {
   assets: any;
   actions: ActionList;
   params: any;
+  prepareConcept(dependency: string, conceptName: string, data: any): any;
 }
 
 export class Technology implements ITechnology {
@@ -26,5 +27,27 @@ export class Technology implements ITechnology {
   constructor() {
     this.actions = new ActionList();
     this.concepts = new Map();
+  }
+  async prepareConcept(
+    dependency: string,
+    conceptName: string,
+    preparedConcept: any
+  ) {
+    const { schema } = await import(
+      `${dependency}/src/parser/validator/schema`
+    );
+    const conceptSchema = schema.properties[conceptName];
+    const requirements: string[] = schema.required;
+    for (const requirement of requirements) {
+      // if(!Object.prototype.hasOwnProperty.call(conceptSchema, requirement)) {
+      //   throw new Error(`${conceptName} requires ${requirement}`);
+      // }
+      preparedConcept = {
+        ...preparedConcept,
+        [requirement]: conceptSchema[requirement].default || '',
+      };
+    }
+    console.log(preparedConcept);
+    return preparedConcept;
   }
 }

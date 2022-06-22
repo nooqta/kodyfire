@@ -103,14 +103,39 @@ class Runner {
         this.handleSourceNotValid(kody.errors);
       }
       // Pre-execute
-      const updatedData = yield this.preExecute(kody.data);
+      const updatedData = yield this.preExecute(
+        currentKody.name,
+        kody,
+        kody.data
+      );
       // generate artifacts | execute action
       const output = kody.generate(updatedData);
+      // Post-execute
+      yield this.postExecute(currentKody.name, kody);
       this.handleKodySuccess();
       return output;
     });
   }
-  preExecute(data) {
+  postExecute(dependency, kody) {
+    var _a;
+    return __awaiter(this, void 0, void 0, function* () {
+      // Check recipes
+      const recipes = kody.data.recipes;
+      if (typeof recipes !== 'undefined') {
+        // get the recipes schema
+        const recipesSchema = yield (_a = kody.package) === null ||
+        _a === void 0
+          ? void 0
+          : _a.getRecipeSchema(dependency);
+        console.log(recipesSchema.recipes[0].mapping.properties);
+        for (const recipe of recipes) {
+          // Check if recipe is valid
+          console.log(recipe);
+        }
+      }
+    });
+  }
+  preExecute(dependency, kody, data) {
     return __awaiter(this, void 0, void 0, function* () {
       for (const key in data) {
         for (const concept of data[key]) {
@@ -120,17 +145,24 @@ class Runner {
                 item => item[key] === concept.name
               );
               if (!relatedConcept) {
-                const relatedData = {
+                // @todo: no need to pass relatedConcept to prepareConcept
+                let relatedData = {};
+                relatedData = yield kody.technology.prepareConcept(
+                  dependency,
+                  related,
+                  relatedData
+                );
+                relatedData = Object.assign(Object.assign({}, relatedData), {
                   [key]: concept.name,
-                  template: `${related}.php.template`,
-                };
+                });
                 data[related].push(relatedData);
+                // update kody.json file
+                kody.write(this.input, data);
               }
             }
           }
         }
       }
-      // @todo: update kody.json file
       return data;
     });
   }

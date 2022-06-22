@@ -125,4 +125,10 @@ export class Package {
       }
     });
   }
+  async getRecipeSchema(dependency: string, dirname = process.cwd()) {
+    const recipes = await import(
+      path.join(dirname, 'node_modules', dependency, 'src', 'recipes')
+    );
+    return recipes.default;
+  }
 }
