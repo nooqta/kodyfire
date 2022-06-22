@@ -69,9 +69,19 @@ var __awaiter =
       step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
   };
+var __importDefault =
+  (this && this.__importDefault) ||
+  function (mod) {
+    return mod && mod.__esModule ? mod : { default: mod };
+  };
 Object.defineProperty(exports, '__esModule', { value: true });
 exports.Runner = void 0;
 const __1 = require('..');
+const jsonSchemaToObject_1 = __importDefault(
+  require('../utils/jsonSchemaToObject')
+);
+const path_1 = require('path');
+const fs_1 = __importDefault(require('fs'));
 class Runner {
   constructor(options) {
     this.options = options;
@@ -111,29 +121,54 @@ class Runner {
       // generate artifacts | execute action
       const output = kody.generate(updatedData);
       // Post-execute
-      yield this.postExecute(currentKody.name, kody);
+      yield this.postExecute(kody);
       this.handleKodySuccess();
       return output;
     });
   }
-  postExecute(dependency, kody) {
-    var _a;
+  postExecute(kody) {
     return __awaiter(this, void 0, void 0, function* () {
-      // Check recipes
-      const recipes = kody.data.recipes;
-      if (typeof recipes !== 'undefined') {
-        // get the recipes schema
-        const recipesSchema = yield (_a = kody.package) === null ||
-        _a === void 0
-          ? void 0
-          : _a.getRecipeSchema(dependency);
-        console.log(recipesSchema.recipes[0].mapping.properties);
-        for (const recipe of recipes) {
-          // Check if recipe is valid
-          console.log(recipe);
+      try {
+        const recipes = kody.data.recipes;
+        if (typeof recipes !== 'undefined') {
+          for (const recipe of recipes) {
+            const { schema: targetSchema } = yield Promise.resolve().then(() =>
+              __importStar(
+                require(`${recipe.kody}/src/parser/validator/schema`)
+              )
+            );
+            const concept = (0, jsonSchemaToObject_1.default)(
+              recipe.target,
+              targetSchema.properties[recipe.target].items ||
+                targetSchema.properties[recipe.target],
+              recipe.mapping
+            );
+            console.log(concept);
+            const target = this.getSchemaDefinition(recipe.kody);
+            target[recipe.target].push(concept);
+            const targetFilename = (0, path_1.join)(
+              process.cwd(),
+              `kody-${recipe.kody.replace('-kodyfire', '')}.json`
+            );
+            kody.write(targetFilename, target);
+          }
         }
+      } catch (error) {
+        // @todo: handle error
+        console.log(error);
       }
     });
+  }
+  getSchemaDefinition(dependency, rootDir = process.cwd()) {
+    return JSON.parse(
+      fs_1.default.readFileSync(
+        (0, path_1.join)(
+          rootDir,
+          `kody-${dependency.replace('-kodyfire', '')}.json`
+        ),
+        'utf8'
+      )
+    );
   }
   preExecute(dependency, kody, data) {
     return __awaiter(this, void 0, void 0, function* () {

@@ -1,0 +1,1 @@
+{"version":3,"file":"jsonFactory.d.ts","sourceRoot":"","sources":["jsonFactory.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,OAAO;IACpB,IAAI,EAAE,MAAM,CAAC;IACb,OAAO,CAAC,EAAE,MAAM,CAAC;IACjB,UAAU,CAAC,EAAE,GAAG,CAAC;IACjB,KAAK,CAAC,EAAE,OAAO,CAAC;CACnB;AACD,QAAA,MAAM,kBAAkB,WAAY,OAAO,QAmC1C,CAAC;AAEF,eAAe,kBAAkB,CAAC"}

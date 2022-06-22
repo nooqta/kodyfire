@@ -4,7 +4,8 @@ export declare class Runner implements IKodyWorkflow {
   input: any;
   constructor(options: any);
   run(_options: any): Promise<any>;
-  postExecute(dependency: string, kody: IKody): Promise<void>;
+  postExecute(kody: IKody): Promise<void>;
+  getSchemaDefinition(dependency: string, rootDir?: string): any;
   preExecute(dependency: string, kody: IKody, data: any[]): Promise<any[]>;
   handleKodyNotFound(name: any): void;
   getKody(name: any): Promise<any>;

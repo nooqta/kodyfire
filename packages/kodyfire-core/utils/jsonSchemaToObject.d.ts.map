@@ -1,0 +1,1 @@
+{"version":3,"file":"jsonSchemaToObject.d.ts","sourceRoot":"","sources":["jsonSchemaToObject.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,OAAO;IACpB,IAAI,EAAE,MAAM,CAAC;IACb,OAAO,CAAC,EAAE,MAAM,CAAC;IACjB,UAAU,CAAC,EAAE,GAAG,CAAC;IACjB,KAAK,CAAC,EAAE,OAAO,CAAC;CACnB;AACD,QAAA,MAAM,kBAAkB,QAAS,MAAM,UAAU,OAAO,QAAQ,GAAG,QAwClE,CAAC;AAEF,eAAe,kBAAkB,CAAC"}

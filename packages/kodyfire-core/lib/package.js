@@ -201,9 +201,6 @@ class Package {
   }
   getRecipeSchema(dependency, dirname = process.cwd()) {
     return __awaiter(this, void 0, void 0, function* () {
-      console.log(
-        path.join(dirname, 'node_modules', dependency, 'src', 'recipes')
-      );
       const recipes = yield Promise.resolve().then(() =>
         __importStar(
           require(path.join(
