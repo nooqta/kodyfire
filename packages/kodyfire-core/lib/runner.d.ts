@@ -11,5 +11,6 @@ export declare class Runner implements IKodyWorkflow {
   getKody(name: any): Promise<any>;
   handleSourceNotValid(errors: any): void;
   handleKodySuccess(): void;
+  handleKodyError(message: any): void;
 }
 //# sourceMappingURL=runner.d.ts.map

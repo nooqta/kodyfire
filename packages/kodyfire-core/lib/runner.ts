@@ -133,4 +133,8 @@ export class Runner implements IKodyWorkflow {
   handleKodySuccess() {
     this.options.handleKodySuccess();
   }
+
+  handleKodyError(message: any) {
+    this.options.handleKodyError(message);
+  }
 }

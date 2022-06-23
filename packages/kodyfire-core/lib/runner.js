@@ -215,6 +215,9 @@ class Runner {
   handleKodySuccess() {
     this.options.handleKodySuccess();
   }
+  handleKodyError(message) {
+    this.options.handleKodyError(message);
+  }
 }
 exports.Runner = Runner;
 //# sourceMappingURL=runner.js.map

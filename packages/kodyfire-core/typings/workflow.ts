@@ -6,9 +6,13 @@ export interface IKodyWorkflow {
   handleKodyNotFound(name: string): any;
   handleSourceNotValid(name: string): any;
   handleKodySuccess(name: string): any;
+  handleKodyError(name: string): any;
 }
 
 export class KodyWorkflow implements IKodyWorkflow {
+  handleKodyError(message: string) {
+    console.log(`${message}`);
+  }
   input: any;
   public getKody = async (_name: string): Promise<any> => {
     const packages = await Package.getInstalledKodies();

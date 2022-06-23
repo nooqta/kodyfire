@@ -17,7 +17,7 @@ import {
   decamelize,
   underscore,
 } from '@angular-devkit/core/src/utils/strings';
-
+import { Yaml } from './resolvers/yaml';
 export {
   Runner,
   Package,
@@ -42,4 +42,5 @@ export {
   underscore,
   KodyWorkflow,
   IKodyWorkflow,
+  Yaml,
 };
