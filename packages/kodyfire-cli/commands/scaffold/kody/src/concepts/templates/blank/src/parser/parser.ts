@@ -1,7 +1,7 @@
 import { extract } from './extractor';
 import { transform } from './transformer';
 import { load } from './loader';
-import { IParser, IValidator } from 'kodyfire-core';
+import { IParser, IValidator, Yaml } from 'kodyfire-core';
 const fs = require('fs');
 
 export class Parser implements IParser {
@@ -46,7 +46,13 @@ export class Parser implements IParser {
   };
   readfile(filepath: any) {
     const fileContent = fs.readFileSync(filepath);
-    return JSON.parse(fileContent);
+    const extension = filepath.split('.').pop();
+    if (extension === 'json') {
+      return JSON.parse(fileContent);
+    } else if (extension === 'yml') {
+      return Yaml.resolve(filepath);
+    }
+    throw new Error('Unsupported file extension');
   }
   write(filepath: any, data: any) {
     fs.writeFileSync(filepath, JSON.stringify(data, null, '\t'));
