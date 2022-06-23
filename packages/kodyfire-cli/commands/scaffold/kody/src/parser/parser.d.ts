@@ -13,5 +13,6 @@ export declare class Parser implements IParser {
   transformer: () => string;
   loader: () => any;
   readfile(filepath: any): any;
+  write(filepath: any, data: any): void;
 }
 //# sourceMappingURL=parser.d.ts.map

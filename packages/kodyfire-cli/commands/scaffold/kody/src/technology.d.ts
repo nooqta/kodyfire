@@ -10,5 +10,10 @@ export declare class Technology implements ITechnology {
   input?: any;
   params: any;
   constructor(params: any);
+  prepareConcept(
+    dependency: string,
+    conceptName: string,
+    preparedConcept: any
+  ): Promise<any>;
 }
 //# sourceMappingURL=technology.d.ts.map

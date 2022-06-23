@@ -92,8 +92,7 @@ function action(args) {
         );
         process.exit(1);
       }
-      args.name =
-        JSON.parse(fs.readFileSync(args.source).toString()).name || '';
+      args.name = getKodyName(args.source);
       const { source } = args;
       let { condition = false } = args;
       // @todo Check if file exists
@@ -117,6 +116,16 @@ function action(args) {
       process.exit(1);
     }
   });
+}
+// @todo: Refactor used by batch|live|? command?
+function getKodyName(source) {
+  const extension = source.split('.').pop();
+  if (extension === 'json') {
+    return JSON.parse(fs.readFileSync(source).toString()).name || '';
+  } else if (extension === 'yml') {
+    return kodyfire_core_1.Yaml.resolve(source).name || '';
+  }
+  return '';
 }
 module.exports = program => {
   program

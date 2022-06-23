@@ -22,6 +22,18 @@ export class CliWorkflow extends KodyWorkflow {
     );
     process.exit();
   };
+  handleKodyError = (message: string) => {
+    console.log(
+      boxen(message, {
+        padding: 1,
+        margin: 1,
+        align: 'center',
+        borderColor: 'red',
+        borderStyle: 'round',
+      })
+    );
+    process.exit();
+  };
 
   handleSourceNotValid = (errors: any) => {
     console.log(errors);

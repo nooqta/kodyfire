@@ -4,6 +4,7 @@ exports.Parser = void 0;
 const extractor_1 = require('./extractor');
 const transformer_1 = require('./transformer');
 const loader_1 = require('./loader');
+const kodyfire_core_1 = require('kodyfire-core');
 const fs = require('fs');
 class Parser {
   constructor(validator) {
@@ -38,7 +39,16 @@ class Parser {
   }
   readfile(filepath) {
     const fileContent = fs.readFileSync(filepath);
-    return JSON.parse(fileContent);
+    const extension = filepath.split('.').pop();
+    if (extension === 'json') {
+      return JSON.parse(fileContent);
+    } else if (extension === 'yml') {
+      return kodyfire_core_1.Yaml.resolve(filepath);
+    }
+    throw new Error('Unsupported file extension');
+  }
+  write(filepath, data) {
+    fs.writeFileSync(filepath, JSON.stringify(data, null, '\t'));
   }
 }
 exports.Parser = Parser;

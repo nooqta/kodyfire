@@ -61,7 +61,7 @@ function action(args) {
         process.exit(1);
       }
       for (const source of content.sources) {
-        args.name = source.name || '';
+        args.name = getKodyName(args.source);
         args.source = join(process.cwd(), source.filename);
         const workflow = new worklfow_1.CliWorkflow(source.filename);
         const runner = new kodyfire_core_1.Runner(
@@ -76,6 +76,16 @@ function action(args) {
       process.exit(1);
     }
   });
+}
+// @todo: Refactor used by batch|live|? command?
+function getKodyName(source) {
+  const extension = source.split('.').pop();
+  if (extension === 'json') {
+    return JSON.parse(fs.readFileSync(source).toString()).name || '';
+  } else if (extension === 'yml') {
+    return kodyfire_core_1.Yaml.resolve(source).name || '';
+  }
+  return '';
 }
 module.exports = program => {
   program

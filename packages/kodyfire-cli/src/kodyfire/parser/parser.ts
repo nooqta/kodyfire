@@ -1,5 +1,6 @@
 import { IValidator } from 'kodyfire-core';
 import { IParser } from 'kodyfire-core';
+const fs = require('fs');
 
 export class Parser implements IParser {
   validator: IValidator;
@@ -10,6 +11,7 @@ export class Parser implements IParser {
   constructor(validator: IValidator) {
     this.validator = validator;
   }
+
   reader() {
     // read what
   }
@@ -22,4 +24,7 @@ export class Parser implements IParser {
   validate = (data: any) => {
     return this.validator.validate(data);
   };
+  write(filepath: any, data: any) {
+    fs.writeFileSync(filepath, JSON.stringify(data, null, '\t'));
+  }
 }

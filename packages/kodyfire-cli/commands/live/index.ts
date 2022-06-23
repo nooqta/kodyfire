@@ -1,7 +1,7 @@
 const chalk = require('chalk');
 const fs = require('fs');
 const { join } = require('path');
-import { Runner } from 'kodyfire-core';
+import { Runner, Yaml } from 'kodyfire-core';
 import { CliWorkflow } from '../../src/kodyfire/lib/cli/worklfow';
 import { Command } from 'commander';
 async function action(args: any): Promise<0 | 1> {
@@ -21,7 +21,7 @@ async function action(args: any): Promise<0 | 1> {
       process.exit(1);
     }
 
-    args.name = JSON.parse(fs.readFileSync(args.source).toString()).name || '';
+    args.name = getKodyName(args.source);
     const { source } = args;
     let { condition = false } = args;
     // @todo Check if file exists
@@ -41,6 +41,16 @@ async function action(args: any): Promise<0 | 1> {
     console.log(chalk.red(error.stack || error.message));
     process.exit(1);
   }
+}
+// @todo: Refactor used by batch|live|? command?
+function getKodyName(source: any): any {
+  const extension = source.split('.').pop();
+  if (extension === 'json') {
+    return JSON.parse(fs.readFileSync(source).toString()).name || '';
+  } else if (extension === 'yml') {
+    return Yaml.resolve(source).name || '';
+  }
+  return '';
 }
 module.exports = (program: Command) => {
   program

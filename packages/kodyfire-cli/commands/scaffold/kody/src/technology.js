@@ -36,6 +36,39 @@ var __importStar =
     __setModuleDefault(result, mod);
     return result;
   };
+var __awaiter =
+  (this && this.__awaiter) ||
+  function (thisArg, _arguments, P, generator) {
+    function adopt(value) {
+      return value instanceof P
+        ? value
+        : new P(function (resolve) {
+            resolve(value);
+          });
+    }
+    return new (P || (P = Promise))(function (resolve, reject) {
+      function fulfilled(value) {
+        try {
+          step(generator.next(value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function rejected(value) {
+        try {
+          step(generator['throw'](value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function step(result) {
+        result.done
+          ? resolve(result.value)
+          : adopt(result.value).then(fulfilled, rejected);
+      }
+      step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+  };
 Object.defineProperty(exports, '__esModule', { value: true });
 exports.Technology = void 0;
 const kodyfire_core_1 = require('kodyfire-core');
@@ -60,6 +93,26 @@ class Technology {
     } catch (error) {
       console.log(error);
     }
+  }
+  //@todo: refactor. exists in kodyfire-core technology.ts
+  prepareConcept(dependency, conceptName, preparedConcept) {
+    return __awaiter(this, void 0, void 0, function* () {
+      const { schema } = yield Promise.resolve().then(() =>
+        __importStar(require(`${dependency}/src/parser/validator/schema`))
+      );
+      const conceptSchema = schema.properties[conceptName];
+      const requirements = conceptSchema.items.required;
+      for (const requirement of requirements) {
+        // if(!Object.prototype.hasOwnProperty.call(conceptSchema, requirement)) {
+        //   throw new Error(`${conceptName} requires ${requirement}`);
+        // }
+        preparedConcept = Object.assign(Object.assign({}, preparedConcept), {
+          [requirement]:
+            conceptSchema.items.properties[requirement].default || '',
+        });
+      }
+      return preparedConcept;
+    });
   }
 }
 exports.Technology = Technology;

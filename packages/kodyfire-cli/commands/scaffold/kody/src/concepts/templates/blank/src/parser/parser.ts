@@ -48,4 +48,7 @@ export class Parser implements IParser {
     const fileContent = fs.readFileSync(filepath);
     return JSON.parse(fileContent);
   }
+  write(filepath: any, data: any) {
+    fs.writeFileSync(filepath, JSON.stringify(data, null, '\t'));
+  }
 }
