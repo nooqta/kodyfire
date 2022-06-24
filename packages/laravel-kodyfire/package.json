@@ -28,6 +28,9 @@
     "fs-extra": "^10.0.0",
     "kodyfire-core": "^0.0.56",
     "moment": "^2.29.1",
+    "php-parser": "^2.2.0",
+    "php-unparser": "^0.2.9",
+    "php-writer": "^3.0.0",
     "pluralize": "^8.0.0",
     "typescript": "~4.5.5"
   },
