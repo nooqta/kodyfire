@@ -1,7 +1,7 @@
 // import { $ } from "zx";
 import { capitalize } from 'kodyfire-core';
 import { join } from 'path';
-import { fs } from 'zx';
+import { cd, fs } from 'zx';
 
 const prompts = require('prompts');
 // import { $ } from 'zx';
@@ -91,14 +91,30 @@ export const questions = [
       value: project.name,
     })),
   },
+  {
+    type: 'text',
+    name: 'path',
+    message: `Where do you save the project?`,
+    initial: './',
+  },
 ];
+
+type Project = {
+  name: string;
+  family: string;
+  language?: string;
+  description: string;
+  command: string;
+  args: string[];
+  requires: string[];
+};
 
 export class Action {
   static async prompter(): Promise<void | any> {
     // get user choices
     (async () => {
       const response = await prompts(questions);
-      const { name, technology } = response;
+      const { name, technology, path } = response;
       // create project
       if (!technology || !name) {
         this.displayMessage('Missing required fields');
@@ -109,38 +125,22 @@ export class Action {
         this.displayMessage(`Project ${technology} not found`);
         return;
       }
-      await this.runCommand(project, name);
+      await this.runCommand(project, name, path);
     })();
   }
 
-  static async runCommand(
-    project:
-      | {
-          name: string;
-          family: string;
-          language: string;
-          description: string;
-          command: string;
-          args: string[];
-          requires: string[];
-        }
-      | {
-          name?: string;
-          family?: string;
-          description?: string;
-          command: string;
-          args: string[];
-          requires?: string[];
-          language?: undefined;
-        },
-    name: any = null
-  ) {
+  static async runCommand(project: Project, name: any = null, path = './') {
     if (name) {
       project.args = [...project.args, name];
+    }
+    const dest = join(process.cwd(), path);
+    if (!fs.existsSync(dest)) {
+      fs.mkdirSync(dest);
     }
     // @todo: upgrade to latest zx
     // await $`${project.command} ${project.args} ${name}`;
     // or spawn for zx version < 6.0.0
+    cd(dest);
     await spawn(project.command, project.args, { stdio: 'inherit' });
   }
 
