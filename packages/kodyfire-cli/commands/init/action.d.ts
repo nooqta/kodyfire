@@ -1,3 +1,9 @@
+export declare const question: (name: string) => {
+  type: string;
+  name: string;
+  message: string;
+  initial: string;
+};
 export declare class Action {
   static displayMessage(message: string): void;
   static execute(_args?: any): Promise<void>;

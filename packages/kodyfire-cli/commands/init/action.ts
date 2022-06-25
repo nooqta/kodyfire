@@ -1,8 +1,15 @@
 import { join } from 'path';
 import { fs } from 'zx';
+const prompts = require('prompts');
 
 const boxen = require('boxen');
 
+export const question = (name: string) => ({
+  type: 'text',
+  name: 'value',
+  message: `What is the destination folder for ${name}?`,
+  initial: './',
+});
 export class Action {
   static displayMessage(message: string) {
     console.log(
@@ -41,9 +48,13 @@ export class Action {
           for (const prop of Object.keys(schema.properties)) {
             entries[prop] = [];
           }
+          const name = dep.replace('-kodyfire', '');
           entries.project = 'my-project';
-          entries.name = dep.replace('-kodyfire', '');
-          entries.rootDir = _args.rootDir;
+          entries.name = name;
+          const { value } = await prompts(question(name));
+          const rootDir = join(process.cwd(), value);
+
+          entries.rootDir = rootDir;
 
           const kodyJson = JSON.stringify(entries, null, '\t');
           fs.writeFileSync(

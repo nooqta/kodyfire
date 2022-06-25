@@ -70,10 +70,18 @@ var __awaiter =
     });
   };
 Object.defineProperty(exports, '__esModule', { value: true });
-exports.Action = void 0;
+exports.Action = exports.question = void 0;
 const path_1 = require('path');
 const zx_1 = require('zx');
+const prompts = require('prompts');
 const boxen = require('boxen');
+const question = name => ({
+  type: 'text',
+  name: 'value',
+  message: `What is the destination folder for ${name}?`,
+  initial: './',
+});
+exports.question = question;
 class Action {
   static displayMessage(message) {
     console.log(
@@ -116,9 +124,12 @@ class Action {
             for (const prop of Object.keys(schema.properties)) {
               entries[prop] = [];
             }
+            const name = dep.replace('-kodyfire', '');
             entries.project = 'my-project';
-            entries.name = dep.replace('-kodyfire', '');
-            entries.rootDir = _args.rootDir;
+            entries.name = name;
+            const { value } = yield prompts((0, exports.question)(name));
+            const rootDir = (0, path_1.join)(process.cwd(), value);
+            entries.rootDir = rootDir;
             const kodyJson = JSON.stringify(entries, null, '\t');
             zx_1.fs.writeFileSync(
               (0, path_1.join)(
