@@ -103,6 +103,7 @@ export class Engine {
     overwrite = false
   ) {
     filename = join(rootDir, outputDir, filename);
+    // @todo allow to overwrite
     if (!overwrite) {
       content = this.setContent(filename, content);
     }
