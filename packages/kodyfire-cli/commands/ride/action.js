@@ -334,7 +334,9 @@ class Action {
             true
           );
           if (question) {
+            console.log(question);
             const answer = yield prompts(question);
+            console.log(answer);
             answers[conceptNames[i]] = answer.value;
           }
         }
@@ -520,6 +522,7 @@ class Action {
           title: c.name || `${(0, kodyfire_core_1.capitalize)(name)} ${index}`,
           value: useIndex ? index : c.name,
         }));
+        if (choices.length == 0) return false;
         return {
           type: 'select',
           name: useValueAsName ? 'value' : name,
@@ -528,6 +531,7 @@ class Action {
         };
       }
       if (typeof concept.enum !== 'undefined') {
+        const choices = concept.enum.map(c => ({ title: c, value: c }));
         return Object.assign(
           Object.assign(
             {
@@ -537,7 +541,7 @@ class Action {
             },
             concept.description && { description: concept.description }
           ),
-          { choices: concept.enum.map(c => ({ title: c, value: c })) }
+          { choices: choices }
         );
       }
       if (concept.type === 'string') {

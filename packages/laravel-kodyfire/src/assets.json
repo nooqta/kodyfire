@@ -121,7 +121,14 @@
       "outputDir": "",
       "template": {
         "path": "templates/custom/",
-        "options": ["resources/lang/lang.php.template"]
+        "options": [
+          "app/Http/kernel.php.template",
+          "app/Repositories/Repositories.php.template",
+          "app/Repositories/Repository.php.template",
+          "app/Storage/DataBag.php.template",
+          "config/auth.php.template",
+          "resources/lang/lang.php.template"
+        ]
       }
     },
     {

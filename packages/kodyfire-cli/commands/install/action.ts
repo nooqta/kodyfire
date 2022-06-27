@@ -8,7 +8,7 @@ const prompts = require('prompts');
 const boxen = require('boxen');
 const { spawn } = require('child_process');
 // @todo retrieve from a repository (remote|local)? to centralize all types of projects
-const projects = [
+const projects: Project[] = [
   {
     name: 'laravel',
     family: 'laravel',
@@ -94,7 +94,7 @@ export const questions = [
   {
     type: 'text',
     name: 'path',
-    message: `Where do you save the project?`,
+    message: `Where do you want to save your project?`,
     initial: './',
   },
 ];

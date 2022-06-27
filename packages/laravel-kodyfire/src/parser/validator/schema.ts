@@ -565,7 +565,14 @@ export const customConcept = {
     },
     template: {
       type: 'string',
-      enum: ['resources/lang/lang.php.template'],
+      enum: [
+        'app/Http/kernel.php.template',
+        'app/Repositories/Repositories.php.template',
+        'app/Repositories/Repository.php.template',
+        'app/Storage/DataBag.php.template',
+        'config/auth.php.template',
+        'resources/lang/lang.php.template',
+      ],
     },
     outputDir: { type: 'string' },
   },

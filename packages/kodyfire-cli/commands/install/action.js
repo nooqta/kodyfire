@@ -128,7 +128,7 @@ exports.questions = [
   {
     type: 'text',
     name: 'path',
-    message: `Where do you save the project?`,
+    message: `Where do you want to save your project?`,
     initial: './',
   },
 ];
