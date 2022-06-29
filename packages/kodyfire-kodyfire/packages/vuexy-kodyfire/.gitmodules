@@ -1,6 +1,0 @@
-[submodule "packages/core"]
-	path = packages/core
-	url = https://gitlab.noqta.tn/noqta/kodyfire-core.git
-[submodule "packages/helloworld-html-kodyfire"]
-	path = packages/helloworld-html-kodyfire
-	url = https://gitlab.noqta.tn/noqta/helloworld-html-kodyfire.git
