@@ -1,17 +1,16 @@
-import fs from 'fs';
-import { join } from 'path';
+// import fs from 'fs';
+// import { join } from 'path';
 // get list of files under the templates directory
-const getTemplateFiles = (path = join('..', '..', 'concepts', 'templates')) =>
-  fs.readdirSync(path);
+// const getTemplateFiles = (path) =>
+//   fs.readdirSync(path);
 
-console.log(getTemplateFiles());
 export const concept = {
   type: 'object',
   properties: {
     name: { type: 'string' },
     template: {
       type: 'string',
-      enum: getTemplateFiles(),
+      enum: ['sample.html.template'],
     },
     outputDir: { type: 'string' },
   },
