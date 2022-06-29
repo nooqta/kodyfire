@@ -3,7 +3,7 @@ import { join } from 'path';
 // get list of files under the templates directory
 const getTemplateFiles = (path = join('..', '..', 'concepts', 'templates')) =>
   fs.readdirSync(path);
-console.log(path);
+
 console.log(getTemplateFiles());
 export const concept = {
   type: 'object',

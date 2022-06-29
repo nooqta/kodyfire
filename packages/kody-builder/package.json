@@ -48,6 +48,7 @@
     "yargs-parser": ">=13.1.2"
   },
   "scripts": {
+    "watch": "echo \"No watch script specified.\"",
     "start": "react-scripts start",
     "build": "echo \"No build script available.\"",
     "build:prod": "react-scripts build",

@@ -22,6 +22,8 @@ export class Concept implements IConcept {
     this.template = concept.template as TemplateSchema;
     this.technology = technology;
   }
+  templatesPath?: string | undefined;
+  defaultAction: string;
   async generate(_data: any) {
     this.engine = new Engine();
 

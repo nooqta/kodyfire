@@ -1,2 +1,1 @@
-export { Kodyfire } from './concepts/kodyfire';
-//# sourceMappingURL=index.d.ts.map
+export { Concept } from './concepts/concept';

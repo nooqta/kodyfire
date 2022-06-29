@@ -6,4 +6,3 @@ export declare class Generator implements IGenerator {
   constructor(params: any);
   generate(content: any): any;
 }
-//# sourceMappingURL=generator.d.ts.map

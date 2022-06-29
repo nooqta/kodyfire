@@ -1,11 +1,11 @@
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
-exports.Kodyfire = void 0;
-var kodyfire_1 = require('./concepts/kodyfire');
-Object.defineProperty(exports, 'Kodyfire', {
+exports.Concept = void 0;
+var concept_1 = require('./concepts/concept');
+Object.defineProperty(exports, 'Concept', {
   enumerable: true,
   get: function () {
-    return kodyfire_1.Kodyfire;
+    return concept_1.Concept;
   },
 });
 //# sourceMappingURL=index.js.map

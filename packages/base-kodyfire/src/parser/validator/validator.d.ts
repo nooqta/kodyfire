@@ -10,4 +10,3 @@ export declare class Validator implements IValidator {
   constructor();
   validate(data: any): boolean;
 }
-//# sourceMappingURL=validator.d.ts.map

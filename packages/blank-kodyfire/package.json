@@ -4,6 +4,7 @@
   "description": "Generator for a blank kody to get you riding on a rocket!",
   "main": "index.js",
   "scripts": {
+    "watch": "echo \"No watch script specified\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p tsconfig.json"
   },
