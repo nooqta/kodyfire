@@ -35,5 +35,6 @@
     "type": "web",
     "version": "5"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "gitHead": "dff36931c17e1933fe44a9c29c91325f91162b61"
 }

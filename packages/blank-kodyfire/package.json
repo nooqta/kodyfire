@@ -30,5 +30,6 @@
     "fs-extra": "^10.0.0",
     "kodyfire-core": "^0.0.93",
     "typescript": "~4.5.5"
-  }
+  },
+  "gitHead": "dff36931c17e1933fe44a9c29c91325f91162b61"
 }
