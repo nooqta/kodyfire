@@ -1,0 +1,14 @@
+{
+  "name": "kodyfire",
+  "version": "0.1",
+  "rootDir": "dist",
+  "concepts": [
+    {
+      "name": "concept",
+      "outputDir": "",
+      "template": {
+        "path": "templates/"
+      }
+    }
+  ]
+}
