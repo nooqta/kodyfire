@@ -44,11 +44,8 @@ export class Action {
             filename: `kody-${dep.replace('-kodyfire', '')}.json`,
           });
           // get the deb package schema file
-          // const { schema } = await import(`${dep}/src/parser/validator/schema`);
-          const { schema } = await import(
-            `${_args.rootDir}/node_modules/${dep}/src/parser/validator/schema`
-          );
-          console.log(schema);
+          const { schema } = await import(`${dep}/src/parser/validator/schema`);
+
           for (const prop of Object.keys(schema.properties)) {
             entries[prop] = [];
           }
