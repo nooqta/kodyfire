@@ -23,7 +23,7 @@ var __exportStar =
         __createBinding(exports, m, p);
   };
 Object.defineProperty(exports, '__esModule', { value: true });
-exports.Technology = exports.Kody = void 0;
+exports.Concept = exports.Technology = exports.Kody = void 0;
 var kody_1 = require('./kody');
 Object.defineProperty(exports, 'Kody', {
   enumerable: true,
@@ -38,6 +38,13 @@ Object.defineProperty(exports, 'Technology', {
   enumerable: true,
   get: function () {
     return technology_1.Technology;
+  },
+});
+var concept_1 = require('./src/concepts/concept');
+Object.defineProperty(exports, 'Concept', {
+  enumerable: true,
+  get: function () {
+    return concept_1.Concept;
   },
 });
 //# sourceMappingURL=index.js.map
