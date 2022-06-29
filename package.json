@@ -14,7 +14,7 @@
     "start:kodyfire-server": "lerna run dev --scope kodyfire-server  --stream",
     "start:builder": "npm run start:kodyfire-builder & npm run start:kodyfire-server",
     "lerna:install": "lerna exec -- npm install",
-    "link": "lerna link",
+    "link": "lerna link --force-local",
     "test": "lerna run test --stream",
     "audit": "lerna exec -- npm audit fix --force",
     "kody": "node ./packages/kodyfire-cli/src/bin/kody.js",
