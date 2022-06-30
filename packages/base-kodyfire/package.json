@@ -1,6 +1,6 @@
 {
   "name": "base-kodyfire",
-  "version": "0.0.95",
+  "version": "0.0.96",
   "description": "Generator for base API",
   "main": "index.js",
   "repository": {
