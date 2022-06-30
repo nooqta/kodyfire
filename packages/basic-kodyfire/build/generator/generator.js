@@ -1,12 +1,15 @@
-import { normalize, virtualFs } from '@angular-devkit/core';
-import { NodeJsSyncHost } from '@angular-devkit/core/node';
-import { HostTree } from '@angular-devkit/schematics';
-import { Technology } from '../technology';
-export class Generator {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Generator = void 0;
+const core_1 = require("@angular-devkit/core");
+const node_1 = require("@angular-devkit/core/node");
+const schematics_1 = require("@angular-devkit/schematics");
+const technology_1 = require("../technology");
+class Generator {
     constructor(params) {
-        this.technology = new Technology(params);
-        const _backend = new virtualFs.ScopedHost(new NodeJsSyncHost(), normalize(process.cwd()));
-        this.tree = new HostTree(_backend);
+        this.technology = new technology_1.Technology(params);
+        const _backend = new core_1.virtualFs.ScopedHost(new node_1.NodeJsSyncHost(), (0, core_1.normalize)(process.cwd()));
+        this.tree = new schematics_1.HostTree(_backend);
     }
     async generate(content) {
         this.input = content;
@@ -23,4 +26,5 @@ export class Generator {
         return this.tree;
     }
 }
+exports.Generator = Generator;
 //# sourceMappingURL=generator.js.map

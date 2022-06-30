@@ -1,8 +1,8 @@
 (async () => {
   let i = 0;
-  setInterval(() => {
+  setInterval(async () => {
     console.log(i++);
-    if (stopCondition) return false;
+    if (await stopCondition()) return false;
     return true;
   }, 1000);
 })();

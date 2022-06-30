@@ -1,4 +1,7 @@
-export const concept = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.schema = exports.conceptArray = exports.concept = void 0;
+exports.concept = {
     type: 'object',
     properties: {
         name: { type: 'string' },
@@ -9,17 +12,17 @@ export const concept = {
         outputDir: { type: 'string' },
     },
 };
-export const conceptArray = {
+exports.conceptArray = {
     type: 'array',
-    items: concept,
+    items: exports.concept,
 };
-export const schema = {
+exports.schema = {
     type: 'object',
     properties: {
         project: { type: 'string' },
         name: { type: 'string' },
         rootDir: { type: 'string' },
-        concept: conceptArray,
+        concept: exports.conceptArray,
     },
     required: ['name'],
 };

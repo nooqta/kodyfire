@@ -1,9 +1,31 @@
-import { strings } from '@angular-devkit/core';
-import * as builder from 'handlebars';
-import { join, relative, dirname } from 'path';
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Engine = void 0;
+const core_1 = require("@angular-devkit/core");
+const builder = __importStar(require("handlebars"));
+const path_1 = require("path");
 const fs = require('fs');
 const fsPromises = fs.promises;
-export class Engine {
+class Engine {
     constructor() {
         this.builder = builder;
         this.registerPartials();
@@ -40,15 +62,15 @@ export class Engine {
             /* @ts-ignore */
             return arg1 == arg2;
         });
-        for (const key in strings) {
+        for (const key in core_1.strings) {
             this.builder.registerHelper(key, (value) => {
                 /* @ts-ignore */
-                return strings[key](value);
+                return core_1.strings[key](value);
             });
         }
     }
     async read(path, templateName) {
-        const template = await fsPromises.readFile(join(relative(process.cwd(), __dirname), path, templateName));
+        const template = await fsPromises.readFile((0, path_1.join)((0, path_1.relative)(process.cwd(), __dirname), path, templateName));
         return template?.toString();
     }
     async getPartial(path, template, data) {
@@ -61,21 +83,21 @@ export class Engine {
         return tpl(data);
     }
     async create(rootDir, outputDir, filename, content) {
-        await fsPromises.writeFile(join(rootDir, outputDir, filename), content);
+        await fsPromises.writeFile((0, path_1.join)(rootDir, outputDir, filename), content);
     }
     async overwrite(rootDir, outputDir, filename, content) {
-        await fsPromises.writeFile(join(rootDir, outputDir, filename), content);
+        await fsPromises.writeFile((0, path_1.join)(rootDir, outputDir, filename), content);
     }
     async createOrOverwrite(rootDir, outputDir, filename, content, 
     // @todo allow to overwrite
     overwrite = false) {
-        filename = join(rootDir, outputDir, filename);
+        filename = (0, path_1.join)(rootDir, outputDir, filename);
         // @todo allow to overwrite
         if (!overwrite) {
             content = this.setContent(filename, content);
         }
         // We need to create the directory if it doesn't exist
-        await fsPromises.mkdir(dirname(filename), { recursive: true });
+        await fsPromises.mkdir((0, path_1.dirname)(filename), { recursive: true });
         await fsPromises.writeFile(filename, content);
     }
     setContent(filename, content) {
@@ -93,8 +115,9 @@ export class Engine {
         return content;
     }
     async getFiles(rootDir, outputDir) {
-        const files = await fsPromises.readdir(join(rootDir, outputDir));
+        const files = await fsPromises.readdir((0, path_1.join)(rootDir, outputDir));
         return files;
     }
 }
+exports.Engine = Engine;
 //# sourceMappingURL=engine.js.map

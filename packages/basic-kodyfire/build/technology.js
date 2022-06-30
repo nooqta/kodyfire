@@ -1,32 +1,54 @@
-import { ActionList, capitalize } from 'kodyfire-core';
-import * as assets from './assets.json';
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Technology = void 0;
+const kodyfire_core_1 = require("kodyfire-core");
+const assets = __importStar(require("./assets.json"));
 /* @ts-ignore */
-import * as classes from '.';
-import { join } from 'path';
+const classes = __importStar(require("."));
+const path_1 = require("path");
 const fs = require('fs');
-export class Technology {
+class Technology {
     constructor(params) {
         try {
             this.id = params.id;
             this.name = params.name;
             this.version = params.version;
-            this.actions = new ActionList();
+            this.actions = new kodyfire_core_1.ActionList();
             this.concepts = new Map();
             this.rootDir = assets.rootDir;
             this.assets = assets;
             this.params = params;
             if (params.templatesPath) {
                 // user requested to use custom templates. We need to set the path to the templates
-                const templatesPath = join(process.cwd(), '.kody', params.name);
+                const templatesPath = (0, path_1.join)(process.cwd(), '.kody', params.name);
                 // we check if the path exists
                 if (!fs.existsSync(templatesPath)) {
                     throw new Error(`The path ${templatesPath} does not exist.\nRun the command "kodyfire publish ${params.name}" to publish the templates.`);
                 }
-                params.templatesPath = join(process.cwd(), '.kody', params.name);
+                params.templatesPath = (0, path_1.join)(process.cwd(), '.kody', params.name);
             }
             // add dynamic property for technology
             for (const concept of this.assets.concepts) {
-                this.concepts.set(concept.name, new classes[capitalize(concept.name)](concept, this));
+                this.concepts.set(concept.name, new classes[(0, kodyfire_core_1.capitalize)(concept.name)](concept, this));
             }
         }
         catch (error) {
@@ -35,7 +57,7 @@ export class Technology {
     }
     //@todo: refactor. exists in kodyfire-core technology.ts
     async prepareConcept(dependency, conceptName, preparedConcept) {
-        const { schema } = await import(`${dependency}/src/parser/validator/schema`);
+        const { schema } = await Promise.resolve().then(() => __importStar(require(`${dependency}/src/parser/validator/schema`)));
         const conceptSchema = schema.properties[conceptName];
         const requirements = conceptSchema.items.required;
         for (const requirement of requirements) {
@@ -50,4 +72,5 @@ export class Technology {
         return preparedConcept;
     }
 }
+exports.Technology = Technology;
 //# sourceMappingURL=technology.js.map

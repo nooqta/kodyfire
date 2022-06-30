@@ -1,23 +1,26 @@
-import { extract } from './extractor';
-import { transform } from './transformer';
-import { load } from './loader';
-import { Yaml } from 'kodyfire-core';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Parser = void 0;
+const extractor_1 = require("./extractor");
+const transformer_1 = require("./transformer");
+const loader_1 = require("./loader");
+const kodyfire_core_1 = require("kodyfire-core");
 const fs = require('fs');
-export class Parser {
+class Parser {
     constructor(validator) {
         this.validate = (data) => {
             return this.validator.validate(data);
         };
         this.extractor = () => {
             // @todo: v.x for source code, reverse engineer websites or other sources that requires an extractor
-            return extract();
+            return (0, extractor_1.extract)();
         };
         this.transformer = () => {
             // @todo: v.x for source code, reverse engineer websites or other sources that requires an extractor
-            return transform();
+            return (0, transformer_1.transform)();
         };
         this.loader = () => {
-            return load();
+            return (0, loader_1.load)();
         };
         this.validator = validator;
         this.requiresExtract = false;
@@ -41,7 +44,7 @@ export class Parser {
             return JSON.parse(fileContent);
         }
         else if (extension === 'yml') {
-            return Yaml.resolve(filepath);
+            return kodyfire_core_1.Yaml.resolve(filepath);
         }
         throw new Error('Unsupported file extension');
     }
@@ -49,4 +52,5 @@ export class Parser {
         fs.writeFileSync(filepath, JSON.stringify(data, null, '\t'));
     }
 }
+exports.Parser = Parser;
 //# sourceMappingURL=parser.js.map

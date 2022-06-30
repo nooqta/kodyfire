@@ -1,9 +1,15 @@
-import { schema } from './schema';
-import Ajv from 'ajv';
-export class Validator {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Validator = void 0;
+const schema_1 = require("./schema");
+const ajv_1 = __importDefault(require("ajv"));
+class Validator {
     constructor() {
-        this.rules = schema;
-        this.schemaValidator = new Ajv();
+        this.rules = schema_1.schema;
+        this.schemaValidator = new ajv_1.default();
     }
     validate(data) {
         const schema = this.rules;
@@ -19,4 +25,5 @@ export class Validator {
         }
     }
 }
+exports.Validator = Validator;
 //# sourceMappingURL=validator.js.map

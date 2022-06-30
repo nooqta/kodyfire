@@ -15,13 +15,15 @@
   },
   "author": "NOQTA",
   "license": "ISC",
+  "peerDependencies": {
+    "kodyfire-core": "^0.0.98"
+  },
   "dependencies": {
     "@angular-devkit/core": "^12.2.3",
     "@angular-devkit/schematics": "^12.2.3",
     "ajv": "^8.6.3",
     "fs-extra": "^10.0.0",
     "handlebars-delimiters": "^1.0.0",
-    "kodyfire-core": "^0.0.56",
     "moment": "^2.29.1",
     "pluralize": "^8.0.0",
     "typescript": "~4.5.5"

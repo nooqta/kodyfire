@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "baseUrl": "tsconfig",
+    "baseUrl": "./",
     "lib": ["es2020"],
     "declaration": true,
-    "module": "es2020",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
@@ -22,6 +22,6 @@
     "target": "es2020",
     "types": ["node"]
   },
-  "include": ["**/*"],
-  "exclude": ["**/*.d.ts", "node_modules"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }
