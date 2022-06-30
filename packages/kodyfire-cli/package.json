@@ -55,7 +55,7 @@
     "kodyfire-core": "^0.0.98",
     "lodash": "^4.17.21",
     "minimist": "^1.2.5",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.7",
     "npmlog": "^6.0.0",
     "pluralize": "^8.0.0",
     "prompts": "^2.4.2",
@@ -64,11 +64,12 @@
   "devDependencies": {
     "@types/jasmine": "~3.8.0",
     "@types/node": "^12.20.55",
+    "@types/node-fetch": "^2.6.2",
     "dotenv": "^16.0.0",
     "jasmine": "^3.5.0",
     "symbol-observable": "^4.0.0",
     "ts-node": "^10.8.1",
-    "zx": "^4.3.0"
+    "zx": "^5.1.0"
   },
   "gitHead": "f102c3985459a7b79038284c06f66a7f6383e85d"
 }
