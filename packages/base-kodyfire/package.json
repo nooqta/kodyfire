@@ -1,0 +1,37 @@
+{
+  "name": "base-kodyfire",
+  "version": "0.0.95",
+  "description": "Generator for base API",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nooqta/kodyfire.git",
+    "directory": "packages/base-kodyfire"
+  },
+  "bugs": {
+    "url": "https://github.com/nooqta/kodyfire/issues"
+  },
+  "scripts": {
+    "watch": "tsc -w",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -p tsconfig.json"
+  },
+  "kodyfire": {
+    "id": "kodyfire",
+    "type": "api",
+    "version": "0.1"
+  },
+  "dependencies": {
+    "@angular-devkit/core": "^12.2.3",
+    "@angular-devkit/schematics": "^12.2.3",
+    "ajv": "^8.6.3",
+    "fs-extra": "^10.0.0",
+    "kodyfire-core": "^0.0.56",
+    "moment": "^2.29.1",
+    "pluralize": "^8.0.0",
+    "typescript": "~4.5.5"
+  },
+  "devDependencies": {
+    "@types/pluralize": "0.0.29"
+  }
+}
