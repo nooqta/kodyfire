@@ -1,6 +1,6 @@
 {
   "name": "vuexy-kodyfire",
-  "version": "0.0.98",
+  "version": "0.0.99",
   "description": "Scaffold vuexy theme. This requires a license from the vendor and the vuexy theme to work",
   "main": "index.js",
   "scripts": {
