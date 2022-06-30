@@ -1,1 +1,0 @@
-{"version":"0.0.66","name":"laravel-kodyfire","dependencies":{"@angular-devkit/core":{"version":"12.2.16"},"@angular-devkit/schematics":{"version":"12.2.16"},"ajv":{"version":"8.10.0"},"fs-extra":{"version":"10.0.1"},"kodyfire-core":{"version":"0.0.56"},"moment":{"version":"2.29.1"},"typescript":{"version":"4.2.4"}}}

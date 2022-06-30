@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "tsconfig",
-    "lib": ["es2018", "dom"],
+    "lib": ["es2018"],
     "declaration": true,
     "module": "commonjs",
     "moduleResolution": "node",
@@ -13,14 +13,14 @@
     "noImplicitThis": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "rootDir": "/",
+    "rootDir": "./",
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "strictNullChecks": true,
-    "target": "es6",
-    "types": []
+    "target": "ES6",
+    "types": ["node"]
   },
-  "include": ["src/**/*", "index.ts", "kody.ts"],
+  "include": ["src/**/*", "*.ts"],
   "exclude": ["src/*/files/**/*", "node_modules"]
 }

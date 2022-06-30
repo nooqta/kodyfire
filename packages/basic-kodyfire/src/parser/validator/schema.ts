@@ -1,9 +1,3 @@
-// import fs from 'fs';
-// import { join } from 'path';
-// get list of files under the templates directory
-// const getTemplateFiles = (path) =>
-//   fs.readdirSync(path);
-
 export const concept = {
   type: 'object',
   properties: {
