@@ -5,6 +5,7 @@ import {
   IKody,
   IParser,
   ITechnology,
+  Package,
 } from 'kodyfire-core';
 import { Generator, Parser, Validator } from '.';
 
@@ -13,6 +14,7 @@ export class Kody extends BaseKody implements IKody {
   parser: IParser;
   generator: IGenerator;
   technology: ITechnology;
+  package: Package;
   events: EventEmitter;
   constructor(params: any) {
     super();
@@ -24,20 +26,17 @@ export class Kody extends BaseKody implements IKody {
     this.events = new EventEmitter();
   }
   generate(_content: any) {
+    this.events.emit('generate', _content);
     this.generator.generate(_content);
   }
   parse(content: any) {
+    this.events.emit('parse', content);
     return this.parser.parse(content);
   }
-
   read(source: any) {
+    this.events.emit('read', source);
     return this.parser.reader(source);
   }
-
-  write(source: string, content: any) {
-    return this.parser.write(source, content);
-  }
-
   get errors() {
     return this.parser.validator.errors;
   }

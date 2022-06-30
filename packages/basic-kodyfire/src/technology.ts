@@ -1,11 +1,15 @@
-import { ActionList, capitalize, IConcept, ITechnology } from 'kodyfire-core';
+import {
+  ActionList,
+  capitalize,
+  IConcept,
+  Technology as BaseTechnology,
+} from 'kodyfire-core';
 import * as assets from './assets.json';
 /* @ts-ignore */
 import * as classes from '.';
 import { join } from 'path';
 const fs = require('fs');
-
-export class Technology implements ITechnology {
+export class Technology implements BaseTechnology {
   id: string;
   name: string;
   version: string;
@@ -57,17 +61,17 @@ export class Technology implements ITechnology {
       `${dependency}/src/parser/validator/schema`
     );
     const conceptSchema = schema.properties[conceptName];
-    const requirements: string[] = conceptSchema.items.required;
+    const requirements: string[] = schema.required;
     for (const requirement of requirements) {
-      // if(!Object.prototype.hasOwnProperty.call(conceptSchema, requirement)) {
-      //   throw new Error(`${conceptName} requires ${requirement}`);
-      // }
+      if (!Object.prototype.hasOwnProperty.call(conceptSchema, requirement)) {
+        throw new Error(`${conceptName} requires ${requirement}`);
+      }
       preparedConcept = {
         ...preparedConcept,
-        [requirement]:
-          conceptSchema.items.properties[requirement].default || '',
+        [requirement]: conceptSchema[requirement].default || '',
       };
     }
+    console.log(preparedConcept);
     return preparedConcept;
   }
 }

@@ -1,21 +1,24 @@
 {
   "name": "basic-kodyfire",
   "version": "0.0.103",
-  "description": "Scaffold a basic kodyfire",
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "description": "Kodyfire general purpose Generator",
+  "main": "index.js",
   "scripts": {
+    "watch": "tsc -w",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc -p tsconfig.json",
-    "watch": "tsc -w -p tsconfig.json"
+    "build": "tsc -p tsconfig.json"
   },
-  "kodyfire": {
-    "id": "kodyfire",
-    "type": "kodyfire",
-    "version": "0.1"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nooqta/kodyfire.git",
+    "directory": "packages/basic-kodyfire"
   },
-  "author": "NOQTA",
-  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nooqta/kodyfire/issues"
+  },
+  "author": {
+    "name": "NOQTA"
+  },
   "dependencies": {
     "@angular-devkit/core": "^12.2.3",
     "@angular-devkit/schematics": "^12.2.3",
@@ -23,13 +26,20 @@
     "fs-extra": "^10.0.0",
     "handlebars": "^4.7.7",
     "handlebars-delimiters": "^1.0.0",
-    "kodyfire-core": "^0.0.94",
     "moment": "^2.29.1",
     "pluralize": "^8.0.0",
+    "kodyfire-core": "^0.0.103",
     "typescript": "~4.5.5"
   },
   "devDependencies": {
-    "@types/node": "^12.20.43",
+    "@types/node": "^17.0.45",
     "@types/pluralize": "0.0.29"
-  }
+  },
+  "kodyfire": {
+    "id": "kodyfire",
+    "type": "kodyfire",
+    "version": "0.1"
+  },
+  "license": "ISC",
+  "gitHead": "f102c3985459a7b79038284c06f66a7f6383e85d"
 }

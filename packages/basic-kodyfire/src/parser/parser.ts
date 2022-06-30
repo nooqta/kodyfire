@@ -55,6 +55,6 @@ export class Parser implements IParser {
     throw new Error('Unsupported file extension');
   }
   write(filepath: any, data: any) {
-    fs.writeFileSync(filepath, JSON.stringify(data, null, '\t'));
+    fs.writeFileSync(filepath, JSON.stringify(data));
   }
 }
