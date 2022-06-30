@@ -1,6 +1,6 @@
 {
   "name": "laravel-kodyfire",
-  "version": "0.0.102",
+  "version": "0.0.103",
   "description": "Generator for laravel API",
   "main": "index.js",
   "repository": {
@@ -26,7 +26,7 @@
     "@angular-devkit/schematics": "^12.2.3",
     "ajv": "^8.6.3",
     "fs-extra": "^10.0.0",
-    "kodyfire-core": "^0.0.102",
+    "kodyfire-core": "^0.0.103",
     "moment": "^2.29.1",
     "php-parser": "^2.2.0",
     "php-unparser": "^0.2.9",
