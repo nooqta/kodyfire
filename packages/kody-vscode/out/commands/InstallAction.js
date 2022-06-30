@@ -70,7 +70,7 @@ class InstallAction extends action_1.Action {
       this.terminal = vscode.window.createTerminal('Extension: kody');
     }
     this.terminal.show();
-    const cmd = `${project.command} ${project.args.join(' ')}`;
+    // const cmd = `${project.command} ${project.args.join(' ')}`;
     this.terminal.sendText(
       `${project.command} ${project.args.join(' ').toString()}`
     );
@@ -116,7 +116,7 @@ class InstallAction extends action_1.Action {
   static async showInputBox(options) {
     const result = await vscode.window.showInputBox({
       prompt: options.message,
-      validateInput: text => {
+      validateInput: _text => {
         return null;
         // return text !== '' ? null : 'Please enter a value';
         //return !(/^[A-Za-z\s]+$/.test(text)) ? 'Name not valid' : null;

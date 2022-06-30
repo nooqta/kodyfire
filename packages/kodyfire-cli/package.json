@@ -69,7 +69,7 @@
     "jasmine": "^3.5.0",
     "symbol-observable": "^4.0.0",
     "ts-node": "^10.8.1",
-    "zx": "^5.1.0"
+    "zx": "^4.3.0"
   },
   "gitHead": "f102c3985459a7b79038284c06f66a7f6383e85d"
 }

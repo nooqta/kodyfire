@@ -88,7 +88,7 @@ const cloneCommand = vscode.commands.registerCommand(
           return;
         }
       }
-      const cmd = await InstallAction_1.InstallAction.runCommand({
+      await InstallAction_1.InstallAction.runCommand({
         command: 'npm',
         args: ['install', moduleName.label],
       });
@@ -116,6 +116,7 @@ async function activate(context) {
     InstallAction_1.InstallAction.output.append(error);
   }
   let disposableInstall = cloneCommand;
+  context.subscriptions.push(disposableInstall);
   let disposableBoilerPlate = vscode.commands.registerCommand(
     'kodyfire.clone',
     async () => {
@@ -150,7 +151,7 @@ async function activate(context) {
                 : null;
             },
           })) || '.';
-        const cmd = await InstallAction_1.InstallAction.runCommand({
+        await InstallAction_1.InstallAction.runCommand({
           command: 'git',
           args: ['clone', repoUrl, repoName],
         });
@@ -159,6 +160,7 @@ async function activate(context) {
       }
     }
   );
+  context.subscriptions.push(disposableBoilerPlate);
   let disposable = vscode.commands.registerCommand(
     'kodyfire.list',
     async () => {
@@ -170,6 +172,7 @@ async function activate(context) {
       }
     }
   );
+  context.subscriptions.push(disposable);
   let conceptDisposable = vscode.commands.registerCommand(
     'kodyfire.addConcept',
     async args => {
@@ -222,6 +225,7 @@ async function activate(context) {
       }
     }
   );
+  context.subscriptions.push(conceptDisposable);
   let conceptPropDisposable = vscode.commands.registerCommand(
     'kodyfire.addConceptProperty',
     async args => {
@@ -293,6 +297,7 @@ async function activate(context) {
       }
     }
   );
+  context.subscriptions.push(conceptPropDisposable);
   let initDisposable = vscode.commands.registerCommand(
     'kodyfire.init',
     async () => {
@@ -341,7 +346,7 @@ async function activate(context) {
       }
     }
   );
-  context.subscriptions.push(disposable);
+  context.subscriptions.push(initDisposable);
 }
 exports.activate = activate;
 async function getConcepts() {
