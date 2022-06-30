@@ -1,6 +1,6 @@
 {
   "name": "basic-kodyfire",
-  "version": "0.0.100",
+  "version": "0.0.101",
   "description": "Scaffold a basic kodyfire",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
