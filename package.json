@@ -28,9 +28,9 @@
     "tool"
   ],
   "bin": {
-    "kody": "ts-node ./packages/kodyfire-cli/src/bin/kody.ts",
-    "cody": "ts-node ./packages/kodyfire-cli/src/bin/kody.ts",
-    "kodyfire": "ts-node ./packages/kodyfire-cli/src/bin/kody.ts"
+    "kody": "./packages/kodyfire-cli/src/bin/kody.js",
+    "cody": "./packages/kodyfire-cli/src/bin/kody.js",
+    "kodyfire": "./packages/kodyfire-cli/src/bin/kody.js"
   },
   "author": "NOQTA",
   "license": "MIT",
