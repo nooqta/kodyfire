@@ -1,21 +1,15 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Kody = void 0;
-const events_1 = __importDefault(require("events"));
-const kodyfire_core_1 = require("kodyfire-core");
-const _1 = require(".");
-class Kody extends kodyfire_core_1.BaseKody {
+import EventEmitter from 'events';
+import { BaseKody, } from 'kodyfire-core';
+import { Generator, Parser, Validator } from '.';
+export class Kody extends BaseKody {
     constructor(params) {
         super();
-        const validator = new _1.Validator();
+        const validator = new Validator();
         this.params = params;
-        this.parser = new _1.Parser(validator);
-        this.generator = new _1.Generator(params);
+        this.parser = new Parser(validator);
+        this.generator = new Generator(params);
         this.technology = this.generator.technology;
-        this.events = new events_1.default();
+        this.events = new EventEmitter();
     }
     generate(_content) {
         this.generator.generate(_content);
@@ -42,5 +36,4 @@ class Kody extends kodyfire_core_1.BaseKody {
         return __filename;
     }
 }
-exports.Kody = Kody;
 //# sourceMappingURL=kody.js.map

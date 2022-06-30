@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "baseUrl": "tsconfig",
-    "lib": ["es2018"],
+    "lib": ["es2020"],
     "declaration": true,
-    "module": "commonjs",
+    "module": "es2020",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
@@ -13,14 +13,15 @@
     "noImplicitThis": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "rootDir": "./",
+    "rootDir": "src",
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "sourceMap": true,
+    "outDir": "build",
     "strictNullChecks": true,
-    "target": "ES6",
+    "target": "es2020",
     "types": ["node"]
   },
-  "include": ["src/**/*", "*.ts"],
-  "exclude": ["src/*/files/**/*", "node_modules"]
+  "include": ["**/*"],
+  "exclude": ["**/*.d.ts", "node_modules"]
 }

@@ -35,6 +35,7 @@ export declare class InstallAction extends Action {
           name: string;
           message: string;
           choices?: undefined;
+          initial?: undefined;
         }
       | {
           type: string;
@@ -44,6 +45,14 @@ export declare class InstallAction extends Action {
             title: string;
             value: string;
           }[];
+          initial?: undefined;
+        }
+      | {
+          type: string;
+          name: string;
+          message: string;
+          initial: string;
+          choices?: undefined;
         }
     )[]
   ): Promise<any>;
