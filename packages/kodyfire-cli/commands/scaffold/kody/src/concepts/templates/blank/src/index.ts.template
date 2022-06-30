@@ -1,1 +1,0 @@
-export { <%= classify name %> } from './concepts/<%= dasherize name %>'

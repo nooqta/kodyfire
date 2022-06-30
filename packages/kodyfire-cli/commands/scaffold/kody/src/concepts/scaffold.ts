@@ -46,7 +46,7 @@ export class Scaffold extends Concept {
         const compiled = await this.engine.compile(template, _data);
         await this.engine.createOrOverwrite(
           this.technology.rootDir,
-          this.outputDir,
+          _data.outputDir,
           this.getFilename(_data.templateFolder, file),
           compiled
         );

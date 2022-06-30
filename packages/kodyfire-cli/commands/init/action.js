@@ -118,6 +118,10 @@ class Action {
               filename: `kody-${dep.replace('-kodyfire', '')}.json`,
             });
             // get the deb package schema file
+            const pack = yield Promise.resolve().then(() =>
+              __importStar(require(`${dep}`))
+            );
+            console.log(pack);
             const { schema } = yield Promise.resolve().then(() =>
               __importStar(require(`${dep}/src/parser/validator/schema`))
             );

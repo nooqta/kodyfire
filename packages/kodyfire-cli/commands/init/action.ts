@@ -44,6 +44,8 @@ export class Action {
             filename: `kody-${dep.replace('-kodyfire', '')}.json`,
           });
           // get the deb package schema file
+          const pack = await import(`${dep}`);
+          console.log(pack);
           const { schema } = await import(`${dep}/src/parser/validator/schema`);
 
           for (const prop of Object.keys(schema.properties)) {

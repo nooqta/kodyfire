@@ -1,12 +1,10 @@
 {
-    "name": "<%= classify technology %>",
+    "name": "<%= technology %>",
     "version": "<%= classify version %>",
-    "rootDir": "blank-kodyfire",
+    "rootDir": "out",
     "concepts": [
         {
-            "name": "<%= name %>",
-            "defaultAction": "create",
-            "source": "template",
+            "name": "concept",
             "outputDir": "",
             "template": {
                 "path": "templates/",

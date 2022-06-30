@@ -65,7 +65,7 @@ class Scaffold extends concept_1.Concept {
           const compiled = yield this.engine.compile(template, _data);
           yield this.engine.createOrOverwrite(
             this.technology.rootDir,
-            this.outputDir,
+            _data.outputDir,
             this.getFilename(_data.templateFolder, file),
             compiled
           );
