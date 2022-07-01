@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "baseUrl": "tsconfig",
+    "baseUrl": "./",
     "lib": ["es2018", "dom"],
     "declaration": true,
     "declarationMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "allowJs": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmitOnError": true,
@@ -14,7 +15,7 @@
     "noImplicitThis": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "rootDir": "/",
+    "rootDir": "./",
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "sourceMap": true,
@@ -22,6 +23,6 @@
     "target": "es6",
     "types": ["node"]
   },
-  "include": ["**/*", "../kodyfire-kodyfire"],
+  "include": ["**/*"],
   "exclude": ["node_modules", "**/*.tsx"]
 }

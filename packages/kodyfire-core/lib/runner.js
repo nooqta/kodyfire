@@ -96,10 +96,14 @@ class Runner {
       if (typeof currentKody == 'undefined') {
         this.handleKodyNotFound(name);
       }
-      // require package
-      const m = yield Promise.resolve().then(() =>
-        __importStar(require(currentKody.name))
+      // @todo: find a better way to get package
+      const path = (0, path_1.join)(
+        process.cwd(),
+        'node_modules',
+        currentKody.name
       );
+      // require package
+      const m = yield Promise.resolve().then(() => __importStar(require(path)));
       const kody = new m.Kody(
         Object.assign(Object.assign({}, _options), currentKody)
       );
@@ -134,7 +138,11 @@ class Runner {
           for (const recipe of recipes) {
             const { schema: targetSchema } = yield Promise.resolve().then(() =>
               __importStar(
-                require(`${recipe.kody}/src/parser/validator/schema`)
+                require((0, path_1.join)(
+                  process.cwd(),
+                  'node_modules',
+                  `${recipe.kody}`
+                ))
               )
             );
             const concept = (0, jsonSchemaToObject_1.default)(

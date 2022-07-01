@@ -18,8 +18,10 @@ export class Runner implements IKodyWorkflow {
       this.handleKodyNotFound(name);
     }
 
+    // @todo: find a better way to get package
+    const path = join(process.cwd(), 'node_modules', currentKody.name);
     // require package
-    const m = await import(currentKody.name);
+    const m = await import(path);
     const kody: IKody = new m.Kody({ ..._options, ...currentKody });
     kody.package = new Package(kody);
     await kody.package.registerPackages();
@@ -54,7 +56,7 @@ export class Runner implements IKodyWorkflow {
       if (typeof recipes !== 'undefined') {
         for (const recipe of recipes) {
           const { schema: targetSchema } = await import(
-            `${recipe.kody}/src/parser/validator/schema`
+            join(process.cwd(), 'node_modules', `${recipe.kody}`)
           );
 
           const concept = jsonSchemaToObject(
