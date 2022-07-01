@@ -38,7 +38,7 @@ const chalk = require('chalk');
 const fs = require('fs');
 const { join } = require('path');
 const kodyfire_core_1 = require('kodyfire-core');
-const worklfow_1 = require('../../src/kodyfire/lib/cli/worklfow');
+const worklfow_1 = require('../../src/lib/cli/worklfow');
 function action(args) {
   return __awaiter(this, void 0, void 0, function* () {
     try {

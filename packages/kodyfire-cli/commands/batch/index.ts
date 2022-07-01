@@ -2,7 +2,7 @@ const chalk = require('chalk');
 const fs = require('fs');
 const { join } = require('path');
 import { Runner, Yaml } from 'kodyfire-core';
-import { CliWorkflow } from '../../src/kodyfire/lib/cli/worklfow';
+import { CliWorkflow } from '../../src/lib/cli/worklfow';
 import { Command } from 'commander';
 
 async function action(args: any): Promise<0 | 1> {

@@ -22,7 +22,13 @@
     "kody:watch": "./src/bin/watch.mjs"
   },
   "keywords": [
-    "schematics"
+    "kodyfire",
+    "low code",
+    "nocode",
+    "generator",
+    "artifact",
+    "automation",
+    "tool"
   ],
   "bin": {
     "kody": "./src/bin/kody.js",
@@ -34,7 +40,6 @@
   ],
   "author": "NOQTA",
   "license": "MIT",
-  "schematics": "./src/collection.json",
   "dependencies": {
     "@angular-devkit/core": "^12.2.3",
     "@angular-devkit/schematics": "^12.2.3",

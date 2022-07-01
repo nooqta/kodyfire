@@ -18,7 +18,6 @@ kodyfire.code-workspace
 # Mac OSX Finder files.
 **/.DS_Store
 .DS_Store
-src/kodyfire/technologies
 src/core
 #npm
 .npmrc
