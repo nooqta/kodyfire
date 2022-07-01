@@ -36,26 +36,29 @@ export class Scaffold extends Concept {
     const folderContent = await this.readFolder(filePath);
     for (const file of folderContent) {
       const stat = await fs.lstat(join(filePath, file));
-      if (stat.isFile()) {
-        console.log(`copying file: ${_data.templateFolder}/${file}`);
-        const template = await this.engine.read(
-          this.template.path,
-          join(_data.templateFolder, file)
-        );
-
-        const compiled = await this.engine.compile(template, _data);
-        await this.engine.createOrOverwrite(
-          this.technology.rootDir,
-          _data.outputDir,
-          this.getFilename(_data.templateFolder, file),
-          compiled
-        );
-      } else if (stat.isDirectory()) {
-        console.log(`creating folder: ${_data.templateFolder}/${file}`);
-        await this.generate({
-          ..._data,
-          templateFolder: join(_data.templateFolder, file),
-        });
+      try {
+        if (stat.isFile()) {
+          console.log(`copying file: ${_data.templateFolder}/${file}`);
+          const template = await this.engine.read(
+            this.template.path,
+            join(_data.templateFolder, file)
+          );
+          const compiled = await this.engine.compile(template, _data);
+          await this.engine.createOrOverwrite(
+            this.technology.rootDir,
+            _data.outputDir,
+            this.getFilename(_data.templateFolder, file),
+            compiled
+          );
+        } else if (stat.isDirectory()) {
+          console.log(`creating folder: ${_data.templateFolder}/${file}`);
+          await this.generate({
+            ..._data,
+            templateFolder: join(_data.templateFolder, file),
+          });
+        }
+      } catch (e) {
+        console.log(`error processing file: ${_data.templateFolder}/${file}`);
       }
     }
   }

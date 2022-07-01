@@ -23,7 +23,7 @@ export class InstallAction extends Action {
       | {
           name: string;
           family: string;
-          language: string;
+          language?: string;
           description: string;
           command: string;
           args: string[];

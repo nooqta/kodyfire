@@ -1,6 +1,7 @@
 export const concept = {
   type: 'object',
   properties: {
+    anis: { type: 'string' },
     name: { type: 'string' },
     template: {
       type: 'string',

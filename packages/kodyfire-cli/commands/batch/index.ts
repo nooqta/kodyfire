@@ -35,7 +35,7 @@ async function action(args: any): Promise<0 | 1> {
     }
     // finish process
     return 0;
-  } catch (error) {
+  } catch (error: any) {
     console.log(chalk.red(error.stack || error.message));
     process.exit(1);
   }
@@ -64,7 +64,7 @@ module.exports = (program: Command) => {
       // await $`schematics @noqta/kodyfire:run --name ${_opt.name} --dry-run`;
       try {
         action({ ..._opt, schematic: 'run', dryRun: false });
-      } catch (error) {
+      } catch (error: any) {
         console.log(error);
       }
     });

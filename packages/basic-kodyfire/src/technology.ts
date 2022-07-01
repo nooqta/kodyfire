@@ -58,7 +58,7 @@ export class Technology implements BaseTechnology {
     preparedConcept: any
   ) {
     const { schema } = await import(
-      `${dependency}/src/parser/validator/schema`
+      join(process.cwd(), 'node_modules', dependency)
     );
     const conceptSchema = schema.properties[conceptName];
     const requirements: string[] = schema.required;

@@ -2,9 +2,11 @@
   "name": "basic-kodyfire",
   "version": "0.0.104",
   "description": "Kodyfire general purpose Generator",
-  "main": "index.js",
+  "main": "build/index.js",
   "scripts": {
     "watch": "tsc -w",
+    "postbuild": "npm run copy-files",
+    "copy-files": "copy-files -u -i src/concepts/templates build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p tsconfig.json"
   },
@@ -33,10 +35,11 @@
   },
   "devDependencies": {
     "@types/node": "^17.0.45",
-    "@types/pluralize": "0.0.29"
+    "@types/pluralize": "0.0.29",
+    "copyfiles": "^2.4.1"
   },
   "kodyfire": {
-    "id": "kodyfire",
+    "id": "basic",
     "type": "kodyfire",
     "version": "0.1"
   },

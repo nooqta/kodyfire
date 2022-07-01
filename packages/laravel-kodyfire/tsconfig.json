@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "tsconfig",
+    "baseUrl": "./",
     "lib": ["es2018", "dom"],
     "declaration": true,
     "module": "commonjs",
@@ -19,8 +19,9 @@
     "sourceMap": true,
     "strictNullChecks": true,
     "target": "es6",
-    "types": []
+    "types": ["node"],
+    "files": ["src/concepts/templates/**/*"]
   },
-  "include": ["src/**/*", "index.ts", "kody.ts"],
+  "include": ["src/**/*"],
   "exclude": ["src/*/files/**/*", "node_modules"]
 }

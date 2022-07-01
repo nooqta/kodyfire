@@ -57,7 +57,6 @@ function action(args) {
         process.exit(1);
       }
       args.name = getKodyName(args.source);
-      console.log(args);
       const { source } = args;
       const workflow = new worklfow_1.CliWorkflow(source);
       const runner = new kodyfire_core_1.Runner(

@@ -36,6 +36,7 @@ export class Technology implements ITechnology {
         }
         params.templatesPath = join(process.cwd(), '.kody', params.name);
       }
+
       // add dynamic property for technology
       for (const concept of this.assets.concepts) {
         this.concepts.set(
@@ -54,7 +55,7 @@ export class Technology implements ITechnology {
     preparedConcept: any
   ) {
     const { schema } = await import(
-      `${dependency}/src/parser/validator/schema`
+      join(process.cwd(), 'node_modules', `${dependency}`)
     );
     const conceptSchema = schema.properties[conceptName];
     const requirements: string[] = conceptSchema.items.required;

@@ -1,7 +1,6 @@
 import { join } from 'path';
-import { fs } from 'zx';
+const fs = require('fs');
 const prompts = require('prompts');
-
 const boxen = require('boxen');
 
 export const question = (name: string) => ({
@@ -44,9 +43,10 @@ export class Action {
             filename: `kody-${dep.replace('-kodyfire', '')}.json`,
           });
           // get the deb package schema file
-          const pack = await import(`${dep}`);
-          console.log(pack);
-          const { schema } = await import(`${dep}/src/parser/validator/schema`);
+          // @todo: find a better way
+          const { schema } = await import(
+            `${_args.rootDir}/node_modules/${dep}`
+          );
 
           for (const prop of Object.keys(schema.properties)) {
             entries[prop] = [];
@@ -69,15 +69,12 @@ export class Action {
         const data = JSON.stringify(kody, null, '\t');
         fs.writeFileSync(join(_args.rootDir, 'kody.json'), data);
       }
-    } catch (error) {
+    } catch (error: any) {
       this.displayMessage(error.message);
     }
   }
   static async getPackageDependencies(rootDir = process.cwd()): Promise<any> {
-    const packageJsonFile = await fs.readFile(
-      join(rootDir, 'package.json'),
-      'utf8'
-    );
+    const packageJsonFile = fs.readFileSync(join(rootDir, 'package.json'));
     const packageJson = JSON.parse(packageJsonFile);
     const name = packageJson.name;
     let dependencies: string[] = [];
@@ -101,13 +98,14 @@ export class Action {
     return { name, dependencies };
   }
 
-  static async getDependencyConcepts(dependency: string) {
+  static async getDependencyConcepts(
+    dependency: string,
+    rootDir = process.cwd()
+  ) {
     try {
       const entries: any = {};
       // get the deb package schema file
-      const { schema } = await import(
-        `${dependency}/src/parser/validator/schema`
-      );
+      const { schema } = await import(`${rootDir}/node_modules/${dependency}`);
       for (const prop of Object.keys(schema.properties)) {
         const attributes = await this.getConceptAttributes(
           schema.properties[prop]
@@ -117,7 +115,7 @@ export class Action {
         }
       }
       return { name: dependency, concepts: entries };
-    } catch (error) {
+    } catch (error: any) {
       this.displayMessage(error.message);
     }
   }
@@ -130,7 +128,7 @@ export class Action {
       if (Object.prototype.hasOwnProperty.call(schema, 'items')) {
         return await this.getConceptAttributes(schema.items);
       }
-    } catch (error) {
+    } catch (error: any) {
       this.displayMessage(error.message);
     }
     return false;
@@ -155,7 +153,7 @@ export class Action {
         join(rootDir, `kody-${dependency.replace('-kodyfire', '')}.json`),
         content
       );
-    } catch (error) {
+    } catch (error: any) {
       this.displayMessage(error.message);
     }
   }

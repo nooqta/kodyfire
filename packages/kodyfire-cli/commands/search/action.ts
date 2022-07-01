@@ -57,7 +57,7 @@ export class Action {
       } else {
         this.displaySearchResults(kodies);
       }
-    } catch (error) {
+    } catch (error: any) {
       this.displayMessage(error.message);
     }
   }
@@ -79,7 +79,7 @@ export class Action {
 export const action = async (_args: any) => {
   try {
     Action.execute(_args);
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
     Action.displayMessage(error.message);
   }

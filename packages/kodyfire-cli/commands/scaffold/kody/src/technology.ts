@@ -31,7 +31,7 @@ export class Technology implements ITechnology {
           new (<any>classes)[className](concept, this)
         );
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
     }
   }
@@ -43,7 +43,7 @@ export class Technology implements ITechnology {
     preparedConcept: any
   ) {
     const { schema } = await import(
-      `${dependency}/src/parser/validator/schema`
+      `${process.cwd()}/node_modules/${dependency}`
     );
     const conceptSchema = schema.properties[conceptName];
     const requirements: string[] = conceptSchema.items.required;

@@ -70,12 +70,12 @@ var __awaiter =
     });
   };
 Object.defineProperty(exports, '__esModule', { value: true });
-const kody_1 = require('./kody');
+const src_1 = require('./kody/src');
 const input = __importStar(require('./data.json'));
 const { Command } = require('commander');
 function action(args) {
   return __awaiter(this, void 0, void 0, function* () {
-    const kody = new kody_1.Kody(args);
+    const kody = new src_1.Kody(args);
     // parse source
     let data = kody.parse(input);
     data = Object.assign(Object.assign({}, data), args);

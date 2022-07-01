@@ -158,7 +158,7 @@ export class Action {
   static async execute() {
     try {
       await this.prompter();
-    } catch (error) {
+    } catch (error: any) {
       this.displayMessage(error.message);
     }
   }
@@ -181,7 +181,7 @@ export class Action {
         join(rootDir, `kody-${dependency.replace('-kodyfire', '')}.json`),
         content
       );
-    } catch (error) {
+    } catch (error: any) {
       this.displayMessage(error.message);
     }
   }
@@ -211,7 +211,7 @@ export class Action {
         join(rootDir, `kody-${dependency.replace('-kodyfire', '')}.json`),
         content
       );
-    } catch (error) {
+    } catch (error: any) {
       this.displayMessage(error.message);
     }
   }

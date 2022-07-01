@@ -51,7 +51,7 @@ export class Action {
       } else {
         this.displayKodies(kodies);
       }
-    } catch (error) {
+    } catch (error: any) {
       this.displayMessage(error.message);
     }
   }
@@ -71,7 +71,7 @@ export const action = async () => {
     } else {
       Action.displayKodies(kodies);
     }
-  } catch (error) {
+  } catch (error: any) {
     Action.displayMessage(error.message);
   }
 };

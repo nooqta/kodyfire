@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "tsconfig",
-    "lib": ["es2018", "dom"],
+    "lib": ["es2018"],
     "declaration": true,
     "module": "commonjs",
     "moduleResolution": "node",
@@ -13,14 +13,15 @@
     "noImplicitThis": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "rootDir": "src/",
+    "rootDir": "src",
+    "outDir": "build",
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "strictNullChecks": true,
     "target": "es6",
-    "types": []
+    "types": ["node"]
   },
   "include": ["src/**/*"],
-  "exclude": ["src/*/files/**/*", "node_modules", "**/*.tsx"]
+  "exclude": ["src/*/files/**/*", "node_modules"]
 }

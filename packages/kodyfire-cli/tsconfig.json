@@ -23,5 +23,8 @@
     "types": ["jasmine", "node"]
   },
   "include": ["src/**/*", "commands/**/*"],
-  "exclude": ["src/*/files/**/*"]
+  "exclude": [
+    "src/*/files/**/*",
+    "commands/scaffold/kody/src/concepts/templates/**/*"
+  ]
 }

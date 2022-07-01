@@ -22,14 +22,13 @@ export async function action(args: any): Promise<0 | 1> {
     }
 
     args.name = getKodyName(args.source);
-    console.log(args);
     const { source } = args;
     const workflow = new CliWorkflow(source);
     const runner = new Runner({ ...args, ...workflow });
     const output = await runner.run(args);
     // finish process
     return output;
-  } catch (error) {
+  } catch (error: any) {
     console.log(chalk.red(error.stack || error.message));
     process.exit(1);
   }
@@ -48,7 +47,7 @@ module.exports = (program: Command) => {
       // await $`schematics @noqta/kodyfire:run --name ${_opt.name} --dry-run`;
       try {
         action({ ..._opt, schematic: 'run', dryRun: false });
-      } catch (error) {
+      } catch (error: any) {
         console.log(error);
       }
     });

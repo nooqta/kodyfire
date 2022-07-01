@@ -1,5 +1,5 @@
 'use strict';
-import { Kody } from './kody';
+import { Kody } from './kody/src';
 import * as input from './data.json';
 
 const { Command } = require('commander');
@@ -25,7 +25,7 @@ module.exports = (program: typeof Command) => {
       // await $`schematics @noqta/kodyfire:run --name ${_opt.name} --dry-run`;
       try {
         action({ ..._opt, schematic: 'scaffold', dryRun: false });
-      } catch (error) {
+      } catch (error: any) {
         console.log(error);
       }
     });

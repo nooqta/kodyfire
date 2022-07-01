@@ -37,7 +37,7 @@ async function action(args: any): Promise<0 | 1> {
 
     // finish process
     return output;
-  } catch (error) {
+  } catch (error: any) {
     console.log(chalk.red(error.stack || error.message));
     process.exit(1);
   }
@@ -70,7 +70,7 @@ module.exports = (program: Command) => {
     .action(async (_opt: { name: any }) => {
       try {
         action(_opt);
-      } catch (error) {
+      } catch (error: any) {
         console.log(error);
       }
     });

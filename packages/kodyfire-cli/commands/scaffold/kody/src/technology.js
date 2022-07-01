@@ -98,7 +98,7 @@ class Technology {
   prepareConcept(dependency, conceptName, preparedConcept) {
     return __awaiter(this, void 0, void 0, function* () {
       const { schema } = yield Promise.resolve().then(() =>
-        __importStar(require(`${dependency}/src/parser/validator/schema`))
+        __importStar(require(`${process.cwd()}/node_modules/${dependency}`))
       );
       const conceptSchema = schema.properties[conceptName];
       const requirements = conceptSchema.items.required;

@@ -114,7 +114,7 @@ export class Engine {
         // @todo: use AST to check if the content is the same
         // and update accordingly
       }
-    } catch (error) {
+    } catch (error: any) {
       // contine silently
       // @todo: elaborate error handling
       console.log(filename, error.message);
