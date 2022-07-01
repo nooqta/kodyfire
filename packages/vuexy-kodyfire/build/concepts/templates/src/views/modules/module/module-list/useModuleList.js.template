@@ -1,0 +1,137 @@
+import { ref, watch, computed } from '@vue/composition-api'
+import store from '@/store'
+import { title } from '@core/utils/filter'
+
+// Notification
+import { useToast } from 'vue-toastification/composition'
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+
+export default function use<%= classify name %>List() {
+  // Use toast
+  const toast = useToast()
+
+  const ref<%= classify name %>ListTable = ref(null)
+
+  // Table Handlers
+  const tableColumns = [
+    <%=#each  data.columns %>
+    {
+      key: '<%= name %>',
+      <%=#if  label %>
+      label: '<%= label %>',
+      <%=/if %>
+      formatter: title,
+      sortable: true,
+    },
+    <%=/each %>
+    { key: 'actions', label: 'الإجراءات' },
+  ]
+  const perPage = ref(10)
+  const total<%= classify name %> = ref(0)
+  const currentPage = ref(1)
+  const perPageOptions = [10, 25, 50, 100]
+  const searchQuery = ref('')
+  const sortBy = ref('id')
+  const isSortDirDesc = ref(true)
+  <%=#each data.options %>
+  const <%= name %>Filter = ref(null)
+  <%=/each %>
+  const dataMeta = computed(() => {
+    const localItemsCount = ref<%= classify name %>ListTable.value ? ref<%= classify name %>ListTable.value.localItems.length : 0
+    return {
+      from: perPage.value * (currentPage.value - 1) + (localItemsCount ? 1 : 0),
+      to: perPage.value * (currentPage.value - 1) + localItemsCount,
+      of: total<%= classify name %>.value,
+    }
+  })
+
+  const refetchData = () => {
+    ref<%= classify name %>ListTable.value.refresh()
+  }
+
+  watch([currentPage, perPage, searchQuery, <%= join data.options 'name' 'Filter' %>], () => {
+    refetchData()
+  })
+
+  const fetch<%= classify ( pluralize name) %> = (ctx, callback) => {
+    store
+      .dispatch('<%= name %>/fetch<%= classify ( pluralize name) %>', {
+        q: searchQuery.value,
+        perPage: perPage.value,
+        page: currentPage.value,
+        sortBy: sortBy.value,
+        sortDesc: isSortDirDesc.value,
+        <%=#each data.options %>
+        <%= name %>: <%= name %>Filter.value,
+        <%=/each %>
+      })
+      .then(response => {
+        console.log(response.data)
+        const { data: <%= pluralize name %>, total } = response.data
+
+        callback(<%= pluralize name %>)
+        total<%= classify name %>.value = total
+      })
+      .catch(() => {
+        toast({
+          component: ToastificationContent,
+          props: {
+            title: 'حدث خطأ عند جلب القائمة',
+            icon: 'AlertTriangleIcon',
+            variant: 'danger',
+          },
+        })
+      })
+  }
+
+  // *===============================================---*
+  // *--------- UI ---------------------------------------*
+  // *===============================================---*
+  <%=#each data.options %>
+  <%=#if hasVariant %>
+  const resolve<%= classify name %>Variant = <%= ../name %> => {
+    <%=#each items %>
+    if (<%= ../name %> === '<%= value %>') return '<%= variant %>'
+    <%=/each %>
+    return 'primary'
+  }
+  <%=/if %>
+  <%=/each %>
+
+  <%=#each data.options %>
+  <%=#if hasIcon %>
+  const resolve<%= classify name %>Icon = <%= ../name %> => {
+    if (<%= ../name %> === '<%= value %>') return '<%= classify icon %>'
+    return ../defaultIcon'
+  }
+  <%=/if %>
+  <%=/each %>
+
+  return {
+    fetch<%= classify ( pluralize name) %>,
+    tableColumns,
+    perPage,
+    currentPage,
+    total<%= classify name %>,
+    dataMeta,
+    perPageOptions,
+    searchQuery,
+    sortBy,
+    isSortDirDesc,
+    ref<%= classify name %>ListTable,
+    <%=#each data.options %>
+    <%=#if hasVariant %>
+    resolve<%= classify name %>Variant,
+    <%=/if %>
+    <%=#if hasIcon %>
+    resolve<%= classify name %>Icon,
+    <%=/if %>
+    <%=/each %>
+    refetchData,
+
+    // Extra Filters
+    <%=#each data.options %>
+    <%= name %>Filter,
+    <%=/each %>
+  }
+}

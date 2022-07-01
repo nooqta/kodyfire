@@ -1,0 +1,323 @@
+<template>
+  <b-sidebar
+    id="add-new-<%= name %>-sidebar"
+    :visible="isAddNew<%= classify name %>SidebarActive"
+    bg-variant="white"
+    sidebar-class="sidebar-lg"
+    shadow
+    backdrop
+    no-header
+    right
+    @hidden="resetForm"
+    @change="(val) => $emit('update:is-add-new-<%= name %>-sidebar-active', val)"
+  >
+    <template #default="{ hide }">
+      <!-- Header -->
+      <div class="d-flex justify-content-between align-items-center content-sidebar-header px-2 py-1">
+        <h5 class="mb-0">
+          إضافة {{$t('<%= name %>')}}
+        </h5>
+
+        <feather-icon
+          class="ml-1 cursor-pointer"
+          icon="XIcon"
+          size="16"
+          @click="hide"
+        />
+
+      </div>
+
+      <!-- BODY -->
+      <validation-observer
+        #default="{ handleSubmit }"
+        ref="refFormObserver"
+      >
+        <!-- Form -->
+        <b-form
+          class="p-2"
+          @submit.prevent="handleSubmit(onSubmit)"
+          @reset.prevent="resetForm"
+        >
+
+        <%=#each data.form_fields %>
+          <!-- <%= name %> -->
+          <%=#ifEquals type 'select' %>
+          <validation-provider
+            #default="validationContext"
+            name="<%= name %>"
+            rules="<%= rules %>"
+          >
+            <b-form-group
+              label="<%= label %>"
+              label-for="<%= name %>"
+              :state="getValidationState(validationContext)"
+            >
+              <v-select
+                v-model="<%= ../name %>Data.<%= name %>"
+                @input="<%= name %>Changed"
+                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                :options="<%= pluralize name %>"
+                :reduce="val => val.value"
+                :clearable="false"
+                input-id="<%= name %>"
+              />
+              <b-form-invalid-feedback
+                :state="getValidationState(validationContext)"
+              >
+                {{ validationContext.errors[0] }}
+              </b-form-invalid-feedback>
+            </b-form-group>
+          </validation-provider>
+          
+          <%=/ifEquals %>
+          
+          <%=#ifEquals type 'textarea' %>
+          <validation-provider
+            #default="validationContext"
+            name="<%= name %>"
+            rules="<%= rules %>"
+          >
+            <b-form-group
+              label="<%= label %>"
+              label-for="<%= name %>"
+              :state="getValidationState(validationContext)"
+            >
+                          <b-form-textarea
+                          id="<%= name %>"
+                            v-model="<%= ../name %>Data.<%= name %>"
+                            rows="4"
+                            class="mb-2 mb-lg-0"
+                          />
+            <b-form-invalid-feedback :state="getValidationState(validationContext)">
+                {{ validationContext.errors[0] }}
+              </b-form-invalid-feedback>
+           </b-form-group> 
+          </validation-provider>
+          <%=/ifEquals %>
+          <%=#ifEquals type 'dateTime' %>
+           <validation-provider
+           #default="validationContext"
+                      vid="<%= name %>"
+                      name="<%= name %>"
+                      rules="<%= rules %>"
+                    >
+                    <b-form-group
+              label="<%= label %>"
+              label-for="<%= name %>"
+              :state="getValidationState(validationContext)"
+            >
+                    <flat-pickr
+                      v-model="<%= ../name %>Data.<%= name %>"
+                      :config="config"
+                      class="form-control invoice-edit-input"
+                    />
+                    <b-form-invalid-feedback>
+                {{ validationContext.errors[0] }}
+              </b-form-invalid-feedback>
+                   </b-form-group>  
+                    </validation-provider>
+          <%=/ifEquals %>
+          <%=#ifEquals type 'text' %>
+          <validation-provider
+            <%=#if data.required %>
+            v-if="<%=data.required%>"
+            <%=/if%>
+            #default="validationContext"
+            name="<%= name %>"
+            rules="<%= rules %>"
+          >
+            <b-form-group label="<%= label %>" label-for="<%= name %>">
+              <b-form-input
+                id="<%= name %>"
+                v-model="<%= ../name %>Data.<%= name %>"
+                :state="getValidationState(validationContext)"
+                trim
+              />
+
+              <b-form-invalid-feedback>
+                {{ validationContext.errors[0] }}
+              </b-form-invalid-feedback>
+            </b-form-group>
+          </validation-provider>
+          <%=/ifEquals %>
+          
+          <!-- end <%= name %> -->
+          <%=/each %>
+
+          <!-- Form Actions -->
+          <div class="d-flex mt-2">
+            <b-button
+              v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+              variant="primary"
+              class="mr-2"
+              type="submit"
+            >
+              {{ $t('save') }}
+            </b-button>
+            <b-button
+              v-ripple.400="'rgba(186, 191, 199, 0.15)'"
+              type="button"
+              variant="outline-secondary"
+              @click="hide"
+            >
+              {{$t('cancel')}}
+            </b-button>
+          </div>
+
+        </b-form>
+      </validation-observer>
+    </template>
+  </b-sidebar>
+</template>
+
+<script>
+import {
+  BSidebar, BForm, BFormGroup, BFormInput, BFormInvalidFeedback, BFormTextarea, BButton,
+} from 'bootstrap-vue'
+import { ValidationProvider, ValidationObserver } from 'vee-validate'
+import { ref } from '@vue/composition-api'
+import { required, alphaNum, validEmail } from '@validations'
+import formValidation from '@core/comp-functions/forms/form-validation'
+import Ripple from 'vue-ripple-directive'
+import vSelect from 'vue-select'
+import flatPickr from 'vue-flatpickr-component'
+import store from '@/store'
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue';
+import {Arabic} from 'flatpickr/dist/l10n/ar.js';
+
+export default {
+  components: {
+    BSidebar,
+    BForm,
+    BFormGroup,
+    BFormInput,
+    BFormInvalidFeedback,
+    BFormTextarea,
+    BButton,
+    vSelect,
+    flatPickr,
+    // Form Validation
+    ValidationProvider,
+    ValidationObserver,
+  },
+  directives: {
+    Ripple,
+  },
+  model: {
+    prop: 'isAddNew<%= classify name %>SidebarActive',
+    event: 'update:is-add-new-<%= name %>-sidebar-active',
+  },
+  props: {
+    isAddNew<%= classify name %>SidebarActive: {
+      type: Boolean,
+      required: true,
+    }
+  },
+  data() {
+    return {
+      required,
+      alphaNum,
+      validEmail,
+      config: {
+        locale: Arabic,
+      }
+    }
+  },
+  methods: {
+    <%=#each data.remote_options %>
+    <%= name %>Changed(<%= name %>) {
+      this.<%= ../name%>Data.<%= name %>_id = <%= name %>;
+    },<%=/each%>
+    <%=#each data.options %>
+    <%= name %>Changed(<%= name %>) {
+      this.<%= ../name%>Data.<%= name %>_id = <%= name %>;
+    },<%=/each%>
+    onSubmit() {
+      this.$refs.refFormObserver.validate().then(async (success) => {
+      if (success) {
+        store.dispatch('<%= name %>/add<%= classify name %>', this.<%= name %>Data)
+          .then((response) => {
+            this.$toast.success(response.data.message)
+            this.$emit('refetch-data')
+            this.$emit('update:is-add-new-<%= name %>-sidebar-active', false)
+          })
+      }
+      }).catch((err) => {
+              if(err.response) {
+                if(err.response.status === 422) {
+                this.$toast.error(err.response.data.message)
+                this.$refs.refFormObserver.setErrors(err.response.data.errors)
+                } else {
+                this.$toast.error(err.response.data.error)
+                }
+              }
+              console.log(err);
+            })
+    }
+
+  },
+  setup(props, { emit }) {
+    const blank<%= classify name %>Data = {
+      <%=#each data.form_fields %>
+      <%= name %>: '',
+      <%=/each %>
+    }
+
+    const <%= name %>Data = ref(JSON.parse(JSON.stringify(blank<%= classify name %>Data)))
+    const reset<%= name %>Data = () => {
+      <%= name %>Data.value = JSON.parse(JSON.stringify(blank<%= classify name %>Data))
+    }
+
+    <%=#each data.remote_options %>
+    let <%= pluralize name %> = ref([])
+    const res =  store.dispatch('<%= ../name %>/fetch<%= pluralize (classify name) %>')
+    .then(response => {
+      const res = response.data 
+      <%= pluralize name %>.value = res.map(c => ({
+        label: c.name, value: c.id, ...c}))
+      })
+      <%=/each %>
+
+    <%=#each data.options %>
+    const <%= pluralize name %> = [
+    <%=#each items %>
+      {
+        label: '<%= label %>',
+        value: '<%= value %>',
+      },
+      <%=/each %>
+      ]
+      <%=/each %>
+
+    const {
+      refFormObserver,
+      getValidationState,
+      resetForm,
+    } = formValidation(reset<%= name %>Data)
+
+    return {
+      <%= name %>Data,
+      <%=#each data.remote_options %>
+      <%= pluralize name %>,
+      <%=/each %>
+      <%=#each data.options %>
+      <%= pluralize name %>,
+      <%=/each %>
+      refFormObserver,
+      getValidationState,
+      resetForm,
+    }
+  },
+}
+</script>
+
+<style lang="scss">
+@import '@core/scss/vue/libs/vue-select.scss';
+@import '@core/scss/vue/libs/vue-flatpicker.scss';
+
+#add-new-<%= name %>-sidebar {
+  .vs__dropdown-menu {
+    max-height: 200px !important;
+  }
+}
+</style>

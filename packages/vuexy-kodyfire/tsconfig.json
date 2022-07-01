@@ -14,6 +14,7 @@
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "rootDir": "src",
+    "outDir": "build",
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "sourceMap": true,

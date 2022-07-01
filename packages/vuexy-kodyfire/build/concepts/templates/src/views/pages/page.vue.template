@@ -1,0 +1,20 @@
+<template>
+  <b-card title="قم بإنشاء صفحات رائعة 🙌 ">
+    <b-card-text>هذه صفحتك.</b-card-text>
+  </b-card>
+</template>
+
+<script>
+import { BCard, BCardText } from 'bootstrap-vue'
+
+export default {
+  components: {
+    BCard,
+    BCardText,
+  },
+}
+</script>
+
+<style>
+
+</style>

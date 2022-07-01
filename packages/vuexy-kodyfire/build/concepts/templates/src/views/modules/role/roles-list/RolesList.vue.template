@@ -1,0 +1,324 @@
+<template>
+
+  <div>
+
+    <!-- Table Container Card -->
+    <b-card
+      no-body
+      class="mb-0"
+    >
+
+      <div class="m-2">
+
+        <!-- Table Top -->
+        <b-row>
+
+          <!-- Per Page -->
+          <b-col
+            cols="12"
+            md="6"
+            class="d-flex align-items-center justify-content-start mb-1 mb-md-0"
+          >
+            <label>عرض</label>
+            <v-select
+              v-model="perPage"
+              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+              :options="perPageOptions"
+              :clearable="false"
+              class="per-page-selector d-inline-block mx-50"
+            />
+            <label>بيانات</label>
+          </b-col>
+
+          <!-- Search -->
+          <b-col
+            cols="12"
+            md="6"
+          >
+            <div class="d-flex align-items-center justify-content-end">
+              <b-form-input
+                v-model="searchQuery"
+                class="d-inline-block mr-1"
+                placeholder="بحث..."
+              />
+              <b-button
+              :to="{ name: 'roles-add' }"
+                variant="primary"
+              >
+                <span class="text-nowrap">إضافة دور</span>
+              </b-button>
+            </div>
+          </b-col>
+        </b-row>
+
+      </div>
+
+      <b-table
+        ref="refRoleListTable"
+        class="position-relative"
+        :items="fetchRoles"
+        responsive
+        :fields="tableColumns"
+        primary-key="id"
+        :sort-by.sync="sortBy"
+        show-empty
+        empty-text="لم يتم العثور على سجلات مطابقة"
+        :sort-desc.sync="isSortDirDesc"
+      >
+
+        <!-- Column: id -->
+        <template #cell(id)="data">
+          <b-media vertical-align="center">
+            <b-link
+              to="#"
+              class="font-weight-bold d-block text-nowrap"
+            >
+              {{ data.item.id }}
+            </b-link>
+          </b-media>
+        </template>
+
+        <!-- Column: name -->
+        <template #cell(name_arabic)="data">
+          <span class="text-nowrap">
+          {{ data.item.name_arabic }}
+        </span>
+        </template>
+       
+       <!-- Column: total_users -->
+        <template #cell(total_users)="data">
+          <span class="text-nowrap">
+          {{ data.item.total_users }}
+        </span>
+        </template>
+
+        <!-- Column: Actions -->
+        <template #cell(actions)="data">
+          <b-dropdown
+            variant="link"
+            no-caret
+            :right="$store.state.appConfig.isRTL"
+          >
+
+            <template #button-content>
+              <feather-icon
+                icon="MoreVerticalIcon"
+                size="16"
+                class="align-middle text-body"
+              />
+            </template>
+            <!-- <b-dropdown-item :to="{ name: 'roles-view', params: { id: data.item.id } }">
+              <feather-icon icon="FileTextIcon" />
+              <span class="align-middle ml-50">تفاصيل</span>
+            </b-dropdown-item> -->
+
+            <b-dropdown-item :to="{ name: 'roles-edit', params: { id: data.item.id } }">
+              <feather-icon icon="EditIcon" />
+              <span class="align-middle ml-50">تعديل</span>
+            </b-dropdown-item>
+
+            <b-dropdown-item :disabled="data.item.is_system_role"  @click="confirmDelete(data.item)">
+              <feather-icon icon="TrashIcon" />
+              <span class="align-middle ml-50">حذف</span>
+            </b-dropdown-item>
+          </b-dropdown> 
+        </template>
+
+      </b-table>
+      <div class="mx-2 mb-2">
+        <b-row>
+
+          <b-col
+            cols="12"
+            sm="6"
+            class="d-flex align-items-center justify-content-center justify-content-sm-start"
+          >
+            <span class="text-muted">عرض من {{ dataMeta.from }} إلى {{ dataMeta.to }}  من مجموع {{ dataMeta.of }} </span>
+          </b-col>
+          <!-- Pagination -->
+          <b-col
+            cols="12"
+            sm="6"
+            class="d-flex align-items-center justify-content-center justify-content-sm-end"
+          >
+
+            <b-pagination
+              v-model="currentPage"
+              :total-rows="totalRoles"
+              :per-page="perPage"
+              first-number
+              last-number
+              class="mb-0 mt-1 mt-sm-0"
+              prev-class="prev-item"
+              next-class="next-item"
+            >
+              <template #prev-text>
+                <feather-icon
+                  icon="ChevronLeftIcon"
+                  size="18"
+                />
+              </template>
+              <template #next-text>
+                <feather-icon
+                  icon="ChevronRightIcon"
+                  size="18"
+                />
+              </template>
+            </b-pagination>
+
+          </b-col>
+
+        </b-row>
+      </div>
+    </b-card>
+  </div>
+</template>
+
+<script>
+import {
+  BCard, BRow, BCol, BFormInput, BButton, BTable, BMedia, BAvatar, BLink,
+  BBadge, BDropdown, BDropdownItem, BPagination,
+} from 'bootstrap-vue'
+import vSelect from 'vue-select'
+import store from '@/store'
+import { ref, onUnmounted } from '@vue/composition-api'
+import { avatarText } from '@core/utils/filter'
+import useRolesList from './useRolesList'
+import roleStoreModule from '../roleStoreModule'
+import ToastificationContent from '@core/components/toastification/ToastificationContent.vue';
+
+export default {
+  components: {
+
+    BCard,
+    BRow,
+    BCol,
+    BFormInput,
+    BButton,
+    BTable,
+    BMedia,
+    BAvatar,
+    BLink,
+    BBadge,
+    BDropdown,
+    BDropdownItem,
+    BPagination,
+
+    vSelect,
+  },
+  methods: {
+    deleteRole(role) {
+      store.dispatch('app-role/deleteRole', { id: role.id })
+      .then(response => { 
+        this.$emit('refetch-data')
+        this.refetchData();
+        this.$toast({
+            component: ToastificationContent,
+            props: {
+              title: 'تم حذف المستخدم بنجاح',
+              icon: 'EditIcon',
+              variant: 'success',
+            },
+          })        
+          })
+      .catch(error => {
+          let message = 'لم يتم حذف الدور. حدث خطأ أثناء الحذف';
+          if(error.response) {
+            message = error.response.data.message;
+          }
+          this.$toast({
+              component: ToastificationContent,
+              props: {
+                title: message,
+                text: message,
+                icon: "AlertCircleIcon",
+                variant: "danger",
+              },
+            });
+        if (error.response.status === 404) {
+          roleData.value = undefined
+        }
+      })
+    },
+    confirmDelete(role) {
+      this.$bvModal
+        .msgBoxConfirm(`يرجى تأكيد أنك تريد حذف دور ${role.name_arabic}.`, {
+          title: 'يرجى التأكيد',
+          size: 'sm',
+          okVariant: 'danger',
+          okTitle: 'نعم',
+          cancelTitle: 'لا',
+          cancelVariant: 'outline-warning',
+          hideHeaderClose: false,
+          centered: true,
+        })
+        .then(value => {
+          if(value){
+            this.deleteRole(role)
+
+          }
+        })
+    }
+  },
+  setup() {
+    const ROLE_APP_STORE_MODULE_NAME = 'app-role'
+
+    // Register module
+    if (!store.hasModule(ROLE_APP_STORE_MODULE_NAME)) store.registerModule(ROLE_APP_STORE_MODULE_NAME, roleStoreModule)
+
+    // UnRegister on leave
+    onUnmounted(() => {
+      if (store.hasModule(ROLE_APP_STORE_MODULE_NAME)) store.unregisterModule(ROLE_APP_STORE_MODULE_NAME)
+    })
+
+    const isAddNewRoleSidebarActive = ref(false)
+
+    const {
+      fetchRoles,
+      tableColumns,
+      perPage,
+      currentPage,
+      totalRoles,
+      dataMeta,
+      perPageOptions,
+      searchQuery,
+      sortBy,
+      isSortDirDesc,
+      refRoleListTable,
+      refetchData,
+    } = useRolesList()
+
+    return {
+
+      // Sidebar
+      isAddNewRoleSidebarActive,
+
+      fetchRoles,
+      tableColumns,
+      perPage,
+      currentPage,
+      totalRoles,
+      dataMeta,
+      perPageOptions,
+      searchQuery,
+      sortBy,
+      isSortDirDesc,
+      refRoleListTable,
+      refetchData,
+
+      // Filter
+      avatarText,
+    }
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+.per-page-selector {
+  width: 90px;
+}
+</style>
+
+<style lang="scss">
+@import '@core/scss/vue/libs/vue-select.scss';
+</style>

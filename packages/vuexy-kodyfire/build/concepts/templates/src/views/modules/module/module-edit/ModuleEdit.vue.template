@@ -1,0 +1,98 @@
+<template>
+  <component :is="<%= name %>Data === undefined ? 'div' : 'b-card'">
+
+    <!-- Alert: No item found -->
+    <b-alert
+      variant="danger"
+      :show="<%= name %>Data === undefined"
+    >
+      <h4 class="alert-heading">
+        خطأ في جلب بيانات <%= label %>
+      </h4>
+      <div class="alert-body">
+        لم يتم العثور على <%= label %> مع معرف <%= label %> هذا.راجع
+        <b-link
+          class="alert-link"
+          :to="{ name: '<%= pluralize name %>-list'}"
+        >
+          قائمة <%= label %>
+        </b-link>
+        <%= label %> الآخرين.
+      </div>
+    </b-alert>
+
+    <b-tabs
+      v-if="<%= name %>Data"
+      pills
+    >
+
+      <!-- Tab: Information -->
+      <b-tab>
+        <template #title>
+          <feather-icon
+            icon="InfoIcon"
+            size="16"
+            class="mr-0 mr-sm-50"
+          />
+          <span class="d-none d-sm-inline">{{ $t('<%= name %>_edit') }}</span>
+        </template>
+        <<%= name %>-edit-tab-information :<%= name %>-data="<%= name %>Data"
+         class="mt-2 pt-75" />
+      </b-tab>
+    </b-tabs>
+  </component>
+</template>
+
+<script>
+import {
+  BTab, BTabs, BCard, BAlert, BLink,
+} from 'bootstrap-vue'
+import { ref, onUnmounted } from '@vue/composition-api'
+import router from '@/router'
+import store from '@/store'
+import <%= name %>Store from '../<%= name %>Store'
+import <%= classify name %>EditTabInformation from './<%= classify name %>EditTabInformation.vue'
+
+export default {
+  components: {
+    BTab,
+    BTabs,
+    BCard,
+    BAlert,
+    BLink,
+    <%= classify name %>EditTabInformation,
+  },
+  setup() {
+    const <%= name %>Data = ref(null)
+
+    const <%= uppercase name %>_APP_STORE_MODULE_NAME = 'app-<%= name %>'
+
+    // Register module
+    if (!store.hasModule(<%= uppercase name %>_APP_STORE_MODULE_NAME)) store.registerModule(<%= uppercase name %>_APP_STORE_MODULE_NAME, <%= name %>Store)
+
+    // UnRegister on leave
+    onUnmounted(() => {
+      if (store.hasModule(<%= uppercase name %>_APP_STORE_MODULE_NAME)) store.unregisterModule(<%= uppercase name %>_APP_STORE_MODULE_NAME)
+    })
+    
+    store.dispatch('app-<%= name %>/fetch<%= classify name %>', { id: router.currentRoute.params.id })
+      .then(response => { 
+        const{data: <%= name %> } = response.data
+        <%= name %>Data.value = <%= name %> 
+        })
+      .catch(error => {
+        if (error.response.status === 404) {
+          <%= name %>Data.value = undefined
+        }
+      })
+
+    return {
+      <%= name %>Data,
+    }
+  },
+}
+</script>
+
+<style>
+
+</style>
