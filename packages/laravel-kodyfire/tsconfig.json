@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "tsconfig",
     "lib": ["es2018", "dom"],
     "declaration": true,
     "module": "commonjs",
@@ -13,14 +13,14 @@
     "noImplicitThis": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "rootDir": "/",
+    "rootDir": "src",
+    "outDir": "build",
     "skipDefaultLibCheck": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "strictNullChecks": true,
     "target": "es6",
-    "types": ["node"],
-    "files": ["src/concepts/templates/**/*"]
+    "types": ["node"]
   },
   "include": ["src/**/*"],
   "exclude": ["src/*/files/**/*", "node_modules"]

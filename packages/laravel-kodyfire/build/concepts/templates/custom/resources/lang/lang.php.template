@@ -1,0 +1,12 @@
+<?php
+
+    return [
+        'name' => 'اسم المشروع',
+      'createSuccessMsg' => 'تم الإنشاء بنجاح.',
+      'updateSuccessMsg' => 'تم التحديث بنجاح.',
+      'deleteSuccessMsg' => 'تم الحذف بنجاح.',
+      'passwordUpdateSuccessMsg' => 'تم تحديث كلمة المرور بنجاح.',
+      'forgotSuccessMsg' => 'تم إرسال رمز إعادة التعيين إلى عنوان بريدك الإلكتروني.',
+      'validateSuccessMsg' => 'تم تنشيط حسابك بنجاح. يمكنك الآن الاتصال!',
+      'noRecordsFound' => 'لم يتم العثور على سجلات.',
+    ];

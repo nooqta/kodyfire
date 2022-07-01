@@ -1,0 +1,27 @@
+        public function create(DataBag $dataBag) {
+            $data = $dataBag->get('data');
+            DB::beginTransaction();
+            try {
+                {{#if hasUplodableMorph}}
+                {{{ attachments }}}
+                {{/if}}
+                {{#hasBeforeEvent 'create'}}
+                {{{ beforeEvent 'create' }}}
+                {{/hasBeforeEvent}}
+                {{#if customCreate}}
+                $model = {{{ customCreate }}}($data);
+                {{else}}
+                $model = {{model}}::create($data);
+                {{/if}}
+                {{#hasAfterEvent 'create'}}
+                {{{afterEvent 'create' }}}
+                {{/hasAfterEvent}}
+                {{{ morphAttachments }}}
+                {{{ additionalMethods }}}
+            } catch (\Exception $e) {
+                DB::rollback();
+                throw new Exception($e->getMessage());
+            }
+            DB::commit();
+            return $model;
+        }

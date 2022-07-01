@@ -1,0 +1,15 @@
+<?php
+      
+      namespace App\Repositories;
+      
+      use Log;
+      use Exception;
+      use App\Models\\{{name}};
+      use App\Storage\DataBag;
+      use Illuminate\Support\Facades\Storage;
+      use Illuminate\Support\Facades\DB;
+      
+      class {{name}}Repository extends Repository {
+          {{{methods}}}
+          {{{uploadAttachment}}}
+      }

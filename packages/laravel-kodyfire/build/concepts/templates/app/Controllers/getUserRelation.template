@@ -1,0 +1,16 @@
+public function {{name}}() {
+    try {
+      $user = auth()->user();
+      {{#if fields}}
+      $data = $user->{{{relation}}}()->get({{{stringify fields}}});
+      {{else}}
+      $data = $user->{{{relation}}};
+      {{/if}}
+      
+    } catch (\Throwable $th) {
+      return response()->json([
+      'error' => config('app.env') == 'local'? $th->getMessage(): __('app.errorMsg'),
+      ], 500);
+    }
+    return response()->json($data);
+  }

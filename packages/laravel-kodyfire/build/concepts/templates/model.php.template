@@ -1,0 +1,46 @@
+<?php
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Event;
+
+class {{name}} extends Model
+{
+    use HasFactory;
+
+    protected $fillable = {{{ fillable }}};
+
+    protected $hidden = [{{{hidden}}}];
+
+    
+    {{#if events}}
+    /**
+     * The event map for the model.
+     *
+     * @var array
+     */
+    protected $dispatchesEvents = [
+        {{#each events}}
+        '{{this}}' => \App\Events\\{{{../name}}}{{classify this}}::class,
+        {{/each}}
+    ];
+    {{/if}}
+
+    {{#if scopes }}
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        {{#each scopes}}
+            static::addGlobalScope(new \App\Scopes\\{{name}}({{{args}}}));
+        {{/each}}
+    } 
+    {{/if}}
+
+    {{{relations}}}
+
+}
