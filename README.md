@@ -185,14 +185,14 @@ Please remember that Kody is still in exploration phase and things will change f
 
 Add the required kodyfire metadata to your package.json
 
-```json
+```jsonc
 {
-...
-// A command for handling this part will be added in a future version
-"kodyfire": {
-	"id": "your-id", // must be unique.
-	"type": "kodyfire", // Example of valid technology names: laravel, express, react, angular, flutter, html, css. Default: kodyfire
-	"version: "0.0.1"
+  // A command for handling this part will be added in a future version
+  "kodyfire": {
+    "id": "your-id", // must be unique.
+    "type": "kodyfire", // Example of valid technology names: laravel, express, react, angular, flutter, html, css. Default: kodyfire
+    "version": "0.0.1"
+  }
 }
 ```
 
