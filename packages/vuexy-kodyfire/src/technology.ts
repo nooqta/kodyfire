@@ -19,15 +19,15 @@ export class Technology implements BaseTechnology {
   actions: ActionList;
   input?: any;
   params: any;
-  constructor(params: any) {
+  constructor(params: any, _assets = assets) {
     try {
       this.id = params.id;
       this.name = params.name;
       this.version = params.version;
       this.actions = new ActionList();
       this.concepts = new Map<string, IConcept>();
-      this.rootDir = assets.rootDir;
-      this.assets = assets;
+      this.rootDir = _assets.rootDir;
+      this.assets = _assets;
       this.params = params;
       if (params.templatesPath) {
         // user requested to use custom templates. We need to set the path to the templates
@@ -51,7 +51,7 @@ export class Technology implements BaseTechnology {
       console.log(error, 'error');
     }
   }
-  //@todo: refactor. exists in kodyfire-core technology.ts
+  //@todo: refactor. exists in kodyfire-core technology.ts. Maybe BaseTechnology should be extended
   async prepareConcept(
     dependency: string,
     conceptName: string,
