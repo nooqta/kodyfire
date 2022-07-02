@@ -9,7 +9,20 @@ export declare class Technology implements ITechnology {
   actions: ActionList;
   input?: any;
   params: any;
-  constructor(params: any);
+  constructor(
+    params: any,
+    _assets?: {
+      name: string;
+      version: string;
+      rootDir: string;
+      concepts: {
+        name: string;
+        template: {
+          path: string;
+        };
+      }[];
+    }
+  );
   prepareConcept(
     dependency: string,
     conceptName: string,

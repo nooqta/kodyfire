@@ -39,8 +39,8 @@ const node_1 = require('@angular-devkit/core/node');
 const schematics_1 = require('@angular-devkit/schematics');
 const technology_1 = require('../technology');
 class Generator {
-  constructor(params) {
-    this.technology = new technology_1.Technology(params);
+  constructor(params, technology = new technology_1.Technology(params)) {
+    this.technology = technology;
     const _backend = new core_1.virtualFs.ScopedHost(
       new node_1.NodeJsSyncHost(),
       (0, core_1.normalize)(process.cwd())

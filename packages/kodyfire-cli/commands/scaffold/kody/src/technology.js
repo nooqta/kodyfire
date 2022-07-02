@@ -76,15 +76,16 @@ const assets = __importStar(require('./assets.json'));
 /* @ts-ignore */
 const classes = __importStar(require('.'));
 class Technology {
-  constructor(params) {
+  constructor(params, _assets = assets) {
     try {
       this.id = params.id;
       this.name = params.name;
       this.version = params.version;
       this.actions = new kodyfire_core_1.ActionList();
       this.concepts = new Map();
-      this.rootDir = assets.rootDir;
-      this.assets = assets;
+      this.rootDir = _assets.rootDir;
+      this.assets = _assets;
+      this.params = params;
       // add dynamic property for technology
       for (const concept of this.assets.concepts) {
         const className = (0, kodyfire_core_1.capitalize)(concept.name);

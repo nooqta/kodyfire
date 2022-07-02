@@ -8,8 +8,8 @@ export class Generator implements IGenerator {
   technology: ITechnology;
   input: any;
   tree: Tree;
-  constructor(params: any) {
-    this.technology = new Technology(params);
+  constructor(params: any, technology: ITechnology = new Technology(params)) {
+    this.technology = technology;
     const _backend = new virtualFs.ScopedHost(
       new NodeJsSyncHost(),
       normalize(process.cwd())

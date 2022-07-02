@@ -21,6 +21,11 @@ module.exports = (program: typeof Command) => {
     .description('Generate a new blank kody project')
     .option('-n,--name <name>', 'Project name')
     .option('-t, --technology <technology>', 'Project technology')
+    .option(
+      '-tpl, --templateFolder <templateFolder>',
+      'Template folder to use. Available templates: simple, basic. Default: simple',
+      'simple'
+    )
     .action(async (_opt: { name: any }) => {
       // await $`schematics @noqta/kodyfire:run --name ${_opt.name} --dry-run`;
       try {

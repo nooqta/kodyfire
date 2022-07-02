@@ -43,13 +43,17 @@ const events_1 = __importDefault(require('events'));
 const kodyfire_core_1 = require('kodyfire-core');
 const _1 = require('.');
 class Kody extends kodyfire_core_1.BaseKody {
-  constructor(params) {
+  constructor(
+    params,
+    _schema = _1.schema,
+    technology = new _1.Technology(params)
+  ) {
     super();
     this.params = params;
     const validator = new _1.Validator();
     this.parser = new _1.Parser(validator);
     this.generator = new _1.Generator(params);
-    this.technology = this.generator.technology;
+    this.technology = technology;
     this.events = new events_1.default();
   }
   generate(_content) {

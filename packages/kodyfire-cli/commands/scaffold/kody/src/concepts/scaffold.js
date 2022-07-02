@@ -67,13 +67,20 @@ class Scaffold extends concept_1.Concept {
             yield this.engine.createOrOverwrite(
               this.technology.rootDir,
               _data.outputDir,
-              this.getFilename(_data.templateFolder, file),
+              this.getFilename(
+                _data.templateFolder.replace(
+                  this.technology.params.templateFolder,
+                  ''
+                ),
+                file
+              ),
               compiled
             );
           } else if (stat.isDirectory()) {
             console.log(`creating folder: ${_data.templateFolder}/${file}`);
             yield this.generate(
               Object.assign(Object.assign({}, _data), {
+                // templateFolder: join(_data.templateFolder, file),
                 templateFolder: (0, path_1.join)(_data.templateFolder, file),
               })
             );

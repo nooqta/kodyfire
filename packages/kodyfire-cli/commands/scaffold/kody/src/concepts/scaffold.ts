@@ -28,6 +28,7 @@ export class Scaffold extends Concept {
 
   async generate(_data: any) {
     this.initEngine();
+
     const filePath = join(
       relative(process.cwd(), __dirname),
       this.template.path,
@@ -47,13 +48,20 @@ export class Scaffold extends Concept {
           await this.engine.createOrOverwrite(
             this.technology.rootDir,
             _data.outputDir,
-            this.getFilename(_data.templateFolder, file),
+            this.getFilename(
+              _data.templateFolder.replace(
+                this.technology.params.templateFolder,
+                ''
+              ),
+              file
+            ),
             compiled
           );
         } else if (stat.isDirectory()) {
           console.log(`creating folder: ${_data.templateFolder}/${file}`);
           await this.generate({
             ..._data,
+            // templateFolder: join(_data.templateFolder, file),
             templateFolder: join(_data.templateFolder, file),
           });
         }
