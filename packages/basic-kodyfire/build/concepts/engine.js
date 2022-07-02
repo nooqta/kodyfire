@@ -80,6 +80,10 @@ class Engine {
     }
     read(path, templateName) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (fs.existsSync((0, path_1.join)(path, templateName))) {
+                const template = yield fsPromises.readFile((0, path_1.join)(path, templateName));
+                return template === null || template === void 0 ? void 0 : template.toString();
+            }
             const template = yield fsPromises.readFile((0, path_1.join)((0, path_1.relative)(process.cwd(), __dirname), path, templateName));
             return template === null || template === void 0 ? void 0 : template.toString();
         });

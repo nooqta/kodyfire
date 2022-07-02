@@ -7,7 +7,7 @@ import {
   ITechnology,
   Package,
 } from 'kodyfire-core';
-import { Generator, Parser, Validator } from '.';
+import { Generator, Parser, Validator, schema, Technology } from '.';
 
 export class Kody extends BaseKody implements IKody {
   [x: string]: any;
@@ -16,13 +16,17 @@ export class Kody extends BaseKody implements IKody {
   technology: ITechnology;
   package: Package;
   events: EventEmitter;
-  constructor(params: any) {
+  constructor(
+    params: any,
+    _schema = schema,
+    technology = new Technology(params)
+  ) {
     super();
-    const validator = new Validator();
+    const validator = new Validator(_schema);
+    this.technology = technology;
     this.params = params;
     this.parser = new Parser(validator);
     this.generator = new Generator(params);
-    this.technology = this.generator.technology;
     this.events = new EventEmitter();
   }
   generate(_content: any) {

@@ -19,26 +19,28 @@ export class Technology implements BaseTechnology {
   actions: ActionList;
   input?: any;
   params: any;
-  constructor(params: any) {
+  constructor(params: any, _assets = assets) {
     try {
       this.id = params.id;
       this.name = params.name;
       this.version = params.version;
       this.actions = new ActionList();
       this.concepts = new Map<string, IConcept>();
-      this.rootDir = assets.rootDir;
-      this.assets = assets;
+      this.rootDir = _assets.rootDir;
+      this.assets = _assets;
       this.params = params;
       if (params.templatesPath) {
         // user requested to use custom templates. We need to set the path to the templates
-        const templatesPath = join(process.cwd(), '.kody', params.name);
+        let templatesPath = join(process.cwd(), '.kody', params.name);
         // we check if the path exists
         if (!fs.existsSync(templatesPath)) {
-          throw new Error(
-            `The path ${templatesPath} does not exist.\nRun the command "kodyfire publish ${params.name}" to publish the templates.`
-          );
+          // if not we check if its a wrapper kody
+          templatesPath = params.templatesPath;
+          if (!fs.existsSync(join(templatesPath, 'templates'))) {
+            throw new Error(`The path ${templatesPath} does not exist.`);
+          }
         }
-        params.templatesPath = join(process.cwd(), '.kody', params.name);
+        this.params.templatesPath = templatesPath;
       }
       // add dynamic property for technology
       for (const concept of this.assets.concepts) {
@@ -71,7 +73,7 @@ export class Technology implements BaseTechnology {
         [requirement]: conceptSchema[requirement].default || '',
       };
     }
-    console.log(preparedConcept);
+
     return preparedConcept;
   }
 }

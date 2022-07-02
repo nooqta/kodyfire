@@ -12,5 +12,7 @@ export declare class Concept implements IConcept {
     defaultAction: string;
     generate(_data: any): Promise<void>;
     getFilename(data: any): any;
+    getExtension(templateName: string): string | undefined;
     underscorize(word: any): any;
+    getTemplatesPath(): string;
 }

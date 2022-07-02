@@ -57,6 +57,10 @@ export class Engine {
     }
   }
   async read(path: string, templateName: any) {
+    if (fs.existsSync(join(path, templateName))) {
+      const template = await fsPromises.readFile(join(path, templateName));
+      return template?.toString();
+    }
     const template = await fsPromises.readFile(
       join(relative(process.cwd(), __dirname), path, templateName)
     );

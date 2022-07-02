@@ -5,8 +5,8 @@ export class Generator implements IGenerator {
   technology: ITechnology;
   input: any;
   output: any;
-  constructor(params: any) {
-    this.technology = new Technology(params);
+  constructor(params: any, technology: ITechnology = new Technology(params)) {
+    this.technology = technology;
   }
   async generate(content: any) {
     this.input = content;

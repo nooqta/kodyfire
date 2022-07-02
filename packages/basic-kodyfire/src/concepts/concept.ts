@@ -5,6 +5,7 @@ import {
   Technology,
   TemplateSchema,
 } from 'kodyfire-core';
+import { join, relative } from 'path';
 
 import { Engine } from './engine';
 
@@ -27,7 +28,10 @@ export class Concept implements IConcept {
   async generate(_data: any) {
     this.engine = new Engine();
 
-    const template = await this.engine.read(this.template.path, _data.template);
+    const template = await this.engine.read(
+      join(this.getTemplatesPath(), this.template.path),
+      _data.template
+    );
     const compiled = this.engine.compile(template, _data);
 
     await this.engine.createOrOverwrite(
@@ -39,12 +43,21 @@ export class Concept implements IConcept {
   }
   getFilename(data: any) {
     if (data.filename) return data.filename;
-    return data.template.replace('.template', '');
+    return `${data.name}.${this.getExtension(data.template)}`;
+  }
+  getExtension(templateName: string) {
+    return templateName.replace('.template', '').split('.').pop();
   }
 
   underscorize(word: any) {
     return word.replace(/[A-Z]/g, function (char: any, index: any) {
       return (index !== 0 ? '_' : '') + char.toLowerCase();
     });
+  }
+
+  getTemplatesPath(): string {
+    return this.technology.params.templatesPath
+      ? this.technology.params.templatesPath
+      : relative(process.cwd(), __dirname);
   }
 }

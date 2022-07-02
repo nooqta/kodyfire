@@ -9,8 +9,8 @@ export class Validator implements IValidator {
     | ErrorObject<string, Record<string, any>, unknown>[]
     | null
     | undefined;
-  constructor() {
-    this.rules = schema;
+  constructor(_schema = schema) {
+    this.rules = _schema;
     this.schemaValidator = new Ajv();
   }
   validate(data: any): boolean {

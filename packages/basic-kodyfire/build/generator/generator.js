@@ -12,8 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Generator = void 0;
 const technology_1 = require("../technology");
 class Generator {
-    constructor(params) {
-        this.technology = new technology_1.Technology(params);
+    constructor(params, technology = new technology_1.Technology(params)) {
+        this.technology = technology;
     }
     generate(content) {
         var _a;

@@ -7,8 +7,8 @@ exports.Validator = void 0;
 const schema_1 = require("./schema");
 const ajv_1 = __importDefault(require("ajv"));
 class Validator {
-    constructor() {
-        this.rules = schema_1.schema;
+    constructor(_schema = schema_1.schema) {
+        this.rules = _schema;
         this.schemaValidator = new ajv_1.default();
     }
     validate(data) {

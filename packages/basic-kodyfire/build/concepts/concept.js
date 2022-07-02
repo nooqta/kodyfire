@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Concept = void 0;
 const kodyfire_core_1 = require("kodyfire-core");
+const path_1 = require("path");
 const engine_1 = require("./engine");
 class Concept {
     constructor(concept, technology) {
@@ -24,7 +25,7 @@ class Concept {
     generate(_data) {
         return __awaiter(this, void 0, void 0, function* () {
             this.engine = new engine_1.Engine();
-            const template = yield this.engine.read(this.template.path, _data.template);
+            const template = yield this.engine.read((0, path_1.join)(this.getTemplatesPath(), this.template.path), _data.template);
             const compiled = this.engine.compile(template, _data);
             yield this.engine.createOrOverwrite(this.technology.rootDir, this.outputDir, this.getFilename(_data), compiled);
         });
@@ -32,12 +33,20 @@ class Concept {
     getFilename(data) {
         if (data.filename)
             return data.filename;
-        return data.template.replace('.template', '');
+        return `${data.name}.${this.getExtension(data.template)}`;
+    }
+    getExtension(templateName) {
+        return templateName.replace('.template', '').split('.').pop();
     }
     underscorize(word) {
         return word.replace(/[A-Z]/g, function (char, index) {
             return (index !== 0 ? '_' : '') + char.toLowerCase();
         });
+    }
+    getTemplatesPath() {
+        return this.technology.params.templatesPath
+            ? this.technology.params.templatesPath
+            : (0, path_1.relative)(process.cwd(), __dirname);
     }
 }
 exports.Concept = Concept;
