@@ -5,8 +5,8 @@ export class Generator implements IGenerator {
   technology: ITechnology;
   input: any;
   output: any;
-  constructor(params: any) {
-    this.technology = new Technology(params);
+  constructor(params: any, technology: ITechnology = new Technology(params)) {
+    this.technology = technology;
   }
   generate(content: any) {
     // for every concept in concepts list

@@ -15,15 +15,15 @@ export class Technology implements ITechnology {
   actions: ActionList;
   input?: any;
   params: any;
-  constructor(params: any) {
+  constructor(params: any, _assets = assets) {
     try {
       this.id = params.id;
       this.name = params.name;
       this.version = params.version;
       this.actions = new ActionList();
       this.concepts = new Map<string, IConcept>();
-      this.rootDir = assets.rootDir;
-      this.assets = assets;
+      this.rootDir = _assets.rootDir;
+      this.assets = _assets;
       this.params = params;
       if (params.templatesPath) {
         // user requested to use custom templates. We need to set the path to the templates
