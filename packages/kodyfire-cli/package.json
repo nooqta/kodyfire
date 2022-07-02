@@ -1,6 +1,6 @@
 {
   "name": "kodyfire-cli",
-  "version": "0.0.106",
+  "version": "0.0.107",
   "description": "Artifact generator,automation tool and a general purpose low code and nocode generator.",
   "repository": {
     "type": "git",

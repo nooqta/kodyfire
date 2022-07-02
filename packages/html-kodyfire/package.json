@@ -1,6 +1,6 @@
 {
   "name": "html-kodyfire",
-  "version": "0.0.106",
+  "version": "0.0.107",
   "description": "Generator for HTML pages with kodyfire",
   "main": "build/index.js",
   "scripts": {
@@ -26,7 +26,7 @@
     "@angular-devkit/schematics": "^12.2.3",
     "ajv": "^8.6.3",
     "fs-extra": "^10.0.0",
-    "kodyfire-core": "^0.0.106",
+    "kodyfire-core": "^0.0.107",
     "typescript": "~4.5.5"
   },
   "devDependencies": {
