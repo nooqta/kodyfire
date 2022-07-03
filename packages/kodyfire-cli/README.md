@@ -66,7 +66,7 @@ kody --help
 
 ### Create/Open your project
 
-<u>**Note**</u>: <i>In most cases you might need to create you own kody locally. Instructions below. Don't forget to share your feedback with us. </i>
+<u>**Note**</u>: <i>In most cases you might need to create your own kody locally. Instructions below. Don't forget to share your feedback with us. </i>
 
 Open the project you are willing to work on using vscode. If you are starting a project from scratch, you can start our experimental project installer (work is still in progress). It will prompt you to choose the project type and destination.
 
