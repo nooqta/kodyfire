@@ -99,7 +99,6 @@ class Scaffold extends concept_1.Concept {
       } catch (e) {
         console.log('e', e);
       }
-      console.log(names);
       return names;
     });
   }
