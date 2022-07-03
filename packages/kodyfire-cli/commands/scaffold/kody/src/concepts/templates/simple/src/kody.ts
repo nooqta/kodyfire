@@ -8,8 +8,8 @@ export class Kody extends BaseKody {
     technology = new Technology(params)
   ) {
     // override the templateDir property to point to our directory
-    args.templatesPath = __dirname;
+    params.templatesPath = __dirname;
     // override the assets.json to include custom concepts when needed
-    super(args, schema, technology);
+    super(params, schema, technology);
   }
 }
