@@ -21,9 +21,6 @@ export declare class Validator implements IValidator {
                 items: {
                     type: string;
                     properties: {
-                        anis: {
-                            type: string;
-                        };
                         name: {
                             type: string;
                         };

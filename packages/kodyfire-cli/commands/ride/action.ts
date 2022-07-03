@@ -280,9 +280,7 @@ export class Action {
           true
         );
         if (question) {
-          console.log(question);
           const answer = await prompts(question);
-          console.log(answer);
           answers[conceptNames[i]] = answer.value;
         }
       }

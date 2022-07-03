@@ -4,7 +4,6 @@ exports.schema = exports.conceptArray = exports.concept = void 0;
 exports.concept = {
     type: 'object',
     properties: {
-        anis: { type: 'string' },
         name: { type: 'string' },
         template: {
             type: 'string',

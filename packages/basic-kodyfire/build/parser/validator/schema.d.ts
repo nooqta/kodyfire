@@ -1,9 +1,6 @@
 export declare const concept: {
     type: string;
     properties: {
-        anis: {
-            type: string;
-        };
         name: {
             type: string;
         };
@@ -21,9 +18,6 @@ export declare const conceptArray: {
     items: {
         type: string;
         properties: {
-            anis: {
-                type: string;
-            };
             name: {
                 type: string;
             };
@@ -54,9 +48,6 @@ export declare const schema: {
             items: {
                 type: string;
                 properties: {
-                    anis: {
-                        type: string;
-                    };
                     name: {
                         type: string;
                     };

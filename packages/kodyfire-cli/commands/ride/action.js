@@ -334,9 +334,7 @@ class Action {
             true
           );
           if (question) {
-            console.log(question);
             const answer = yield prompts(question);
-            console.log(answer);
             answers[conceptNames[i]] = answer.value;
           }
         }

@@ -26,9 +26,6 @@ export declare class Kody extends BaseKody implements IKody {
                 items: {
                     type: string;
                     properties: {
-                        anis: {
-                            type: string;
-                        };
                         name: {
                             type: string;
                         };
