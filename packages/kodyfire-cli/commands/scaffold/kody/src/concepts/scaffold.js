@@ -80,7 +80,6 @@ class Scaffold extends concept_1.Concept {
             console.log(`creating folder: ${_data.templateFolder}/${file}`);
             yield this.generate(
               Object.assign(Object.assign({}, _data), {
-                // templateFolder: join(_data.templateFolder, file),
                 templateFolder: (0, path_1.join)(_data.templateFolder, file),
               })
             );
@@ -100,6 +99,7 @@ class Scaffold extends concept_1.Concept {
       } catch (e) {
         console.log('e', e);
       }
+      console.log(names);
       return names;
     });
   }

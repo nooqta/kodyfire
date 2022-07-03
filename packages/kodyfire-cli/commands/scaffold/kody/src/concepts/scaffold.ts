@@ -61,7 +61,6 @@ export class Scaffold extends Concept {
           console.log(`creating folder: ${_data.templateFolder}/${file}`);
           await this.generate({
             ..._data,
-            // templateFolder: join(_data.templateFolder, file),
             templateFolder: join(_data.templateFolder, file),
           });
         }
@@ -79,6 +78,7 @@ export class Scaffold extends Concept {
     } catch (e) {
       console.log('e', e);
     }
+    console.log(names);
     return names;
   }
 
