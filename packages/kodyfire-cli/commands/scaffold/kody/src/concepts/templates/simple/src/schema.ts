@@ -1,11 +1,10 @@
 export const concept = {
   type: 'object',
   properties: {
-    anis: { type: 'string' },
     name: { type: 'string' },
     template: {
       type: 'string',
-      enum: ['simple.html.template'],
+      enum: ['sample.html.template'],
     },
     outputDir: { type: 'string' },
   },
