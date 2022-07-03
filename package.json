@@ -8,7 +8,7 @@
   },
   "scripts": {
     "watch": "lerna run watch --stream",
-    "build": "tsc -p tsconfig.json",
+    "build": "lerna run build --stream",
     "changelog": "lerna-changelog",
     "start:kodyfire-builder": "lerna run start --scope kodyfire-builder --stream",
     "start:kodyfire-server": "lerna run dev --scope kodyfire-server  --stream",

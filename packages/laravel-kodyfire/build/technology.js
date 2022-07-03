@@ -36,15 +36,15 @@ const classes = __importStar(require("."));
 const path_1 = require("path");
 const fs = require('fs');
 class Technology {
-    constructor(params) {
+    constructor(params, _assets = assets) {
         try {
             this.id = params.id;
             this.name = params.name;
             this.version = params.version;
             this.actions = new kodyfire_core_1.ActionList();
             this.concepts = new Map();
-            this.rootDir = assets.rootDir;
-            this.assets = assets;
+            this.rootDir = _assets.rootDir;
+            this.assets = _assets;
             this.params = params;
             if (params.templatesPath) {
                 // user requested to use custom templates. We need to set the path to the templates

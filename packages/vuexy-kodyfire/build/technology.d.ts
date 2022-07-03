@@ -9,6 +9,25 @@ export declare class Technology implements BaseTechnology {
     actions: ActionList;
     input?: any;
     params: any;
-    constructor(params: any);
+    constructor(params: any, _assets?: {
+        name: string;
+        version: string;
+        rootDir: string;
+        concepts: ({
+            name: string;
+            outputDir: string;
+            template: {
+                path: string;
+                options: string[];
+            };
+        } | {
+            name: string;
+            outputDir: string;
+            template: {
+                path: string;
+                options?: undefined;
+            };
+        })[];
+    });
     prepareConcept(dependency: string, conceptName: string, preparedConcept: any): Promise<any>;
 }
