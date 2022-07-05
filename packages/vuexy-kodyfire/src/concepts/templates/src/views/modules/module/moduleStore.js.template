@@ -22,7 +22,7 @@ export default {
           .catch(error => reject(error))
       })
     },
-    update<%= classify name %>(ctx, {<%= name %>Data, id}) {
+    update<%= classify name %>(ctx, { <%= name %>Data, id}) {
       return new Promise((resolve, reject) => {
         axios
           .put(`/api/<%= name %>/${id}`, <%= name %>Data)

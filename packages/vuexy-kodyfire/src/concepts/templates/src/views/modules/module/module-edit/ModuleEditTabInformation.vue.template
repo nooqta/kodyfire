@@ -132,7 +132,7 @@ export default {
     update<%= classify name %>() {
 
       this.$store
-        .dispatch("app-<%= name %>/update<%= classify name %>", {<%= name %>Data: this.<%= name %>Data, id: this.<%= name %>Data.id})
+        .dispatch("app-<%= name %>/update<%= classify name %>", { <%= name %>Data: this.<%= name %>Data, id: this.<%= name %>Data.id})
         .then((response) => {
           this.$toast.success(response.data.message);
           router.push("/<%= name %>").catch(() => {});
