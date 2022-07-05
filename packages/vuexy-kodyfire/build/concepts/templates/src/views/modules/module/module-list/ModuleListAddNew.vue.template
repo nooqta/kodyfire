@@ -55,7 +55,7 @@
               <v-select
                 v-model="<%= ../name %>Data.<%= name %>"
                 @input="<%= name %>Changed"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                :dir="$store.state.appConfig.layout.isRTL ? 'rtl' : 'ltr'"
                 :options="<%= pluralize name %>"
                 :reduce="val => val.value"
                 :clearable="false"
@@ -272,8 +272,8 @@ export default {
     let <%= pluralize name %> = ref([])
     const res =  store.dispatch('<%= ../name %>/fetch<%= pluralize (classify name) %>')
     .then(response => {
-      const res = response.data 
-      <%= pluralize name %>.value = res.map(c => ({
+      const { data } = response.data 
+      <%= pluralize name %>.value = data.map(c => ({
         label: c.name, value: c.id, ...c}))
       })
       <%=/each %>
