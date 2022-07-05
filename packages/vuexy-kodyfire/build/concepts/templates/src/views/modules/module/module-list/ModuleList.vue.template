@@ -135,7 +135,7 @@
         <template #cell(<%= name %>)="data">
           <b-badge
             pill
-            :variant="`light-${resolve<%= classify ../name %><%= classify name %>Variant(data.item.<%= name %>)}`"
+            :variant="`light-${resolve<%=classify ../name %><%=classify name %>Variant(data.item.<%= name %>)}`"
             class="text-capitalize"
           >
             {{ data.item.<%= name %> }}

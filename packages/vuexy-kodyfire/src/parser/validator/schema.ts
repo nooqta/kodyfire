@@ -195,7 +195,7 @@ const baseModule = {
               label: { type: 'string' },
               type: {
                 type: 'string',
-                enum: ['text', 'textarea', 'select', 'dateTime'],
+                enum: ['text', 'textarea', 'select', 'dateTime', 'status'],
               },
             },
           },

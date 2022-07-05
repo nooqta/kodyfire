@@ -204,8 +204,8 @@ export default {
     let <%= pluralize name %> = ref([])
     const res =  store.dispatch('<%= ../name %>/fetch<%= pluralize (classify name) %>')
     .then(response => {
-      const res = response.data 
-      <%= pluralize name %>.value = res.map(c => ({
+      const {data} = response.data 
+      <%= pluralize name %>.value = data.map(c => ({
         label: c.name, value: c.id, ...c}))
       })
       <%=/each %>
