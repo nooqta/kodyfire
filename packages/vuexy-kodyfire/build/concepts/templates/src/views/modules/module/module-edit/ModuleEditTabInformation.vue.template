@@ -168,7 +168,6 @@ export default {
           console.log(err);
         });
     },
-  },
      <%=#each data.remote_options %>
     <%= name %>Changed(<%= name %>) {
       this.<%= ../name%>Data.<%= name %>_id = <%= name %>;
@@ -177,6 +176,7 @@ export default {
     <%= name %>Changed(<%= name %>) {
       this.<%= ../name%>Data.<%= name %>_id = <%= name %>;
     },<%=/each%>
+  },
   },
   components: {
     BRow, BCol, BForm, BFormInvalidFeedback, BFormTextarea, BFormGroup, flatPickr, BFormInput, vSelect, BFormRadioGroup, BFormCheckboxGroup, BButton,
