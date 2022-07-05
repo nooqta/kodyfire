@@ -177,7 +177,6 @@ export default {
       this.<%= ../name%>Data.<%= name %>_id = <%= name %>;
     },<%=/each%>
   },
-  },
   components: {
     BRow, BCol, BForm, BFormInvalidFeedback, BFormTextarea, BFormGroup, flatPickr, BFormInput, vSelect, BFormRadioGroup, BFormCheckboxGroup, BButton,
     // Form Validation
