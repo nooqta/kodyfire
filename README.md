@@ -205,7 +205,7 @@ Intialize your project as a git repository and push to a public Github repo
 Once you are satisfied with your kody and you would to like to share it with the community. Run the following command.
 
 ```bash
-npm i -s ./yourkody-kodyfire
+npm publish
 ```
 
 <u>Note</u>: <i>You'll need an NPM account</i>
