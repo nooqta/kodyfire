@@ -26,7 +26,7 @@ export class Kody extends BaseKody implements IKody {
     this.technology = technology;
     this.params = params;
     this.parser = new Parser(validator);
-    this.generator = new Generator(params);
+    this.generator = new Generator(params, technology);
     this.events = new EventEmitter();
   }
   generate(_content: any) {

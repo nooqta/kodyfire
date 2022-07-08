@@ -14,7 +14,7 @@ class Kody extends kodyfire_core_1.BaseKody {
         this.technology = technology;
         this.params = params;
         this.parser = new _1.Parser(validator);
-        this.generator = new _1.Generator(params);
+        this.generator = new _1.Generator(params, technology);
         this.events = new events_1.default();
     }
     generate(_content) {
