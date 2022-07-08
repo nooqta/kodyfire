@@ -28,7 +28,10 @@ export class Concept extends BaseConcept {
 
   getFilename(data: any) {
     if (data.filename) return data.filename;
-    return `${data.name}.${this.getExtension(data.template)}`;
+    return join(
+      data.outputDir,
+      `${data.name}.${this.getExtension(data.template)}`
+    );
   }
 
   getExtension(templateName: string) {
