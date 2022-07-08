@@ -23,5 +23,7 @@ export declare class Technology implements BaseTechnology {
             };
         }[];
     });
+    initConcepts(): void;
+    updateTemplatesPath(params: any): void;
     prepareConcept(dependency: string, conceptName: string, preparedConcept: any): Promise<any>;
 }

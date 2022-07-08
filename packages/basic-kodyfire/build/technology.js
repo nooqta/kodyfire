@@ -46,26 +46,30 @@ class Technology {
             this.rootDir = _assets.rootDir;
             this.assets = _assets;
             this.params = params;
-            if (params.templatesPath) {
-                // user requested to use custom templates. We need to set the path to the templates
-                let templatesPath = (0, path_1.join)(process.cwd(), '.kody', params.name);
-                // we check if the path exists
-                if (!fs.existsSync(templatesPath)) {
-                    // if not we check if its a wrapper kody
-                    templatesPath = params.templatesPath;
-                    if (!fs.existsSync((0, path_1.join)(templatesPath, 'templates'))) {
-                        throw new Error(`The path ${templatesPath} does not exist.`);
-                    }
-                }
-                this.params.templatesPath = templatesPath;
-            }
-            // add dynamic property for technology
-            for (const concept of this.assets.concepts) {
-                this.concepts.set(concept.name, new classes[(0, kodyfire_core_1.capitalize)(concept.name)](concept, this));
-            }
         }
         catch (error) {
             console.log(error, 'error');
+        }
+    }
+    initConcepts() {
+        // add dynamic property for technology
+        for (const concept of this.assets.concepts) {
+            this.concepts.set(concept.name, new classes[(0, kodyfire_core_1.capitalize)(concept.name)](concept, this));
+        }
+    }
+    updateTemplatesPath(params) {
+        if (params.templatesPath) {
+            // user requested to use custom templates. We need to set the path to the templates
+            let templatesPath = (0, path_1.join)(process.cwd(), '.kody', params.name);
+            // we check if the path exists
+            if (!fs.existsSync(templatesPath)) {
+                // if not we check if its a wrapper kody
+                templatesPath = params.templatesPath;
+                if (!fs.existsSync((0, path_1.join)(templatesPath, 'templates'))) {
+                    throw new Error(`The path ${templatesPath} does not exist.`);
+                }
+            }
+            this.params.templatesPath = templatesPath;
         }
     }
     //@todo: refactor. exists in kodyfire-core technology.ts
