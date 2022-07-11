@@ -106,6 +106,8 @@ export class Action {
       const entries: any = {};
       // get the deb package schema file
       const { schema } = await import(`${rootDir}/node_modules/${dependency}`);
+      // console.log(schema.properties.umlClass.items.properties, dependency);
+      console.log(`${rootDir}/node_modules/${dependency}`);
       for (const prop of Object.keys(schema.properties)) {
         const attributes = await this.getConceptAttributes(
           schema.properties[prop]

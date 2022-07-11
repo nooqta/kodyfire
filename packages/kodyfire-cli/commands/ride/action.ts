@@ -257,7 +257,6 @@ export class Action {
 
   static async getPropertiesAnswers(concept: any) {
     const schemaDefinition = this.getSchemaDefinition(this.kody);
-
     const conceptNames = Object.keys(concept || {});
 
     if (conceptNames.length == 0) {
