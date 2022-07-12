@@ -7,6 +7,11 @@ export class Concept extends BaseConcept {
   constructor(concept: Partial<IConcept>, technology: ITechnology) {
     super(concept, technology);
     this.engine = new Engine();
+
+    // Register functions you want to use in your templates with the engine builder registerHelper method.
+    this.engine.builder.registerHelper('uppercase', (value: any) => {
+      return value.toUpperCase();
+    });
   }
 
   async generate(_data: any) {
