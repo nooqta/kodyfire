@@ -6,11 +6,10 @@ import { Engine, Concept as BaseConcept } from 'basic-kodyfire';
 export class Concept extends BaseConcept {
   constructor(concept: Partial<IConcept>, technology: ITechnology) {
     super(concept, technology);
+    this.engine = new Engine();
   }
 
   async generate(_data: any) {
-    this.engine = new Engine();
-
     const template = await this.engine.read(
       join(this.getTemplatesPath(), this.template.path),
       _data.template

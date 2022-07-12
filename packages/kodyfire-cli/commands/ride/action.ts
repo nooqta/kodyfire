@@ -80,6 +80,7 @@ export class Action {
         const answers = await this.getPropertiesAnswers(currentConcept);
 
         if (answers) {
+          // @todo validate answers
           this.addConcept(this.kody, this.concept, answers);
         }
       }
