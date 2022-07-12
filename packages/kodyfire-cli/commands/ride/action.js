@@ -114,6 +114,7 @@ class Action {
             const currentConcept = yield this.getCurrentConcept();
             const answers = yield this.getPropertiesAnswers(currentConcept);
             if (answers) {
+              // @todo validate answers
               this.addConcept(this.kody, this.concept, answers);
             }
           }
