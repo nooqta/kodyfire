@@ -1,4 +1,10 @@
 /// <reference types="node" />
+export interface IBuilder {
+    compile(template: string): any;
+}
+export interface IEngine {
+    builder: IBuilder;
+}
 export declare class Engine {
     builder: any;
     constructor();

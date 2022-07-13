@@ -3,7 +3,12 @@ import * as builder from 'handlebars';
 import { join, relative, dirname } from 'path';
 const fs = require('fs');
 const fsPromises = fs.promises;
-
+export interface IBuilder {
+  compile(template: string): any;
+}
+export interface IEngine {
+  builder: IBuilder;
+}
 export class Engine {
   builder: any;
   constructor() {
