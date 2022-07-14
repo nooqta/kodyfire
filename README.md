@@ -4,7 +4,7 @@
 
 <sub>[Video Demo](https://youtube.com/playlist?list=PLK2Evxcrq571vj0UjWtO7KnR29JkMN13L)</sub>
 
-The one tool that will rule them all. By developers for technical experts and non-technical expert.
+The one tool that will rule them all. By developers for technical experts and non-technical experts.
 
 Kody is a general-purpose terminal based, low-code no-code tool that helps you generate artifacts.
 
@@ -33,7 +33,7 @@ Here are few examples of what kody can/will do
 - A Word document based on a model
 - A PDF invoice
 - Mailing
-- Third-party API interaction
+- Third-party API interactions
 - Cron jobs
 - Deploy an application to a web server
 - Automate git commits by specifying when and what each commit includes

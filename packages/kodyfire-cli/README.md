@@ -4,7 +4,7 @@
 
 <sub>[Video Demo](https://youtube.com/playlist?list=PLK2Evxcrq571vj0UjWtO7KnR29JkMN13L)</sub>
 
-The one tool that will rule them all. By developers for technical experts and non-technical expert.
+The one tool that will rule them all. By developers for technical experts and non-technical experts.
 
 Kody is a general-purpose terminal based, low-code no-code tool that helps you generate artifacts.
 
