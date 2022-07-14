@@ -50,6 +50,16 @@ Here are few examples of what kody can/will do
 - Increased productivity
 - //TODO
 
+# Available kodies
+
+| Name                                                         | Description                                                                          |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| [basic-kodyfire](https://github.com/nooqta/kodyfire)         | A general purpose code generator that should handle most of the generation use cases |
+| [laravel-kodyfire](https://github.com/nooqta/kodyfire)       | Laravel artifacts generation                                                         |
+| [vuexy-kodyfire](https://github.com/nooqta/kodyfire)         | Vuexy theme artifacts generation                                                     |
+| [uml-kodyfire](https://github.com/nooqta)                    | Uml diagrams generation using plantuml                                               |
+| [readme-kodyfire](https://github.com/nooqta/readme-kodyfire) | Readme file generation                                                               |
+
 # Quick start
 
 Install the kody cli by running
@@ -207,7 +217,7 @@ Intialize your project as a git repository and push to a public Github repo
 Once you are satisfied with your kody and you would to like to share it with the community. Run the following command.
 
 ```bash
-npm publish
+npm Publish
 ```
 
 <u>Note</u>: <i>You'll need an NPM account</i>
