@@ -8,7 +8,12 @@ import {
 import { join, relative } from 'path';
 
 import { Engine } from './engine';
-
+export interface IBuilder {
+  compile(template: string): any;
+}
+export interface IEngine {
+  builder: IBuilder;
+}
 export class Concept implements IConcept {
   name: string;
   source?: Source | undefined;

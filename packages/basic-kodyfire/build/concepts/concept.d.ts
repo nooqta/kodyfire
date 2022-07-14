@@ -1,5 +1,11 @@
 import { IConcept, ITechnology, Source, Technology, TemplateSchema } from 'kodyfire-core';
 import { Engine } from './engine';
+export interface IBuilder {
+    compile(template: string): any;
+}
+export interface IEngine {
+    builder: IBuilder;
+}
 export declare class Concept implements IConcept {
     name: string;
     source?: Source | undefined;
