@@ -59,6 +59,7 @@ Here are few examples of what kody can/will do
 | [vuexy-kodyfire](https://github.com/nooqta/kodyfire)         | Vuexy theme artifacts generation                                                     |
 | [uml-kodyfire](https://github.com/nooqta)                    | Uml diagrams generation using plantuml                                               |
 | [readme-kodyfire](https://github.com/nooqta/readme-kodyfire) | Readme file generation                                                               |
+| [word-kodyfire](https://github.com/nooqta/word-kodyfire)     | Generate ms word document based on a template                                        |
 
 # Quick start
 
