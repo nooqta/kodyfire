@@ -60,6 +60,7 @@ Here are few examples of what kody can/will do
 | [uml-kodyfire](https://github.com/nooqta)                    | Uml diagrams generation using plantuml                                               |
 | [readme-kodyfire](https://github.com/nooqta/readme-kodyfire) | Readme file generation                                                               |
 | [word-kodyfire](https://github.com/nooqta/word-kodyfire)     | Generate ms word document based on a template                                        |
+| [pdf-kodyfire](https://github.com/nooqta/pdf-kodyfire)       | Generate PDF document from HTML templates                                            |
 
 # Quick start
 
@@ -89,9 +90,9 @@ kody install
 
 ### Install a kody
 
-Based on your project select the kody that works for you or customize your own. There are 3 kody packages available at the moment: Laravel, Vuexy and html.
+Based on your project select the kody that works for you or customize your own. There are 7 kody packages available at the moment.
 
-To list available kodies. (The search command simply displays available kodies and no keyword are required. There are only 3 🙂)
+To list available kodies. (The search command simply displays available kodies and no keyword are required. There are only 7 🙂)
 
 ```bash
 kody search
