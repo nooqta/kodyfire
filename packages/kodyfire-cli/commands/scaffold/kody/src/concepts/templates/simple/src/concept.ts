@@ -1,8 +1,8 @@
 import { IConcept, ITechnology } from 'kodyfire-core';
 import { join, relative } from 'path';
 
-import { Engine, Concept as BaseConcept } from 'basic-kodyfire';
-
+import { Concept as BaseConcept } from 'basic-kodyfire';
+import { Engine } from './engine';
 export class Concept extends BaseConcept {
   constructor(concept: Partial<IConcept>, technology: ITechnology) {
     super(concept, technology);
