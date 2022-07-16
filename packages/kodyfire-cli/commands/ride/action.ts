@@ -272,7 +272,7 @@ export class Action {
   static async conceptToQuestion(
     name: string,
     concept: {
-      description: { description: any };
+      description: string;
       default?: any;
       type?: string;
       enum?: any;
@@ -284,6 +284,7 @@ export class Action {
     label = '',
     useValueAsName = false
   ): Promise<any | void> {
+    message = concept.description || message;
     label = label || name;
     if (concepts[name] && typeof concepts[name] != 'string') {
       const choices = concepts[name].map((c: any, index: any) => ({
@@ -306,6 +307,18 @@ export class Action {
         message: message || `Select the value for ${label}?`,
         ...(concept.description && { description: concept.description }),
         choices: choices,
+      };
+    }
+    if (concept.type === 'boolean') {
+      return {
+        type: 'toggle',
+        name: useValueAsName ? 'value' : name,
+        ...(concept.default && { initial: concept.default }),
+        initial: concept.default,
+        ...(concept.description && { description: concept.description }),
+        message: message || `What is the value for ${label}?`,
+        active: 'Yes',
+        inactive: 'No',
       };
     }
     if (concept.type === 'string') {

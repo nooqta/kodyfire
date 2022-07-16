@@ -49,9 +49,7 @@ export declare class Action {
   static conceptToQuestion(
     name: string,
     concept: {
-      description: {
-        description: any;
-      };
+      description: string;
       default?: any;
       type?: string;
       enum?: any;

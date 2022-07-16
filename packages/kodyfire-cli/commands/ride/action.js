@@ -334,6 +334,7 @@ class Action {
     useValueAsName = false
   ) {
     return __awaiter(this, void 0, void 0, function* () {
+      message = concept.description || message;
       label = label || name;
       if (concepts[name] && typeof concepts[name] != 'string') {
         const choices = concepts[name].map((c, index) => ({
@@ -360,6 +361,25 @@ class Action {
             concept.description && { description: concept.description }
           ),
           { choices: choices }
+        );
+      }
+      if (concept.type === 'boolean') {
+        return Object.assign(
+          Object.assign(
+            Object.assign(
+              Object.assign(
+                { type: 'toggle', name: useValueAsName ? 'value' : name },
+                concept.default && { initial: concept.default }
+              ),
+              { initial: concept.default }
+            ),
+            concept.description && { description: concept.description }
+          ),
+          {
+            message: message || `What is the value for ${label}?`,
+            active: 'Yes',
+            inactive: 'No',
+          }
         );
       }
       if (concept.type === 'string') {
