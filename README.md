@@ -52,15 +52,16 @@ Here are few examples of what kody can/will do
 
 # Available kodies
 
-| Name                                                         | Description                                                                          |
-| ------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| [basic-kodyfire](https://github.com/nooqta/kodyfire)         | A general purpose code generator that should handle most of the generation use cases |
-| [laravel-kodyfire](https://github.com/nooqta/kodyfire)       | Laravel artifacts generation                                                         |
-| [vuexy-kodyfire](https://github.com/nooqta/kodyfire)         | Vuexy theme artifacts generation                                                     |
-| [uml-kodyfire](https://github.com/nooqta)                    | Uml diagrams generation using plantuml                                               |
-| [readme-kodyfire](https://github.com/nooqta/readme-kodyfire) | Readme file generation                                                               |
-| [word-kodyfire](https://github.com/nooqta/word-kodyfire)     | Generate ms word document based on a template                                        |
-| [pdf-kodyfire](https://github.com/nooqta/pdf-kodyfire)       | Generate PDF document from HTML templates                                            |
+| Name                                                                             | Description                                                                          |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| [basic-kodyfire](https://github.com/nooqta/kodyfire)                             | A general purpose code generator that should handle most of the generation use cases |
+| [laravel-kodyfire](https://github.com/nooqta/kodyfire)                           | Laravel artifacts generation                                                         |
+| [vuexy-kodyfire](https://github.com/nooqta/kodyfire)                             | Vuexy theme artifacts generation                                                     |
+| [uml-kodyfire](https://github.com/nooqta)                                        | Uml diagrams generation using plantuml                                               |
+| [readme-kodyfire](https://github.com/nooqta/readme-kodyfire)                     | Readme file generation                                                               |
+| [word-kodyfire](https://github.com/nooqta/word-kodyfire)                         | Generate ms word document based on a template                                        |
+| [pdf-kodyfire](https://github.com/nooqta/pdf-kodyfire)                           | Generate PDF document from HTML templates                                            |
+| [social-image-kodyfire](https://github.com/anis-marrouchi/social-image-kodyfire) | Generate dynamic images for social sharing based on HTML templates                   |
 
 # Quick start
 
@@ -90,9 +91,9 @@ kody install
 
 ### Install a kody
 
-Based on your project select the kody that works for you or customize your own. There are 7 kody packages available at the moment: Laravel, Vuexy and html.
+Based on your project select the kody that works for you or customize your own. There are 8 kody packages available at the moment: Laravel, Vuexy and html.
 
-To list available kodies. (The search command simply displays available kodies and no keyword are required. There are only 7 🙂)
+To list available kodies. (The search command simply displays available kodies and no keyword are required. There are only 8 🙂)
 
 ```bash
 kody search
