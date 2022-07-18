@@ -27,7 +27,7 @@ async function action(args: any): Promise<0 | 1> {
       process.exit(1);
     }
     for (const source of content.sources) {
-      args.name = getKodyName(args.source);
+      args.name = getKodyName(source.filename);
       args.source = join(process.cwd(), source.filename);
       const workflow = new CliWorkflow(source.filename);
       const runner = new Runner({ ...args, ...workflow });

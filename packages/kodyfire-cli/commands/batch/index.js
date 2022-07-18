@@ -61,7 +61,7 @@ function action(args) {
         process.exit(1);
       }
       for (const source of content.sources) {
-        args.name = getKodyName(args.source);
+        args.name = getKodyName(source.filename);
         args.source = join(process.cwd(), source.filename);
         const workflow = new worklfow_1.CliWorkflow(source.filename);
         const runner = new kodyfire_core_1.Runner(
