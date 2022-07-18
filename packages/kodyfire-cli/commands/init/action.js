@@ -112,36 +112,41 @@ class Action {
         }
         if (dependencies.length > 0) {
           for (const dep of dependencies) {
-            const entries = {};
-            kody.sources.push({
-              name: dep.replace('-kodyfire', ''),
-              filename: `kody-${dep.replace('-kodyfire', '')}.json`,
-            });
-            // get the deb package schema file
-            // @todo: find a better way
-            const { schema } = yield Promise.resolve().then(() =>
-              __importStar(require(`${_args.rootDir}/node_modules/${dep}`))
+            const filename = (0, path_1.join)(
+              _args.rootDir,
+              `kody-${dep.replace('-kodyfire', '')}.json`
             );
-            for (const prop of Object.keys(schema.properties)) {
-              entries[prop] = [];
+            // Create the file if it doesn't exist
+            if (!fs.existsSync(filename)) {
+              // Add the dependency to the kody.json file
+              const entries = {};
+              kody.sources.push({
+                name: dep.replace('-kodyfire', ''),
+                filename: `kody-${dep.replace('-kodyfire', '')}.json`,
+              });
+              // get the deb package schema file
+              // @todo: find a better way
+              const { schema } = yield Promise.resolve().then(() =>
+                __importStar(require(`${_args.rootDir}/node_modules/${dep}`))
+              );
+              for (const prop of Object.keys(schema.properties)) {
+                entries[prop] = [];
+              }
+              const name = dep.replace('-kodyfire', '');
+              entries.project = 'my-project';
+              entries.name = name;
+              const { value } = yield prompts((0, exports.question)(name));
+              const rootDir = (0, path_1.join)(process.cwd(), value);
+              entries.rootDir = rootDir;
+              const kodyJson = JSON.stringify(entries, null, '\t');
+              fs.writeFileSync(filename, kodyJson);
             }
-            const name = dep.replace('-kodyfire', '');
-            entries.project = 'my-project';
-            entries.name = name;
-            const { value } = yield prompts((0, exports.question)(name));
-            const rootDir = (0, path_1.join)(process.cwd(), value);
-            entries.rootDir = rootDir;
-            const kodyJson = JSON.stringify(entries, null, '\t');
+            const data = JSON.stringify(kody, null, '\t');
             fs.writeFileSync(
-              (0, path_1.join)(
-                _args.rootDir,
-                `kody-${dep.replace('-kodyfire', '')}.json`
-              ),
-              kodyJson
+              (0, path_1.join)(_args.rootDir, 'kody.json'),
+              data
             );
           }
-          const data = JSON.stringify(kody, null, '\t');
-          fs.writeFileSync((0, path_1.join)(_args.rootDir, 'kody.json'), data);
         }
       } catch (error) {
         this.displayMessage(error.message);
