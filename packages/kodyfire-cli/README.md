@@ -62,6 +62,7 @@ Here are few examples of what kody can/will do
 | [word-kodyfire](https://github.com/nooqta/word-kodyfire)                         | Generate ms word document based on a template                                        |
 | [pdf-kodyfire](https://github.com/nooqta/pdf-kodyfire)                           | Generate PDF document from HTML templates                                            |
 | [social-image-kodyfire](https://github.com/anis-marrouchi/social-image-kodyfire) | Generate dynamic images for social sharing based on HTML templates                   |
+| [social-gif-kodyfire](https://github.com/anis-marrouchi/social-gif-kodyfire)     | Generate dynamic gif images for social sharing based on HTML templates               |
 
 # Quick start
 
@@ -91,9 +92,9 @@ kody install
 
 ### Install a kody
 
-Based on your project select the kody that works for you or customize your own. There are 8 kody packages available at the moment.
+Based on your project select the kody that works for you or customize your own. There are 9 kody packages available at the moment: Laravel, Vuexy and html.
 
-To list available kodies. (The search command simply displays available kodies and no keyword are required. There are only 8 🙂)
+To list available kodies. (The search command simply displays available kodies and no keyword are required. There are only 9 🙂)
 
 ```bash
 kody search
