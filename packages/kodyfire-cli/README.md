@@ -94,9 +94,9 @@ kody install
 
 ### Install a kody
 
-Based on your project select the kody that works for you or customize your own. There are 9 kody packages available at the moment: Laravel, Vuexy and html.
+Based on your project select the kody that works for you or customize your own. There are 11 kody packages available at the moment: Laravel, Vuexy and html.
 
-To list available kodies. (The search command simply displays available kodies and no keyword are required. There are only 9 🙂)
+To list available kodies. (The search command simply displays available kodies and no keyword are required. There are only 11 🙂)
 
 ```bash
 kody search
