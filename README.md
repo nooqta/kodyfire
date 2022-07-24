@@ -65,6 +65,7 @@ Here are few examples of what kody can/will do
 | [social-gif-kodyfire](https://github.com/anis-marrouchi/social-gif-kodyfire)     | Generate dynamic gif images for social sharing based on HTML templates               |
 | [typescript-kodyfire](https://github.com/nooqta/typescript-kodyfire)             | Generate typescript related artifacts                                                |
 | [tsconfig-kodyfire](https://github.com/nooqta/tsconfig-kodyfire)                 | Generate tsconfig files for your typescript projects                                 |
+| [nextjs-kodyfire](https://github.com/nooqta/nextjs-kodyfire)                     | Generate nextJs components and related artifacts                                     |
 
 # Quick start
 
@@ -94,9 +95,9 @@ kody install
 
 ### Install a kody
 
-Based on your project select the kody that works for you or customize your own. There are 11 kody packages available at the moment: Laravel, Vuexy and html.
+Based on your project select the kody that works for you or customize your own. There are 12 kody packages available at the moment: Laravel, Vuexy and html.
 
-To list available kodies. (The search command simply displays available kodies and no keyword are required. There are only 11 🙂)
+To list available kodies. (The search command simply displays available kodies and no keyword are required. There are only 12 🙂)
 
 ```bash
 kody search
