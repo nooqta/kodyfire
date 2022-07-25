@@ -66,6 +66,7 @@ Here are few examples of what kody can/will do
 | [typescript-kodyfire](https://github.com/nooqta/typescript-kodyfire)             | Generate typescript related artifacts                                                |
 | [tsconfig-kodyfire](https://github.com/nooqta/tsconfig-kodyfire)                 | Generate tsconfig files for your typescript projects                                 |
 | [nextjs-kodyfire](https://github.com/nooqta/nextjs-kodyfire)                     | Generate nextJs components and related artifacts                                     |
+| [react-kodyfire](https://github.com/nooqta/react-kodyfire)                       | Generate react components                                                            |
 
 # Quick start
 
