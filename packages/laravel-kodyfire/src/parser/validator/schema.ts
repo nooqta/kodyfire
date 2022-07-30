@@ -106,8 +106,9 @@ export const controller = {
 };
 export const baseModel = {
   type: 'object',
+
   properties: {
-    name: { type: 'string' },
+    name: { type: 'string', description: 'The model name' },
     namespace: { type: 'string', default: 'App\\Models' },
     isMorph: { type: 'boolean', default: false },
     template: {
@@ -117,6 +118,8 @@ export const baseModel = {
     softDelete: { type: 'boolean', default: false },
     relationships: {
       type: 'array',
+      description:
+        'The model relationships. Example: [{name: "users", type: "hasMany"}]',
       items: {
         type: 'object',
         properties: {
@@ -131,7 +134,7 @@ export const baseModel = {
               'morphTo',
             ],
           },
-          model: model,
+          model: { type: 'string' },
         },
       },
     },
@@ -158,7 +161,8 @@ export const baseModel = {
           },
           faker_type: {
             type: 'string',
-            description: 'Checkout https://phpfaker.com/ for reference',
+            description:
+              'This used by the factory. Checkout https://phpfaker.com/ for reference',
             enum: [
               'word',
               'name',
@@ -186,6 +190,7 @@ export const baseModel = {
           arguments: {
             type: 'array',
             items: {
+              description: 'The argument list (Ex:$table->decimal(10,2))',
               type: 'string',
             },
           },
@@ -219,6 +224,7 @@ export const baseModel = {
     fillable: {
       type: 'array',
       items: {
+        description: 'The fillable fields. Example: ["name", "email"]',
         type: 'string',
       },
     },

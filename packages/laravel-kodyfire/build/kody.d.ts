@@ -21,6 +21,7 @@ export declare class Kody extends BaseKody implements IKody {
                     properties: {
                         name: {
                             type: string;
+                            description: string;
                         };
                         namespace: {
                             type: string;
@@ -40,6 +41,7 @@ export declare class Kody extends BaseKody implements IKody {
                         };
                         relationships: {
                             type: string;
+                            description: string;
                             items: {
                                 type: string;
                                 properties: {
@@ -51,9 +53,7 @@ export declare class Kody extends BaseKody implements IKody {
                                         enum: string[];
                                     };
                                     model: {
-                                        anyOf: {
-                                            type: string;
-                                        }[];
+                                        type: string;
                                     };
                                 };
                             };
@@ -78,6 +78,7 @@ export declare class Kody extends BaseKody implements IKody {
                                     arguments: {
                                         type: string;
                                         items: {
+                                            description: string;
                                             type: string;
                                         };
                                     };
@@ -132,6 +133,7 @@ export declare class Kody extends BaseKody implements IKody {
                         fillable: {
                             type: string;
                             items: {
+                                description: string;
                                 type: string;
                             };
                         };

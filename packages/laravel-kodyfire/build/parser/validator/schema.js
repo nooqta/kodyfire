@@ -110,7 +110,7 @@ exports.controller = {
 exports.baseModel = {
     type: 'object',
     properties: {
-        name: { type: 'string' },
+        name: { type: 'string', description: 'The model name', },
         namespace: { type: 'string', default: 'App\\Models' },
         isMorph: { type: 'boolean', default: false },
         template: {
@@ -120,6 +120,7 @@ exports.baseModel = {
         softDelete: { type: 'boolean', default: false },
         relationships: {
             type: 'array',
+            description: 'The model relationships. Example: [{name: "users", type: "hasMany"}]',
             items: {
                 type: 'object',
                 properties: {
@@ -134,7 +135,7 @@ exports.baseModel = {
                             'morphTo',
                         ],
                     },
-                    model: exports.model,
+                    model: { type: 'string' },
                 },
             },
         },
@@ -161,7 +162,7 @@ exports.baseModel = {
                     },
                     faker_type: {
                         type: 'string',
-                        description: 'Checkout https://phpfaker.com/ for reference',
+                        description: 'This used by the factory. Checkout https://phpfaker.com/ for reference',
                         enum: [
                             'word',
                             'name',
@@ -189,6 +190,7 @@ exports.baseModel = {
                     arguments: {
                         type: 'array',
                         items: {
+                            description: 'The argument list (Ex:$table->decimal(10,2))',
                             type: 'string',
                         },
                     },
@@ -222,6 +224,7 @@ exports.baseModel = {
         fillable: {
             type: 'array',
             items: {
+                description: 'The fillable fields. Example: ["name", "email"]',
                 type: 'string',
             },
         },

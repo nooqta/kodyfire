@@ -138,6 +138,7 @@ export declare const baseModel: {
     properties: {
         name: {
             type: string;
+            description: string;
         };
         namespace: {
             type: string;
@@ -157,6 +158,7 @@ export declare const baseModel: {
         };
         relationships: {
             type: string;
+            description: string;
             items: {
                 type: string;
                 properties: {
@@ -168,9 +170,7 @@ export declare const baseModel: {
                         enum: string[];
                     };
                     model: {
-                        anyOf: {
-                            type: string;
-                        }[];
+                        type: string;
                     };
                 };
             };
@@ -195,6 +195,7 @@ export declare const baseModel: {
                     arguments: {
                         type: string;
                         items: {
+                            description: string;
                             type: string;
                         };
                     };
@@ -249,6 +250,7 @@ export declare const baseModel: {
         fillable: {
             type: string;
             items: {
+                description: string;
                 type: string;
             };
         };
@@ -696,6 +698,7 @@ export declare const modelArray: {
         properties: {
             name: {
                 type: string;
+                description: string;
             };
             namespace: {
                 type: string;
@@ -715,6 +718,7 @@ export declare const modelArray: {
             };
             relationships: {
                 type: string;
+                description: string;
                 items: {
                     type: string;
                     properties: {
@@ -726,9 +730,7 @@ export declare const modelArray: {
                             enum: string[];
                         };
                         model: {
-                            anyOf: {
-                                type: string;
-                            }[];
+                            type: string;
                         };
                     };
                 };
@@ -753,6 +755,7 @@ export declare const modelArray: {
                         arguments: {
                             type: string;
                             items: {
+                                description: string;
                                 type: string;
                             };
                         };
@@ -807,6 +810,7 @@ export declare const modelArray: {
             fillable: {
                 type: string;
                 items: {
+                    description: string;
                     type: string;
                 };
             };
@@ -1024,6 +1028,7 @@ export declare const schema: {
                 properties: {
                     name: {
                         type: string;
+                        description: string;
                     };
                     namespace: {
                         type: string;
@@ -1043,6 +1048,7 @@ export declare const schema: {
                     };
                     relationships: {
                         type: string;
+                        description: string;
                         items: {
                             type: string;
                             properties: {
@@ -1054,9 +1060,7 @@ export declare const schema: {
                                     enum: string[];
                                 };
                                 model: {
-                                    anyOf: {
-                                        type: string;
-                                    }[];
+                                    type: string;
                                 };
                             };
                         };
@@ -1081,6 +1085,7 @@ export declare const schema: {
                                 arguments: {
                                     type: string;
                                     items: {
+                                        description: string;
                                         type: string;
                                     };
                                 };
@@ -1135,6 +1140,7 @@ export declare const schema: {
                     fillable: {
                         type: string;
                         items: {
+                            description: string;
                             type: string;
                         };
                     };
