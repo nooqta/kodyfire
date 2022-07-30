@@ -1,4 +1,41 @@
 'use strict';
+var __createBinding =
+  (this && this.__createBinding) ||
+  (Object.create
+    ? function (o, m, k, k2) {
+        if (k2 === undefined) k2 = k;
+        Object.defineProperty(o, k2, {
+          enumerable: true,
+          get: function () {
+            return m[k];
+          },
+        });
+      }
+    : function (o, m, k, k2) {
+        if (k2 === undefined) k2 = k;
+        o[k2] = m[k];
+      });
+var __setModuleDefault =
+  (this && this.__setModuleDefault) ||
+  (Object.create
+    ? function (o, v) {
+        Object.defineProperty(o, 'default', { enumerable: true, value: v });
+      }
+    : function (o, v) {
+        o['default'] = v;
+      });
+var __importStar =
+  (this && this.__importStar) ||
+  function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null)
+      for (var k in mod)
+        if (k !== 'default' && Object.prototype.hasOwnProperty.call(mod, k))
+          __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+  };
 var __awaiter =
   (this && this.__awaiter) ||
   function (thisArg, _arguments, P, generator) {
@@ -38,13 +75,14 @@ exports.Action = void 0;
 const kodyfire_core_1 = require('kodyfire-core');
 const path_1 = require('path');
 const zx_1 = require('zx');
-const action_1 = require('./../init/action');
+const action_1 = require('../init/action');
 const prompts = require('prompts');
 const boxen = require('boxen');
 class Action {
   static onCancel(_prompt) {
     return __awaiter(this, void 0, void 0, function* () {
       this.isCanceled = true;
+      process.exit(1);
       return true;
     });
   }
@@ -82,40 +120,58 @@ class Action {
       return { name, dependencies };
     });
   }
-  static prompter() {
+  static prompter(addMore = false, persist = false) {
     return __awaiter(this, void 0, void 0, function* () {
       (() =>
         __awaiter(this, void 0, void 0, function* () {
-          if (!this.kody) {
-            const kodyQuestion = yield this.getKodyQuestion();
-            if (!kodyQuestion) {
-              this.displayMessage(
-                'No kodies installed. Please install at least a kody package first.'
-              );
-              process.exit(1);
+          while (addMore) {
+            if (!this.kody) {
+              const kodyQuestion = yield this.getKodyQuestion();
+              if (!kodyQuestion) {
+                this.displayMessage(
+                  'No kodies installed. Please install at least a kody package first.'
+                );
+                process.exit(1);
+              }
+              const { kody } = yield prompts(kodyQuestion);
+              this.kody = kody;
             }
-            const { kody } = yield prompts(kodyQuestion);
-            this.kody = kody;
-          }
-          if (!this.concept) {
-            // set concept
-            const conceptQuestion = yield this.getConceptQuestion();
-            if (!conceptQuestion) {
-              this.displayMessage(
-                'No concepts selected. Please select a concept to proceed.'
-              );
-              process.exit(1);
+            if (!this.concept) {
+              // set concept
+              const conceptQuestion = yield this.getConceptQuestion();
+              if (!conceptQuestion) {
+                this.displayMessage(
+                  'No concepts selected. Please select a concept to proceed.'
+                );
+                process.exit(1);
+              }
+              const { concept } = yield prompts(conceptQuestion);
+              this.concept = concept;
             }
-            const { concept } = yield prompts(conceptQuestion);
-            this.concept = concept;
-          }
-          if (!this.properties) {
-            // set properties
-            const currentConcept = yield this.getCurrentConcept();
-            const answers = yield this.getPropertiesAnswers(currentConcept);
-            if (answers) {
-              // @todo validate answers
-              this.addConcept(this.kody, this.concept, answers);
+            if (!this.properties) {
+              // set properties
+              const currentConcept = yield this.getCurrentConcept();
+              const answers = yield this.getPropertiesAnswers(currentConcept);
+              const question = {
+                type: 'confirm',
+                name: 'value',
+                message: `Would you like to add more?`,
+                initial: true,
+              };
+              const { value } = yield prompts(question);
+              this;
+              if (answers) {
+                // @todo validate answers
+                this.generateConcept(this.kody, this.concept, answers);
+                // if persist is true we save the data
+                if (persist) {
+                  this.addConcept(this.kody, this.concept, answers);
+                }
+              }
+              if (!value) {
+                addMore = false;
+              }
+              this.concept = null;
             }
           }
         }))();
@@ -159,10 +215,8 @@ class Action {
           }
         }
         if (
-          currentConcept.type === 'array' &&
-          ((_b = currentConcept.items) === null || _b === void 0
-            ? void 0
-            : _b.type) === 'object'
+          currentConcept.type === 'array'
+          // && currentConcept.items?.type === 'object'
         ) {
           const question = {
             type: 'confirm',
@@ -174,9 +228,23 @@ class Action {
           if (value) {
             let addMore = true;
             while (addMore) {
-              const childConcept = yield this.getPropertiesAnswers(
-                currentConcept.items.properties
-              );
+              let childConcept;
+              if (
+                ((_b = currentConcept.items) === null || _b === void 0
+                  ? void 0
+                  : _b.type) !== 'string'
+              ) {
+                childConcept = yield this.getPropertiesAnswers(
+                  currentConcept.items.properties
+                );
+              } else {
+                const conceptQuestion = yield this.conceptToQuestion(
+                  conceptNames[i],
+                  currentConcept.items
+                );
+                const currentAnswer = yield prompts(conceptQuestion);
+                childConcept = currentAnswer[conceptNames[i]];
+              }
               if (answers[conceptNames[i]]) {
                 answers[conceptNames[i]].push(childConcept);
               } else {
@@ -247,10 +315,12 @@ class Action {
       })
     );
   }
-  static execute() {
+  static execute(args) {
     return __awaiter(this, void 0, void 0, function* () {
       try {
-        yield this.prompter();
+        const runMultipleTimes = args.multiple || false;
+        const persist = args.persist || false;
+        yield this.prompter(runMultipleTimes, persist);
       } catch (error) {
         this.displayMessage(error.message);
       }
@@ -273,6 +343,36 @@ class Action {
           ),
           content
         );
+      } catch (error) {
+        this.displayMessage(error.message);
+      }
+    });
+  }
+  static generateConcept(dependency, concept, data, rootDir = process.cwd()) {
+    return __awaiter(this, void 0, void 0, function* () {
+      try {
+        const content = this.getSchemaDefinition(dependency, rootDir);
+        Object.keys(content).forEach(key => {
+          if (Array.isArray(content[key])) {
+            content[key] = [];
+          }
+        });
+        content[concept] = [data];
+        const path = (0, path_1.join)(
+          process.cwd(),
+          'node_modules',
+          dependency
+        );
+        const m = yield Promise.resolve().then(() =>
+          __importStar(require(path))
+        );
+        const kodyName = dependency.replace('-kodyfire', '');
+        const packages = yield kodyfire_core_1.Package.getInstalledKodies();
+        const currentKody = packages.find(kody => kody.id === kodyName);
+        const kody = new m.Kody(currentKody);
+        // generate artifacts | execute action
+        // @ts-ignore
+        const output = kody.generate(content);
       } catch (error) {
         this.displayMessage(error.message);
       }

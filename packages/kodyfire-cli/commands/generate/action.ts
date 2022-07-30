@@ -1,8 +1,8 @@
 // import { $ } from "zx";
-import { capitalize } from 'kodyfire-core';
+import { capitalize, IKody, Package } from 'kodyfire-core';
 import { join } from 'path';
 import { fs } from 'zx';
-import { Action as InitAction } from './../init/action';
+import { Action as InitAction } from '../init/action';
 const prompts = require('prompts');
 const boxen = require('boxen');
 
@@ -14,6 +14,7 @@ export class Action {
 
   static async onCancel(_prompt: any) {
     this.isCanceled = true;
+    process.exit(1);
     return true;
   }
   static async getDependencyConcepts(dependency: string) {
@@ -49,39 +50,56 @@ export class Action {
     return { name, dependencies };
   }
 
-  static async prompter(): Promise<void | any> {
+  static async prompter(addMore = false, persist = false): Promise<void | any> {
     (async () => {
-      if (!this.kody) {
-        const kodyQuestion = await this.getKodyQuestion();
-        if (!kodyQuestion) {
-          this.displayMessage(
-            'No kodies installed. Please install at least a kody package first.'
-          );
-          process.exit(1);
+      while (addMore) {
+        if (!this.kody) {
+          const kodyQuestion = await this.getKodyQuestion();
+          if (!kodyQuestion) {
+            this.displayMessage(
+              'No kodies installed. Please install at least a kody package first.'
+            );
+            process.exit(1);
+          }
+          const { kody } = await prompts(kodyQuestion);
+          this.kody = kody;
         }
-        const { kody } = await prompts(kodyQuestion);
-        this.kody = kody;
-      }
-      if (!this.concept) {
-        // set concept
-        const conceptQuestion = await this.getConceptQuestion();
-        if (!conceptQuestion) {
-          this.displayMessage(
-            'No concepts selected. Please select a concept to proceed.'
-          );
-          process.exit(1);
+        if (!this.concept) {
+          // set concept
+          const conceptQuestion = await this.getConceptQuestion();
+          if (!conceptQuestion) {
+            this.displayMessage(
+              'No concepts selected. Please select a concept to proceed.'
+            );
+            process.exit(1);
+          }
+          const { concept } = await prompts(conceptQuestion);
+          this.concept = concept;
         }
-        const { concept } = await prompts(conceptQuestion);
-        this.concept = concept;
-      }
-      if (!this.properties) {
-        // set properties
-        const currentConcept = await this.getCurrentConcept();
-        const answers = await this.getPropertiesAnswers(currentConcept);
-
-        if (answers) {
-          // @todo validate answers
-          this.addConcept(this.kody, this.concept, answers);
+        if (!this.properties) {
+          // set properties
+          const currentConcept = await this.getCurrentConcept();
+          const answers = await this.getPropertiesAnswers(currentConcept);
+          const question = {
+            type: 'confirm',
+            name: 'value',
+            message: `Would you like to add more?`,
+            initial: true,
+          };
+          const { value } = await prompts(question);
+          this;
+          if (answers) {
+            // @todo validate answers
+            this.generateConcept(this.kody, this.concept, answers);
+            // if persist is true we save the data
+            if (persist) {
+              this.addConcept(this.kody, this.concept, answers);
+            }
+          }
+          if (!value) {
+            addMore = false;
+          }
+          this.concept = null;
         }
       }
     })();
@@ -120,8 +138,8 @@ export class Action {
         }
       }
       if (
-        currentConcept.type === 'array' &&
-        currentConcept.items?.type === 'object'
+        currentConcept.type === 'array'
+        // && currentConcept.items?.type === 'object'
       ) {
         const question = {
           type: 'confirm',
@@ -133,9 +151,19 @@ export class Action {
         if (value) {
           let addMore = true;
           while (addMore) {
-            const childConcept = await this.getPropertiesAnswers(
-              currentConcept.items.properties
-            );
+            let childConcept;
+            if (currentConcept.items?.type !== 'string') {
+              childConcept = await this.getPropertiesAnswers(
+                currentConcept.items.properties
+              );
+            } else {
+              const conceptQuestion = await this.conceptToQuestion(
+                conceptNames[i],
+                currentConcept.items
+              );
+              const currentAnswer = await prompts(conceptQuestion);
+              childConcept = currentAnswer[conceptNames[i]];
+            }
             if (answers[conceptNames[i]]) {
               answers[conceptNames[i]].push(childConcept);
             } else {
@@ -201,9 +229,11 @@ export class Action {
       })
     );
   }
-  static async execute() {
+  static async execute(args: any) {
     try {
-      await this.prompter();
+      const runMultipleTimes = args.multiple || false;
+      const persist = args.persist || false;
+      await this.prompter(runMultipleTimes, persist);
     } catch (error: any) {
       this.displayMessage(error.message);
     }
@@ -227,6 +257,34 @@ export class Action {
         join(rootDir, `kody-${dependency.replace('-kodyfire', '')}.json`),
         content
       );
+    } catch (error: any) {
+      this.displayMessage(error.message);
+    }
+  }
+  static async generateConcept(
+    dependency: string,
+    concept: string,
+    data: any,
+    rootDir: string = process.cwd()
+  ) {
+    try {
+      const content = this.getSchemaDefinition(dependency, rootDir);
+      Object.keys(content).forEach(key => {
+        if (Array.isArray(content[key])) {
+          content[key] = [];
+        }
+      });
+      content[concept] = [data];
+      const path = join(process.cwd(), 'node_modules', dependency);
+      const m = await import(path);
+      const kodyName = dependency.replace('-kodyfire', '');
+      const packages = await Package.getInstalledKodies();
+      const currentKody = packages.find((kody: any) => kody.id === kodyName);
+      const kody: IKody = new m.Kody(currentKody);
+
+      // generate artifacts | execute action
+      // @ts-ignore
+      const output = kody.generate(content);
     } catch (error: any) {
       this.displayMessage(error.message);
     }

@@ -6,7 +6,7 @@ export declare class Action {
   static onCancel(_prompt: any): Promise<boolean>;
   static getDependencyConcepts(dependency: string): Promise<any>;
   static getPackageDependencies(rootDir?: string): Promise<any>;
-  static prompter(): Promise<void | any>;
+  static prompter(addMore?: boolean, persist?: boolean): Promise<void | any>;
   static getCurrentConcept(): Promise<any>;
   static getPropertiesAnswers(concept: any): Promise<any>;
   static getConceptQuestion(): Promise<
@@ -31,8 +31,14 @@ export declare class Action {
       }
   >;
   static displayMessage(message: string): void;
-  static execute(): Promise<void>;
+  static execute(args: any): Promise<void>;
   static addConcept(
+    dependency: string,
+    concept: string,
+    data: any,
+    rootDir?: string
+  ): Promise<void>;
+  static generateConcept(
     dependency: string,
     concept: string,
     data: any,
