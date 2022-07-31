@@ -120,11 +120,14 @@ class Action {
       return { name, dependencies };
     });
   }
-  static prompter(addMore = false, persist = false) {
+  static prompter(_args) {
     return __awaiter(this, void 0, void 0, function* () {
+      let { addMore } = _args;
+      const { persist, kody: kodyName, concept: conceptName } = _args;
       (() =>
         __awaiter(this, void 0, void 0, function* () {
-          while (addMore) {
+          do {
+            if (kodyName) this.kody = `${kodyName}-kodyfire`;
             if (!this.kody) {
               const kodyQuestion = yield this.getKodyQuestion();
               if (!kodyQuestion) {
@@ -136,6 +139,7 @@ class Action {
               const { kody } = yield prompts(kodyQuestion);
               this.kody = kody;
             }
+            if (conceptName) this.concept = conceptName;
             if (!this.concept) {
               // set concept
               const conceptQuestion = yield this.getConceptQuestion();
@@ -173,7 +177,7 @@ class Action {
               }
               this.concept = null;
             }
-          }
+          } while (addMore);
         }))();
     });
   }
@@ -318,9 +322,9 @@ class Action {
   static execute(args) {
     return __awaiter(this, void 0, void 0, function* () {
       try {
-        const runMultipleTimes = args.multiple || false;
-        const persist = args.persist || false;
-        yield this.prompter(runMultipleTimes, persist);
+        args.multiple = args.multiple || false;
+        args.persist = args.persist || false;
+        yield this.prompter(args);
       } catch (error) {
         this.displayMessage(error.message);
       }

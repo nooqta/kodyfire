@@ -50,9 +50,17 @@ export class Action {
     return { name, dependencies };
   }
 
-  static async prompter(addMore = false, persist = false): Promise<void | any> {
+  static async prompter(_args: {
+    addMore?: any;
+    persist?: any;
+    kody?: any;
+    concept?: any;
+  }): Promise<void | any> {
+    let { addMore } = _args;
+    const { persist, kody: kodyName, concept: conceptName } = _args;
     (async () => {
-      while (addMore) {
+      do {
+        if (kodyName) this.kody = `${kodyName}-kodyfire`;
         if (!this.kody) {
           const kodyQuestion = await this.getKodyQuestion();
           if (!kodyQuestion) {
@@ -64,6 +72,7 @@ export class Action {
           const { kody } = await prompts(kodyQuestion);
           this.kody = kody;
         }
+        if (conceptName) this.concept = conceptName;
         if (!this.concept) {
           // set concept
           const conceptQuestion = await this.getConceptQuestion();
@@ -101,7 +110,7 @@ export class Action {
           }
           this.concept = null;
         }
-      }
+      } while (addMore);
     })();
   }
   static async getCurrentConcept() {
@@ -231,9 +240,9 @@ export class Action {
   }
   static async execute(args: any) {
     try {
-      const runMultipleTimes = args.multiple || false;
-      const persist = args.persist || false;
-      await this.prompter(runMultipleTimes, persist);
+      args.multiple = args.multiple || false;
+      args.persist = args.persist || false;
+      await this.prompter(args);
     } catch (error: any) {
       this.displayMessage(error.message);
     }

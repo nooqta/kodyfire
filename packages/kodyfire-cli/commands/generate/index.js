@@ -40,11 +40,15 @@ module.exports = program => {
     .command('generate')
     .alias('g')
     .description('Prompt assistant to quickly generate an artifact')
+    .argument('[kody]', 'The name of the kody to use')
+    .argument('[concept]', 'The concept you want to generate')
     .option('-m,--multiple', 'Generate multiple artifacts')
     .option('-p,--persist', 'Persist the generated artifact')
-    .action(_opt =>
+    .action((kody, concept, _opt) =>
       __awaiter(void 0, void 0, void 0, function* () {
-        return yield action_1.Action.execute(_opt);
+        return yield action_1.Action.execute(
+          Object.assign({ kody, concept }, _opt)
+        );
       })
     );
 };

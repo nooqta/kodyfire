@@ -6,7 +6,12 @@ export declare class Action {
   static onCancel(_prompt: any): Promise<boolean>;
   static getDependencyConcepts(dependency: string): Promise<any>;
   static getPackageDependencies(rootDir?: string): Promise<any>;
-  static prompter(addMore?: boolean, persist?: boolean): Promise<void | any>;
+  static prompter(_args: {
+    addMore?: any;
+    persist?: any;
+    kody?: any;
+    concept?: any;
+  }): Promise<void | any>;
   static getCurrentConcept(): Promise<any>;
   static getPropertiesAnswers(concept: any): Promise<any>;
   static getConceptQuestion(): Promise<
