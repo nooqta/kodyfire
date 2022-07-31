@@ -23,9 +23,14 @@ class Generator {
             this.technology.rootDir = content.rootDir || this.technology.rootDir;
             // for every concept in concepts list
             for (const [key] of this.technology.concepts) {
-                for (const data of content[key]) {
-                    // do apropriate action
-                    this.output = yield ((_a = this.technology.concepts.get(key)) === null || _a === void 0 ? void 0 : _a.generate(data));
+                if (Object.hasOwnProperty.call(content, key)) {
+                    for (const data of content[key]) {
+                        // do apropriate action
+                        this.output = yield ((_a = this.technology.concepts.get(key)) === null || _a === void 0 ? void 0 : _a.generate(data));
+                    }
+                }
+                else {
+                    console.log(`${key} is not in content at ${__dirname}/${__filename}. Skipping...`);
                 }
             }
             // return result
