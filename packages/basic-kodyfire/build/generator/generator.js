@@ -30,7 +30,7 @@ class Generator {
                     }
                 }
                 else {
-                    console.log(`${key} is not in content at ${__dirname}/${__filename}. Skipping...`);
+                    console.info(`${key} is not in content. Skipping...`);
                 }
             }
             // return result

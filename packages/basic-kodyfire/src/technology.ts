@@ -19,7 +19,7 @@ export class Technology implements BaseTechnology {
   actions: ActionList;
   input?: any;
   params: any;
-  constructor(params: any, _assets = assets) {
+  constructor(params: any, _assets: any = assets) {
     try {
       this.id = params.id;
       this.name = params.name;

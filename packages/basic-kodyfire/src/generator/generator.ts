@@ -21,9 +21,7 @@ export class Generator implements IGenerator {
           this.output = await this.technology.concepts.get(key)?.generate(data);
         }
       } else {
-        console.log(
-          `${key} is not in content at ${__dirname}/${__filename}. Skipping...`
-        );
+        console.info(`${key} is not in content. Skipping...`);
       }
     }
     // return result
