@@ -326,10 +326,28 @@ class Action {
       }
     });
   }
+  static getConceptAttributes(schema) {
+    return __awaiter(this, void 0, void 0, function* () {
+      try {
+        if (Object.prototype.hasOwnProperty.call(schema, 'properties')) {
+          return schema.properties;
+        }
+        if (Object.prototype.hasOwnProperty.call(schema, 'items')) {
+          return yield this.getConceptAttributes(schema.items);
+        }
+      } catch (error) {
+        this.displayMessage(error.message);
+      }
+      return false;
+    });
+  }
   static addConcept(dependency, concept, data, rootDir = process.cwd()) {
     return __awaiter(this, void 0, void 0, function* () {
       try {
         let content = this.getSchemaDefinition(dependency, rootDir);
+        if (!content) {
+          content = yield action_1.Action.getEntries(rootDir, dependency);
+        }
         if (content[concept]) {
           content[concept] = [...content[concept], data];
         } else {
@@ -351,7 +369,10 @@ class Action {
   static generateConcept(dependency, concept, data, rootDir = process.cwd()) {
     return __awaiter(this, void 0, void 0, function* () {
       try {
-        const content = this.getSchemaDefinition(dependency, rootDir);
+        let content = yield this.getSchemaDefinition(dependency, rootDir);
+        if (!content) {
+          content = yield this.getDependencyConcepts(this.kody);
+        }
         Object.keys(content).forEach(key => {
           if (Array.isArray(content[key])) {
             content[key] = [];
@@ -414,15 +435,14 @@ class Action {
     });
   }
   static getSchemaDefinition(dependency, rootDir = process.cwd()) {
-    return JSON.parse(
-      zx_1.fs.readFileSync(
-        (0, path_1.join)(
-          rootDir,
-          `kody-${dependency.replace('-kodyfire', '')}.json`
-        ),
-        'utf8'
-      )
+    const path = (0, path_1.join)(
+      rootDir,
+      `kody-${dependency.replace('-kodyfire', '')}.json`
     );
+    if (!zx_1.fs.existsSync(path)) {
+      return false;
+    }
+    return JSON.parse(zx_1.fs.readFileSync(path, 'utf8'));
   }
   static conceptToQuestion(
     name,

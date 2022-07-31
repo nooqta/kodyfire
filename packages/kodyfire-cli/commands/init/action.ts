@@ -37,48 +37,67 @@ export class Action {
       }
       if (dependencies.length > 0) {
         for (const dep of dependencies) {
-          const filename = join(
-            _args.rootDir,
-            `kody-${dep.replace('-kodyfire', '')}.json`
-          );
-          // Create the file if it doesn't exist
-          if (!fs.existsSync(filename)) {
-            // Add the dependency to the kody.json file
-            const entries: any = {};
-            kody.sources.push({
+          await Action.createDefinitionFile(_args.rootDir, dep);
+          // Add the dependency to the kody.json file
+          kody.sources.push({
+            name: dep.replace('-kodyfire', ''),
+            filename: `kody-${dep.replace('-kodyfire', '')}.json`,
+          });
+
+          const data = JSON.stringify(kody, null, '\t');
+          if (!fs.existsSync(join(_args.rootDir, 'kody.json'))) {
+            fs.writeFileSync(join(_args.rootDir, 'kody.json'), data);
+          } else {
+            const kodyJson = JSON.parse(
+              fs.readFileSync(join(_args.rootDir, 'kody.json'))
+            );
+            kodyJson.sources.push({
               name: dep.replace('-kodyfire', ''),
               filename: `kody-${dep.replace('-kodyfire', '')}.json`,
             });
-
-            // get the deb package schema file
-            // @todo: find a better way
-            const { schema } = await import(
-              `${_args.rootDir}/node_modules/${dep}`
+            fs.writeFileSync(
+              join(_args.rootDir, 'kody.json'),
+              JSON.stringify(kodyJson, null, '\t')
             );
-
-            for (const prop of Object.keys(schema.properties)) {
-              entries[prop] = [];
-            }
-            const name = dep.replace('-kodyfire', '');
-            entries.project = 'my-project';
-            entries.name = name;
-            const { value } = await prompts(question(name));
-            const rootDir = join(process.cwd(), value);
-
-            entries.rootDir = rootDir;
-
-            const kodyJson = JSON.stringify(entries, null, '\t');
-            fs.writeFileSync(filename, kodyJson);
           }
-
-          const data = JSON.stringify(kody, null, '\t');
-          fs.writeFileSync(join(_args.rootDir, 'kody.json'), data);
         }
       }
     } catch (error: any) {
       this.displayMessage(error.message);
     }
   }
+  static async createDefinitionFile(rootDir: string, dep: string) {
+    const filename = join(rootDir, `kody-${dep.replace('-kodyfire', '')}.json`);
+
+    // Create the file if it doesn't exist
+    if (!fs.existsSync(filename)) {
+      const entries: any = await Action.getEntries(rootDir, dep);
+      const kodyJson = JSON.stringify(entries, null, '\t');
+      fs.writeFileSync(filename, kodyJson);
+    } else {
+      this.displayMessage(`${filename} already exists.`);
+    }
+  }
+
+  static async getEntries(rootDirectory: string, dep: string) {
+    const entries: any = {};
+    // get the deb package schema file
+    // @todo: find a better way
+    const { schema } = await import(`${rootDirectory}/node_modules/${dep}`);
+
+    for (const prop of Object.keys(schema.properties)) {
+      entries[prop] = [];
+    }
+    const name = dep.replace('-kodyfire', '');
+    entries.project = 'my-project';
+    entries.name = name;
+    const { value } = await prompts(question(name));
+    const rootDir = join(process.cwd(), value);
+
+    entries.rootDir = rootDir;
+    return entries;
+  }
+
   static async getPackageDependencies(rootDir = process.cwd()): Promise<any> {
     const packageJsonFile = fs.readFileSync(join(rootDir, 'package.json'));
     const packageJson = JSON.parse(packageJsonFile);
@@ -112,8 +131,7 @@ export class Action {
       const entries: any = {};
       // get the deb package schema file
       const { schema } = await import(`${rootDir}/node_modules/${dependency}`);
-      // console.log(schema.properties.umlClass.items.properties, dependency);
-      console.log(`${rootDir}/node_modules/${dependency}`);
+
       for (const prop of Object.keys(schema.properties)) {
         const attributes = await this.getConceptAttributes(
           schema.properties[prop]
@@ -122,6 +140,7 @@ export class Action {
           entries[prop] = attributes;
         }
       }
+
       return { name: dependency, concepts: entries };
     } catch (error: any) {
       this.displayMessage(error.message);

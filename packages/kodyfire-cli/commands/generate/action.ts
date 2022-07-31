@@ -239,6 +239,20 @@ export class Action {
     }
   }
 
+  static async getConceptAttributes(schema: any): Promise<any> {
+    try {
+      if (Object.prototype.hasOwnProperty.call(schema, 'properties')) {
+        return schema.properties;
+      }
+      if (Object.prototype.hasOwnProperty.call(schema, 'items')) {
+        return await this.getConceptAttributes(schema.items);
+      }
+    } catch (error: any) {
+      this.displayMessage(error.message);
+    }
+    return false;
+  }
+
   static async addConcept(
     dependency: string,
     concept: string,
@@ -247,6 +261,9 @@ export class Action {
   ) {
     try {
       let content = this.getSchemaDefinition(dependency, rootDir);
+      if (!content) {
+        content = await InitAction.getEntries(rootDir, dependency);
+      }
       if (content[concept]) {
         content[concept] = [...content[concept], data];
       } else {
@@ -268,7 +285,10 @@ export class Action {
     rootDir: string = process.cwd()
   ) {
     try {
-      const content = this.getSchemaDefinition(dependency, rootDir);
+      let content = await this.getSchemaDefinition(dependency, rootDir);
+      if (!content) {
+        content = await this.getDependencyConcepts(this.kody);
+      }
       Object.keys(content).forEach(key => {
         if (Array.isArray(content[key])) {
           content[key] = [];
@@ -320,12 +340,14 @@ export class Action {
     }
   }
   static getSchemaDefinition(dependency: string, rootDir = process.cwd()) {
-    return JSON.parse(
-      fs.readFileSync(
-        join(rootDir, `kody-${dependency.replace('-kodyfire', '')}.json`),
-        'utf8'
-      )
+    const path = join(
+      rootDir,
+      `kody-${dependency.replace('-kodyfire', '')}.json`
     );
+    if (!fs.existsSync(path)) {
+      return false;
+    }
+    return JSON.parse(fs.readFileSync(path, 'utf8'));
   }
   static async conceptToQuestion(
     name: string,

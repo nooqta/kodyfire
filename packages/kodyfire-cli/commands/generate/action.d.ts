@@ -32,6 +32,7 @@ export declare class Action {
   >;
   static displayMessage(message: string): void;
   static execute(args: any): Promise<void>;
+  static getConceptAttributes(schema: any): Promise<any>;
   static addConcept(
     dependency: string,
     concept: string,
