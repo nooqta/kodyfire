@@ -42,7 +42,7 @@ kody --help
 
 Open the project you are willing to work on using vscode. If you are starting a project from scratch, you can start our experimental project installer `kody install` (not required). It will prompt you to choose the project type and the destination folder.
 
-### Install a kody
+## Install a kody
 
 Based on your project, select the kody that works for you or customize your own. There are [13 kody packages](#Available kodies) available at the moment.
 
@@ -67,14 +67,14 @@ yarn add react-kodyfire
 
 Please note you can install as many kodies in the same project as you wish.
 
-### Generate your artifact
+## Generate your artifact
 
 There are 2 methods you can generate your artifacts with:
 
 - The `generate` command
 - The `run` command
 
-#### Method 1: Generator mode `kody generate`
+### Method 1: Generator mode `kody generate`
 
 The recommended way of using kody is using the `generate` command. The command will assist you creating your artifact based on the chosen concept. A react `component` is considered a concept.
 In order to generate your artifacts, run the `generate` command. The syntax is `kody generate|g [kody] [concept]`. If you ommit `kody` and `concept` the assistant will prompt you to select them. As an example, run the following command from your terminal:
@@ -83,9 +83,9 @@ In order to generate your artifacts, run the `generate` command. The syntax is `
 kody generate react component
 ```
 
-#### Method 2: Generator mode `kody run`
+### Method 2: Generator mode `kody run`
 
-### Initialize kody
+#### Initialize kody
 
 In order to start using kody, you need to initialize your project.
 
@@ -96,7 +96,7 @@ kody init
 This will add the definition files required for kody runs.
 <u>**Important**</u>: Please run the command **only once**. The command will override existing definition files. We will disable overriding in a future version.
 
-### Ride your kody
+#### Ride your kody
 
 In order to update your definition, use the kody ride command to assist you populate the required fields
 
@@ -104,7 +104,7 @@ In order to update your definition, use the kody ride command to assist you popu
 kody ride
 ```
 
-### Launch a kody run
+#### Launch a kody run
 
 Once you are satisified with your definition file, execute the run command to generate your artifacts.
 
