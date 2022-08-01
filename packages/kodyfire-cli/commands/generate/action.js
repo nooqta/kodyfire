@@ -166,10 +166,10 @@ class Action {
               this;
               if (answers) {
                 // @todo validate answers
-                this.generateConcept(this.kody, this.concept, answers);
+                yield this.generateConcept(this.kody, this.concept, answers);
                 // if persist is true we save the data
                 if (persist) {
-                  this.addConcept(this.kody, this.concept, answers);
+                  yield this.addConcept(this.kody, this.concept, answers);
                 }
               }
               if (!value) {
@@ -322,7 +322,7 @@ class Action {
   static execute(args) {
     return __awaiter(this, void 0, void 0, function* () {
       try {
-        args.multiple = args.multiple || false;
+        args.addMore = args.multiple || false;
         args.persist = args.persist || false;
         yield this.prompter(args);
       } catch (error) {

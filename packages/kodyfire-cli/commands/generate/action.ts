@@ -99,10 +99,10 @@ export class Action {
           this;
           if (answers) {
             // @todo validate answers
-            this.generateConcept(this.kody, this.concept, answers);
+            await this.generateConcept(this.kody, this.concept, answers);
             // if persist is true we save the data
             if (persist) {
-              this.addConcept(this.kody, this.concept, answers);
+              await this.addConcept(this.kody, this.concept, answers);
             }
           }
           if (!value) {
@@ -240,7 +240,7 @@ export class Action {
   }
   static async execute(args: any) {
     try {
-      args.multiple = args.multiple || false;
+      args.addMore = args.multiple || false;
       args.persist = args.persist || false;
       await this.prompter(args);
     } catch (error: any) {
