@@ -1,10 +1,142 @@
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
-# Introduction
+_The one tool that will rule them all. By developers for technical experts and non-technical experts._
+
+> Kody, a general-purpose terminal based, low-code no-code tool that helps you generate artifacts.
+
+# getting Started
 
 <sub>[Video Demo](https://youtube.com/playlist?list=PLK2Evxcrq571vj0UjWtO7KnR29JkMN13L)</sub>
+Getting started with Kodyfire is as easy as 1,2,3.
 
-The one tool that will rule them all. By developers for technical experts and non-technical experts.
+```sh
+npm install -g kodyfire-cli
+# from your project root folder
+npm i react-kodyfire
+kody g react component
+```
+
+## Install the CLI
+
+Install the kody cli by running
+
+```sh
+npm install -g kodyfire-cli
+```
+
+or
+
+```sh
+yarn global add kodyfire-cli
+```
+
+You can check the documentation with
+
+```bash
+kody --help
+```
+
+## Open your project
+
+<u>**Note**</u>: <i>If you are looking for more customization, we recommend you to create your own kody locally. [Instructions below](#create-your-kody). Don't forget to share your [kody](https://github.com/nooqta/kodyfire/issues) with us if you have made it public. </i>
+
+Open the project you are willing to work on using vscode. If you are starting a project from scratch, you can start our experimental project installer `kody install` (not required). It will prompt you to choose the project type and the destination folder.
+
+### Install a kody
+
+Based on your project, select the kody that works for you or customize your own. There are [13 kody packages](#Available kodies) available at the moment.
+
+To list available kodies. (The search command simply displays available kodies and no keyword are required.
+
+```bash
+kody search
+```
+
+The command will list available kodies.
+Install your kody of choice. For example, if you want to install the react kody
+
+```bash
+npm install -s react-kodyfire
+```
+
+or
+
+```bash
+yarn add react-kodyfire
+```
+
+Please note you can install as many kodies in the same project as you wish.
+
+### Generate your artifact
+
+There are 2 methods you can generate your artifacts with:
+
+- The `generate` command
+- The `run` command
+
+#### Method 1: Generator mode `kody generate`
+
+The recommended way of using kody is using the `generate` command. The command will assist you creating your artifact based on the chosen concept. A react `component` is considered a concept.
+In order to generate your artifacts, run the `generate` command. The syntax is `kody generate|g [kody] [concept]`. If you ommit `kody` and `concept` the assistant will prompt you to select them. As an example, run the following command from your terminal:
+
+```sh
+kody generate react component
+```
+
+#### Method 2: Generator mode `kody run`
+
+### Initialize kody
+
+In order to start using kody, you need to initialize your project.
+
+```bash
+kody init
+```
+
+This will add the definition files required for kody runs.
+<u>**Important**</u>: Please run the command **only once**. The command will override existing definition files. We will disable overriding in a future version.
+
+### Ride your kody
+
+In order to update your definition, use the kody ride command to assist you populate the required fields
+
+```bash
+kody ride
+```
+
+### Launch a kody run
+
+Once you are satisified with your definition file, execute the run command to generate your artifacts.
+
+```bash
+kody run -s laravel-kody.json
+```
+
+To run all kodies defined within your project, run the following command:
+
+```bash
+kody batch
+```
+
+# Available kodies
+
+| Name                                                                             | Description                                                                          |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| [basic-kodyfire](https://github.com/nooqta/kodyfire)                             | A general purpose code generator that should handle most of the generation use cases |
+| [typescript-kodyfire](https://github.com/nooqta/typescript-kodyfire)             | Generate typescript related artifacts                                                |
+| [tsconfig-kodyfire](https://github.com/nooqta/tsconfig-kodyfire)                 | Generate tsconfig files for your typescript projects                                 |
+| [nextjs-kodyfire](https://github.com/nooqta/nextjs-kodyfire)                     | Generate nextJs components and related artifacts                                     |
+| [react-kodyfire](https://github.com/nooqta/react-kodyfire)                       | Generate react components                                                            |
+| [laravel-kodyfire](https://github.com/nooqta/kodyfire)                           | Laravel artifacts generation                                                         |
+| [vuexy-kodyfire](https://github.com/nooqta/kodyfire)                             | Vuexy theme artifacts generation                                                     |
+| [uml-kodyfire](https://github.com/nooqta)                                        | Uml diagrams generation using plantuml                                               |
+| [readme-kodyfire](https://github.com/nooqta/readme-kodyfire)                     | Readme file generation                                                               |
+| [word-kodyfire](https://github.com/nooqta/word-kodyfire)                         | Generate ms word document based on a template                                        |
+| [pdf-kodyfire](https://github.com/nooqta/pdf-kodyfire)                           | Generate PDF document from HTML templates                                            |
+| [social-image-kodyfire](https://github.com/anis-marrouchi/social-image-kodyfire) | Generate dynamic images for social sharing based on HTML templates                   |
+| [social-gif-kodyfire](https://github.com/anis-marrouchi/social-gif-kodyfire)     | Generate dynamic gif images for social sharing based on HTML templates               |
+
+# What is Kody
 
 Kody is a general-purpose terminal based, low-code no-code tool that helps you generate artifacts.
 
@@ -50,109 +182,7 @@ Here are few examples of what kody can/will do
 - Increased productivity
 - //TODO
 
-# Available kodies
-
-| Name                                                                             | Description                                                                          |
-| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| [basic-kodyfire](https://github.com/nooqta/kodyfire)                             | A general purpose code generator that should handle most of the generation use cases |
-| [laravel-kodyfire](https://github.com/nooqta/kodyfire)                           | Laravel artifacts generation                                                         |
-| [vuexy-kodyfire](https://github.com/nooqta/kodyfire)                             | Vuexy theme artifacts generation                                                     |
-| [uml-kodyfire](https://github.com/nooqta)                                        | Uml diagrams generation using plantuml                                               |
-| [readme-kodyfire](https://github.com/nooqta/readme-kodyfire)                     | Readme file generation                                                               |
-| [word-kodyfire](https://github.com/nooqta/word-kodyfire)                         | Generate ms word document based on a template                                        |
-| [pdf-kodyfire](https://github.com/nooqta/pdf-kodyfire)                           | Generate PDF document from HTML templates                                            |
-| [social-image-kodyfire](https://github.com/anis-marrouchi/social-image-kodyfire) | Generate dynamic images for social sharing based on HTML templates                   |
-| [social-gif-kodyfire](https://github.com/anis-marrouchi/social-gif-kodyfire)     | Generate dynamic gif images for social sharing based on HTML templates               |
-| [typescript-kodyfire](https://github.com/nooqta/typescript-kodyfire)             | Generate typescript related artifacts                                                |
-| [tsconfig-kodyfire](https://github.com/nooqta/tsconfig-kodyfire)                 | Generate tsconfig files for your typescript projects                                 |
-| [nextjs-kodyfire](https://github.com/nooqta/nextjs-kodyfire)                     | Generate nextJs components and related artifacts                                     |
-| [react-kodyfire](https://github.com/nooqta/react-kodyfire)                       | Generate react components                                                            |
-
-# Quick start
-
-Install the kody cli by running
-
-```bash
-
-npm install -g kodyfire-cli
-
-```
-
-Check the documentation with
-
-```bash
-kody --help
-```
-
-### Create/Open your project
-
-<u>**Note**</u>: <i>In most cases you might need to create your own kody locally. [Instructions below](#create-your-kody). Don't forget to share your [feedback](https://github.com/nooqta/kodyfire/issues) with us. </i>
-
-Open the project you are willing to work on using vscode. If you are starting a project from scratch, you can start our experimental project installer (work is still in progress). It will prompt you to choose the project type and destination.
-
-```bash
-kody install
-```
-
-### Install a kody
-
-Based on your project select the kody that works for you or customize your own. There are 12 kody packages available at the moment: Laravel, Vuexy and html.
-
-To list available kodies. (The search command simply displays available kodies and no keyword are required. There are only 12 🙂)
-
-```bash
-kody search
-```
-
-The command will list available kodies.
-Install your kody of choice
-
-```bash
-npm install -s laravel-kodyfire
-```
-
-or
-
-```bash
-yarn add laravel-kodyfire
-```
-
-Please note you can install as many kodies in the same project as you wish.
-
-### Initialize kody
-
-In order to start using kody, you need to initialize your project.
-
-```bash
-kody init
-```
-
-This will add the definition files required for kody runs.
-<u>**Important**</u>: Please run the command **only once**. The command will override existing definition files. We will disable overriding in a future version.
-
-### Ride your kody
-
-In order to update your definition, use the kody ride command to assist you populate the required fields
-
-```bash
-kody ride
-```
-
-### Launch a kody run
-
-Once you are satisified with your definition file, execute the run command to generate your artifacts.
-
-```bash
-kody run -s laravel-kody.json
-```
-
-To run all kodies (Not working at the moment at writing the documentation)
-
-```bash
-kody batch
-```
-
-## Create your kody
+# Create a kody
 
 In most cases you might need a custom kody to suit your needs
 

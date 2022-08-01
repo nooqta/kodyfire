@@ -22,15 +22,17 @@ class Generator {
             this.technology.input = content;
             this.technology.rootDir = content.rootDir || this.technology.rootDir;
             // for every concept in concepts list
+            console.log(content);
             for (const [key] of this.technology.concepts) {
-                if (Object.hasOwnProperty.call(content, key)) {
+                // eslint-disable-next-line no-prototype-builtins
+                if (content.hasOwnProperty(key)) {
                     for (const data of content[key]) {
                         // do apropriate action
                         this.output = yield ((_a = this.technology.concepts.get(key)) === null || _a === void 0 ? void 0 : _a.generate(data));
                     }
                 }
                 else {
-                    console.info(`${key} is not in content. Skipping...`);
+                    console.info(`${key} is not in definition file, consider adding it. Skipping...`);
                 }
             }
             // return result

@@ -14,14 +14,18 @@ export class Generator implements IGenerator {
     this.technology.rootDir = content.rootDir || this.technology.rootDir;
 
     // for every concept in concepts list
+    console.log(content);
     for (const [key] of this.technology.concepts) {
-      if (Object.hasOwnProperty.call(content, key)) {
+      // eslint-disable-next-line no-prototype-builtins
+      if (content.hasOwnProperty(key)) {
         for (const data of content[key]) {
           // do apropriate action
           this.output = await this.technology.concepts.get(key)?.generate(data);
         }
       } else {
-        console.info(`${key} is not in content. Skipping...`);
+        console.info(
+          `${key} is not in definition file, consider adding it. Skipping...`
+        );
       }
     }
     // return result
