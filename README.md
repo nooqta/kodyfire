@@ -76,14 +76,16 @@ There are 2 methods you can generate your artifacts with:
 
 ### Method 1: Generator mode `kody generate`
 
-The recommended way of using kody is using the `generate` command. The command will assist you creating your artifact based on the chosen concept. A react `component` is considered a concept.
-In order to generate your artifacts, run the `generate` command. The syntax is `kody generate|g [kody] [concept]`. If you ommit `kody` and `concept` the assistant will prompt you to select them. As an example, run the following command from your terminal:
+The recommended way of using kody is using the `generate` command. The command will assist you creating your artifact based on the chosen `concept`. For example, a react `component` is considered a `concept`.
+In order to generate your artifacts, run the `generate` command. The syntax is `kody g|generate [kody] [concept]`. If you ommit `kody` and/or `concept` the assistant will prompt you to select the missing. As an example, run the following command from your terminal:
 
 ```sh
 kody generate react component
 ```
 
-### Method 2: Generator mode `kody run`
+### Method 2: Runner mode `kody run`
+
+The `run` command is similar to the `generate` command. The `run` requires a definition file which is simply a json file containing all the concept definitions you have created using the `ride` command. The `generate` command on the other hand creates one or more concept definition on the run and process them on one run. Every command has its use cases.
 
 #### Initialize kody
 
