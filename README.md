@@ -6,8 +6,8 @@ _The one tool that will rule them all. By developers for technical experts and n
 
 # getting Started
 
-<sub>[Video Demo](https://youtube.com/playlist?list=PLK2Evxcrq571vj0UjWtO7KnR29JkMN13L)</sub>
 Getting started with Kodyfire is as easy as 1,2,3.
+Below is a quick summary of the command you need to run in order to get started.
 
 ```sh
 npm install -g kodyfire-cli
@@ -119,6 +119,8 @@ To run all kodies defined within your project, run the following command:
 ```bash
 kody batch
 ```
+
+<sub>[Youtube Demo (_in progress_)](https://youtube.com/playlist?list=PLK2Evxcrq571vj0UjWtO7KnR29JkMN13L)</sub>
 
 # Available kodies
 
