@@ -14,7 +14,6 @@ export class Generator implements IGenerator {
     this.technology.rootDir = content.rootDir || this.technology.rootDir;
 
     // for every concept in concepts list
-    console.log(content);
     for (const [key] of this.technology.concepts) {
       // eslint-disable-next-line no-prototype-builtins
       if (content.hasOwnProperty(key)) {
@@ -23,9 +22,7 @@ export class Generator implements IGenerator {
           this.output = await this.technology.concepts.get(key)?.generate(data);
         }
       } else {
-        console.info(
-          `${key} is not in definition file, consider adding it. Skipping...`
-        );
+        // do apropriate action
       }
     }
     // return result
