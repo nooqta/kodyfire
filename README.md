@@ -4,7 +4,7 @@ _The one tool that will rule them all. By developers for technical experts and n
 
 > Kody, a general-purpose terminal based, low-code no-code tool that helps you generate artifacts.
 
-# getting Started
+# Getting Started
 
 Getting started with Kodyfire is as easy as 1,2,3.
 Below is a quick summary of the command you need to run in order to get started.
