@@ -213,7 +213,9 @@ class Action {
             `${conceptNames[i]}`,
             true
           );
-          if (question) {
+          if (typeof question.value != 'undefined') {
+            answers[conceptNames[i]] = question.answer;
+          } else if (question) {
             const answer = yield prompts(question);
             answers[conceptNames[i]] = answer.value;
           }
@@ -461,6 +463,7 @@ class Action {
       message = concept.description || message;
       label = label || name;
       if (typeof concept.enum !== 'undefined') {
+        if (concept.enum.length == 1) return { value: concept.enum[0] }; // if only one option, return it as default answer
         const choices = concept.enum.map(c => ({ title: c, value: c }));
         return Object.assign(
           Object.assign(
