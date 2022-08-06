@@ -214,7 +214,7 @@ class Action {
             true
           );
           if (typeof question.value != 'undefined') {
-            answers[conceptNames[i]] = question.answer;
+            answers[conceptNames[i]] = question.value;
           } else if (question) {
             const answer = yield prompts(question);
             answers[conceptNames[i]] = answer.value;
@@ -378,12 +378,10 @@ class Action {
         let content = yield this.getSchemaDefinition(dependency, rootDir);
         if (!content) {
           content = yield this.getDependencyConcepts(this.kody);
-        }
-        Object.keys(content).forEach(key => {
-          if (Array.isArray(content[key])) {
+          Object.keys(content).forEach(key => {
             content[key] = [];
-          }
-        });
+          });
+        }
         content[concept] = [data];
         const path = (0, path_1.join)(
           process.cwd(),

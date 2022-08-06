@@ -142,7 +142,7 @@ export class Action {
           true
         );
         if (typeof question.value != 'undefined') {
-          answers[conceptNames[i]] = question.answer;
+          answers[conceptNames[i]] = question.value;
         } else if (question) {
           const answer = await prompts(question);
           answers[conceptNames[i]] = answer.value;
@@ -299,12 +299,10 @@ export class Action {
       let content = await this.getSchemaDefinition(dependency, rootDir);
       if (!content) {
         content = await this.getDependencyConcepts(this.kody);
-      }
-      Object.keys(content).forEach(key => {
-        if (Array.isArray(content[key])) {
+        Object.keys(content).forEach(key => {
           content[key] = [];
-        }
-      });
+        });
+      }
       content[concept] = [data];
       const path = join(process.cwd(), 'node_modules', dependency);
       const m = await import(path);
