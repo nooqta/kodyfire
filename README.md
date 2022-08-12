@@ -44,7 +44,7 @@ Open the project you are willing to work on using vscode. If you are starting a 
 
 ## Install a kody
 
-Based on your project, select the kody that works for you or customize your own. There are [13 kody packages](#Available kodies) available at the moment.
+Based on your project, select the kody that works for you or customize your own. There are [14 kody packages](#Available kodies) available at the moment.
 
 To list available kodies. (The search command simply displays available kodies and no keyword are required.
 
@@ -120,7 +120,7 @@ To run all kodies defined within your project, run the following command:
 kody batch
 ```
 
-<sub>[Youtube Demo (_in progress_)](https://youtube.com/playlist?list=PLK2Evxcrq571vj0UjWtO7KnR29JkMN13L)</sub>
+<sub>[Youtube Demo (_in progress_)](https://youtube.com/playlist?list=PLK2Evxcrq571vj0UjWtO7KnR29JkMN14L)</sub>
 
 # Available kodies
 
@@ -139,6 +139,7 @@ kody batch
 | [pdf-kodyfire](https://github.com/nooqta/pdf-kodyfire)                           | Generate PDF document from HTML templates                                            |
 | [social-image-kodyfire](https://github.com/anis-marrouchi/social-image-kodyfire) | Generate dynamic images for social sharing based on HTML templates                   |
 | [social-gif-kodyfire](https://github.com/anis-marrouchi/social-gif-kodyfire)     | Generate dynamic gif images for social sharing based on HTML templates               |
+| [linkedin-quizzes-kodyfire](https://github.com/nooqta/linkedin-quizzes-kodyfire) | Practice Linkedin skill assessement tests from your terminal                         |
 
 # What is Kody
 
