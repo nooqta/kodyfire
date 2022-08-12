@@ -1,4 +1,3 @@
-import { strings } from '@angular-devkit/core';
 import { join, relative, dirname } from 'path';
 import { Engine as BaseEngine } from 'basic-kodyfire';
 const fs = require('fs');

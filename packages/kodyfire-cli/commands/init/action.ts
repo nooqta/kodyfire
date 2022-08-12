@@ -35,6 +35,7 @@ export class Action {
           'No dependencies found. Install kody dependencies first. Use kody search to find the dependencies.'
         );
       }
+
       if (dependencies.length > 0) {
         for (const dep of dependencies) {
           await Action.createDefinitionFile(_args.rootDir, dep);
@@ -84,7 +85,6 @@ export class Action {
     // get the deb package schema file
     // @todo: find a better way
     const { schema } = await import(`${rootDirectory}/node_modules/${dep}`);
-
     for (const prop of Object.keys(schema.properties)) {
       entries[prop] = [];
     }

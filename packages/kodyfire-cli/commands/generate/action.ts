@@ -89,14 +89,7 @@ export class Action {
           // set properties
           const currentConcept = await this.getCurrentConcept();
           const answers = await this.getPropertiesAnswers(currentConcept);
-          const question = {
-            type: 'confirm',
-            name: 'value',
-            message: `Would you like to add more?`,
-            initial: true,
-          };
-          const { value } = await prompts(question);
-          this;
+
           if (answers) {
             // @todo validate answers
             await this.generateConcept(this.kody, this.concept, answers);
@@ -105,8 +98,17 @@ export class Action {
               await this.addConcept(this.kody, this.concept, answers);
             }
           }
-          if (!value) {
-            addMore = false;
+          if (addMore) {
+            const question = {
+              type: 'confirm',
+              name: 'value',
+              message: `Would you like to add more?`,
+              initial: true,
+            };
+            const { value } = await prompts(question);
+            if (!value) {
+              addMore = false;
+            }
           }
           this.concept = null;
         }
@@ -380,7 +382,7 @@ export class Action {
       if (concept.enum.length == 1) return { value: concept.enum[0] }; // if only one option, return it as default answer
       const choices = concept.enum.map((c: any) => ({ title: c, value: c }));
       return {
-        type: 'select',
+        type: choices.length < 5 ? 'select' : 'autocomplete',
         name: useValueAsName ? 'value' : name,
         message: message || `Select the value for ${label}?`,
         ...(concept.description && { description: concept.description }),
