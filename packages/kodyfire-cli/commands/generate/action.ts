@@ -306,11 +306,26 @@ export class Action {
         });
       }
       content[concept] = [data];
-      const path = join(process.cwd(), 'node_modules', dependency);
-      const m = await import(path);
+      let path, currentKody;
       const kodyName = dependency.replace('-kodyfire', '');
-      const packages = await Package.getInstalledKodies();
-      const currentKody = packages.find((kody: any) => kody.id === kodyName);
+      if (fs.existsSync(join(process.cwd(), 'node_modules', dependency))) {
+        path = join(process.cwd(), 'node_modules', dependency);
+        const packages = await Package.getInstalledKodies();
+        currentKody = packages.find((kody: any) => kody.id === kodyName);
+      } else {
+        this.displayMessage(`${dependency} does not exist. Install it first.`);
+        process.exit(1);
+        // @todo: try a globally installed kody
+        path = join(
+          InitAction.getNpmGlobalPrefix(),
+          'lib',
+          'node_modules',
+          dependency
+        );
+        currentKody = { id: kodyName };
+      }
+
+      const m = await import(path);
       const kody: IKody = new m.Kody(currentKody);
 
       // generate artifacts | execute action

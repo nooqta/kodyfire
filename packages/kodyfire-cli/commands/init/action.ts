@@ -1,5 +1,6 @@
 import { join } from 'path';
 const fs = require('fs');
+const path = require('path');
 const prompts = require('prompts');
 const boxen = require('boxen');
 
@@ -122,7 +123,24 @@ export class Action {
     dependencies = dependencies.filter(dep => dep.includes('-kodyfire'));
     return { name, dependencies };
   }
+  static getNpmGlobalPrefix() {
+    let globalPrefix = '';
+    if (process.env.PREFIX) {
+      globalPrefix = process.env.PREFIX;
+    } else if (process.platform === 'win32') {
+      // c:\node\node.exe --> prefix=c:\node\
+      globalPrefix = path.dirname(process.execPath);
+    } else {
+      // /usr/local/bin/node --> prefix=/usr/local
+      globalPrefix = path.dirname(path.dirname(process.argv[1]));
 
+      // destdir only is respected on Unix
+      if (process.env.DESTDIR) {
+        globalPrefix = path.join(process.env.DESTDIR, globalPrefix);
+      }
+    }
+    return globalPrefix;
+  }
   static async getDependencyConcepts(
     dependency: string,
     rootDir = process.cwd()
@@ -130,8 +148,19 @@ export class Action {
     try {
       const entries: any = {};
       // get the deb package schema file
-      const { schema } = await import(`${rootDir}/node_modules/${dependency}`);
-
+      let kodyPath = join(rootDir, 'node_modules', dependency);
+      if (!fs.existsSync(join(rootDir, 'node_modules', dependency))) {
+        this.displayMessage(`${dependency} does not exist. Install it first.`);
+        process.exit(1);
+        // @todo: try a globally installed kody
+        kodyPath = join(
+          this.getNpmGlobalPrefix(),
+          'lib',
+          'node_modules',
+          dependency
+        );
+      }
+      const { schema } = await import(kodyPath);
       for (const prop of Object.keys(schema.properties)) {
         const attributes = await this.getConceptAttributes(
           schema.properties[prop]
