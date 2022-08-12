@@ -18,7 +18,7 @@ export class Kody extends BaseKody implements IKody {
   events: EventEmitter;
   constructor(
     params: any,
-    _schema = schema,
+    _schema: any = schema,
     technology = new Technology(params)
   ) {
     super();

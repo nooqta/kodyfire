@@ -15,21 +15,7 @@ export declare const concept: {
 };
 export declare const conceptArray: {
     type: string;
-    items: {
-        type: string;
-        properties: {
-            name: {
-                type: string;
-            };
-            template: {
-                type: string;
-                enum: string[];
-            };
-            outputDir: {
-                type: string;
-            };
-        };
-    };
+    items: any;
 };
 export declare const schema: {
     type: string;
@@ -45,21 +31,7 @@ export declare const schema: {
         };
         concept: {
             type: string;
-            items: {
-                type: string;
-                properties: {
-                    name: {
-                        type: string;
-                    };
-                    template: {
-                        type: string;
-                        enum: string[];
-                    };
-                    outputDir: {
-                        type: string;
-                    };
-                };
-            };
+            items: any;
         };
     };
     required: string[];

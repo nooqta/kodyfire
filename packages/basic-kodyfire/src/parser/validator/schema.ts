@@ -10,7 +10,7 @@ export const concept = {
   },
 };
 
-export const conceptArray = {
+export const conceptArray: { type: string; items: any } = {
   type: 'array',
   items: concept,
 };
