@@ -10,7 +10,7 @@ export declare class Kody extends BaseKody implements IKody {
     package: Package;
     events: EventEmitter;
     constructor(params: any, _schema?: any, technology?: Technology);
-    generate(_content: any): void;
+    generate(_content: any): Promise<void>;
     parse(content: any): any;
     read(source: any): any;
     get errors(): any;

@@ -42,7 +42,7 @@ export class Runner implements IKodyWorkflow {
     );
 
     // generate artifacts | execute action
-    const output = kody.generate(updatedData);
+    const output = await kody.generate(updatedData);
 
     // Post-execute
     await this.postExecute(kody);
