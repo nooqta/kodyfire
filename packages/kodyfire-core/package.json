@@ -1,6 +1,6 @@
 {
   "name": "kodyfire-core",
-  "version": "0.0.161",
+  "version": "0.0.162",
   "description": "Common types used by kodyfire.",
   "main": "index.js",
   "repository": {
