@@ -373,16 +373,13 @@ class Action {
       }
     });
   }
-  static generateConcept(dependency, concept, data, rootDir = process.cwd()) {
+  static generateConcept(dependency, concept, data, _rootDir = process.cwd()) {
     return __awaiter(this, void 0, void 0, function* () {
       try {
-        let content = yield this.getSchemaDefinition(dependency, rootDir);
-        if (!content) {
-          content = yield this.getDependencyConcepts(this.kody);
-          Object.keys(content).forEach(key => {
-            content[key] = [];
-          });
-        }
+        const content = yield this.getDependencyConcepts(this.kody);
+        Object.keys(content).forEach(key => {
+          content[key] = [];
+        });
         content[concept] = [data];
         let path, currentKody;
         const kodyName = dependency.replace('-kodyfire', '');
@@ -516,6 +513,18 @@ class Action {
           Object.assign(
             Object.assign(
               { type: 'text', name: useValueAsName ? 'value' : name },
+              concept.default && { initial: concept.default }
+            ),
+            concept.description && { description: concept.description }
+          ),
+          { message: message || `What is the value for ${label}?` }
+        );
+      }
+      if (concept.type === 'number') {
+        return Object.assign(
+          Object.assign(
+            Object.assign(
+              { type: 'number', name: useValueAsName ? 'value' : name },
               concept.default && { initial: concept.default }
             ),
             concept.description && { description: concept.description }

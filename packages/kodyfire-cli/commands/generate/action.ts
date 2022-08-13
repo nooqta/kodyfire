@@ -295,16 +295,13 @@ export class Action {
     dependency: string,
     concept: string,
     data: any,
-    rootDir: string = process.cwd()
+    _rootDir: string = process.cwd()
   ) {
     try {
-      let content = await this.getSchemaDefinition(dependency, rootDir);
-      if (!content) {
-        content = await this.getDependencyConcepts(this.kody);
-        Object.keys(content).forEach(key => {
-          content[key] = [];
-        });
-      }
+      const content = await this.getDependencyConcepts(this.kody);
+      Object.keys(content).forEach(key => {
+        content[key] = [];
+      });
       content[concept] = [data];
       let path, currentKody;
       const kodyName = dependency.replace('-kodyfire', '');
@@ -419,6 +416,15 @@ export class Action {
     if (concept.type === 'string') {
       return {
         type: 'text',
+        name: useValueAsName ? 'value' : name,
+        ...(concept.default && { initial: concept.default }),
+        ...(concept.description && { description: concept.description }),
+        message: message || `What is the value for ${label}?`,
+      };
+    }
+    if (concept.type === 'number') {
+      return {
+        type: 'number',
         name: useValueAsName ? 'value' : name,
         ...(concept.default && { initial: concept.default }),
         ...(concept.description && { description: concept.description }),
