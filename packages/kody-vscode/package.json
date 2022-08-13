@@ -2,7 +2,7 @@
   "name": "kody-vscode",
   "displayName": "kodyfire",
   "description": "A vs-code extension that integrates kodyfire",
-  "version": "0.0.165",
+  "version": "0.0.166",
   "engines": {
     "vscode": "^1.67.0"
   },
