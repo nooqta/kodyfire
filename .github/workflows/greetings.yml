@@ -1,6 +1,5 @@
 name: Auto message for Issues
 on: issues
-
 jobs:
   greeting:
     runs-on: ubuntu-latest
