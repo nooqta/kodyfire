@@ -16,13 +16,6 @@ npm i react-kodyfire
 kody g react component
 ```
 
-![create your project with your file type](kody1.png)
-
-```sh
-We can choose the name of the template and component with
-suitable extension of the file as shown in the above image.
-```
-
 ## Install the CLI
 
 Install the kody cli by running
@@ -216,18 +209,6 @@ This will create a folder containing the basic structure for a kody. You can sta
 npm i
 ```
 
-To address issues that do not require attention, run:
-
-```bash
-npm audit fix
-```
-
-To address all issues (including breaking changes), run:
-
-```bash
-npm audit fix --force
-```
-
 #### Build your kody
 
 ```bash
@@ -274,9 +255,10 @@ Add the required kodyfire metadata to your package.json
 
 Intialize your project as a git repository and push to a public Github repo
 
-To do so, kindlly follow these steps:-
-1)Intitialsie a new repository in your GitHub and make it as public repository.
-2)Open your project folder in terminal(or command prompt) and write the following commands:-
+To do so, kindly follow these steps:-
+
+1. Intitialize a new Github repository and make it public.
+2. Open your project root folder locally from terminal and run the following commands:-
 
 ```bash
 git init
@@ -287,17 +269,17 @@ git add .
 ```
 
 ```bash
-git commit -m "First Commit!"
+git commit -m "Initial Commit!"
 ```
 
-Go to the created repository and copy the URL
+3. Link your project to your Github repository.
 
 ```bash
 git remote add origin <copied URL>
 ```
 
 ```bash
-git push origin master
+git push origin main
 ```
 
 ### Publish to npm
