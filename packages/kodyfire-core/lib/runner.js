@@ -123,7 +123,7 @@ class Runner {
         kody.data
       );
       // generate artifacts | execute action
-      const output = kody.generate(updatedData);
+      const output = yield kody.generate(updatedData);
       // Post-execute
       yield this.postExecute(kody);
       this.handleKodySuccess();
