@@ -65,7 +65,9 @@ class Model {
         return relations;
     }
     getFillable(model) {
-        return model.fillable ? model.fillable.map((field) => `'${field}'`).join(", ") : '';
+        return model.fillable
+            ? model.fillable.map((field) => `'${field}'`).join(', ')
+            : '';
     }
     getRelationArgs(rel) {
         let args = '';
