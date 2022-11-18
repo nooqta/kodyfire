@@ -5,6 +5,7 @@ import {
   Technology,
   TemplateSchema,
 } from 'kodyfire-core';
+import { relative } from 'path';
 import { Engine } from './engine';
 
 export class Concept implements IConcept {
@@ -21,6 +22,11 @@ export class Concept implements IConcept {
     this.name = concept.name ?? '';
     this.template = concept.template as TemplateSchema;
     this.technology = technology;
+  }
+  getTemplatesPath(): string {
+    return this.technology.params.templatesPath
+      ? this.technology.params.templatesPath
+      : relative(process.cwd(), __dirname);
   }
   generate(_data: any) {
     throw new Error('Method should be implemented in child.');

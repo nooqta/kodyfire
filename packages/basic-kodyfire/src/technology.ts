@@ -44,17 +44,25 @@ export class Technology implements BaseTechnology {
   }
 
   public updateTemplatesPath(params: any) {
-    if (params.templatesPath) {
-      // user requested to use custom templates. We need to set the path to the templates
-      let templatesPath = join(process.cwd(), '.kody', params.name);
-      // we check if the path exists
-      if (!fs.existsSync(templatesPath)) {
-        // if not we check if its a wrapper kody
-        templatesPath = params.templatesPath;
-        if (!fs.existsSync(join(templatesPath, 'templates'))) {
-          throw new Error(`The path ${templatesPath} does not exist.`);
-        }
-      }
+    // Old method: use templates path upon passing templatesPath in params
+    // if (params.templatesPath) {
+    //   // user requested to use custom templates. We need to set the path to the templates
+    //   let templatesPath = join(process.cwd(), '.kody', params.name);
+    //   // we check if the path exists
+    //   if (fs.existsSync(templatesPath)) {
+    //     // if not we check if its a wrapper kody
+    //     templatesPath = params.templatesPath;
+    //     if (!fs.existsSync(join(templatesPath, 'templates'))) {
+    //       throw new Error(`The path ${templatesPath} does not exist.`);
+    //     }
+    //   }
+    //   this.params.templatesPath = templatesPath;
+    // }
+
+    // New method: use templates path if .kody exists in the root directory
+    const templatesPath = join(process.cwd(), '.kody', params.name);
+    // we check if the path exists
+    if (fs.existsSync(templatesPath)) {
       this.params.templatesPath = templatesPath;
     }
   }

@@ -84,6 +84,10 @@ class Engine {
     }
     read(path, templateName) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (fs.existsSync((0, path_1.join)(path, templateName))) {
+                const template = yield fsPromises.readFile((0, path_1.join)(path, templateName));
+                return template === null || template === void 0 ? void 0 : template.toString();
+            }
             const template = yield fsPromises.readFile((0, path_1.join)((0, path_1.relative)(process.cwd(), __dirname), path, templateName));
             return template === null || template === void 0 ? void 0 : template.toString();
         });
@@ -124,7 +128,9 @@ class Engine {
     setContent(filename, content) {
         var _a;
         try {
-            if (fs.existsSync(filename)) {
+            // @todo we'll use AST in the future
+            // eslint-disable-next-line no-constant-condition
+            if (fs.existsSync(filename) && false) {
                 const oldContent = fs.readFileSync(filename);
                 const oldMethods = this.getAstMethods(oldContent);
                 const newMethods = this.getAstMethods(content);

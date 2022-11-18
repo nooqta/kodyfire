@@ -45,5 +45,7 @@ export declare class Technology implements ITechnology {
             };
         })[];
     });
+    initConcepts(): void;
+    updateTemplatesPath(params: any): void;
     prepareConcept(dependency: string, conceptName: string, preparedConcept: any): Promise<any>;
 }

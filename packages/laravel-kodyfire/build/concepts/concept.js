@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Concept = void 0;
 const kodyfire_core_1 = require("kodyfire-core");
+const path_1 = require("path");
 class Concept {
     constructor(concept, technology) {
         var _a, _b, _c;
@@ -10,6 +11,11 @@ class Concept {
         this.name = (_c = concept.name) !== null && _c !== void 0 ? _c : '';
         this.template = concept.template;
         this.technology = technology;
+    }
+    getTemplatesPath() {
+        return this.technology.params.templatesPath
+            ? this.technology.params.templatesPath
+            : (0, path_1.relative)(process.cwd(), __dirname);
     }
     generate(_data) {
         throw new Error('Method should be implemented in child.');

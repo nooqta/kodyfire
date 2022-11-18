@@ -8,7 +8,9 @@ export declare class Model implements IConcept {
     outputDir: string;
     technology: Technology;
     engine: Engine;
+    templatesPath?: string | undefined;
     constructor(concept: Partial<IConcept>, technology: ITechnology);
+    getTemplatesPath(): string;
     generate(_data: any): Promise<void>;
     getFilename(name: any): string;
     getModelRelations(model: any): string;

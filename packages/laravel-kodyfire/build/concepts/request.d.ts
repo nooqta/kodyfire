@@ -11,6 +11,7 @@ export declare class Request implements IConcept {
     engine: Engine;
     models: any;
     constructor(concept: Partial<IConcept>, technology: ITechnology);
+    getTemplatesPath(): string;
     setModel(_data: any): void;
     generate(_data: any): Promise<void>;
     getFilename(name: any): string;

@@ -9,6 +9,7 @@ export declare class Concept implements IConcept {
     technology: Technology;
     engine: Engine;
     constructor(concept: Partial<IConcept>, technology: ITechnology);
+    getTemplatesPath(): string;
     generate(_data: any): void;
     underscorize(word: any): any;
 }

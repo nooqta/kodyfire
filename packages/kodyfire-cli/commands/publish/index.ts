@@ -1,3 +1,4 @@
+import { existsSync } from 'fs';
 import { Package } from 'kodyfire-core';
 const chalk = require('chalk');
 const boxen = require('boxen');
@@ -23,8 +24,16 @@ const action = async (args: any) => {
   } else {
     if (kodies.find(kody => kody.name == args.name)) {
       const target = `./.kody/${args.name}/templates`;
-      const source = `./node_modules/${args.name}/src/concepts/templates`;
-      await copyDir(source, target);
+      const sources = [
+        `./node_modules/${args.name}/src/concepts/templates`,
+        `./node_modules/${args.name}/src/templates`,
+      ];
+      //for each source folder if it exists copy it to the target folder
+      for (const source of sources) {
+        if (existsSync(source)) {
+          await copyDir(source, target);
+        }
+      }
     } else {
       console.log('😞 Kody not found');
     }

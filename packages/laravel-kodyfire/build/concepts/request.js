@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Request = void 0;
 const strings_1 = require("@angular-devkit/core/src/utils/strings");
 const kodyfire_core_1 = require("kodyfire-core");
+const path_1 = require("path");
 // import pluralize from 'pluralize';
 const engine_1 = require("./engine");
 class Request {
@@ -24,6 +25,11 @@ class Request {
         this.technology = technology;
         this.models = technology.input;
     }
+    getTemplatesPath() {
+        return this.technology.params.templatesPath
+            ? this.technology.params.templatesPath
+            : (0, path_1.relative)(process.cwd(), __dirname);
+    }
     setModel(_data) {
         this.model = this.technology.input.model.find((m) => m.name.toLowerCase() == _data.model.toLowerCase());
     }
@@ -34,7 +40,7 @@ class Request {
             _data.relationships = this.model.relationships;
             _data.controller = this.model.controller;
             _data.fields = this.model.fields.filter((f) => typeof f.rules != 'undefined');
-            const template = yield this.engine.read(this.template.path, _data.template);
+            const template = yield this.engine.read((0, path_1.join)(this.getTemplatesPath(), this.template.path), _data.template);
             this.engine.builder.registerHelper('getRequestValidation', () => {
                 return this.getRequestValidation(_data, _data.relationships, _data.prefix === 'Create' ? 'store' : 'update');
             });

@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Model = void 0;
 const strings_1 = require("@angular-devkit/core/src/utils/strings");
 const kodyfire_core_1 = require("kodyfire-core");
+const path_1 = require("path");
 const engine_1 = require("./engine");
 class Model {
     constructor(concept, technology) {
@@ -22,10 +23,15 @@ class Model {
         this.template = concept.template;
         this.technology = technology;
     }
+    getTemplatesPath() {
+        return this.technology.params.templatesPath
+            ? this.technology.params.templatesPath
+            : (0, path_1.relative)(process.cwd(), __dirname);
+    }
     generate(_data) {
         return __awaiter(this, void 0, void 0, function* () {
             this.engine = new engine_1.Engine();
-            const template = yield this.engine.read(this.template.path, _data.template);
+            const template = yield this.engine.read((0, path_1.join)(this.getTemplatesPath(), this.template.path), _data.template);
             _data.hidden = this.getHiddenArray(_data);
             _data.fillable = this.getFillable(_data);
             _data.relations = this.getModelRelations(_data);
@@ -59,7 +65,7 @@ class Model {
         return relations;
     }
     getFillable(model) {
-        return JSON.stringify(model.fillable);
+        return model.fillable ? model.fillable.map((field) => `'${field}'`).join(", ") : '';
     }
     getRelationArgs(rel) {
         let args = '';

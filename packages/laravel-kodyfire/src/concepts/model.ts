@@ -6,6 +6,7 @@ import {
   Technology,
   TemplateSchema,
 } from 'kodyfire-core';
+import { join, relative } from 'path';
 import { Engine } from './engine';
 
 export class Model implements IConcept {
@@ -16,6 +17,7 @@ export class Model implements IConcept {
   outputDir: string;
   technology: Technology;
   engine: Engine;
+  templatesPath?: string | undefined;
   constructor(concept: Partial<IConcept>, technology: ITechnology) {
     this.source = concept.source ?? Source.Template;
     this.outputDir = concept.outputDir ?? '';
@@ -23,9 +25,17 @@ export class Model implements IConcept {
     this.template = concept.template as TemplateSchema;
     this.technology = technology;
   }
+  getTemplatesPath(): string {
+    return this.technology.params.templatesPath
+      ? this.technology.params.templatesPath
+      : relative(process.cwd(), __dirname);
+  }
   async generate(_data: any) {
     this.engine = new Engine();
-    const template = await this.engine.read(this.template.path, _data.template);
+    const template = await this.engine.read(
+      join(this.getTemplatesPath(), this.template.path),
+      _data.template
+    );
     _data.hidden = this.getHiddenArray(_data);
     _data.fillable = this.getFillable(_data);
     _data.relations = this.getModelRelations(_data);
@@ -65,7 +75,9 @@ export class Model implements IConcept {
   }
 
   getFillable(model: any): string {
-    return JSON.stringify(model.fillable);
+    return model.fillable
+      ? model.fillable.map((field: string) => `'${field}'`).join(', ')
+      : '';
   }
 
   getRelationArgs(rel: any): string {

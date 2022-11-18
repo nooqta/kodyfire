@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Repository = void 0;
 const strings_1 = require("@angular-devkit/core/src/utils/strings");
+const path_1 = require("path");
 const concept_1 = require("./concept");
 const engine_1 = require("./engine");
 const pluralize = require('pluralize');
@@ -66,7 +67,7 @@ class Repository extends concept_1.Concept {
         return __awaiter(this, void 0, void 0, function* () {
             this.setModel(_data);
             this.initEngine();
-            const template = yield this.engine.read(this.template.path, _data.template);
+            const template = yield this.engine.read((0, path_1.join)(this.getTemplatesPath(), this.template.path), _data.template);
             this.model.attachments = this.getAttachments(this.model);
             this.model.morphAttachments = this.getMorphAttachments(this.model);
             this.model.additionalMethods = this.getAdditionalMethods(this.model);

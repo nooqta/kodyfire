@@ -25,29 +25,47 @@ export class Technology implements ITechnology {
       this.rootDir = _assets.rootDir;
       this.assets = _assets;
       this.params = params;
-      if (params.templatesPath) {
-        // user requested to use custom templates. We need to set the path to the templates
-        const templatesPath = join(process.cwd(), '.kody', params.name);
-        // we check if the path exists
-        if (!fs.existsSync(templatesPath)) {
-          throw new Error(
-            `The path ${templatesPath} does not exist.\nRun the command "kodyfire publish ${params.name}" to publish the templates.`
-          );
-        }
-        params.templatesPath = join(process.cwd(), '.kody', params.name);
-      }
-
-      // add dynamic property for technology
-      for (const concept of this.assets.concepts) {
-        this.concepts.set(
-          concept.name,
-          new (<any>classes)[capitalize(concept.name)](concept, this)
-        );
-      }
+      this.updateTemplatesPath(params);
+      this.initConcepts();
     } catch (error) {
       console.log(error, 'error');
     }
   }
+
+  public initConcepts() {
+    // add dynamic property for technology
+    for (const concept of this.assets.concepts) {
+      this.concepts.set(
+        concept.name,
+        new (<any>classes)[capitalize(concept.name)](concept, this)
+      );
+    }
+  }
+
+  public updateTemplatesPath(params: any) {
+    // Old method: use templates path upon passing templatesPath in params
+    // if (params.templatesPath) {
+    //   // user requested to use custom templates. We need to set the path to the templates
+    //   let templatesPath = join(process.cwd(), '.kody', params.name);
+    //   // we check if the path exists
+    //   if (fs.existsSync(templatesPath)) {
+    //     // if not we check if its a wrapper kody
+    //     templatesPath = params.templatesPath;
+    //     if (!fs.existsSync(join(templatesPath, 'templates'))) {
+    //       throw new Error(`The path ${templatesPath} does not exist.`);
+    //     }
+    //   }
+    //   this.params.templatesPath = templatesPath;
+    // }
+
+    // New method: use templates path if .kody exists in the root directory
+    const templatesPath = join(process.cwd(), '.kody', params.name);
+    // we check if the path exists
+    if (fs.existsSync(templatesPath)) {
+      this.params.templatesPath = templatesPath;
+    }
+  }
+
   //@todo: refactor. exists in kodyfire-core technology.ts
   async prepareConcept(
     dependency: string,

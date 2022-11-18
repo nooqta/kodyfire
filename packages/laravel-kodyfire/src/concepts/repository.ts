@@ -1,5 +1,6 @@
 import { classify } from '@angular-devkit/core/src/utils/strings';
 import { IConcept, ITechnology } from 'kodyfire-core';
+import { join } from 'path';
 import { Concept } from './concept';
 import { Engine } from './engine';
 const pluralize = require('pluralize');
@@ -78,7 +79,10 @@ export class Repository extends Concept {
   async generate(_data: any) {
     this.setModel(_data);
     this.initEngine();
-    const template = await this.engine.read(this.template.path, _data.template);
+    const template = await this.engine.read(
+      join(this.getTemplatesPath(), this.template.path),
+      _data.template
+    );
     this.model.attachments = this.getAttachments(this.model);
     this.model.morphAttachments = this.getMorphAttachments(this.model);
     this.model.additionalMethods = this.getAdditionalMethods(this.model);

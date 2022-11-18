@@ -6,6 +6,7 @@ import {
   Technology,
   TemplateSchema,
 } from 'kodyfire-core';
+import { join, relative } from 'path';
 // import pluralize from 'pluralize';
 import { Engine } from './engine';
 
@@ -27,6 +28,11 @@ export class Request implements IConcept {
     this.technology = technology;
     this.models = technology.input;
   }
+  getTemplatesPath(): string {
+    return this.technology.params.templatesPath
+      ? this.technology.params.templatesPath
+      : relative(process.cwd(), __dirname);
+  }
   setModel(_data: any) {
     this.model = this.technology.input.model.find(
       (m: any) => m.name.toLowerCase() == _data.model.toLowerCase()
@@ -40,7 +46,10 @@ export class Request implements IConcept {
     _data.fields = this.model.fields.filter(
       (f: any) => typeof f.rules != 'undefined'
     );
-    const template = await this.engine.read(this.template.path, _data.template);
+    const template = await this.engine.read(
+      join(this.getTemplatesPath(), this.template.path),
+      _data.template
+    );
     this.engine.builder.registerHelper('getRequestValidation', () => {
       return this.getRequestValidation(
         _data,
