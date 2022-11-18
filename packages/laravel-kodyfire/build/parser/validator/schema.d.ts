@@ -17,6 +17,7 @@ export declare const model: {
 };
 export declare const controller: {
     type: string;
+    description: string;
     properties: {
         model: {
             type: string;
@@ -131,6 +132,7 @@ export declare const controller: {
 };
 export declare const baseModel: {
     type: string;
+    description: string;
     properties: {
         name: {
             type: string;
@@ -255,6 +257,7 @@ export declare const controllerArray: {
     type: string;
     items: {
         type: string;
+        description: string;
         properties: {
             model: {
                 type: string;
@@ -675,6 +678,7 @@ export declare const modelArray: {
     type: string;
     items: {
         type: string;
+        description: string;
         properties: {
             name: {
                 type: string;
@@ -1003,6 +1007,7 @@ export declare const schema: {
             type: string;
             items: {
                 type: string;
+                description: string;
                 properties: {
                     name: {
                         type: string;
@@ -1128,6 +1133,7 @@ export declare const schema: {
             type: string;
             items: {
                 type: string;
+                description: string;
                 properties: {
                     model: {
                         type: string;

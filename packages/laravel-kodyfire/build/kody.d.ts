@@ -18,6 +18,7 @@ export declare class Kody extends BaseKody implements IKody {
                 type: string;
                 items: {
                     type: string;
+                    description: string;
                     properties: {
                         name: {
                             type: string;
@@ -143,6 +144,7 @@ export declare class Kody extends BaseKody implements IKody {
                 type: string;
                 items: {
                     type: string;
+                    description: string;
                     properties: {
                         model: {
                             type: string;

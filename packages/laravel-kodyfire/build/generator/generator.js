@@ -10,15 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Generator = void 0;
-const core_1 = require("@angular-devkit/core");
-const node_1 = require("@angular-devkit/core/node");
-const schematics_1 = require("@angular-devkit/schematics");
 const technology_1 = require("../technology");
 class Generator {
     constructor(params, technology = new technology_1.Technology(params)) {
         this.technology = technology;
-        const _backend = new core_1.virtualFs.ScopedHost(new node_1.NodeJsSyncHost(), (0, core_1.normalize)(process.cwd()));
-        this.tree = new schematics_1.HostTree(_backend);
     }
     generate(content) {
         var _a;
@@ -28,13 +23,20 @@ class Generator {
             this.technology.rootDir = content.rootDir || this.technology.rootDir;
             // for every concept in concepts list
             for (const [key] of this.technology.concepts) {
-                for (const data of content[key]) {
+                // eslint-disable-next-line no-prototype-builtins
+                if (content.hasOwnProperty(key)) {
+                    console.log('content[key]', content[key]);
+                    for (const data of content[key]) {
+                        // do apropriate action
+                        this.output = yield ((_a = this.technology.concepts.get(key)) === null || _a === void 0 ? void 0 : _a.generate(data));
+                    }
+                }
+                else {
                     // do apropriate action
-                    this.tree = yield ((_a = this.technology.concepts.get(key)) === null || _a === void 0 ? void 0 : _a.generate(data));
                 }
             }
             // return result
-            return this.tree;
+            return this.output;
         });
     }
 }

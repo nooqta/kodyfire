@@ -9,6 +9,7 @@ export const action = {
 export const model = { type: 'string' };
 export const controller = {
   type: 'object',
+  description: 'Generates a controller',
   properties: {
     model: model,
     namespace: { type: 'string', default: 'App\\Http\\Controllers' },
@@ -97,7 +98,7 @@ export const controller = {
 };
 export const baseModel = {
   type: 'object',
-
+  description: 'Generates a model',
   properties: {
     name: { type: 'string', description: 'The model name' },
     namespace: { type: 'string', default: 'App\\Models' },

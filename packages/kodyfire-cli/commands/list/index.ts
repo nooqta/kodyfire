@@ -42,8 +42,12 @@ module.exports = (program: typeof Command) => {
   program
     .command('list')
     .alias('ls')
-    .description('list available technologies')
-    .action(async (_opt: any) => {
-      return action();
+    .description('list available technologies.')
+    .argument(
+      '[technology]',
+      'List all concepts of a technology by passing the technology name as an argument'
+    )
+    .action(async (technology: any) => {
+      return action({ technology });
     });
 };

@@ -70,24 +70,19 @@ export class Action {
             process.exit(1);
           }
           const { kody } = await prompts(kodyQuestion);
+          console.log(kody);
           this.kody = kody;
         }
         if (conceptName) this.concept = conceptName;
-        if (!this.concept) {
+        let currentConcept = await this.getCurrentConcept();
+
+        if (!this.concept || !currentConcept) {
           // set concept
-          const conceptQuestion = await this.getConceptQuestion();
-          if (!conceptQuestion) {
-            this.displayMessage(
-              'No concepts selected. Please select a concept to proceed.'
-            );
-            process.exit(1);
-          }
-          const { concept } = await prompts(conceptQuestion);
-          this.concept = concept;
+          await Action.setConcept();
+          currentConcept = await this.getCurrentConcept();
         }
         if (!this.properties) {
           // set properties
-          const currentConcept = await this.getCurrentConcept();
           const answers = await this.getPropertiesAnswers(currentConcept);
 
           if (answers) {
@@ -115,6 +110,24 @@ export class Action {
       } while (addMore);
     })();
   }
+  private static async setConcept() {
+    const conceptQuestion = await this.getConceptQuestion();
+    if (!conceptQuestion) {
+      this.displayMessage(
+        `No concept specified. Please provide a concept to proceed. \`kody g ${this.kody.replace(
+          '-kodyfire',
+          ''
+        )} <your-concept>\`. \n to see available concepts, run \`kody ls ${this.kody.replace(
+          '-kodyfire',
+          ''
+        )}\``
+      );
+      process.exit(1);
+    }
+    const { concept } = await prompts(conceptQuestion);
+    this.concept = concept;
+  }
+
   static async getCurrentConcept() {
     const concepts = await this.getDependencyConcepts(this.kody);
     return concepts[this.concept];

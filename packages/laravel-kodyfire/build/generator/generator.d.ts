@@ -1,9 +1,8 @@
-import { Tree } from '@angular-devkit/schematics';
 import { IGenerator, ITechnology } from 'kodyfire-core';
 export declare class Generator implements IGenerator {
     technology: ITechnology;
     input: any;
-    tree: Tree;
+    output: any;
     constructor(params: any, technology?: ITechnology);
-    generate(content: any): Promise<Tree>;
+    generate(content: any): Promise<any>;
 }

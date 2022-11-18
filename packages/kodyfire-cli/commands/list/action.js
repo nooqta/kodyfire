@@ -1,4 +1,41 @@
 'use strict';
+var __createBinding =
+  (this && this.__createBinding) ||
+  (Object.create
+    ? function (o, m, k, k2) {
+        if (k2 === undefined) k2 = k;
+        Object.defineProperty(o, k2, {
+          enumerable: true,
+          get: function () {
+            return m[k];
+          },
+        });
+      }
+    : function (o, m, k, k2) {
+        if (k2 === undefined) k2 = k;
+        o[k2] = m[k];
+      });
+var __setModuleDefault =
+  (this && this.__setModuleDefault) ||
+  (Object.create
+    ? function (o, v) {
+        Object.defineProperty(o, 'default', { enumerable: true, value: v });
+      }
+    : function (o, v) {
+        o['default'] = v;
+      });
+var __importStar =
+  (this && this.__importStar) ||
+  function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null)
+      for (var k in mod)
+        if (k !== 'default' && Object.prototype.hasOwnProperty.call(mod, k))
+          __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+  };
 var __awaiter =
   (this && this.__awaiter) ||
   function (thisArg, _arguments, P, generator) {
@@ -41,6 +78,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 exports.action = exports.Action = void 0;
 const kodyfire_core_1 = require('kodyfire-core');
 const fs_1 = __importDefault(require('fs'));
+const path_1 = require('path');
 const chalk = require('chalk');
 const boxen = require('boxen');
 const Table = require('cli-table');
@@ -73,7 +111,7 @@ class Action {
     });
     console.log(table.toString());
   }
-  static execute() {
+  static execute(args) {
     return __awaiter(this, void 0, void 0, function* () {
       try {
         // We check if package.json exists
@@ -89,33 +127,116 @@ class Action {
           const message = `😞 No ${kody} installed yet.\nInstall a ${kody} to become a Ninja 🚀🚀🚀`;
           this.displayMessage(message);
         } else {
-          this.displayKodies(kodies);
+          // if the technology is specified, we display all concepts of the technology
+          if (args.technology) {
+            const packageName = `${args.technology}-kodyfire`;
+            const dependency = yield this.getDependencyConcepts(packageName);
+            this.displayConcepts(
+              dependency === null || dependency === void 0
+                ? void 0
+                : dependency.concepts
+            );
+          } else {
+            this.displayKodies(kodies);
+          }
         }
       } catch (error) {
         this.displayMessage(error.message);
       }
     });
   }
+  static displayConcepts(concepts) {
+    const table = new Table({
+      head: ['name', 'description'],
+      colWidths: [31, 61],
+      style: {
+        'padding-left': 1,
+        'padding-right': 1,
+        head: ['yellow'],
+      },
+    });
+    Object.keys(concepts).forEach(name => {
+      // add a description to the concept
+      table.push([name, `Generate a ${name}`]);
+    });
+    console.log(table.toString());
+  }
+  static getDependencyConcepts(dependency, rootDir = process.cwd()) {
+    return __awaiter(this, void 0, void 0, function* () {
+      try {
+        const entries = {};
+        // get the deb package schema file
+        const kodyPath = (0, path_1.join)(rootDir, 'node_modules', dependency);
+        if (
+          !fs_1.default.existsSync(
+            (0, path_1.join)(rootDir, 'node_modules', dependency)
+          )
+        ) {
+          this.displayMessage(
+            `${dependency} does not exist. Install it first.`
+          );
+          process.exit(1);
+          // @todo: try a globally installed kody
+          // kodyPath = join(
+          //   this.getNpmGlobalPrefix(),
+          //   'lib',
+          //   'node_modules',
+          //   dependency
+          // );
+        }
+        const { schema } = yield Promise.resolve().then(() =>
+          __importStar(require(kodyPath))
+        );
+        for (const prop of Object.keys(schema.properties)) {
+          const attributes = yield this.getConceptAttributes(
+            schema.properties[prop]
+          );
+          if (attributes) {
+            entries[prop] = attributes;
+          }
+        }
+        return { name: dependency, concepts: entries };
+      } catch (error) {
+        this.displayMessage(error.message);
+      }
+    });
+  }
+  static getConceptAttributes(schema) {
+    return __awaiter(this, void 0, void 0, function* () {
+      try {
+        if (Object.prototype.hasOwnProperty.call(schema, 'properties')) {
+          return schema.properties;
+        }
+        if (Object.prototype.hasOwnProperty.call(schema, 'items')) {
+          return yield this.getConceptAttributes(schema.items);
+        }
+      } catch (error) {
+        this.displayMessage(error.message);
+      }
+      return false;
+    });
+  }
 }
 exports.Action = Action;
-const action = () =>
+const action = args =>
   __awaiter(void 0, void 0, void 0, function* () {
-    try {
-      const kodies = yield kodyfire_core_1.Package.getInstalledKodies();
-      // @todo: use event emitter to listen to the event of the runner
-      ee.on('message', text => {
-        console.log(text);
-      });
-      if (kodies.length == 0) {
-        const kody = chalk.greenBright(chalk.bold('kody'));
-        const message = `😞 No ${kody} installed yet.\nInstall a ${kody} to become a Ninja 🚀🚀🚀`;
-        Action.displayMessage(message);
-      } else {
-        Action.displayKodies(kodies);
-      }
-    } catch (error) {
-      Action.displayMessage(error.message);
-    }
+    yield Action.execute(args);
+    // try {
+    //   const kodies = await Package.getInstalledKodies();
+    //   // @todo: use event emitter to listen to the event of the runner
+    //   ee.on('message', (text: string) => {
+    //     console.log(text);
+    //   });
+    //   if (kodies.length == 0) {
+    //     const kody = chalk.greenBright(chalk.bold('kody'));
+    //     const message = `😞 No ${kody} installed yet.\nInstall a ${kody} to become a Ninja 🚀🚀🚀`;
+    //     Action.displayMessage(message);
+    //   } else {
+    //     Action.displayKodies(kodies);
+    //   }
+    // } catch (error: any) {
+    //   Action.displayMessage(error.message);
+    // }
   });
 exports.action = action;
 //# sourceMappingURL=action.js.map

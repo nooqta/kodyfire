@@ -108,36 +108,35 @@ class Action {
         };
         if (dependencies.length == 0) {
           this.displayMessage(
-            'No dependencies found. Install kody dependencies first. Use kody search to find the dependencies.'
+            'No dependencies found. Install kody dependencies first. Use `kody search` to find the dependencies.'
           );
+          process.exit(1);
         }
-        if (dependencies.length > 0) {
-          for (const dep of dependencies) {
-            yield Action.createDefinitionFile(_args.rootDir, dep);
-            // Add the dependency to the kody.json file
-            kody.sources.push({
+        for (const dep of dependencies) {
+          yield Action.createDefinitionFile(_args.rootDir, dep);
+          // Add the dependency to the kody.json file
+          kody.sources.push({
+            name: dep.replace('-kodyfire', ''),
+            filename: `kody-${dep.replace('-kodyfire', '')}.json`,
+          });
+          const data = JSON.stringify(kody, null, '\t');
+          if (!fs.existsSync((0, path_1.join)(_args.rootDir, 'kody.json'))) {
+            fs.writeFileSync(
+              (0, path_1.join)(_args.rootDir, 'kody.json'),
+              data
+            );
+          } else {
+            const kodyJson = JSON.parse(
+              fs.readFileSync((0, path_1.join)(_args.rootDir, 'kody.json'))
+            );
+            kodyJson.sources.push({
               name: dep.replace('-kodyfire', ''),
               filename: `kody-${dep.replace('-kodyfire', '')}.json`,
             });
-            const data = JSON.stringify(kody, null, '\t');
-            if (!fs.existsSync((0, path_1.join)(_args.rootDir, 'kody.json'))) {
-              fs.writeFileSync(
-                (0, path_1.join)(_args.rootDir, 'kody.json'),
-                data
-              );
-            } else {
-              const kodyJson = JSON.parse(
-                fs.readFileSync((0, path_1.join)(_args.rootDir, 'kody.json'))
-              );
-              kodyJson.sources.push({
-                name: dep.replace('-kodyfire', ''),
-                filename: `kody-${dep.replace('-kodyfire', '')}.json`,
-              });
-              fs.writeFileSync(
-                (0, path_1.join)(_args.rootDir, 'kody.json'),
-                JSON.stringify(kodyJson, null, '\t')
-              );
-            }
+            fs.writeFileSync(
+              (0, path_1.join)(_args.rootDir, 'kody.json'),
+              JSON.stringify(kodyJson, null, '\t')
+            );
           }
         }
       } catch (error) {

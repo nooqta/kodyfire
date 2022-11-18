@@ -12,6 +12,7 @@ exports.action = {
 exports.model = { type: 'string' };
 exports.controller = {
     type: 'object',
+    description: 'Generates a controller',
     properties: {
         model: exports.model,
         namespace: { type: 'string', default: 'App\\Http\\Controllers' },
@@ -100,6 +101,7 @@ exports.controller = {
 };
 exports.baseModel = {
     type: 'object',
+    description: 'Generates a model',
     properties: {
         name: { type: 'string', description: 'The model name' },
         namespace: { type: 'string', default: 'App\\Models' },
