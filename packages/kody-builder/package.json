@@ -1,6 +1,6 @@
 {
   "name": "kodyfire-builder",
-  "version": "0.0.168",
+  "version": "0.0.169",
   "proxy": "http://localhost:3555",
   "repository": {
     "type": "git",
