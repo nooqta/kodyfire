@@ -25,7 +25,6 @@ class Generator {
             for (const [key] of this.technology.concepts) {
                 // eslint-disable-next-line no-prototype-builtins
                 if (content.hasOwnProperty(key)) {
-                    console.log('content[key]', content[key]);
                     for (const data of content[key]) {
                         // do apropriate action
                         this.output = yield ((_a = this.technology.concepts.get(key)) === null || _a === void 0 ? void 0 : _a.generate(data));

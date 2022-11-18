@@ -16,7 +16,6 @@ export class Generator implements IGenerator {
     for (const [key] of this.technology.concepts) {
       // eslint-disable-next-line no-prototype-builtins
       if (content.hasOwnProperty(key)) {
-        console.log('content[key]', content[key]);
         for (const data of content[key]) {
           // do apropriate action
           this.output = await this.technology.concepts.get(key)?.generate(data);

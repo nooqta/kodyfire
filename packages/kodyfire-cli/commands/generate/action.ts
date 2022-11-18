@@ -13,7 +13,7 @@ export class Action {
   static isCanceled = false;
 
   static async onCancel(_prompt: any) {
-    this.isCanceled = true;
+    Action.isCanceled = true;
     process.exit(1);
     return true;
   }
@@ -69,7 +69,9 @@ export class Action {
             );
             process.exit(1);
           }
-          const { kody } = await prompts(kodyQuestion);
+          const { kody } = await prompts(kodyQuestion, {
+            onCancel: Action.onCancel,
+          });
           console.log(kody);
           this.kody = kody;
         }
@@ -100,7 +102,9 @@ export class Action {
               message: `Would you like to add more?`,
               initial: true,
             };
-            const { value } = await prompts(question);
+            const { value } = await prompts(question, {
+              onCancel: Action.onCancel,
+            });
             if (!value) {
               addMore = false;
             }
@@ -124,7 +128,9 @@ export class Action {
       );
       process.exit(1);
     }
-    const { concept } = await prompts(conceptQuestion);
+    const { concept } = await prompts(conceptQuestion, {
+      onCancel: Action.onCancel,
+    });
     this.concept = concept;
   }
 
@@ -159,7 +165,7 @@ export class Action {
         if (typeof question.value != 'undefined') {
           answers[conceptNames[i]] = question.value;
         } else if (question) {
-          const answer = await prompts(question);
+          const answer = await prompts(question, { onCancel: Action.onCancel });
           answers[conceptNames[i]] = answer.value;
         }
       }
@@ -187,7 +193,9 @@ export class Action {
                 conceptNames[i],
                 currentConcept.items
               );
-              const currentAnswer = await prompts(conceptQuestion);
+              const currentAnswer = await prompts(conceptQuestion, {
+                onCancel: Action.onCancel,
+              });
               childConcept = currentAnswer[conceptNames[i]];
             }
             if (answers[conceptNames[i]]) {
@@ -312,15 +320,25 @@ export class Action {
   ) {
     try {
       let content = await this.getSchemaDefinition(dependency, rootDir);
+
       if (!content) {
         content = await this.getDependencyConcepts(this.kody);
         Object.keys(content).forEach(key => {
-          if (Array.isArray(content[key])) {
-            content[key] = [];
-          }
+          content[key] = [];
         });
       }
       content[concept] = [data];
+      // Ask if the user want to overwrite rootDir
+      const question = {
+        type: 'autocomplete',
+        name: 'value',
+        description: 'Enter the root directory',
+        message: `What is the root directory?`,
+        initial: rootDir,
+        choices: [rootDir],
+      };
+      const { value } = await prompts(question, { onCancel: Action.onCancel });
+      content.rootDir = value;
       let path, currentKody;
       const kodyName = dependency.replace('-kodyfire', '');
       if (fs.existsSync(join(process.cwd(), 'node_modules', dependency))) {
@@ -343,7 +361,7 @@ export class Action {
       const m = await import(path);
       const kody: IKody = new m.Kody(currentKody);
 
-      // generate artifacts | execute action
+      // generate artifacts | execute actions
       // @ts-ignore
       const output = kody.generate(content);
     } catch (error: any) {
