@@ -5,7 +5,7 @@ import { fs } from 'zx';
 import { Action as InitAction } from '../init/action';
 const prompts = require('prompts');
 const boxen = require('boxen');
-
+const dotenv = require('envfile');
 export class Action {
   static kody: any;
   static concept: any;
@@ -72,7 +72,7 @@ export class Action {
           const { kody } = await prompts(kodyQuestion, {
             onCancel: Action.onCancel,
           });
-          console.log(kody);
+
           this.kody = kody;
         }
         if (conceptName) this.concept = conceptName;
@@ -312,6 +312,67 @@ export class Action {
       this.displayMessage(error.message);
     }
   }
+  static async readEnvFile(rootDir: string = process.cwd()) {
+    try {
+      const envFile = join(rootDir, '.env');
+      if (fs.existsSync(envFile)) {
+        const envContent = fs.readFileSync(envFile, 'utf8');
+        const env = dotenv.parse(envContent);
+        return env;
+      }
+    } catch (error: any) {
+      this.displayMessage(error.message);
+    }
+    return false;
+  }
+
+  static async createEnvFile(rootDir: string = process.cwd()) {
+    try {
+      const envFile = join(rootDir, '.env');
+      if (!fs.existsSync(envFile)) {
+        fs.writeFileSync(envFile, '');
+      }
+    } catch (error: any) {
+      this.displayMessage(error.message);
+    }
+  }
+
+  static async addEnvVariable(
+    key: string,
+    value: string,
+    rootDir: string = process.cwd()
+  ) {
+    try {
+      const envFile = join(rootDir, '.env');
+      if (!fs.existsSync(envFile)) {
+        await Action.createEnvFile(rootDir);
+      }
+      const envContent = fs.readFileSync(envFile, 'utf8');
+      const env = dotenv.parse(envContent);
+      env[key] = value;
+      const newEnvContent = Object.keys(env)
+        .map((key: string) => `${key}=${env[key]}`)
+        .join('\n');
+      fs.writeFileSync(envFile, newEnvContent);
+    } catch (error: any) {
+      this.displayMessage(error.message);
+    }
+  }
+
+  static getEnvVariable(key: string, rootDir: string = process.cwd()) {
+    try {
+      const envFile = join(rootDir, '.env');
+      if (fs.existsSync(envFile)) {
+        const envContent = fs.readFileSync(envFile, 'utf8');
+        const env = dotenv.parse(envContent);
+        return env[key];
+      }
+    } catch (error: any) {
+      this.displayMessage(error.message);
+    }
+    return false;
+  }
+
   static async generateConcept(
     dependency: string,
     concept: string,
@@ -319,6 +380,8 @@ export class Action {
     rootDir: string = process.cwd()
   ) {
     try {
+      let path, currentKody;
+      const kodyName = dependency.replace('-kodyfire', '');
       let content = await this.getSchemaDefinition(dependency, rootDir);
 
       if (!content) {
@@ -328,19 +391,28 @@ export class Action {
         });
       }
       content[concept] = [data];
-      // Ask if the user want to overwrite rootDir
-      const question = {
-        type: 'autocomplete',
-        name: 'value',
-        description: 'Enter the root directory',
-        message: `What is the root directory?`,
-        initial: rootDir,
-        choices: [rootDir],
-      };
-      const { value } = await prompts(question, { onCancel: Action.onCancel });
-      content.rootDir = value;
-      let path, currentKody;
-      const kodyName = dependency.replace('-kodyfire', '');
+      const rootDirEnvVar = this.getEnvVariable(
+        `${kodyName.toUpperCase()}_ROOT_DIR`
+      );
+
+      if (rootDirEnvVar) {
+        content.rootDir = rootDirEnvVar;
+      } else {
+        // Ask if the user want to overwrite rootDir
+        const question = {
+          type: 'autocomplete',
+          name: 'value',
+          description: 'Enter the root directory',
+          message: `What is the root directory?`,
+          initial: rootDir,
+          choices: [{ title: rootDir }],
+        };
+        const { value } = await prompts(question, {
+          onCancel: Action.onCancel,
+        });
+        Action.addEnvVariable(`${kodyName.toUpperCase()}_ROOT_DIR`, value);
+        content.rootDir = value;
+      }
       if (fs.existsSync(join(process.cwd(), 'node_modules', dependency))) {
         path = join(process.cwd(), 'node_modules', dependency);
         const packages = await Package.getInstalledKodies();

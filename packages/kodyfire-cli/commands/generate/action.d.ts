@@ -34,6 +34,10 @@ export declare class Action {
     static execute(args: any): Promise<void>;
     static getConceptAttributes(schema: any): Promise<any>;
     static addConcept(dependency: string, concept: string, data: any, rootDir?: string): Promise<void>;
+    static readEnvFile(rootDir?: string): Promise<any>;
+    static createEnvFile(rootDir?: string): Promise<void>;
+    static addEnvVariable(key: string, value: string, rootDir?: string): Promise<void>;
+    static getEnvVariable(key: string, rootDir?: string): any;
     static generateConcept(dependency: string, concept: string, data: any, rootDir?: string): Promise<void>;
     static addConceptProperty(dependency: string, concept: string, property: string, data: any, rootDir?: string): Promise<void>;
     static getSchemaDefinition(dependency: string, rootDir?: string): any;

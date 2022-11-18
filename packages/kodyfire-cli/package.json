@@ -50,6 +50,7 @@
     "chalk": "^4.1.2",
     "cli-table": "^0.3.6",
     "commander": "^8.2.0",
+    "envfile": "^6.18.0",
     "events": "^3.3.0",
     "fs-extra": "^10.0.0",
     "glob": "^7.2.0",
