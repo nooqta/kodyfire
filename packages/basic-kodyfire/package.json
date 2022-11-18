@@ -1,6 +1,6 @@
 {
   "name": "basic-kodyfire",
-  "version": "0.0.166",
+  "version": "0.0.167",
   "description": "Kodyfire general purpose Generator",
   "main": "build/index.js",
   "scripts": {
@@ -28,7 +28,7 @@
     "fs-extra": "^10.0.0",
     "handlebars": "^4.7.7",
     "handlebars-delimiters": "^1.0.0",
-    "kodyfire-core": "^0.0.166",
+    "kodyfire-core": "^0.0.167",
     "moment": "^2.29.1",
     "pluralize": "^8.0.0",
     "typescript": "~4.5.5"
