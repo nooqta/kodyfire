@@ -282,7 +282,7 @@ class Action {
         return false;
       }
       const question = {
-        type: 'select',
+        type: conceptNames.length < 4 ? 'select' : 'autocomplete',
         name: 'concept',
         message: `Select the concept you want to add?`,
         choices: conceptNames.map(concept => ({
@@ -373,13 +373,18 @@ class Action {
       }
     });
   }
-  static generateConcept(dependency, concept, data, _rootDir = process.cwd()) {
+  static generateConcept(dependency, concept, data, rootDir = process.cwd()) {
     return __awaiter(this, void 0, void 0, function* () {
       try {
-        const content = yield this.getDependencyConcepts(this.kody);
-        Object.keys(content).forEach(key => {
-          content[key] = [];
-        });
+        let content = yield this.getSchemaDefinition(dependency, rootDir);
+        if (!content) {
+          content = yield this.getDependencyConcepts(this.kody);
+          Object.keys(content).forEach(key => {
+            if (Array.isArray(content[key])) {
+              content[key] = [];
+            }
+          });
+        }
         content[concept] = [data];
         let path, currentKody;
         const kodyName = dependency.replace('-kodyfire', '');

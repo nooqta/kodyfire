@@ -114,14 +114,16 @@ export class Action {
           `${conceptNames[i]}`,
           true
         );
-        if (question) {
+        if (typeof question.value != 'undefined') {
+          answers[conceptNames[i]] = question.value;
+        } else if (question) {
           const answer = await prompts(question);
           answers[conceptNames[i]] = answer.value;
         }
       }
       if (
-        currentConcept.type === 'array' &&
-        currentConcept.items?.type === 'object'
+        currentConcept.type === 'array'
+        // && currentConcept.items?.type === 'object'
       ) {
         const question = {
           type: 'confirm',
@@ -133,9 +135,19 @@ export class Action {
         if (value) {
           let addMore = true;
           while (addMore) {
-            const childConcept = await this.getPropertiesAnswers(
-              currentConcept.items.properties
-            );
+            let childConcept;
+            if (currentConcept.items?.type !== 'string') {
+              childConcept = await this.getPropertiesAnswers(
+                currentConcept.items.properties
+              );
+            } else {
+              const conceptQuestion = await this.conceptToQuestion(
+                conceptNames[i],
+                currentConcept.items
+              );
+              const currentAnswer = await prompts(conceptQuestion);
+              childConcept = currentAnswer[conceptNames[i]];
+            }
             if (answers[conceptNames[i]]) {
               answers[conceptNames[i]].push(childConcept);
             } else {
@@ -164,7 +176,7 @@ export class Action {
       return false;
     }
     const question = {
-      type: 'select',
+      type: conceptNames.length < 4 ? 'select' : 'autocomplete',
       name: 'concept',
       message: `Select the concept you want to add?`,
       choices: conceptNames.map((concept: string) => ({
@@ -262,12 +274,14 @@ export class Action {
     }
   }
   static getSchemaDefinition(dependency: string, rootDir = process.cwd()) {
-    return JSON.parse(
-      fs.readFileSync(
-        join(rootDir, `kody-${dependency.replace('-kodyfire', '')}.json`),
-        'utf8'
-      )
+    const path = join(
+      rootDir,
+      `kody-${dependency.replace('-kodyfire', '')}.json`
     );
+    if (!fs.existsSync(path)) {
+      return false;
+    }
+    return JSON.parse(fs.readFileSync(path, 'utf8'));
   }
   static async conceptToQuestion(
     name: string,
@@ -286,11 +300,11 @@ export class Action {
   ): Promise<any | void> {
     message = concept.description || message;
     label = label || name;
-
     if (typeof concept.enum !== 'undefined') {
+      if (concept.enum.length == 1) return { value: concept.enum[0] }; // if only one option, return it as default answer
       const choices = concept.enum.map((c: any) => ({ title: c, value: c }));
       return {
-        type: 'select',
+        type: choices.length < 5 ? 'select' : 'autocomplete',
         name: useValueAsName ? 'value' : name,
         message: message || `Select the value for ${label}?`,
         ...(concept.description && { description: concept.description }),
@@ -312,6 +326,15 @@ export class Action {
     if (concept.type === 'string') {
       return {
         type: 'text',
+        name: useValueAsName ? 'value' : name,
+        ...(concept.default && { initial: concept.default }),
+        ...(concept.description && { description: concept.description }),
+        message: message || `What is the value for ${label}?`,
+      };
+    }
+    if (concept.type === 'number') {
+      return {
+        type: 'number',
         name: useValueAsName ? 'value' : name,
         ...(concept.default && { initial: concept.default }),
         ...(concept.description && { description: concept.description }),

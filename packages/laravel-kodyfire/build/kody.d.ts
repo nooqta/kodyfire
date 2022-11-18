@@ -105,9 +105,7 @@ export declare class Kody extends BaseKody implements IKody {
                                 type: string;
                                 properties: {
                                     model: {
-                                        anyOf: {
-                                            type: string;
-                                        }[];
+                                        type: string;
                                     };
                                     column: {
                                         type: string;
@@ -147,9 +145,7 @@ export declare class Kody extends BaseKody implements IKody {
                     type: string;
                     properties: {
                         model: {
-                            anyOf: {
-                                type: string;
-                            }[];
+                            type: string;
                         };
                         namespace: {
                             type: string;
@@ -315,9 +311,7 @@ export declare class Kody extends BaseKody implements IKody {
                     type: string;
                     properties: {
                         model: {
-                            anyOf: {
-                                type: string;
-                            }[];
+                            type: string;
                         };
                         namespace: {
                             type: string;
@@ -352,9 +346,7 @@ export declare class Kody extends BaseKody implements IKody {
                     type: string;
                     properties: {
                         model: {
-                            anyOf: {
-                                type: string;
-                            }[];
+                            type: string;
                         };
                         namespace: {
                             type: string;
@@ -373,9 +365,7 @@ export declare class Kody extends BaseKody implements IKody {
                     type: string;
                     properties: {
                         model: {
-                            anyOf: {
-                                type: string;
-                            }[];
+                            type: string;
                         };
                         template: {
                             enum: string[];

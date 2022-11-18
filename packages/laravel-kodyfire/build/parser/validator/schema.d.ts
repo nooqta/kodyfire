@@ -13,17 +13,13 @@ export declare const action: {
     };
 };
 export declare const model: {
-    anyOf: {
-        type: string;
-    }[];
+    type: string;
 };
 export declare const controller: {
     type: string;
     properties: {
         model: {
-            anyOf: {
-                type: string;
-            }[];
+            type: string;
         };
         namespace: {
             type: string;
@@ -222,9 +218,7 @@ export declare const baseModel: {
                 type: string;
                 properties: {
                     model: {
-                        anyOf: {
-                            type: string;
-                        }[];
+                        type: string;
                     };
                     column: {
                         type: string;
@@ -263,9 +257,7 @@ export declare const controllerArray: {
         type: string;
         properties: {
             model: {
-                anyOf: {
-                    type: string;
-                }[];
+                type: string;
             };
             namespace: {
                 type: string;
@@ -380,9 +372,7 @@ export declare const request: {
     type: string;
     properties: {
         model: {
-            anyOf: {
-                type: string;
-            }[];
+            type: string;
         };
         namespace: {
             type: string;
@@ -404,9 +394,7 @@ export declare const requestArray: {
         type: string;
         properties: {
             model: {
-                anyOf: {
-                    type: string;
-                }[];
+                type: string;
             };
             namespace: {
                 type: string;
@@ -475,9 +463,7 @@ export declare const repository: {
     type: string;
     properties: {
         model: {
-            anyOf: {
-                type: string;
-            }[];
+            type: string;
         };
         namespace: {
             type: string;
@@ -493,9 +479,7 @@ export declare const migration: {
     type: string;
     properties: {
         model: {
-            anyOf: {
-                type: string;
-            }[];
+            type: string;
         };
         template: {
             enum: string[];
@@ -634,9 +618,7 @@ export declare const repositoryArray: {
         type: string;
         properties: {
             model: {
-                anyOf: {
-                    type: string;
-                }[];
+                type: string;
             };
             namespace: {
                 type: string;
@@ -655,9 +637,7 @@ export declare const migrationArray: {
         type: string;
         properties: {
             model: {
-                anyOf: {
-                    type: string;
-                }[];
+                type: string;
             };
             template: {
                 enum: string[];
@@ -782,9 +762,7 @@ export declare const modelArray: {
                     type: string;
                     properties: {
                         model: {
-                            anyOf: {
-                                type: string;
-                            }[];
+                            type: string;
                         };
                         column: {
                             type: string;
@@ -1112,9 +1090,7 @@ export declare const schema: {
                             type: string;
                             properties: {
                                 model: {
-                                    anyOf: {
-                                        type: string;
-                                    }[];
+                                    type: string;
                                 };
                                 column: {
                                     type: string;
@@ -1154,9 +1130,7 @@ export declare const schema: {
                 type: string;
                 properties: {
                     model: {
-                        anyOf: {
-                            type: string;
-                        }[];
+                        type: string;
                     };
                     namespace: {
                         type: string;
@@ -1322,9 +1296,7 @@ export declare const schema: {
                 type: string;
                 properties: {
                     model: {
-                        anyOf: {
-                            type: string;
-                        }[];
+                        type: string;
                     };
                     namespace: {
                         type: string;
@@ -1359,9 +1331,7 @@ export declare const schema: {
                 type: string;
                 properties: {
                     model: {
-                        anyOf: {
-                            type: string;
-                        }[];
+                        type: string;
                     };
                     namespace: {
                         type: string;
@@ -1380,9 +1350,7 @@ export declare const schema: {
                 type: string;
                 properties: {
                     model: {
-                        anyOf: {
-                            type: string;
-                        }[];
+                        type: string;
                     };
                     template: {
                         enum: string[];

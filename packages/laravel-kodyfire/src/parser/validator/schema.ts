@@ -6,16 +6,7 @@ export const action = {
     midleware: { type: 'string' },
   },
 };
-export const model = {
-  anyOf: [
-    {
-      type: 'string',
-    },
-    {
-      type: 'array',
-    },
-  ],
-};
+export const model = { type: 'string' };
 export const controller = {
   type: 'object',
   properties: {

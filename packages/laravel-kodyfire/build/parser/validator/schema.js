@@ -9,16 +9,7 @@ exports.action = {
         midleware: { type: 'string' },
     },
 };
-exports.model = {
-    anyOf: [
-        {
-            type: 'string',
-        },
-        {
-            type: 'array',
-        },
-    ],
-};
+exports.model = { type: 'string' };
 exports.controller = {
     type: 'object',
     properties: {
@@ -110,7 +101,7 @@ exports.controller = {
 exports.baseModel = {
     type: 'object',
     properties: {
-        name: { type: 'string', description: 'The model name', },
+        name: { type: 'string', description: 'The model name' },
         namespace: { type: 'string', default: 'App\\Models' },
         isMorph: { type: 'boolean', default: false },
         template: {

@@ -48,7 +48,7 @@ export declare class Action {
     dependency: string,
     concept: string,
     data: any,
-    _rootDir?: string
+    rootDir?: string
   ): Promise<void>;
   static addConceptProperty(
     dependency: string,

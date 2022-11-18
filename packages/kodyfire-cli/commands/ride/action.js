@@ -153,16 +153,16 @@ class Action {
             `${conceptNames[i]}`,
             true
           );
-          if (question) {
+          if (typeof question.value != 'undefined') {
+            answers[conceptNames[i]] = question.value;
+          } else if (question) {
             const answer = yield prompts(question);
             answers[conceptNames[i]] = answer.value;
           }
         }
         if (
-          currentConcept.type === 'array' &&
-          ((_b = currentConcept.items) === null || _b === void 0
-            ? void 0
-            : _b.type) === 'object'
+          currentConcept.type === 'array'
+          // && currentConcept.items?.type === 'object'
         ) {
           const question = {
             type: 'confirm',
@@ -174,9 +174,23 @@ class Action {
           if (value) {
             let addMore = true;
             while (addMore) {
-              const childConcept = yield this.getPropertiesAnswers(
-                currentConcept.items.properties
-              );
+              let childConcept;
+              if (
+                ((_b = currentConcept.items) === null || _b === void 0
+                  ? void 0
+                  : _b.type) !== 'string'
+              ) {
+                childConcept = yield this.getPropertiesAnswers(
+                  currentConcept.items.properties
+                );
+              } else {
+                const conceptQuestion = yield this.conceptToQuestion(
+                  conceptNames[i],
+                  currentConcept.items
+                );
+                const currentAnswer = yield prompts(conceptQuestion);
+                childConcept = currentAnswer[conceptNames[i]];
+              }
               if (answers[conceptNames[i]]) {
                 answers[conceptNames[i]].push(childConcept);
               } else {
@@ -207,7 +221,7 @@ class Action {
         return false;
       }
       const question = {
-        type: 'select',
+        type: conceptNames.length < 4 ? 'select' : 'autocomplete',
         name: 'concept',
         message: `Select the concept you want to add?`,
         choices: conceptNames.map(concept => ({
@@ -314,15 +328,14 @@ class Action {
     });
   }
   static getSchemaDefinition(dependency, rootDir = process.cwd()) {
-    return JSON.parse(
-      zx_1.fs.readFileSync(
-        (0, path_1.join)(
-          rootDir,
-          `kody-${dependency.replace('-kodyfire', '')}.json`
-        ),
-        'utf8'
-      )
+    const path = (0, path_1.join)(
+      rootDir,
+      `kody-${dependency.replace('-kodyfire', '')}.json`
     );
+    if (!zx_1.fs.existsSync(path)) {
+      return false;
+    }
+    return JSON.parse(zx_1.fs.readFileSync(path, 'utf8'));
   }
   static conceptToQuestion(
     name,
@@ -337,11 +350,12 @@ class Action {
       message = concept.description || message;
       label = label || name;
       if (typeof concept.enum !== 'undefined') {
+        if (concept.enum.length == 1) return { value: concept.enum[0] }; // if only one option, return it as default answer
         const choices = concept.enum.map(c => ({ title: c, value: c }));
         return Object.assign(
           Object.assign(
             {
-              type: 'select',
+              type: choices.length < 5 ? 'select' : 'autocomplete',
               name: useValueAsName ? 'value' : name,
               message: message || `Select the value for ${label}?`,
             },
@@ -374,6 +388,18 @@ class Action {
           Object.assign(
             Object.assign(
               { type: 'text', name: useValueAsName ? 'value' : name },
+              concept.default && { initial: concept.default }
+            ),
+            concept.description && { description: concept.description }
+          ),
+          { message: message || `What is the value for ${label}?` }
+        );
+      }
+      if (concept.type === 'number') {
+        return Object.assign(
+          Object.assign(
+            Object.assign(
+              { type: 'number', name: useValueAsName ? 'value' : name },
               concept.default && { initial: concept.default }
             ),
             concept.description && { description: concept.description }
