@@ -53,6 +53,13 @@ class Technology {
             console.log(error, 'error');
         }
     }
+    initDatabase() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { Database } = require('./database');
+            this.db = new Database(this.params);
+            yield this.db.connect();
+        });
+    }
     initConcepts() {
         // add dynamic property for technology
         for (const concept of this.assets.concepts) {

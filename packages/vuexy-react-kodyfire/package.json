@@ -1,19 +1,18 @@
 {
-  "name": "<%= dasherize name %>-kodyfire",
+  "name": "vuexy-react-kodyfire",
   "version": "0.0.1",
-  "description": "Scaffold a <%= dasherize name %> kodyfire",
+  "description": "Generate x with vuexy-react kodyfire",
   "main": "build/index.js",
-  
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p tsconfig.json",
     "postbuild": "npm run copy-files",
-    "copy-files": "cp -R src/concepts/templates build/concepts",
+    "copy-files": "cp -R src/templates build",
     "watch": "tsc -w"
   },
   "kodyfire": {
-    "id": "<%= dasherize name %>",
-    "type": "<%= technology %>",
+    "id": "vuexy-react",
+    "type": "react",
     "version": "0.1"
   },
   "author": "NOQTA",
@@ -22,6 +21,7 @@
     "@angular-devkit/core": "^12.2.3",
     "@angular-devkit/schematics": "^12.2.3",
     "ajv": "^8.6.3",
+    "basic-kodyfire": "^0.0.170",
     "fs-extra": "^10.0.0",
     "handlebars": "^4.7.7",
     "handlebars-delimiters": "^1.0.0",

@@ -10,7 +10,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CustomConcept = exports.Lang = exports.Test = exports.Databag = exports.Dependency = exports.Auth = exports.DatabaseSeed = exports.Seed = exports.Factory = exports.Web = exports.Api = exports.Migration = exports.Repository = exports.Request = exports.Model = exports.Controller = exports.Kernel = exports.Concept = exports.Technology = exports.schema = exports.Kody = void 0;
+exports.Collection = exports.Resource = exports.CustomConcept = exports.Lang = exports.Test = exports.Databag = exports.Dependency = exports.Auth = exports.DatabaseSeed = exports.Seed = exports.Factory = exports.Web = exports.Api = exports.Migration = exports.Repository = exports.Request = exports.Model = exports.Controller = exports.Kernel = exports.Concept = exports.Database = exports.Technology = exports.schema = exports.Kody = void 0;
 var kody_1 = require("./kody");
 Object.defineProperty(exports, "Kody", { enumerable: true, get: function () { return kody_1.Kody; } });
 __exportStar(require("./parser"), exports);
@@ -19,6 +19,8 @@ var schema_1 = require("./parser/validator/schema");
 Object.defineProperty(exports, "schema", { enumerable: true, get: function () { return schema_1.schema; } });
 var technology_1 = require("./technology");
 Object.defineProperty(exports, "Technology", { enumerable: true, get: function () { return technology_1.Technology; } });
+var database_1 = require("./database");
+Object.defineProperty(exports, "Database", { enumerable: true, get: function () { return database_1.Database; } });
 var concept_1 = require("./concepts/concept");
 Object.defineProperty(exports, "Concept", { enumerable: true, get: function () { return concept_1.Concept; } });
 var kernel_1 = require("./concepts/kernel");
@@ -55,4 +57,8 @@ var lang_1 = require("./concepts/lang");
 Object.defineProperty(exports, "Lang", { enumerable: true, get: function () { return lang_1.Lang; } });
 var customConcept_1 = require("./concepts/customConcept");
 Object.defineProperty(exports, "CustomConcept", { enumerable: true, get: function () { return customConcept_1.CustomConcept; } });
+var resource_1 = require("./concepts/resource");
+Object.defineProperty(exports, "Resource", { enumerable: true, get: function () { return resource_1.Resource; } });
+var collection_1 = require("./concepts/collection");
+Object.defineProperty(exports, "Collection", { enumerable: true, get: function () { return collection_1.Collection; } });
 //# sourceMappingURL=index.js.map

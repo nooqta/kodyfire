@@ -35,6 +35,24 @@
       }
     },
     {
+      "name": "collection",
+      "source": "template",
+      "outputDir": "app/Http/Resources",
+      "template": {
+        "path": "templates/",
+        "options": ["collection.php.template"]
+      }
+    },
+    {
+      "name": "resource",
+      "source": "template",
+      "outputDir": "app/Http/Resources",
+      "template": {
+        "path": "templates/",
+        "options": ["resource.php.template"]
+      }
+    },
+    {
       "name": "kernel",
       "defaultAction": "create",
       "source": "template",

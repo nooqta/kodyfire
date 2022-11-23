@@ -26,7 +26,7 @@ export class Controller implements IConcept {
   setModel(_data: any) {
     this.model = this.technology.input.model.find(
       (m: any) => m.name.toLowerCase() == _data.model.toLowerCase()
-    );
+    ) || { name: _data.model };
     this.model.controller = _data;
   }
   async generate(_data: any) {
@@ -55,7 +55,7 @@ export class Controller implements IConcept {
   }
   getList(model: any): string {
     let fieldsToLoad = model.load ? `${model.load}` : '';
-    if (model.relationships.length > 0) {
+    if (model.relationships && model.relationships.length > 0) {
       fieldsToLoad = [
         fieldsToLoad,
         ...model.relationships
@@ -333,7 +333,10 @@ public function ${action.name}(Request  $request) {
 
   deleteAttachments(model: any): string {
     let attachmentsToDelete = '';
-    if (model.fields.filter((e: any) => e.faker_type == 'file').length > 0) {
+    if (
+      model.fields &&
+      model.fields.filter((e: any) => e.faker_type == 'file').length > 0
+    ) {
       model.fields.forEach((element: any) => {
         if (element.faker_type == 'file') {
           attachmentsToDelete += `
@@ -351,7 +354,10 @@ public function ${action.name}(Request  $request) {
 
   deleteManyAttachments(model: any): string {
     let attachmentsToDelete = '';
-    if (model.fields.filter((e: any) => e.faker_type == 'file').length > 0) {
+    if (
+      model.fields &&
+      model.fields.filter((e: any) => e.faker_type == 'file').length > 0
+    ) {
       attachmentsToDelete = `
           foreach ($ids as $id) {
             $${model.name.toLowerCase()} = ${model.name}::find($id);

@@ -15,6 +15,7 @@ export class Technology implements ITechnology {
   actions: ActionList;
   input?: any;
   params: any;
+  db: any;
   constructor(params: any, _assets = assets) {
     try {
       this.id = params.id;
@@ -30,6 +31,11 @@ export class Technology implements ITechnology {
     } catch (error) {
       console.log(error, 'error');
     }
+  }
+  async initDatabase() {
+    const { Database } = require('./database');
+    this.db = new Database(this.params);
+    await this.db.connect();
   }
 
   public initConcepts() {

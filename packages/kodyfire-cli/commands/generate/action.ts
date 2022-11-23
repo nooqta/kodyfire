@@ -400,12 +400,11 @@ export class Action {
       } else {
         // Ask if the user want to overwrite rootDir
         const question = {
-          type: 'autocomplete',
+          type: 'text',
           name: 'value',
           description: 'Enter the root directory',
           message: `What is the root directory?`,
           initial: rootDir,
-          choices: [{ title: rootDir }],
         };
         const { value } = await prompts(question, {
           onCancel: Action.onCancel,
@@ -431,11 +430,23 @@ export class Action {
       }
 
       const m = await import(path);
+      // Add env variables to current kody
+      const env = await this.readEnvFile(content.rootDir);
+      if (env) {
+        currentKody.env = env;
+      }
       const kody: IKody = new m.Kody(currentKody);
-
+      // Run a simple MySQL query
+      // @ts-ignore
+      await kody.technology.initDatabase();
+      // @ts-ignore
+      const { connection: db } = kody.technology.db;
+      const [rows] = await db.query('select * from users');
+      db.end();
+      console.log(rows);
       // generate artifacts | execute actions
       // @ts-ignore
-      const output = kody.generate(content);
+      const output = await kody.generate(content);
     } catch (error: any) {
       this.displayMessage(error.message);
     }

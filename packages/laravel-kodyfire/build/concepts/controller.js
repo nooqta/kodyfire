@@ -26,7 +26,7 @@ class Controller {
         this.technology = technology;
     }
     setModel(_data) {
-        this.model = this.technology.input.model.find((m) => m.name.toLowerCase() == _data.model.toLowerCase());
+        this.model = this.technology.input.model.find((m) => m.name.toLowerCase() == _data.model.toLowerCase()) || { name: _data.model };
         this.model.controller = _data;
     }
     generate(_data) {
@@ -49,7 +49,7 @@ class Controller {
     }
     getList(model) {
         let fieldsToLoad = model.load ? `${model.load}` : '';
-        if (model.relationships.length > 0) {
+        if (model.relationships && model.relationships.length > 0) {
             fieldsToLoad = [
                 fieldsToLoad,
                 ...model.relationships
@@ -289,7 +289,7 @@ public function ${action.name}(Request  $request) {
     }
     deleteAttachments(model) {
         let attachmentsToDelete = '';
-        if (model.fields.filter((e) => e.faker_type == 'file').length > 0) {
+        if (model.fields && model.fields.filter((e) => e.faker_type == 'file').length > 0) {
             model.fields.forEach((element) => {
                 if (element.faker_type == 'file') {
                     attachmentsToDelete += `
@@ -304,7 +304,7 @@ public function ${action.name}(Request  $request) {
     }
     deleteManyAttachments(model) {
         let attachmentsToDelete = '';
-        if (model.fields.filter((e) => e.faker_type == 'file').length > 0) {
+        if (model.fields && model.fields.filter((e) => e.faker_type == 'file').length > 0) {
             attachmentsToDelete = `
           foreach ($ids as $id) {
             $${model.name.toLowerCase()} = ${model.name}::find($id);

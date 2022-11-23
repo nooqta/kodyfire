@@ -13,24 +13,10 @@ jsconfig.json
 node_modules/
 npm-debug.log*
 yarn-error.log*
-dist
-kodyfire.code-workspace
+
 # Mac OSX Finder files.
 **/.DS_Store
 .DS_Store
+
 #npm
 .npmrc
-#api-extractor.json
-temp/
-target/
-
-#lerna
-/.changelog
-
-#kodyfire
-.kody
-dist
-.env
-lerna-debug.log
-kody-*.json
-*.code-workspace
