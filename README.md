@@ -255,6 +255,33 @@ Add the required kodyfire metadata to your package.json
 
 Intialize your project as a git repository and push to a public Github repo
 
+To do so, kindly follow these steps:-
+
+1. Intitialize a new Github repository and make it public.
+2. Open your project root folder locally from terminal and run the following commands:-
+
+```bash
+git init
+```
+
+```bash
+git add .
+```
+
+```bash
+git commit -m "Initial Commit!"
+```
+
+3. Link your project to your Github repository.
+
+```bash
+git remote add origin <copied URL>
+```
+
+```bash
+git push origin main
+```
+
 ### Publish to npm
 
 Once you are satisfied with your kody and you would to like to share it with the community. Run the following command.
