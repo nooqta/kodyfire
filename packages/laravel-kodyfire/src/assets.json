@@ -53,56 +53,6 @@
       }
     },
     {
-      "name": "kernel",
-      "defaultAction": "create",
-      "source": "template",
-      "outputDir": "app/Http",
-      "template": {
-        "path": "templates/",
-        "options": ["kernel.php.template"]
-      }
-    },
-    {
-      "name": "repository",
-      "defaultAction": "create",
-      "source": "template",
-      "outputDir": "app/Repositories",
-      "template": {
-        "path": "templates/",
-        "options": ["repository.php.template"]
-      }
-    },
-    {
-      "name": "migration",
-      "defaultAction": "create",
-      "source": "template",
-      "outputDir": "database/migrations",
-      "template": {
-        "path": "templates/",
-        "options": ["repository.php.template"]
-      }
-    },
-    {
-      "name": "api",
-      "defaultAction": "overwrite",
-      "source": "template",
-      "outputDir": "routes",
-      "template": {
-        "path": "templates/",
-        "options": ["api.php.template"]
-      }
-    },
-    {
-      "name": "web",
-      "defaultAction": "overwrite",
-      "source": "template",
-      "outputDir": "routes",
-      "template": {
-        "path": "templates/",
-        "options": ["web.php.template"]
-      }
-    },
-    {
       "name": "factory",
       "defaultAction": "create",
       "source": "template",
@@ -130,6 +80,56 @@
       "template": {
         "path": "templates/",
         "options": ["lang.php.template"]
+      }
+    },
+    {
+      "name": "repository",
+      "defaultAction": "create",
+      "source": "template",
+      "outputDir": "app/Repositories",
+      "template": {
+        "path": "templates/",
+        "options": ["repository.php.template"]
+      }
+    },
+    {
+      "name": "migration",
+      "defaultAction": "create",
+      "source": "template",
+      "outputDir": "database/migrations",
+      "template": {
+        "path": "templates/",
+        "options": ["repository.php.template"]
+      }
+    },
+    {
+      "name": "kernel",
+      "defaultAction": "create",
+      "source": "template",
+      "outputDir": "app/Http",
+      "template": {
+        "path": "templates/",
+        "options": ["kernel.php.template"]
+      }
+    },
+    {
+      "name": "api",
+      "defaultAction": "overwrite",
+      "source": "template",
+      "outputDir": "routes",
+      "template": {
+        "path": "templates/",
+        "options": ["api.php.template"]
+      }
+    },
+    {
+      "name": "web",
+      "defaultAction": "overwrite",
+      "source": "template",
+      "outputDir": "routes",
+      "template": {
+        "path": "templates/",
+        "options": ["web.php.template"]
       }
     },
     {

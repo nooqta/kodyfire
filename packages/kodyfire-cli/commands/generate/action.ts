@@ -1,4 +1,5 @@
 // import { $ } from "zx";
+import chalk from 'chalk';
 import { capitalize, IKody, Package } from 'kodyfire-core';
 import { join } from 'path';
 import { fs } from 'zx';
@@ -55,11 +56,25 @@ export class Action {
     persist?: any;
     kody?: any;
     concept?: any;
+    name?: any;
+    includes?: any;
   }): Promise<void | any> {
-    let { addMore } = _args;
-    const { persist, kody: kodyName, concept: conceptName } = _args;
+    let { addMore, includes } = _args;
+    const { persist, kody: _kodyName, concept: _conceptName } = _args;
+    let { name } = _args;
     (async () => {
       do {
+        // @todo:move this logic to the index.ts
+        // We check if a colon is present in the kody name
+        // if so, we assume the user is trying to generate a concept
+        // from a specific kody package
+        let kodyName, conceptName;
+        if (_kodyName && _kodyName.includes(':')) {
+          // We update name as it has changed its position
+          name = _conceptName;
+          [kodyName, conceptName] = _kodyName.split(':');
+        }
+        // end @todo: move this logic to the index.ts
         if (kodyName) this.kody = `${kodyName}-kodyfire`;
         if (!this.kody) {
           const kodyQuestion = await this.getKodyQuestion();
@@ -85,12 +100,43 @@ export class Action {
         }
         if (!this.properties) {
           // set properties
-          const answers = await this.getPropertiesAnswers(currentConcept);
-
+          const answers = await this.getPropertiesAnswers(currentConcept, {
+            name,
+          });
           if (answers) {
             // @todo validate answers
             await this.generateConcept(this.kody, this.concept, answers);
             // if persist is true we save the data
+            if (includes && includes.length > 0) {
+              includes = includes.filter(
+                (include: string) => include !== this.concept
+              );
+              const concepts = await this.getDependencyConcepts(this.kody);
+              const skipped = includes.filter(
+                (include: string) => !concepts[include]
+              );
+              includes = includes.filter(
+                (include: string) => concepts[include]
+              );
+              if (skipped.length > 0) {
+                console.log(
+                  `${chalk.dim(
+                    `The following concepts were skipped: ${skipped.join(', ')}`
+                  )}`
+                );
+              }
+              await this.generateIncludes(this.kody, includes, {
+                name: answers['name'],
+              });
+            }
+            this.displayMessage(
+              chalk.green(
+                `🙌 ${chalk.bold(
+                  [conceptName, ...includes].join(', ')
+                )} ${chalk.white('created successfully')}`
+              ),
+              'green'
+            );
             if (persist) {
               await this.addConcept(this.kody, this.concept, answers);
             }
@@ -113,6 +159,20 @@ export class Action {
         }
       } while (addMore);
     })();
+  }
+  static async generateIncludes(kody: any, includes: any[], rootConcept: any) {
+    // we iterate over the includes and set the include to the current concept
+    // and the kody to the current kody
+    for (const include of includes) {
+      // eslint-disable-next-line prefer-const
+      let [conceptName, name] = include.split(':');
+      if (!name) name = rootConcept.name;
+      this.concept = conceptName ?? include;
+      const currentConcept = await this.getCurrentConcept();
+
+      const answers = await this.getPropertiesAnswers(currentConcept, { name });
+      await this.generateConcept(kody, include, answers);
+    }
   }
   private static async setConcept() {
     const conceptQuestion = await this.getConceptQuestion();
@@ -139,79 +199,88 @@ export class Action {
     return concepts[this.concept];
   }
 
-  static async getPropertiesAnswers(concept: any) {
+  static async getPropertiesAnswers(concept: any, answers: any = {}) {
     const schemaDefinition = this.getSchemaDefinition(this.kody);
     const conceptNames = Object.keys(concept || {});
-
     if (conceptNames.length == 0) {
       return [];
     }
-    const answers: any = {};
-    for (let i = 0; i < conceptNames.length; i++) {
-      const currentConcept = concept[conceptNames[i]];
-      if (
-        currentConcept.type !== 'array' &&
-        currentConcept.items?.type !== 'object'
-      ) {
-        const question = await this.conceptToQuestion(
-          conceptNames[i],
-          concept[conceptNames[i]],
-          schemaDefinition,
-          false,
-          false,
-          `${conceptNames[i]}`,
-          true
-        );
-        if (typeof question.value != 'undefined') {
-          answers[conceptNames[i]] = question.value;
-        } else if (question) {
-          const answer = await prompts(question, { onCancel: Action.onCancel });
-          answers[conceptNames[i]] = answer.value;
-        }
+    if (answers['name'] !== undefined) {
+      const props = conceptNames.filter((name: string) => name !== 'name');
+      for (let i = 0; i < props.length; i++) {
+        answers[props[i]] = concept[props[i]].default ?? '';
       }
-      if (
-        currentConcept.type === 'array'
-        // && currentConcept.items?.type === 'object'
-      ) {
-        const question = {
-          type: 'confirm',
-          name: 'value',
-          message: `Would you like to add ${conceptNames[i]}?`,
-          initial: true,
-        };
-        const { value } = await prompts(question);
-        if (value) {
-          let addMore = true;
-          while (addMore) {
-            let childConcept;
-            if (currentConcept.items?.type !== 'string') {
-              childConcept = await this.getPropertiesAnswers(
-                currentConcept.items.properties
-              );
-            } else {
-              const conceptQuestion = await this.conceptToQuestion(
-                conceptNames[i],
-                currentConcept.items
-              );
-              const currentAnswer = await prompts(conceptQuestion, {
-                onCancel: Action.onCancel,
-              });
-              childConcept = currentAnswer[conceptNames[i]];
-            }
-            if (answers[conceptNames[i]]) {
-              answers[conceptNames[i]].push(childConcept);
-            } else {
-              answers[conceptNames[i]] = [childConcept];
-            }
-            const question = {
-              type: 'confirm',
-              name: 'value',
-              message: `Would you like to add more ${conceptNames[i]}?`,
-              initial: true,
-            };
-            const { value } = await prompts(question);
-            if (!value) {
-              addMore = false;
+      return answers;
+    } else {
+      for (let i = 0; i < conceptNames.length; i++) {
+        const currentConcept = concept[conceptNames[i]];
+
+        if (
+          currentConcept.type !== 'array' &&
+          currentConcept.items?.type !== 'object'
+        ) {
+          const question = await this.conceptToQuestion(
+            conceptNames[i],
+            concept[conceptNames[i]],
+            schemaDefinition,
+            false,
+            false,
+            `${conceptNames[i]}`,
+            true
+          );
+          if (typeof question.value != 'undefined') {
+            answers[conceptNames[i]] = question.value;
+          } else if (question) {
+            const answer = await prompts(question, {
+              onCancel: Action.onCancel,
+            });
+            answers[conceptNames[i]] = answer.value;
+          }
+        }
+        if (
+          currentConcept.type === 'array'
+          // && currentConcept.items?.type === 'object'
+        ) {
+          const question = {
+            type: 'confirm',
+            name: 'value',
+            message: `Would you like to add ${conceptNames[i]}?`,
+            initial: true,
+          };
+          const { value } = await prompts(question);
+          if (value) {
+            let addMore = true;
+            while (addMore) {
+              let childConcept;
+              if (currentConcept.items?.type !== 'string') {
+                childConcept = await this.getPropertiesAnswers(
+                  currentConcept.items.properties
+                );
+              } else {
+                const conceptQuestion = await this.conceptToQuestion(
+                  conceptNames[i],
+                  currentConcept.items
+                );
+                const currentAnswer = await prompts(conceptQuestion, {
+                  onCancel: Action.onCancel,
+                });
+                childConcept = currentAnswer[conceptNames[i]];
+              }
+              if (answers[conceptNames[i]]) {
+                answers[conceptNames[i]].push(childConcept);
+              } else {
+                answers[conceptNames[i]] = [childConcept];
+              }
+              const question = {
+                type: 'confirm',
+                name: 'value',
+                message: `Would you like to add more ${conceptNames[i]}?`,
+                initial: true,
+              };
+              const { value } = await prompts(question);
+              if (!value) {
+                addMore = false;
+              }
             }
           }
         }
@@ -252,13 +321,13 @@ export class Action {
     };
     return question;
   }
-  static displayMessage(message: string) {
+  static displayMessage(message: string, borderColor = 'yellow') {
     console.log(
       boxen(message, {
         padding: 1,
         margin: 1,
         align: 'center',
-        borderColor: 'yellow',
+        borderColor,
         borderStyle: 'round',
       })
     );
@@ -307,6 +376,12 @@ export class Action {
       fs.writeFileSync(
         join(rootDir, `kody-${dependency.replace('-kodyfire', '')}.json`),
         content
+      );
+      this.displayMessage(
+        chalk.green(
+          `🙌 ${chalk.bold(concept)} ${chalk.white('created successfully')}`
+        ),
+        'green'
       );
     } catch (error: any) {
       this.displayMessage(error.message);
@@ -438,12 +513,12 @@ export class Action {
       const kody: IKody = new m.Kody(currentKody);
       // Run a simple MySQL query
       // @ts-ignore
-      await kody.technology.initDatabase();
-      // @ts-ignore
-      const { connection: db } = kody.technology.db;
-      const [rows] = await db.query('select * from users');
-      db.end();
-      console.log(rows);
+      // await kody.technology.initDatabase();
+      // // @ts-ignore
+      // const { connection: db } = kody.technology.db;
+      // const [rows] = await db.query('select * from users');
+      // db.end();
+      // console.log(rows);
       // generate artifacts | execute actions
       // @ts-ignore
       const output = await kody.generate(content);

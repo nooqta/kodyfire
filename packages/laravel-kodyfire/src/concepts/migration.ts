@@ -99,8 +99,8 @@ export class Migration extends Concept {
       return file;
     }
     const date = new Date();
-    const m = date.getMonth();
-    const d = date.getDate();
+    const m = date.getMonth().toString().padStart(2, '0');
+    const d = date.getDate().toString().padStart(2, '0');
     const y = date.getFullYear();
     const s = date.getTime();
     this.wait(1000);

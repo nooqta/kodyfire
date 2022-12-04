@@ -64,6 +64,10 @@ export class Technology implements BaseTechnology {
     // we check if the path exists
     if (fs.existsSync(templatesPath)) {
       this.params.templatesPath = templatesPath;
+      // We overwrite the assets property if assets.json exists in the .kody folder
+      if (fs.existsSync(join(templatesPath, 'assets.json'))) {
+        this.assets = require(join(templatesPath, 'assets.json'));
+      }
     }
   }
 

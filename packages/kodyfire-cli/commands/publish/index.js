@@ -68,6 +68,11 @@ const action = args =>
             yield copyDir(source, target);
           }
         }
+        //copy the assets.json file
+        yield fs.copyFile(
+          `./node_modules/${args.name}/src/assets.json`,
+          `./.kody/${args.name}/assets.json`
+        );
       } else {
         console.log('😞 Kody not found');
       }

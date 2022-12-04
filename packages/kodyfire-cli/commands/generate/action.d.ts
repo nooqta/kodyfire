@@ -11,10 +11,13 @@ export declare class Action {
         persist?: any;
         kody?: any;
         concept?: any;
+        name?: any;
+        includes?: any;
     }): Promise<void | any>;
+    static generateIncludes(kody: any, includes: any[], rootConcept: any): Promise<void>;
     private static setConcept;
     static getCurrentConcept(): Promise<any>;
-    static getPropertiesAnswers(concept: any): Promise<any>;
+    static getPropertiesAnswers(concept: any, answers?: any): Promise<any>;
     static getConceptQuestion(): Promise<false | {
         type: string;
         name: string;
@@ -30,7 +33,7 @@ export declare class Action {
         message: string;
         choices: any;
     }>;
-    static displayMessage(message: string): void;
+    static displayMessage(message: string, borderColor?: string): void;
     static execute(args: any): Promise<void>;
     static getConceptAttributes(schema: any): Promise<any>;
     static addConcept(dependency: string, concept: string, data: any, rootDir?: string): Promise<void>;

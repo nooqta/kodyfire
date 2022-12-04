@@ -34,6 +34,11 @@ const action = async (args: any) => {
           await copyDir(source, target);
         }
       }
+      //copy the assets.json file
+      await fs.copyFile(
+        `./node_modules/${args.name}/src/assets.json`,
+        `./.kody/${args.name}/assets.json`
+      );
     } else {
       console.log('😞 Kody not found');
     }
