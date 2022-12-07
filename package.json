@@ -1,6 +1,6 @@
 {
   "name": "kodyfire",
-  "version": "0.0.69",
+  "version": "0.1.0",
   "description": "Artifact generator,automation tool and a general purpose low code and nocode generator.",
   "typings": "./packages/kodyfire-cli/kodyfire.d.ts",
   "directories": {
@@ -10,9 +10,6 @@
     "watch": "lerna run watch --stream",
     "build": "lerna run build --stream",
     "changelog": "lerna-changelog",
-    "start:kodyfire-builder": "lerna run start --scope kodyfire-builder --stream",
-    "start:kodyfire-server": "lerna run dev --scope kodyfire-server  --stream",
-    "start:builder": "npm run start:kodyfire-builder & npm run start:kodyfire-server",
     "lerna:install": "lerna exec -- npm install",
     "lerna:link": "lerna link --force-local",
     "test": "lerna run test --stream",

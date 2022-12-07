@@ -69,10 +69,23 @@ const action = args =>
           }
         }
         //copy the assets.json file
-        yield fs.copyFile(
-          `./node_modules/${args.name}/src/assets.json`,
-          `./.kody/${args.name}/assets.json`
-        );
+        if (
+          (0, fs_1.existsSync)(`./node_modules/${args.name}/src/assets.json`)
+        ) {
+          yield fs.copyFile(
+            `./node_modules/${args.name}/src/assets.json`,
+            `./.kody/${args.name}/assets.json`
+          );
+        }
+        //copy the schema.js file
+        if (
+          (0, fs_1.existsSync)(`./node_modules/${args.name}/build/schema.js`)
+        ) {
+          yield fs.copyFile(
+            `./node_modules/${args.name}/src/schema.ts`,
+            `./.kody/${args.name}/schema.ts`
+          );
+        }
       } else {
         console.log('😞 Kody not found');
       }
@@ -95,7 +108,9 @@ module.exports = program => {
   program
     .command('publish')
     .requiredOption('-n,--name <kody>', 'kody name to publish')
-    .description('Publish the templates of the kody')
+    .description(
+      'Publish the templates of the kody along with the assets.json and schema.ts files'
+    )
     .action(_opt =>
       __awaiter(void 0, void 0, void 0, function* () {
         return action(_opt);

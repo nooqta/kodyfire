@@ -35,10 +35,20 @@ const action = async (args: any) => {
         }
       }
       //copy the assets.json file
-      await fs.copyFile(
-        `./node_modules/${args.name}/src/assets.json`,
-        `./.kody/${args.name}/assets.json`
-      );
+      if (existsSync(`./node_modules/${args.name}/src/assets.json`)) {
+        await fs.copyFile(
+          `./node_modules/${args.name}/src/assets.json`,
+          `./.kody/${args.name}/assets.json`
+        );
+      }
+
+      //copy the schema.js file
+      if (existsSync(`./node_modules/${args.name}/build/schema.js`)) {
+        await fs.copyFile(
+          `./node_modules/${args.name}/src/schema.ts`,
+          `./.kody/${args.name}/schema.ts`
+        );
+      }
     } else {
       console.log('😞 Kody not found');
     }
@@ -63,6 +73,8 @@ module.exports = (program: typeof Command) => {
   program
     .command('publish')
     .requiredOption('-n,--name <kody>', 'kody name to publish')
-    .description('Publish the templates of the kody')
+    .description(
+      'Publish the templates of the kody along with the assets.json and schema.ts files'
+    )
     .action(async (_opt: any) => action(_opt));
 };

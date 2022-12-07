@@ -115,9 +115,7 @@ class Action {
     return __awaiter(this, void 0, void 0, function* () {
       try {
         // We check if package.json exists
-        const kodies = fs_1.default.existsSync('package.json')
-          ? yield kodyfire_core_1.Package.getInstalledKodies()
-          : [];
+        const kodies = yield Action.getInstalledKodies();
         // @todo: use event emitter to listen to the event of the runner
         ee.on('message', text => {
           console.log(text);
@@ -143,6 +141,13 @@ class Action {
       } catch (error) {
         this.displayMessage(error.message);
       }
+    });
+  }
+  static getInstalledKodies() {
+    return __awaiter(this, void 0, void 0, function* () {
+      return fs_1.default.existsSync('package.json')
+        ? yield kodyfire_core_1.Package.getInstalledKodies()
+        : [];
     });
   }
   static displayConcepts(concepts) {

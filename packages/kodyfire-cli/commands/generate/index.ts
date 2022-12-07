@@ -19,10 +19,20 @@ module.exports = (program: typeof Command) => {
         'kody list kodyname'
       )})`
     )
+    .option('-o,--overwrites <overwrites>', 'Overwrite the schema')
     .option('-m,--multiple', 'Generate multiple artifacts')
     .option('-p,--persist', 'Persist the generated artifact')
     .action(async (kody: string, concept: string, name: string, _opt: any) => {
       _opt.includes = _opt.include ? _opt.include.split(',') : [];
+      // converts a string of the form 'key1:value1,key2:value2' to an object if the string is not empty
+      _opt.defaults = _opt.overwrites
+        ? _opt.overwrites.split(',').reduce((acc: any, item: string) => {
+            const [key, value] = item.split(':');
+            acc[key] = value;
+            return acc;
+          }, {})
+        : {};
+
       return await Action.execute({ kody, concept, name, ..._opt });
     });
 };

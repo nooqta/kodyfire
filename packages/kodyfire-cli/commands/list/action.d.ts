@@ -2,6 +2,7 @@ export declare class Action {
   static displayMessage(message: string): void;
   static displayKodies(kodies: any[]): void;
   static execute(args: { technology: any }): Promise<void>;
+  static getInstalledKodies(): Promise<string[]>;
   static displayConcepts(
     concepts: Promise<
       | {

@@ -58,9 +58,10 @@ export class Action {
     concept?: any;
     name?: any;
     includes?: any;
+    defaults?: any;
   }): Promise<void | any> {
     let { addMore, includes } = _args;
-    const { persist, kody: _kodyName, concept: _conceptName } = _args;
+    const { persist, kody: _kodyName, concept: _conceptName, defaults } = _args;
     let { name } = _args;
     (async () => {
       do {
@@ -98,10 +99,12 @@ export class Action {
           await Action.setConcept();
           currentConcept = await this.getCurrentConcept();
         }
+
         if (!this.properties) {
           // set properties
           const answers = await this.getPropertiesAnswers(currentConcept, {
             name,
+            ...defaults,
           });
           if (answers) {
             // @todo validate answers
@@ -199,8 +202,12 @@ export class Action {
     return concepts[this.concept];
   }
 
-  static async getPropertiesAnswers(concept: any, answers: any = {}) {
-    const schemaDefinition = this.getSchemaDefinition(this.kody);
+  static async getPropertiesAnswers(
+    concept: any,
+    answers: any = {},
+    kody = this.kody
+  ) {
+    const schemaDefinition = this.getSchemaDefinition(kody);
     const conceptNames = Object.keys(concept || {});
     if (conceptNames.length == 0) {
       return [];
@@ -208,7 +215,9 @@ export class Action {
     if (answers['name'] !== undefined) {
       const props = conceptNames.filter((name: string) => name !== 'name');
       for (let i = 0; i < props.length; i++) {
-        answers[props[i]] = concept[props[i]].default ?? '';
+        if (answers[props[i]] === undefined) {
+          answers[props[i]] = concept[props[i]].default ?? '';
+        }
       }
       return answers;
     } else {
@@ -460,7 +469,7 @@ export class Action {
       let content = await this.getSchemaDefinition(dependency, rootDir);
 
       if (!content) {
-        content = await this.getDependencyConcepts(this.kody);
+        content = await this.getDependencyConcepts(dependency);
         Object.keys(content).forEach(key => {
           content[key] = [];
         });

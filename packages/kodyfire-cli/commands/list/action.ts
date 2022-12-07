@@ -37,9 +37,7 @@ export class Action {
   static async execute(args: { technology: any }) {
     try {
       // We check if package.json exists
-      const kodies = fs.existsSync('package.json')
-        ? await Package.getInstalledKodies()
-        : [];
+      const kodies = await Action.getInstalledKodies();
       // @todo: use event emitter to listen to the event of the runner
       ee.on('message', (text: string) => {
         console.log(text);
@@ -63,6 +61,12 @@ export class Action {
       this.displayMessage(error.message);
     }
   }
+  static async getInstalledKodies(): Promise<string[]> {
+    return fs.existsSync('package.json')
+      ? await Package.getInstalledKodies()
+      : [];
+  }
+
   static displayConcepts(
     concepts: Promise<{ name: string; concepts: any } | undefined>
   ) {

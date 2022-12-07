@@ -34,3 +34,4 @@ dist
 lerna-debug.log
 kody-*.json
 *.code-workspace
+archive

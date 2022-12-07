@@ -244,9 +244,21 @@ class Action {
             dependency
           );
         }
-        const { schema } = yield Promise.resolve().then(() =>
+        let { schema } = yield Promise.resolve().then(() =>
           __importStar(require(kodyPath))
         );
+        // We check if there is a .kody folder in the root directory we import the schema from there. local schema overrides the global schema
+        const templatesPath = (0, path_1.join)(
+          process.cwd(),
+          '.kody',
+          dependency
+        );
+        const _schema = yield Promise.resolve().then(() =>
+          __importStar(require((0, path_1.join)(templatesPath, 'schema')))
+        );
+        if (_schema.schema) {
+          schema = _schema.schema;
+        }
         for (const prop of Object.keys(schema.properties)) {
           const attributes = yield this.getConceptAttributes(
             schema.properties[prop]
