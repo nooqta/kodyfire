@@ -2,7 +2,7 @@
 
 _The one tool that will rule them all. By developers for technical experts and non-technical experts._
 
-> Kody, a general-purpose terminal based, low-code no-code tool that helps you generate artifacts.
+> Kody, a general-purpose terminal based tool that helps you generate artifacts.
 
 # Getting Started
 
@@ -44,7 +44,7 @@ Open the project you are willing to work on using vscode. If you are starting a 
 
 ## Install a kody
 
-Based on your project, select the kody that works for you or customize your own. There are [14 kody packages](#Available kodies) available at the moment.
+Based on your project, select the kody that works for you or customize your own. There are [13 kody packages](#Available kodies) available at the moment.
 
 To list available kodies. (The search command simply displays available kodies and no keyword are required.
 
@@ -125,14 +125,13 @@ kody batch
 # Available kodies
 
 | Name                                                                             | Description                                                                          |
-| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | --- |
 | [basic-kodyfire](https://github.com/nooqta/kodyfire)                             | A general purpose code generator that should handle most of the generation use cases |
 | [typescript-kodyfire](https://github.com/nooqta/typescript-kodyfire)             | Generate typescript related artifacts                                                |
 | [tsconfig-kodyfire](https://github.com/nooqta/tsconfig-kodyfire)                 | Generate tsconfig files for your typescript projects                                 |
 | [nextjs-kodyfire](https://github.com/nooqta/nextjs-kodyfire)                     | Generate nextJs components and related artifacts                                     |
 | [react-kodyfire](https://github.com/nooqta/react-kodyfire)                       | Generate react components                                                            |
-| [laravel-kodyfire](https://github.com/nooqta/kodyfire)                           | Laravel artifacts generation                                                         |
-| [vuexy-kodyfire](https://github.com/nooqta/kodyfire)                             | Vuexy theme artifacts generation                                                     |
+| [laravel-kodyfire](https://github.com/nooqta/laravel-kodyfire)                   | Laravel artifacts generation                                                         |     |
 | [uml-kodyfire](https://github.com/nooqta)                                        | Uml diagrams generation using plantuml                                               |
 | [readme-kodyfire](https://github.com/nooqta/readme-kodyfire)                     | Readme file generation                                                               |
 | [word-kodyfire](https://github.com/nooqta/word-kodyfire)                         | Generate ms word document based on a template                                        |
