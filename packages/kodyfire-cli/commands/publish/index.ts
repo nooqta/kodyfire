@@ -22,11 +22,14 @@ const action = async (args: any) => {
       })
     );
   } else {
-    if (kodies.find(kody => kody.name == args.name)) {
-      const target = `./.kody/${args.name}/templates`;
+    const name = !args.name.includes('-kodyfire')
+      ? `${args.name}-kodyfire`
+      : args.name;
+    if (kodies.find(kody => kody.name == name)) {
+      const target = `./.kody/${name}/templates`;
       const sources = [
-        `./node_modules/${args.name}/src/concepts/templates`,
-        `./node_modules/${args.name}/src/templates`,
+        `./node_modules/${name}/src/concepts/templates`,
+        `./node_modules/${name}/src/templates`,
       ];
       //for each source folder if it exists copy it to the target folder
       for (const source of sources) {
@@ -35,18 +38,18 @@ const action = async (args: any) => {
         }
       }
       //copy the assets.json file
-      if (existsSync(`./node_modules/${args.name}/src/assets.json`)) {
+      if (existsSync(`./node_modules/${name}/src/assets.json`)) {
         await fs.copyFile(
-          `./node_modules/${args.name}/src/assets.json`,
-          `./.kody/${args.name}/assets.json`
+          `./node_modules/${name}/src/assets.json`,
+          `./.kody/${name}/assets.json`
         );
       }
 
       //copy the schema.js file
-      if (existsSync(`./node_modules/${args.name}/build/schema.js`)) {
+      if (existsSync(`./node_modules/${name}/build/schema.js`)) {
         await fs.copyFile(
-          `./node_modules/${args.name}/src/schema.ts`,
-          `./.kody/${args.name}/schema.ts`
+          `./node_modules/${name}/src/schema.ts`,
+          `./.kody/${name}/schema.ts`
         );
       }
     } else {
@@ -72,9 +75,11 @@ async function copyDir(src: any, dest: any) {
 module.exports = (program: typeof Command) => {
   program
     .command('publish')
-    .requiredOption('-n,--name <kody>', 'kody name to publish')
+    .argument('<kody>', 'kody name to publish')
     .description(
       'Publish the templates of the kody along with the assets.json and schema.ts files'
     )
-    .action(async (_opt: any) => action(_opt));
+    .action(async (name: string, _opt: any) => {
+      action({ name, ..._opt });
+    });
 };
