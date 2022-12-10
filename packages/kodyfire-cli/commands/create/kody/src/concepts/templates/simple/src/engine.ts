@@ -84,6 +84,11 @@ export class Engine extends BaseEngine {
   }
 
   async getFiles(rootDir: string, outputDir: string) {
+    // we check the folder exists
+    const dir = join(rootDir, outputDir);
+    if (!fs.existsSync(dir)) {
+      return [];
+    }
     const files = await fsPromises.readdir(join(rootDir, outputDir));
     return files;
   }

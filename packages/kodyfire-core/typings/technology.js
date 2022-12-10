@@ -92,7 +92,6 @@ class Technology {
           [requirement]: conceptSchema[requirement].default || '',
         });
       }
-      console.log(preparedConcept);
       return preparedConcept;
     });
   }

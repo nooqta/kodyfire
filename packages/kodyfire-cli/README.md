@@ -36,6 +36,26 @@ You can check the documentation with
 kody --help
 ```
 
+### Available commands (TODO: list all commands)
+
+#### `list` (default)
+
+> List installed kodies within your current project.
+
+##### Usage
+
+```bash
+kody list|ls [options] [kodyName]
+```
+
+##### Arguments
+
+- `kodyName` _string_ - The name of the kody (optional). If passed will list all available concepts of the provided kodyName.
+
+##### Options
+
+- `-h, --help` display help for command.
+
 ## Open your project
 
 <u>**Note**</u>: <i>If you are looking for more customization, we recommend you to create your own kody locally. [Instructions below](#create-your-kody). Don't forget to share your [kody](https://github.com/nooqta/kodyfire/issues) with us if you have made it public. </i>
@@ -124,21 +144,22 @@ kody batch
 
 # Available kodies
 
-| Name                                                                             | Description                                                                          |
-| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | --- |
-| [basic-kodyfire](https://github.com/nooqta/kodyfire)                             | A general purpose code generator that should handle most of the generation use cases |
-| [typescript-kodyfire](https://github.com/nooqta/typescript-kodyfire)             | Generate typescript related artifacts                                                |
-| [tsconfig-kodyfire](https://github.com/nooqta/tsconfig-kodyfire)                 | Generate tsconfig files for your typescript projects                                 |
-| [nextjs-kodyfire](https://github.com/nooqta/nextjs-kodyfire)                     | Generate nextJs components and related artifacts                                     |
-| [react-kodyfire](https://github.com/nooqta/react-kodyfire)                       | Generate react components                                                            |
-| [laravel-kodyfire](https://github.com/nooqta/laravel-kodyfire)                   | Laravel artifacts generation                                                         |     |
-| [uml-kodyfire](https://github.com/nooqta)                                        | Uml diagrams generation using plantuml                                               |
-| [readme-kodyfire](https://github.com/nooqta/readme-kodyfire)                     | Readme file generation                                                               |
-| [word-kodyfire](https://github.com/nooqta/word-kodyfire)                         | Generate ms word document based on a template                                        |
-| [pdf-kodyfire](https://github.com/nooqta/pdf-kodyfire)                           | Generate PDF document from HTML templates                                            |
-| [social-image-kodyfire](https://github.com/anis-marrouchi/social-image-kodyfire) | Generate dynamic images for social sharing based on HTML templates                   |
-| [social-gif-kodyfire](https://github.com/anis-marrouchi/social-gif-kodyfire)     | Generate dynamic gif images for social sharing based on HTML templates               |
-| [linkedin-quizzes-kodyfire](https://github.com/nooqta/linkedin-quizzes-kodyfire) | Practice Linkedin skill assessement tests from your terminal                         |
+| Name                                                                             | Description                                                                                                            |
+| -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | --- |
+| [basic-kodyfire](https://github.com/nooqta/kodyfire)                             | A general purpose code generator that should handle most of the generation use cases                                   |
+| [typescript-kodyfire](https://github.com/nooqta/typescript-kodyfire)             | Generate typescript related artifacts                                                                                  |
+| [tsconfig-kodyfire](https://github.com/nooqta/tsconfig-kodyfire)                 | Generate tsconfig files for your typescript projects                                                                   |
+| [nextjs-kodyfire](https://github.com/nooqta/nextjs-kodyfire)                     | Generate nextJs components and related artifacts                                                                       |
+| [react-kodyfire](https://github.com/nooqta/react-kodyfire)                       | Generate react components                                                                                              |
+| [laravel-kodyfire](https://github.com/nooqta/laravel-kodyfire)                   | Laravel artifacts generation                                                                                           |     |
+| [uml-kodyfire](https://github.com/nooqta)                                        | Uml diagrams generation using plantuml                                                                                 |
+| [readme-kodyfire](https://github.com/nooqta/readme-kodyfire)                     | Readme file generation                                                                                                 |
+| [word-kodyfire](https://github.com/nooqta/word-kodyfire)                         | Generate ms word document based on a template                                                                          |
+| [pdf-kodyfire](https://github.com/nooqta/pdf-kodyfire)                           | Generate PDF document from HTML templates                                                                              |
+| [social-image-kodyfire](https://github.com/anis-marrouchi/social-image-kodyfire) | Generate dynamic images for social sharing based on HTML templates                                                     |
+| [social-gif-kodyfire](https://github.com/anis-marrouchi/social-gif-kodyfire)     | Generate dynamic gif images for social sharing based on HTML templates                                                 |
+| [linkedin-quizzes-kodyfire](https://github.com/nooqta/linkedin-quizzes-kodyfire) | Practice Linkedin skill assessement tests from your terminal                                                           |
+| [chatgpt-kodyfire](https://github.com/nooqta/chatgpt-kodyfire)                   | Use chatgpt from the terminal. Allows you provide additional data from various sources and export to serveral outputs. |
 
 # What is Kody
 
@@ -159,8 +180,8 @@ Kody is technology agnostic and can be used to generate code into your programmi
 Here are few examples of what kody can/will do
 
 - A REST API based on x framework (example: Laravel)
-- A frontend using x framework/library (example: Vue.js)
-- A fullstack web app
+- A frontend using x framework/library (example: Next.js)
+- A fullstack web app (example: .net core)
 - A mobile app using x framework (flutter)
 - A browser extension
 - An editor/ IDE extension

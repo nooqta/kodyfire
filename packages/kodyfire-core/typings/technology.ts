@@ -45,7 +45,7 @@ export class Technology implements ITechnology {
         [requirement]: conceptSchema[requirement].default || '',
       };
     }
-    console.log(preparedConcept);
+
     return preparedConcept;
   }
 }
