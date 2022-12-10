@@ -48,8 +48,8 @@ const action = async (args: any) => {
       //copy the schema.js file
       if (existsSync(`./node_modules/${name}/build/schema.js`)) {
         await fs.copyFile(
-          `./node_modules/${name}/src/schema.ts`,
-          `./.kody/${name}/schema.ts`
+          `./node_modules/${name}/build/schema.js`,
+          `./.kody/${name}/schema.js`
         );
       }
     } else {

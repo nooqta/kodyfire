@@ -25,6 +25,6 @@
   "include": ["src/**/*", "commands/**/*"],
   "exclude": [
     "src/*/files/**/*",
-    "commands/scaffold/kody/src/concepts/templates/**/*"
+    "commands/create/kody/src/concepts/templates/**/*"
   ]
 }

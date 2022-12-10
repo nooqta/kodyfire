@@ -17,19 +17,19 @@ async function action(args: any): Promise<void> {
 
 module.exports = (program: typeof Command) => {
   program
-    .command('scaffold')
+    .command('create')
     .description('Generate a new blank kody project')
-    .option('-n,--name <name>', 'Project name')
-    .option('-t, --technology <technology>', 'Project technology')
+    .argument('<name>', 'Project name')
+    .argument('<technology>', 'Project technology')
     .option(
       '-tpl, --templateFolder <templateFolder>',
       'Template folder to use. Available templates: simple, basic. Default: simple',
       'simple'
     )
-    .action(async (_opt: { name: any }) => {
+    .action(async (name: string, technology: string, _opt: any) => {
       // await $`schematics @noqta/kodyfire:run --name ${_opt.name} --dry-run`;
       try {
-        action({ ..._opt, schematic: 'scaffold', dryRun: false });
+        action({ name, technology, ..._opt });
       } catch (error: any) {
         console.log(error);
       }

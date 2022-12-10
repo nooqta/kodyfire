@@ -1,4 +1,4 @@
-export { Kody } from '../kody';
+export { Kody } from '.';
 export * from './parser';
 export * from './generator';
 export { Scaffold } from './concepts/scaffold';
