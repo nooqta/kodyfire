@@ -361,6 +361,7 @@ export class Action {
       }
     } catch (error: any) {
       this.displayMessage(error.message);
+      process.exit(1);
     }
     return false;
   }
@@ -516,6 +517,7 @@ export class Action {
       const m = await import(path);
       // Add env variables to current kody
       const env = await this.readEnvFile(content.rootDir);
+
       if (env) {
         currentKody.env = env;
       }
@@ -533,6 +535,7 @@ export class Action {
       const output = await kody.generate(content);
     } catch (error: any) {
       this.displayMessage(error.message);
+      process.exit(1);
     }
   }
   static async addConceptProperty(

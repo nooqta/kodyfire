@@ -253,11 +253,13 @@ class Action {
           '.kody',
           dependency
         );
-        const _schema = yield Promise.resolve().then(() =>
-          __importStar(require((0, path_1.join)(templatesPath, 'schema')))
-        );
-        if (_schema.schema) {
-          schema = _schema.schema;
+        if (fs.existsSync(templatesPath)) {
+          const _schema = yield Promise.resolve().then(() =>
+            __importStar(require((0, path_1.join)(templatesPath, 'schema')))
+          );
+          if (_schema.schema) {
+            schema = _schema.schema;
+          }
         }
         for (const prop of Object.keys(schema.properties)) {
           const attributes = yield this.getConceptAttributes(

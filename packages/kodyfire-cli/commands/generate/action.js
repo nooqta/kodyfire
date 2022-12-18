@@ -455,6 +455,7 @@ class Action {
         }
       } catch (error) {
         this.displayMessage(error.message);
+        process.exit(1);
       }
       return false;
     });
@@ -628,6 +629,7 @@ class Action {
         const output = yield kody.generate(content);
       } catch (error) {
         this.displayMessage(error.message);
+        process.exit(1);
       }
     });
   }
