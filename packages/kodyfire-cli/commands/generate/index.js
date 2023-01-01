@@ -41,6 +41,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 const { Command } = require('commander');
 const chalk_1 = __importDefault(require('chalk'));
 const action_1 = require('./action');
+const zx_1 = require('zx');
 module.exports = program => {
   program
     .command('generate')
@@ -64,14 +65,28 @@ module.exports = program => {
     .action((kody, concept, name, _opt) =>
       __awaiter(void 0, void 0, void 0, function* () {
         _opt.includes = _opt.include ? _opt.include.split(',') : [];
-        // converts a string of the form 'key1:value1,key2:value2' to an object if the string is not empty
-        _opt.defaults = _opt.overwrites
-          ? _opt.overwrites.split(',').reduce((acc, item) => {
+        // We check if the overwrites is a json file
+        _opt.defaults = {};
+        if (_opt.overwrites) {
+          // check if the file exists
+          if (
+            _opt.overwrites.endsWith('.json') &&
+            zx_1.fs.existsSync(_opt.overwrites)
+          ) {
+            // read the file and convert it to an object
+            _opt.defaults = JSON.parse(
+              zx_1.fs.readFileSync(_opt.overwrites, 'utf8')
+            );
+          } else {
+            // If not we check if the overwrites is a string of the form 'key1:value1,key2:value2' and convert it to an object
+            // converts a string of the form 'key1:value1,key2:value2' to an object if the string is not empty
+            _opt.defaults = _opt.overwrites.split(',').reduce((acc, item) => {
               const [key, value] = item.split(':');
               acc[key] = value;
               return acc;
-            }, {})
-          : {};
+            }, {});
+          }
+        }
         return yield action_1.Action.execute(
           Object.assign({ kody, concept, name }, _opt)
         );

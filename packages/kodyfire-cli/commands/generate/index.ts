@@ -1,6 +1,7 @@
 const { Command } = require('commander');
 import chalk from 'chalk';
 import { Action } from './action';
+import { fs } from 'zx';
 
 module.exports = (program: typeof Command) => {
   program
@@ -24,15 +25,28 @@ module.exports = (program: typeof Command) => {
     .option('-p,--persist', 'Persist the generated artifact')
     .action(async (kody: string, concept: string, name: string, _opt: any) => {
       _opt.includes = _opt.include ? _opt.include.split(',') : [];
-      // converts a string of the form 'key1:value1,key2:value2' to an object if the string is not empty
-      _opt.defaults = _opt.overwrites
-        ? _opt.overwrites.split(',').reduce((acc: any, item: string) => {
-            const [key, value] = item.split(':');
-            acc[key] = value;
-            return acc;
-          }, {})
-        : {};
-
+      // We check if the overwrites is a json file
+      _opt.defaults = {};
+      if (_opt.overwrites) {
+        // check if the file exists
+        if (
+          _opt.overwrites.endsWith('.json') &&
+          fs.existsSync(_opt.overwrites)
+        ) {
+          // read the file and convert it to an object
+          _opt.defaults = JSON.parse(fs.readFileSync(_opt.overwrites, 'utf8'));
+        } else {
+          // If not we check if the overwrites is a string of the form 'key1:value1,key2:value2' and convert it to an object
+          // converts a string of the form 'key1:value1,key2:value2' to an object if the string is not empty
+          _opt.defaults = _opt.overwrites
+            .split(',')
+            .reduce((acc: any, item: string) => {
+              const [key, value] = item.split(':');
+              acc[key] = value;
+              return acc;
+            }, {});
+        }
+      }
       return await Action.execute({ kody, concept, name, ..._opt });
     });
 };

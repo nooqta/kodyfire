@@ -45,6 +45,7 @@ const action_2 = require('../generate/action');
 const chalk_1 = __importDefault(require('chalk'));
 const boxen = require('boxen');
 exports.supportedTypes = [
+  'json',
   'yaml',
   'plantuml',
   'api',
@@ -80,7 +81,9 @@ class Action {
           process.exit(1);
         }
         // resolve the parser to be used for the source
-        if (!['yaml', 'plantuml'].includes(type)) {
+        // @todo: every kody should provide the list of supported types
+        // for now we check statically. An error will occur if the parser is not supported
+        if (!['json', 'yaml', 'plantuml'].includes(type)) {
           if (exports.supportedTypes.includes(type)) {
             this.displayMessage(
               `${type} parser not implemented yet. Please use yaml or plantuml (class diagram) for now.`,
@@ -90,7 +93,7 @@ class Action {
             this.displayMessage(
               `Unsupported type ${type}. Supported types are ${exports.supportedTypes.join(
                 ', '
-              )}. Only plantuml is implemented for now.`,
+              )}. Only json is implemented for now.`,
               'red'
             );
           }
@@ -103,6 +106,7 @@ class Action {
         }
         let imports = [];
         let yaml;
+        // @todo: refactor. Every kody is responsible for parsing the source
         switch (type) {
           case 'yaml': {
             const { load } = require('js-yaml');
@@ -121,6 +125,12 @@ class Action {
             const [uml] = parse(plantuml);
             // @ts-ignore
             imports = uml.elements.filter(e => e.constructor.name === 'Class');
+            break;
+          }
+          case 'json': {
+            const json = zx_1.fs.readFileSync(_args.source, 'utf8');
+            // @ts-ignore
+            imports = JSON.parse(json);
             break;
           }
         }

@@ -144,7 +144,8 @@ class Action {
             // We check if a colon is present in the kody name
             // if so, we assume the user is trying to generate a concept
             // from a specific kody package
-            let kodyName, conceptName;
+            let kodyName = _kodyName,
+              conceptName = _conceptName;
             if (_kodyName && _kodyName.includes(':')) {
               // We update name as it has changed its position
               name = _conceptName;
@@ -560,10 +561,10 @@ class Action {
         let content = yield this.getSchemaDefinition(dependency, rootDir);
         if (!content) {
           content = yield this.getDependencyConcepts(dependency);
-          Object.keys(content).forEach(key => {
-            content[key] = [];
-          });
         }
+        Object.keys(content).forEach(key => {
+          content[key] = [];
+        });
         content[concept] = [data];
         const rootDirEnvVar = this.getEnvVariable(
           `${kodyName.toUpperCase()}_ROOT_DIR`
@@ -628,6 +629,7 @@ class Action {
         // @ts-ignore
         const output = yield kody.generate(content);
       } catch (error) {
+        console.log(error);
         this.displayMessage(error.message);
         process.exit(1);
       }
