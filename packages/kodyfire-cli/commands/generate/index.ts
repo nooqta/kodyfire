@@ -12,7 +12,7 @@ module.exports = (program: typeof Command) => {
       '[kody]',
       'The name of the kody to use or the kody and the concept separated by a colon (e.g. kody:concept)\n'
     )
-    .argument('[concept]', 'The concept you want to generate', 'concept')
+    .argument('[concept]', 'The concept you want to generate')
     .argument('[name]', 'The name of the artifact to generate (optional)')
     .option(
       '-i,--include <includes>',

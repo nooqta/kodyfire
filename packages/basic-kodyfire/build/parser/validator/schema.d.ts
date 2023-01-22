@@ -6,7 +6,6 @@ export declare const concept: {
         };
         template: {
             type: string;
-            enum: string[];
         };
         outputDir: {
             type: string;

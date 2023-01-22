@@ -78,7 +78,10 @@ class Technology {
         if (fs.existsSync(templatesPath)) {
             this.params.templatesPath = templatesPath;
             // We overwrite the assets property if assets.json exists in the .kody folder
-            if (fs.existsSync((0, path_1.join)(templatesPath, 'assets.json'))) {
+            if (fs.existsSync((0, path_1.join)(templatesPath, 'assets.js'))) {
+                this.assets = require((0, path_1.join)(templatesPath, 'assets.js'));
+            }
+            else if (fs.existsSync((0, path_1.join)(templatesPath, 'assets.json'))) {
                 this.assets = require((0, path_1.join)(templatesPath, 'assets.json'));
             }
         }

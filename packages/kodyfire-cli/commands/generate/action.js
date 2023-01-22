@@ -292,6 +292,7 @@ class Action {
       if (conceptNames.length == 0) {
         return [];
       }
+      // allow prompting usage when requested. example kody g ... --prompts
       if (answers['name'] !== undefined) {
         const props = conceptNames.filter(name => name !== 'name');
         for (let i = 0; i < props.length; i++) {
@@ -312,6 +313,14 @@ class Action {
               ? void 0
               : _b.type) !== 'object'
           ) {
+            if (typeof currentConcept.condition != 'undefined') {
+              const condition = currentConcept.condition;
+              if (typeof condition == 'function') {
+                if (!condition(answers)) {
+                  continue;
+                }
+              }
+            }
             const question = yield this.conceptToQuestion(
               conceptNames[i],
               concept[conceptNames[i]],

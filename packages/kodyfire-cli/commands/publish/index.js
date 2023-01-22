@@ -71,8 +71,15 @@ const action = args =>
             yield copyDir(source, target);
           }
         }
-        //copy the assets.json file
-        if ((0, fs_1.existsSync)(`./node_modules/${name}/src/assets.json`)) {
+        //copy the assets.(json|js) file
+        if ((0, fs_1.existsSync)(`./node_modules/${name}/src/assets.js`)) {
+          yield fs.copyFile(
+            `./node_modules/${name}/src/assets.js`,
+            `./.kody/${name}/assets.js`
+          );
+        } else if (
+          (0, fs_1.existsSync)(`./node_modules/${name}/src/assets.json`)
+        ) {
           yield fs.copyFile(
             `./node_modules/${name}/src/assets.json`,
             `./.kody/${name}/assets.json`

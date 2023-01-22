@@ -37,8 +37,13 @@ const action = async (args: any) => {
           await copyDir(source, target);
         }
       }
-      //copy the assets.json file
-      if (existsSync(`./node_modules/${name}/src/assets.json`)) {
+      //copy the assets.(json|js) file
+      if (existsSync(`./node_modules/${name}/src/assets.js`)) {
+        await fs.copyFile(
+          `./node_modules/${name}/src/assets.js`,
+          `./.kody/${name}/assets.js`
+        );
+      } else if (existsSync(`./node_modules/${name}/src/assets.json`)) {
         await fs.copyFile(
           `./node_modules/${name}/src/assets.json`,
           `./.kody/${name}/assets.json`

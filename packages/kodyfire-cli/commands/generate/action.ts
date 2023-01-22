@@ -213,6 +213,7 @@ export class Action {
     if (conceptNames.length == 0) {
       return [];
     }
+    // allow prompting usage when requested. example kody g ... --prompts
     if (answers['name'] !== undefined) {
       const props = conceptNames.filter((name: string) => name !== 'name');
       for (let i = 0; i < props.length; i++) {
@@ -229,6 +230,14 @@ export class Action {
           currentConcept.type !== 'array' &&
           currentConcept.items?.type !== 'object'
         ) {
+          if (typeof currentConcept.condition != 'undefined') {
+            const condition = currentConcept.condition;
+            if (typeof condition == 'function') {
+              if (!condition(answers)) {
+                continue;
+              }
+            }
+          }
           const question = await this.conceptToQuestion(
             conceptNames[i],
             concept[conceptNames[i]],
