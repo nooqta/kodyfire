@@ -2,7 +2,8 @@ import { Technology as BaseTechnology } from 'basic-kodyfire';
 import { Concept } from './concept';
 import * as classes from '.';
 import * as assets from './assets.json';
-import { capitalize } from 'kodyfire-core';
+// import { capitalize } from 'kodyfire-core';
+import { classify } from '@angular-devkit/core/src/utils/strings';
 import { join } from 'path';
 const fs = require('fs');
 
@@ -22,10 +23,10 @@ export class Technology extends BaseTechnology {
   public initConcepts() {
     // add dynamic property for technology
     for (const concept of this.assets.concepts) {
-      if (typeof (<any>classes)[capitalize(concept.name)] !== 'undefined') {
+      if (typeof (<any>classes)[classify(concept.name)] !== 'undefined') {
         this.concepts.set(
           concept.name,
-          new (<any>classes)[capitalize(concept.name)](concept, this)
+          new (<any>classes)[classify(concept.name)](concept, this)
         );
       } else {
         this.concepts.set(concept.name, new Concept(concept, this));
