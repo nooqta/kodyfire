@@ -1,6 +1,6 @@
 {
   "name": "kodyfire",
-  "version": "0.1.0",
+  "version": "0.1.8",
   "description": "Artifact generator,automation tool and a general purpose low code and nocode generator.",
   "typings": "./packages/kodyfire-cli/kodyfire.d.ts",
   "directories": {
