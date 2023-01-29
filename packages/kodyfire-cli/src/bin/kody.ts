@@ -5,7 +5,13 @@ const program = new Command();
 const { readdirSync } = require('fs');
 const glob = require('glob'),
   path = require('path');
-program.version('0.0.1', '-v, --version', 'Output the current version');
+// get the current version from package.json
+const { version } = require(path.resolve(
+  process.mainModule?.path,
+  '../..',
+  'package.json'
+));
+program.version(version, '-v, --version', 'Output the current version');
 
 // @todo: move to core
 const getDirectories = (source: string) =>

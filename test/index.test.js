@@ -9,7 +9,7 @@ beforeAll(async () => {
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 afterAll(async () => {});
 
-describe('Strapi in general', () => {
+describe('Kodyfire in general', () => {
   it('test kodyfire is running', async () => {
     expect(true).toBe(true);
   });
