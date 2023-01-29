@@ -14,7 +14,9 @@
     "lerna:link": "lerna link --force-local",
     "test": "lerna run test --stream",
     "audit": "lerna exec -- npm audit fix --force",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "publish": "lerna publish",
+    "postpublish": "./scripts/kodyfire/publish.mjs"
   },
   "keywords": [
     "low-code",
