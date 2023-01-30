@@ -4,12 +4,19 @@ var __createBinding =
   (Object.create
     ? function (o, m, k, k2) {
         if (k2 === undefined) k2 = k;
-        Object.defineProperty(o, k2, {
-          enumerable: true,
-          get: function () {
-            return m[k];
-          },
-        });
+        var desc = Object.getOwnPropertyDescriptor(m, k);
+        if (
+          !desc ||
+          ('get' in desc ? !m.__esModule : desc.writable || desc.configurable)
+        ) {
+          desc = {
+            enumerable: true,
+            get: function () {
+              return m[k];
+            },
+          };
+        }
+        Object.defineProperty(o, k2, desc);
       }
     : function (o, m, k, k2) {
         if (k2 === undefined) k2 = k;
@@ -162,12 +169,12 @@ class Action {
   }
   static getEntries(rootDirectory, dep) {
     return __awaiter(this, void 0, void 0, function* () {
+      var _a;
       const entries = {};
       // get the deb package schema file
       // @todo: find a better way
-      const { schema } = yield Promise.resolve().then(() =>
-        __importStar(require(`${rootDirectory}/node_modules/${dep}`))
-      );
+      const { schema } = yield ((_a = `${rootDirectory}/node_modules/${dep}`),
+      Promise.resolve().then(() => __importStar(require(_a))));
       for (const prop of Object.keys(schema.properties)) {
         entries[prop] = [];
       }
@@ -225,6 +232,7 @@ class Action {
   }
   static getDependencyConcepts(dependency, rootDir = process.cwd()) {
     return __awaiter(this, void 0, void 0, function* () {
+      var _a, _b;
       try {
         const entries = {};
         // get the deb package schema file
@@ -244,9 +252,8 @@ class Action {
             dependency
           );
         }
-        let { schema } = yield Promise.resolve().then(() =>
-          __importStar(require(kodyPath))
-        );
+        let { schema } = yield ((_a = kodyPath),
+        Promise.resolve().then(() => __importStar(require(_a))));
         // We check if there is a .kody folder in the root directory we import the schema from there. local schema overrides the global schema
         const templatesPath = (0, path_1.join)(
           process.cwd(),
@@ -254,9 +261,11 @@ class Action {
           dependency
         );
         if (fs.existsSync(templatesPath)) {
-          const _schema = yield Promise.resolve().then(() =>
-            __importStar(require((0, path_1.join)(templatesPath, 'schema')))
-          );
+          const _schema = yield ((_b = (0, path_1.join)(
+            templatesPath,
+            'schema'
+          )),
+          Promise.resolve().then(() => __importStar(require(_b))));
           if (_schema.schema) {
             schema = _schema.schema;
           }

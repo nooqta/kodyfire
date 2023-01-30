@@ -4,12 +4,19 @@ var __createBinding =
   (Object.create
     ? function (o, m, k, k2) {
         if (k2 === undefined) k2 = k;
-        Object.defineProperty(o, k2, {
-          enumerable: true,
-          get: function () {
-            return m[k];
-          },
-        });
+        var desc = Object.getOwnPropertyDescriptor(m, k);
+        if (
+          !desc ||
+          ('get' in desc ? !m.__esModule : desc.writable || desc.configurable)
+        ) {
+          desc = {
+            enumerable: true,
+            get: function () {
+              return m[k];
+            },
+          };
+        }
+        Object.defineProperty(o, k2, desc);
       }
     : function (o, m, k, k2) {
         if (k2 === undefined) k2 = k;
@@ -98,9 +105,10 @@ class Technology {
   //@todo: refactor. exists in kodyfire-core technology.ts
   prepareConcept(dependency, conceptName, preparedConcept) {
     return __awaiter(this, void 0, void 0, function* () {
-      const { schema } = yield Promise.resolve().then(() =>
-        __importStar(require(`${process.cwd()}/node_modules/${dependency}`))
-      );
+      var _a;
+      const { schema } =
+        yield ((_a = `${process.cwd()}/node_modules/${dependency}`),
+        Promise.resolve().then(() => __importStar(require(_a))));
       const conceptSchema = schema.properties[conceptName];
       const requirements = conceptSchema.items.required;
       for (const requirement of requirements) {

@@ -4,12 +4,19 @@ var __createBinding =
   (Object.create
     ? function (o, m, k, k2) {
         if (k2 === undefined) k2 = k;
-        Object.defineProperty(o, k2, {
-          enumerable: true,
-          get: function () {
-            return m[k];
-          },
-        });
+        var desc = Object.getOwnPropertyDescriptor(m, k);
+        if (
+          !desc ||
+          ('get' in desc ? !m.__esModule : desc.writable || desc.configurable)
+        ) {
+          desc = {
+            enumerable: true,
+            get: function () {
+              return m[k];
+            },
+          };
+        }
+        Object.defineProperty(o, k2, desc);
       }
     : function (o, m, k, k2) {
         if (k2 === undefined) k2 = k;
@@ -168,6 +175,7 @@ class Action {
   }
   static getDependencyConcepts(dependency, rootDir = process.cwd()) {
     return __awaiter(this, void 0, void 0, function* () {
+      var _a;
       try {
         const entries = {};
         // get the deb package schema file
@@ -189,9 +197,8 @@ class Action {
           //   dependency
           // );
         }
-        const { schema } = yield Promise.resolve().then(() =>
-          __importStar(require(kodyPath))
-        );
+        const { schema } = yield ((_a = kodyPath),
+        Promise.resolve().then(() => __importStar(require(_a))));
         for (const prop of Object.keys(schema.properties)) {
           const attributes = yield this.getConceptAttributes(
             schema.properties[prop]

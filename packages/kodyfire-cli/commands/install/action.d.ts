@@ -24,7 +24,7 @@ export declare const questions: (
       choices?: undefined;
     }
 )[];
-declare type Project = {
+type Project = {
   name: string;
   family: string;
   language?: string;
