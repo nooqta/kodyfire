@@ -15,7 +15,7 @@
     "test": "lerna run test --stream",
     "audit": "lerna exec -- npm audit fix --force",
     "husky:prepare": "husky install",
-    "lerna:publish": "lerna publish",
+    "lerna:publish": "lerna publish -y",
     "postlerna:publish": "zx scripts/kodyfire/publish.mjs",
     "prelerna:publish": "zx scripts/kodyfire/pre_publish.mjs"
   },
