@@ -16,7 +16,8 @@
     "audit": "lerna exec -- npm audit fix --force",
     "prepare": "husky install",
     "publish": "lerna publish",
-    "postpublish": "./scripts/kodyfire/publish.mjs"
+    "postpublish": "zx scripts/kodyfire/publish.mjs",
+    "prepublish": "zx scripts/kodyfire/pre_publish.mjs"
   },
   "keywords": [
     "low-code",

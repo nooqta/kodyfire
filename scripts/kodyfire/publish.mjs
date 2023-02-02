@@ -25,7 +25,6 @@ fs.writeJson(packageJsonPath, packageJson, {
     });
 // access root folder
 cd(`${process.cwd()}`);
-console.log(process.cwd())
 // commmit and push
 await $`git add package.json`;
 await $`git commit -m "chore: update version to ${version}"`;
