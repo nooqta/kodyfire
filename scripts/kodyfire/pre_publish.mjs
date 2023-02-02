@@ -17,7 +17,6 @@ const templates = fs.readdirSync(templatesPath, {
         let packageJsonTemplatePath = path.resolve(templatesPath, template, 'package.json.template');
         let packageJson = fs.readJSONSync(packageJsonTemplatePath);
         Object.keys(packageJson.dependencies).forEach(dep => {
-            console.log(dep);
             if(dep.includes('kodyfire')) {
                 packageJson.dependencies[dep] = `^${version}`;
             }

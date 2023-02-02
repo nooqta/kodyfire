@@ -1,6 +1,6 @@
 {
   "name": "basic-kodyfire",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Kodyfire general purpose Generator",
   "main": "build/index.js",
   "scripts": {

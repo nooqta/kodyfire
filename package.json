@@ -46,7 +46,7 @@
     "concurrently": "^7.0.0",
     "eslint": "^8.9.0",
     "husky": "^7.0.4",
-    "lerna": "^4.0.0",
+    "lerna": "^6.4.1",
     "lerna-changelog": "^2.2.0",
     "lint-staged": "^12.3.4",
     "prettier": "2.5.1",
