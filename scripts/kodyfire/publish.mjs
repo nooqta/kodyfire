@@ -30,4 +30,5 @@ await $`git status`;
 await $`git add .`;
 await $`git commit -m "chore: update version to ${version}"`;
 await $`git push`;
+await  $`git push github main`;
 await $`npm publish`;
