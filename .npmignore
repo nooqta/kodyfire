@@ -3,3 +3,5 @@
 *.ts
 !*.d.ts
 dist
+node_modules/
+packages/*/node_modules
