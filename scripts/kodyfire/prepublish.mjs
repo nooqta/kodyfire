@@ -27,6 +27,6 @@ const templates = fs.readdirSync(templatesPath, {
         });
     });
     await $`git add .`;
-    await $`git commit -m "chore(cli): update version to ${version} for create kody templates"`;
+    await $`git commit -m "chore(cli): bump kodyfire dependencies to ${version}"`;
     await $`git push`;
 })();
