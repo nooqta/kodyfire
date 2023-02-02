@@ -1,6 +1,6 @@
 {
   "name": "kodyfire",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "Artifact generator,automation tool and a general purpose low code and nocode generator.",
   "typings": "./packages/kodyfire-cli/kodyfire.d.ts",
   "directories": {
@@ -14,10 +14,10 @@
     "lerna:link": "lerna link --force-local",
     "test": "lerna run test --stream",
     "audit": "lerna exec -- npm audit fix --force",
-    "prepare": "husky install",
-    "publish": "lerna publish",
-    "postpublish": "zx scripts/kodyfire/publish.mjs",
-    "prepublish": "zx scripts/kodyfire/pre_publish.mjs"
+    "husky:prepare": "husky install",
+    "lerna:publish": "lerna publish",
+    "postlerna:publish": "zx scripts/kodyfire/publish.mjs",
+    "prelerna:publish": "zx scripts/kodyfire/pre_publish.mjs"
   },
   "keywords": [
     "low-code",
@@ -51,12 +51,12 @@
     "lint-staged": "^12.3.4",
     "prettier": "2.5.1",
     "ts-node": "^10.8.1",
-    "typescript": "~4.5.5"
+    "typescript": "~4.5.5",
+    "zx": "^7.1.1"
   },
   "lint-staged": {
     "*.{js,json,yml,yaml,css,scss,ts,tsx,md}": [
       "prettier --write"
     ]
-  },
-  "dependencies": {}
+  }
 }
