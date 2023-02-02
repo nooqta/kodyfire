@@ -11,6 +11,7 @@ jsconfig.json
 
 # Misc
 node_modules/
+packages/*/node_modules
 npm-debug.log*
 yarn-error.log*
 dist
