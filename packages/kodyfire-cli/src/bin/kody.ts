@@ -24,7 +24,7 @@ const cmdDir = getDirectories(
 ).join(',');
 
 glob
-  .sync(
+  .globSync(
     `${path.resolve(
       process.mainModule?.path,
       '../..'
