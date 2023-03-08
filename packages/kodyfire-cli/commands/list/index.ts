@@ -1,3 +1,4 @@
+import { Option } from 'commander';
 import { action } from './action';
 const { Command } = require('commander');
 
@@ -8,9 +9,10 @@ module.exports = (program: typeof Command) => {
     .description('list installed kodies within your current project.')
     .argument(
       '[kodyName]',
-      'List all concepts of a kody by passing the kody name as an argument'
+      'List details of a kody by passing the kody name as an argument'
     )
-    .action(async (kodyName: any) => {
-      return action({ technology: kodyName });
+    .addOption(new Option('-s, --summary <details>', 'List kody details such as `template` names and `concepts`.').choices(['concepts', 'templates']).default('concepts'))
+    .action(async (kodyName: any, opts: any) => {
+      return action({ technology: kodyName, ...opts });
     });
 };

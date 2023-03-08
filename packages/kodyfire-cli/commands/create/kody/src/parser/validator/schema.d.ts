@@ -1,76 +1,76 @@
 export declare const concept: {
-  type: string;
-  properties: {
-    anis: {
-      type: string;
-    };
-    name: {
-      type: string;
-    };
-    template: {
-      type: string;
-      enum: string[];
-    };
-    outputDir: {
-      type: string;
-    };
-  };
-};
-export declare const conceptArray: {
-  type: string;
-  items: {
     type: string;
     properties: {
-      anis: {
-        type: string;
-      };
-      name: {
-        type: string;
-      };
-      template: {
-        type: string;
-        enum: string[];
-      };
-      outputDir: {
-        type: string;
-      };
-    };
-  };
-};
-export declare const schema: {
-  type: string;
-  properties: {
-    project: {
-      type: string;
-    };
-    name: {
-      type: string;
-    };
-    rootDir: {
-      type: string;
-    };
-    concept: {
-      type: string;
-      items: {
-        type: string;
-        properties: {
-          anis: {
+        anis: {
             type: string;
-          };
-          name: {
+        };
+        name: {
             type: string;
-          };
-          template: {
+        };
+        template: {
             type: string;
             enum: string[];
-          };
-          outputDir: {
-            type: string;
-          };
         };
-      };
+        outputDir: {
+            type: string;
+        };
     };
-  };
-  required: string[];
+};
+export declare const conceptArray: {
+    type: string;
+    items: {
+        type: string;
+        properties: {
+            anis: {
+                type: string;
+            };
+            name: {
+                type: string;
+            };
+            template: {
+                type: string;
+                enum: string[];
+            };
+            outputDir: {
+                type: string;
+            };
+        };
+    };
+};
+export declare const schema: {
+    type: string;
+    properties: {
+        project: {
+            type: string;
+        };
+        name: {
+            type: string;
+        };
+        rootDir: {
+            type: string;
+        };
+        concept: {
+            type: string;
+            items: {
+                type: string;
+                properties: {
+                    anis: {
+                        type: string;
+                    };
+                    name: {
+                        type: string;
+                    };
+                    template: {
+                        type: string;
+                        enum: string[];
+                    };
+                    outputDir: {
+                        type: string;
+                    };
+                };
+            };
+        };
+    };
+    required: string[];
 };
 //# sourceMappingURL=schema.d.ts.map

@@ -53,7 +53,7 @@
     "envfile": "^6.18.0",
     "events": "^3.3.0",
     "fs-extra": "^10.0.0",
-    "glob": "^7.2.0",
+    "glob": "^9.2.1",
     "handlebars": "^4.7.7",
     "handlebars-delimiters": "^1.0.0",
     "import-local": "^3.1.0",
