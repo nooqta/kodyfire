@@ -37,7 +37,6 @@ export class Action {
   }
   static async execute(args: { technology: any, summary: any }) {
     try {
-      console.log(args);
       // We check if package.json exists
       const kodies = await Action.getInstalledKodies();
       // @todo: use event emitter to listen to the event of the runner
@@ -96,7 +95,6 @@ export class Action {
     });
     templates.forEach((template: any) => {
       // add a description to the concept
-      console.log(template);
       table.push([template.concept, template.options.join('\n')]);
     });
 
@@ -205,7 +203,6 @@ export class Action {
         }
       }
 
-      console.log(files);
       const assets = await import(join(kodyPath, 'src', 'assets.json'));
 
       const filteredTemplates = assets?.concepts.filter((concept:any) => concept.hasOwnProperty('template')).map((concept:any) => ({concept: concept.name, options: files.filter((file: string) => {

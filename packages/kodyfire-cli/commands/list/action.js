@@ -70,7 +70,6 @@ class Action {
     static execute(args) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                console.log(args);
                 // We check if package.json exists
                 const kodies = yield Action.getInstalledKodies();
                 // @todo: use event emitter to listen to the event of the runner
@@ -133,7 +132,6 @@ class Action {
             });
             templates.forEach((template) => {
                 // add a description to the concept
-                console.log(template);
                 table.push([template.concept, template.options.join('\n')]);
             });
             console.log(table.toString());
@@ -241,7 +239,6 @@ class Action {
                         files = [...new Set([...files, ...currentFiles])];
                     }
                 }
-                console.log(files);
                 const assets = yield (_a = (0, path_1.join)(kodyPath, 'src', 'assets.json'), Promise.resolve().then(() => __importStar(require(_a))));
                 const filteredTemplates = assets === null || assets === void 0 ? void 0 : assets.concepts.filter((concept) => concept.hasOwnProperty('template')).map((concept) => ({ concept: concept.name, options: files.filter((file) => {
                         const regexp = new RegExp(`^${concept.name}`, 'i');
