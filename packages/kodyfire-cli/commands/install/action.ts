@@ -1,147 +1,72 @@
 // import { $ } from "zx";
 import { capitalize } from 'kodyfire-core';
 import { join } from 'path';
-import { cd, fs } from 'zx';
+import { $, cd, fs } from 'zx';
 
 const prompts = require('prompts');
 // import { $ } from 'zx';
 const boxen = require('boxen');
-const { spawn } = require('child_process');
-// @todo retrieve from a repository (remote|local)? to centralize all types of projects
-const projects: Project[] = [
-  {
-    name: 'laravel',
-    family: 'laravel',
-    language: 'php',
-    description: 'A Backend using Laravel (php)',
-    command: 'composer',
-    args: ['create-project', 'laravel/laravel'],
-    requires: ['composer'],
-  },
-  {
-    name: 'vue-cli',
-    family: 'vue',
-    description: 'A frontend using Vuexy (vue)',
-    command: 'vue',
-    args: ['create'],
-    requires: ['vue'],
-  },
-  {
-    name: 'express',
-    family: 'node',
-    description: 'A backend using Express (node)',
-    command: 'npx',
-    args: ['express-generator'],
-    requires: ['npx'],
-  },
-  {
-    name: 'react',
-    family: 'react',
-    description: 'A frontend using React (react)',
-    command: 'npx',
-    args: ['create-react-app'],
-    requires: ['npx'],
-  },
-  {
-    name: 'next-ts',
-    family: 'next',
-    description: 'A frontend using Next and Typescript (next)',
-    command: 'npx',
-    args: ['create-next-app@latest', '--template typescript'],
-    requires: ['npx'],
-  },
-  {
-    name: 'next-js',
-    family: 'next',
-    description: 'A frontend using Next (next)',
-    command: 'npx create-next-app@latest',
-    args: ['create-next-app@latest'],
-    requires: ['npx'],
-  },
-  {
-    name: 'flutter',
-    family: 'flutter',
-    description: 'A mobile app using Flutter (flutter)',
-    command: 'flutter',
-    args: ['create'],
-    requires: ['flutter'],
-  },
-  {
-    name: 'angular',
-    family: 'angular',
-    description: 'A frontend using Angular (angular)',
-    command: 'npx',
-    args: ['ng', 'new'],
-    requires: ['npx'],
-  },
-];
+// const { spawn } = require('child_process');
+const kodies = async () => {
+  const kodies = JSON.parse((await $`npm search kodyfire -j -l`).toString())
+  return kodies.filter((kody:any) =>kody.name.includes('-kodyfire'));
+}
 
-export const questions = [
-  {
-    type: 'text',
-    name: 'name',
-    message: 'What is the name of your project?',
-  },
-  {
-    type: 'select',
-    name: 'technology',
-    message: `What are you building today?`,
-    choices: projects.map(project => ({
-      title: project.description,
-      value: project.name,
-    })),
-  },
-  {
-    type: 'text',
-    name: 'path',
-    message: `Where do you want to save your project?`,
-    initial: './',
-  },
-];
-
-type Project = {
-  name: string;
-  family: string;
-  language?: string;
-  description: string;
-  command: string;
-  args: string[];
-  requires: string[];
-};
 
 export class Action {
-  static async prompter(): Promise<void | any> {
-    // get user choices
-    (async () => {
-      const response = await prompts(questions);
-      const { name, technology, path } = response;
+  static async prompter(kody: string): Promise<void | any> {
+    let path = './';
+    const choices = await kodies()
+    const questions = [
+      {
+        type: 'autocomplete',
+        name: 'kody',
+        message: `Which kody do want to install?`,
+        choices: choices.map((project: any) => ({
+          title: project.name,
+          value: project.name,
+        })),
+      },
+      {
+        type: 'text',
+        name: 'path',
+        message: `Where do you want to save the kody?`,
+        initial: './',
+      },
+    ];
+    if(kody) {
+      // we check if the kody exists within the kodies list
+      const kodyExists = choices.find((choice: any) => choice.name.includes(kody));
+      if(!kodyExists) {
+        this.displayMessage(`😞 No kody found with the name ${kody}.`);
+        return;
+      }
+      kody = kodyExists.name;
+    } else {
+    const response = await prompts(questions);
+      kody = response.kody;
+      path= response.path;
       // create project
-      if (!technology || !name) {
+      if (!kody || !path) {
         this.displayMessage('Missing required fields');
         return;
       }
-      const project = projects.find(project => project.name === technology);
-      if (!project) {
-        this.displayMessage(`Project ${technology} not found`);
-        return;
-      }
-      await this.runCommand(project, name, path);
-    })();
+    }
+      await this.runCommand(kody, path);
   }
 
-  static async runCommand(project: Project, name: any = null, path = './') {
-    if (name) {
-      project.args = [...project.args, name];
-    }
+  static async runCommand(kody: string, path = './') {
+
     const dest = join(process.cwd(), path);
     if (!fs.existsSync(dest)) {
       fs.mkdirSync(dest);
     }
     // @todo: upgrade to latest zx
-    // await $`${project.command} ${project.args} ${name}`;
-    // or spawn for zx version < 6.0.0
     cd(dest);
-    await spawn(project.command, project.args, { stdio: 'inherit' });
+    $.verbose = true;
+    $`npm i ${kody}`;
+    // or spawn for zx version < 6.0.0
+    // await spawn(project.command, project.args, { stdio: 'inherit' });
   }
 
   static displayMessage(message: string) {
@@ -155,9 +80,9 @@ export class Action {
       })
     );
   }
-  static async execute() {
+  static async execute(kody: string) {
     try {
-      await this.prompter();
+      await this.prompter(kody);
     } catch (error: any) {
       this.displayMessage(error.message);
     }

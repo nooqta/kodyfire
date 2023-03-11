@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Action = exports.questions = void 0;
+exports.Action = void 0;
 // import { $ } from "zx";
 const kodyfire_core_1 = require("kodyfire-core");
 const path_1 = require("path");
@@ -17,132 +17,67 @@ const zx_1 = require("zx");
 const prompts = require('prompts');
 // import { $ } from 'zx';
 const boxen = require('boxen');
-const { spawn } = require('child_process');
-// @todo retrieve from a repository (remote|local)? to centralize all types of projects
-const projects = [
-    {
-        name: 'laravel',
-        family: 'laravel',
-        language: 'php',
-        description: 'A Backend using Laravel (php)',
-        command: 'composer',
-        args: ['create-project', 'laravel/laravel'],
-        requires: ['composer'],
-    },
-    {
-        name: 'vue-cli',
-        family: 'vue',
-        description: 'A frontend using Vuexy (vue)',
-        command: 'vue',
-        args: ['create'],
-        requires: ['vue'],
-    },
-    {
-        name: 'express',
-        family: 'node',
-        description: 'A backend using Express (node)',
-        command: 'npx',
-        args: ['express-generator'],
-        requires: ['npx'],
-    },
-    {
-        name: 'react',
-        family: 'react',
-        description: 'A frontend using React (react)',
-        command: 'npx',
-        args: ['create-react-app'],
-        requires: ['npx'],
-    },
-    {
-        name: 'next-ts',
-        family: 'next',
-        description: 'A frontend using Next and Typescript (next)',
-        command: 'npx',
-        args: ['create-next-app@latest', '--template typescript'],
-        requires: ['npx'],
-    },
-    {
-        name: 'next-js',
-        family: 'next',
-        description: 'A frontend using Next (next)',
-        command: 'npx create-next-app@latest',
-        args: ['create-next-app@latest'],
-        requires: ['npx'],
-    },
-    {
-        name: 'flutter',
-        family: 'flutter',
-        description: 'A mobile app using Flutter (flutter)',
-        command: 'flutter',
-        args: ['create'],
-        requires: ['flutter'],
-    },
-    {
-        name: 'angular',
-        family: 'angular',
-        description: 'A frontend using Angular (angular)',
-        command: 'npx',
-        args: ['ng', 'new'],
-        requires: ['npx'],
-    },
-];
-exports.questions = [
-    {
-        type: 'text',
-        name: 'name',
-        message: 'What is the name of your project?',
-    },
-    {
-        type: 'select',
-        name: 'technology',
-        message: `What are you building today?`,
-        choices: projects.map(project => ({
-            title: project.description,
-            value: project.name,
-        })),
-    },
-    {
-        type: 'text',
-        name: 'path',
-        message: `Where do you want to save your project?`,
-        initial: './',
-    },
-];
+// const { spawn } = require('child_process');
+const kodies = () => __awaiter(void 0, void 0, void 0, function* () {
+    const kodies = JSON.parse((yield (0, zx_1.$) `npm search kodyfire -j -l`).toString());
+    return kodies.filter((kody) => kody.name.includes('-kodyfire'));
+});
 class Action {
-    static prompter() {
+    static prompter(kody) {
         return __awaiter(this, void 0, void 0, function* () {
-            // get user choices
-            (() => __awaiter(this, void 0, void 0, function* () {
-                const response = yield prompts(exports.questions);
-                const { name, technology, path } = response;
+            let path = './';
+            const choices = yield kodies();
+            const questions = [
+                {
+                    type: 'autocomplete',
+                    name: 'kody',
+                    message: `Which kody do want to install?`,
+                    choices: choices.map((project) => ({
+                        title: project.name,
+                        value: project.name,
+                    })),
+                },
+                {
+                    type: 'text',
+                    name: 'path',
+                    message: `Where do you want to save the kody?`,
+                    initial: './',
+                },
+            ];
+            if (kody) {
+                // we check if the kody exists within the kodies list
+                const kodyExists = choices.find((choice) => choice.name.includes(kody));
+                if (!kodyExists) {
+                    this.displayMessage(`😞 No kody found with the name ${kody}.`);
+                    return;
+                }
+                kody = kodyExists.name;
+            }
+            else {
+                const response = yield prompts(questions);
+                kody = response.kody;
+                path = response.path;
                 // create project
-                if (!technology || !name) {
+                if (!kody || !path) {
                     this.displayMessage('Missing required fields');
                     return;
                 }
-                const project = projects.find(project => project.name === technology);
-                if (!project) {
-                    this.displayMessage(`Project ${technology} not found`);
-                    return;
-                }
-                yield this.runCommand(project, name, path);
-            }))();
+            }
+            yield this.runCommand(kody, path);
         });
     }
-    static runCommand(project, name = null, path = './') {
+    static runCommand(kody, path = './') {
         return __awaiter(this, void 0, void 0, function* () {
-            if (name) {
-                project.args = [...project.args, name];
-            }
             const dest = (0, path_1.join)(process.cwd(), path);
             if (!zx_1.fs.existsSync(dest)) {
                 zx_1.fs.mkdirSync(dest);
             }
             // @todo: upgrade to latest zx
-            // await $`${project.command} ${project.args} ${name}`;
-            // or spawn for zx version < 6.0.0
             (0, zx_1.cd)(dest);
-            yield spawn(project.command, project.args, { stdio: 'inherit' });
+            zx_1.$.verbose = true;
+            (0, zx_1.$) `npm i ${kody}`;
+            // or spawn for zx version < 6.0.0
+            // await spawn(project.command, project.args, { stdio: 'inherit' });
         });
     }
     static displayMessage(message) {
@@ -154,10 +89,10 @@ class Action {
             borderStyle: 'round',
         }));
     }
-    static execute() {
+    static execute(kody) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield this.prompter();
+                yield this.prompter(kody);
             }
             catch (error) {
                 this.displayMessage(error.message);

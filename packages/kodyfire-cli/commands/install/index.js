@@ -15,9 +15,10 @@ module.exports = (program) => {
     program
         .command('install')
         .alias('i')
-        .description('Prompt user to choose project to install')
-        .action((_opt) => __awaiter(void 0, void 0, void 0, function* () {
-        return yield action_1.Action.execute();
+        .argument('[kody]', 'The kody package name you want to install. You can pas the package name without the `-kodyfire` suffix.')
+        .description('Prompt user to choose to install')
+        .action((kody, _opt) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield action_1.Action.execute(kody);
     }));
 };
 //# sourceMappingURL=index.js.map
