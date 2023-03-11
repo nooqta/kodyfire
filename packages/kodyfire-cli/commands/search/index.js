@@ -15,8 +15,10 @@ module.exports = (program) => {
     program
         .command('search')
         .alias('s')
+        .argument('[keywords...]', 'search kodyfire packages using keywords')
         .description('search kodyfire packages from npm registry')
-        .action((_opt) => __awaiter(void 0, void 0, void 0, function* () {
+        .action((keywords, _opt) => __awaiter(void 0, void 0, void 0, function* () {
+        _opt.keywords = keywords;
         return yield (0, action_1.action)(_opt);
     }));
 };

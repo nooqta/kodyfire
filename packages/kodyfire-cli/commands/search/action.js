@@ -51,17 +51,17 @@ class Action {
     }
     static execute(_args) {
         return __awaiter(this, void 0, void 0, function* () {
+            const { keywords } = _args;
             try {
                 // @todo: use event emitter to listen to the event of the runner
                 ee.on('message', (text) => {
                     console.log(text);
                 });
                 // We check if package.json exists
-                const kodies = yield this.getKodies();
-                console.log(kodies);
+                const kodies = (yield this.getKodies(keywords)).filter((kody) => kody.name.includes('-kodyfire'));
                 if (kodies.length == 0) {
                     const kody = chalk.greenBright(chalk.bold('kody'));
-                    const message = `😞 No ${kody} found.\nCheck your internet connection and try again.\nYou're a Ninja 🚀🚀🚀`;
+                    const message = `😞 No ${kody} found.\nYou're a Ninja 🚀🚀🚀`;
                     this.displayMessage(message);
                 }
                 else {
@@ -73,17 +73,12 @@ class Action {
             }
         });
     }
-    static getKodies() {
+    // @ts-ignore
+    static getKodies(keywords) {
         return __awaiter(this, void 0, void 0, function* () {
-            const kodies = JSON.parse((yield (0, zx_1.$) `npm search kodyfire -j -l`).toString());
-            // kodies = await Promise.all(
-            //   kodies.map(async (kody: any) => {
-            //     const kodyData = await $`npm view ${kody.name} --json`;
-            //     const kodyJson = JSON.parse(kodyData.toString());
-            //     kody = { ...kody, version: kodyJson.version, ...kodyJson.kodyfire };
-            //     return kody;
-            //   })
-            // );
+            let kodies = JSON.parse((yield (0, zx_1.$) `npm search kodyfire -j -l`).toString());
+            if (keywords.length > 0)
+                kodies = kodies.filter((kody) => (keywords.includes(kody.name) || keywords.find(key => kody.description.toLowerCase().search(key.toLowerCase()) > -1) && kody.name.includes('-kodyfire')));
             return kodies;
         });
     }
