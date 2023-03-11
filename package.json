@@ -58,5 +58,8 @@
     "*.{js,json,yml,yaml,css,scss,ts,tsx,md}": [
       "prettier --write"
     ]
+  },
+  "dependencies": {
+    "@types/jest": "^29.4.0"
   }
 }
