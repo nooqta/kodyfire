@@ -7,6 +7,7 @@ export declare class Action {
     }): Promise<void>;
     static getInstalledKodies(): Promise<string[]>;
     static displayTemplates(packageName: string): Promise<void>;
+    static displayOverwrites(packageName: string): Promise<void>;
     static displayConcepts(packageName: string): Promise<void>;
     static getDependencyConcepts(dependency: string, rootDir?: string): Promise<{
         name: string;

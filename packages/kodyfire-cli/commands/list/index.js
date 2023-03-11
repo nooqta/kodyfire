@@ -18,7 +18,7 @@ module.exports = (program) => {
         .alias('ls')
         .description('list installed kodies within your current project.')
         .argument('[kodyName]', 'List details of a kody by passing the kody name as an argument')
-        .addOption(new commander_1.Option('-s, --summary <details>', 'List kody details such as `template` names and `concepts`.').choices(['concepts', 'templates']).default('concepts'))
+        .addOption(new commander_1.Option('-s, --summary <details>', 'List kody details such as `template` names and `concepts`.').choices(['concepts', 'templates', 'overwrites']).default('concepts'))
         .action((kodyName, opts) => __awaiter(void 0, void 0, void 0, function* () {
         return (0, action_1.action)(Object.assign({ technology: kodyName }, opts));
     }));

@@ -11,7 +11,7 @@ module.exports = (program: typeof Command) => {
       '[kodyName]',
       'List details of a kody by passing the kody name as an argument'
     )
-    .addOption(new Option('-s, --summary <details>', 'List kody details such as `template` names and `concepts`.').choices(['concepts', 'templates']).default('concepts'))
+    .addOption(new Option('-s, --summary <details>', 'List kody details such as `template` names and `concepts`.').choices(['concepts', 'templates', 'overwrites']).default('concepts'))
     .action(async (kodyName: any, opts: any) => {
       return action({ technology: kodyName, ...opts });
     });

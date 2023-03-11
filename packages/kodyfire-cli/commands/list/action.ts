@@ -62,6 +62,9 @@ export class Action {
               case 'templates':
                 this.displayTemplates(packageName);
                 break;
+              case 'overwrites':
+                this.displayOverwrites(packageName);
+                break;
             default:
               this.displayConcepts(packageName);
               break;
@@ -97,6 +100,24 @@ export class Action {
       table.push([template.concept, template.options.join('\n')]);
     });
 
+    console.log(table.toString());
+  }
+  static async displayOverwrites(packageName: string) {
+    const dependency = await this.getDependencyConcepts(packageName);
+    const concepts = dependency?.concepts;
+    const table = new Table({
+      head: ['name', 'arguments'],
+      colWidths: [31, 61],
+      style: {
+        'padding-left': 1,
+        'padding-right': 1,
+        head: ['yellow'],
+      },
+    });
+    Object.keys(concepts).forEach(name => {
+      // add a description to the concept
+      table.push([name, Object.keys(concepts[name]).join('\n')]);
+    });
     console.log(table.toString());
   }
   static async displayConcepts(packageName: string) {
