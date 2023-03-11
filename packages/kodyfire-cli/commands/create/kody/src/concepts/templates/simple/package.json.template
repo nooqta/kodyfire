@@ -21,11 +21,11 @@
     "@angular-devkit/core": "^12.2.3",
     "@angular-devkit/schematics": "^12.2.3",
     "ajv": "^8.6.3",
-    "basic-kodyfire": "^0.1.24",
+    "basic-kodyfire": "^0.1.25",
     "fs-extra": "^10.0.0",
     "handlebars": "^4.7.7",
     "handlebars-delimiters": "^1.0.0",
-    "kodyfire-core": "^0.1.24",
+    "kodyfire-core": "^0.1.25",
     "moment": "^2.29.1",
     "pluralize": "^8.0.0",
     "typescript": "~4.5.5"
