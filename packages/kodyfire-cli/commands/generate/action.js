@@ -223,7 +223,7 @@ class Action {
             if (answers['name'] !== undefined) {
                 const props = conceptNames.filter((name) => name !== 'name');
                 for (let i = 0; i < props.length; i++) {
-                    if (answers[props[i]] === undefined && concept[props[i]].default) {
+                    if (answers[props[i]] === undefined && concept[props[i]].default !== undefined) {
                         answers[props[i]] = concept[props[i]].default;
                     }
                 }
