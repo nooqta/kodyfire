@@ -13,7 +13,7 @@ module.exports = (program: typeof Command) => {
       'The name of the kody to use or the kody and the concept separated by a colon (e.g. kody:concept)\n'
     )
     .argument('[concept]', 'The concept you want to generate')
-    .argument('[name]', 'The name of the artifact to generate (optional)')
+    .option('-a, --args <args...>', 'A comman seperated list of concept arguments to generate the artifact(optional).key:value,key2:value2')
     .option(
       '-i,--include <includes>',
       `Comma separated list of concepts to include. (e.g. -i concept1,concept2).\nTo list available concepts use the list command (e.g. ${chalk.dim(
@@ -23,10 +23,17 @@ module.exports = (program: typeof Command) => {
     .option('-o,--overwrites <overwrites>', 'Overwrite the schema')
     .option('-m,--multiple', 'Generate multiple artifacts')
     .option('-p,--persist', 'Persist the generated artifact')
-    .action(async (kody: string, concept: string, name: string, _opt: any) => {
+    .action(async (kody: string, concept: string, _opt: any) => {
       _opt.includes = _opt.include ? _opt.include.split(',') : [];
       // We check if the overwrites is a json file
       _opt.defaults = {};
+      if(_opt.args && _opt.args.length > 0){
+        _opt.args.map((arg:any) => {
+          const [key, value] = arg.split(':');
+          if(key && value)
+          _opt[key] = value;
+        })
+      }
       if (_opt.overwrites) {
         // check if the file exists
         if (
@@ -47,6 +54,7 @@ module.exports = (program: typeof Command) => {
             }, {});
         }
       }
-      return await Action.execute({ kody, concept, name, ..._opt });
+      
+      return await Action.execute({ kody, concept, ..._opt });
     });
 };

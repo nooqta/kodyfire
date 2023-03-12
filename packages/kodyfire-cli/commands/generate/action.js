@@ -42,6 +42,7 @@ const kodyfire_core_1 = require("kodyfire-core");
 const path_1 = require("path");
 const zx_1 = require("zx");
 const action_1 = require("../init/action");
+const fs_1 = require("fs");
 const prompts = require('prompts');
 const boxen = require('boxen');
 const dotenv = require('envfile');
@@ -197,87 +198,110 @@ class Action {
         });
     }
     static getPropertiesAnswers(concept, answers = {}, kody = this.kody) {
-        var _a, _b, _c;
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
+            var _c;
             const schemaDefinition = this.getSchemaDefinition(kody);
             const conceptNames = Object.keys(concept || {});
             if (conceptNames.length == 0) {
                 return [];
             }
+            // We check the required argument for the concept
+            let required = [];
+            let schemaPath = (0, path_1.join)(process.cwd(), '.kody', this.kody);
+            if ((0, fs_1.existsSync)(schemaPath)) {
+                schemaPath = (0, path_1.join)(schemaPath, 'schema');
+            }
+            else {
+                schemaPath = (0, path_1.join)(process.cwd(), 'node_modules', this.kody);
+            }
+            const { schema } = yield (_c = schemaPath, Promise.resolve().then(() => __importStar(require(_c))));
+            if (schema.properties[this.concept].items.required) {
+                required = schema.properties[this.concept].items.required;
+            }
             // allow prompting usage when requested. example kody g ... --prompts
             if (answers['name'] !== undefined) {
                 const props = conceptNames.filter((name) => name !== 'name');
                 for (let i = 0; i < props.length; i++) {
-                    if (answers[props[i]] === undefined) {
-                        answers[props[i]] = (_a = concept[props[i]].default) !== null && _a !== void 0 ? _a : '';
+                    if (answers[props[i]] === undefined && concept[props[i]].default) {
+                        answers[props[i]] = concept[props[i]].default;
                     }
                 }
-                return answers;
-            }
-            else {
-                for (let i = 0; i < conceptNames.length; i++) {
-                    const currentConcept = concept[conceptNames[i]];
-                    if (currentConcept.type !== 'array' &&
-                        ((_b = currentConcept.items) === null || _b === void 0 ? void 0 : _b.type) !== 'object') {
-                        if (typeof currentConcept.condition != 'undefined') {
-                            const condition = currentConcept.condition;
-                            if (typeof condition == 'function') {
-                                if (!condition(answers)) {
-                                    continue;
-                                }
-                            }
-                        }
-                        const question = yield this.conceptToQuestion(conceptNames[i], concept[conceptNames[i]], schemaDefinition, false, false, `${conceptNames[i]}`, true);
-                        if (typeof question.value != 'undefined') {
-                            answers[conceptNames[i]] = question.value;
-                        }
-                        else if (question) {
-                            const answer = yield prompts(question, {
-                                onCancel: Action.onCancel,
-                            });
-                            answers[conceptNames[i]] = answer.value;
+                // we return answers if all required fields are set
+                let isReady = true;
+                if (required.length > 0) {
+                    for (let i = 0; i < required.length; i++) {
+                        if (answers[required[i]] === undefined) {
+                            isReady = false;
+                            break;
                         }
                     }
-                    if (currentConcept.type === 'array'
-                    // && currentConcept.items?.type === 'object'
-                    ) {
-                        const question = {
-                            type: 'confirm',
-                            name: 'value',
-                            message: `Would you like to add ${conceptNames[i]}?`,
-                            initial: true,
-                        };
-                        const { value } = yield prompts(question);
-                        if (value) {
-                            let addMore = true;
-                            while (addMore) {
-                                let childConcept;
-                                if (((_c = currentConcept.items) === null || _c === void 0 ? void 0 : _c.type) !== 'string') {
-                                    childConcept = yield this.getPropertiesAnswers(currentConcept.items.properties);
-                                }
-                                else {
-                                    const conceptQuestion = yield this.conceptToQuestion(conceptNames[i], currentConcept.items);
-                                    const currentAnswer = yield prompts(conceptQuestion, {
-                                        onCancel: Action.onCancel,
-                                    });
-                                    childConcept = currentAnswer[conceptNames[i]];
-                                }
-                                if (answers[conceptNames[i]]) {
-                                    answers[conceptNames[i]].push(childConcept);
-                                }
-                                else {
-                                    answers[conceptNames[i]] = [childConcept];
-                                }
-                                const question = {
-                                    type: 'confirm',
-                                    name: 'value',
-                                    message: `Would you like to add more ${conceptNames[i]}?`,
-                                    initial: true,
-                                };
-                                const { value } = yield prompts(question);
-                                if (!value) {
-                                    addMore = false;
-                                }
+                    if (isReady)
+                        return answers;
+                }
+            }
+            for (let i = 0; i < conceptNames.length; i++) {
+                const currentConcept = concept[conceptNames[i]];
+                if (currentConcept.type !== 'array' &&
+                    ((_a = currentConcept.items) === null || _a === void 0 ? void 0 : _a.type) !== 'object') {
+                    if (typeof currentConcept.condition != 'undefined') {
+                        const condition = currentConcept.condition;
+                        if (typeof condition == 'function') {
+                            if (!condition(answers)) {
+                                continue;
+                            }
+                        }
+                    }
+                    const question = yield this.conceptToQuestion(conceptNames[i], concept[conceptNames[i]], schemaDefinition, false, false, `${conceptNames[i]}`, true);
+                    if (typeof question.value != 'undefined') {
+                        answers[conceptNames[i]] = question.value;
+                    }
+                    else if (question && typeof answers[conceptNames[i]] == 'undefined') {
+                        const answer = yield prompts(question, {
+                            onCancel: Action.onCancel,
+                        });
+                        answers[conceptNames[i]] = answer.value;
+                    }
+                }
+                if (currentConcept.type === 'array'
+                // && currentConcept.items?.type === 'object'
+                ) {
+                    const question = {
+                        type: 'confirm',
+                        name: 'value',
+                        message: `Would you like to add ${conceptNames[i]}?`,
+                        initial: true,
+                    };
+                    const { value } = yield prompts(question);
+                    if (value) {
+                        let addMore = true;
+                        while (addMore) {
+                            let childConcept;
+                            if (((_b = currentConcept.items) === null || _b === void 0 ? void 0 : _b.type) !== 'string') {
+                                childConcept = yield this.getPropertiesAnswers(currentConcept.items.properties);
+                            }
+                            else {
+                                const conceptQuestion = yield this.conceptToQuestion(conceptNames[i], currentConcept.items);
+                                const currentAnswer = yield prompts(conceptQuestion, {
+                                    onCancel: Action.onCancel,
+                                });
+                                childConcept = currentAnswer[conceptNames[i]];
+                            }
+                            if (answers[conceptNames[i]]) {
+                                answers[conceptNames[i]].push(childConcept);
+                            }
+                            else {
+                                answers[conceptNames[i]] = [childConcept];
+                            }
+                            const question = {
+                                type: 'confirm',
+                                name: 'value',
+                                message: `Would you like to add more ${conceptNames[i]}?`,
+                                initial: true,
+                            };
+                            const { value } = yield prompts(question);
+                            if (!value) {
+                                addMore = false;
                             }
                         }
                     }

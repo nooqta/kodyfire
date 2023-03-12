@@ -4,6 +4,7 @@ import { capitalize, IKody, Package } from 'kodyfire-core';
 import { join } from 'path';
 import { fs } from 'zx';
 import { Action as InitAction } from '../init/action';
+import { existsSync } from 'fs';
 const prompts = require('prompts');
 const boxen = require('boxen');
 const dotenv = require('envfile');
@@ -92,6 +93,7 @@ export class Action {
 
           this.kody = kody;
         }
+
         if (conceptName) this.concept = conceptName;
         let currentConcept = await this.getCurrentConcept();
 
@@ -107,6 +109,7 @@ export class Action {
             name,
             ...defaults,
           });
+
           if (answers) {
             // @todo validate answers
             await this.generateConcept(this.kody, this.concept, answers);
@@ -213,93 +216,116 @@ export class Action {
     if (conceptNames.length == 0) {
       return [];
     }
+    // We check the required argument for the concept
+    let required = [];
+    let schemaPath = join(process.cwd(), '.kody', this.kody);
+    if (existsSync(schemaPath)) {
+      schemaPath = join(schemaPath, 'schema');
+    } else {
+      schemaPath = join(process.cwd(), 'node_modules', this.kody);
+    }
+    const { schema } = await import(schemaPath);
+    if (schema.properties[this.concept].items.required) {
+      required = schema.properties[this.concept].items.required;
+    }
     // allow prompting usage when requested. example kody g ... --prompts
     if (answers['name'] !== undefined) {
       const props = conceptNames.filter((name: string) => name !== 'name');
       for (let i = 0; i < props.length; i++) {
-        if (answers[props[i]] === undefined) {
-          answers[props[i]] = concept[props[i]].default ?? '';
+        if (answers[props[i]] === undefined && concept[props[i]].default) {
+          answers[props[i]] = concept[props[i]].default;
         }
       }
-      return answers;
-    } else {
-      for (let i = 0; i < conceptNames.length; i++) {
-        const currentConcept = concept[conceptNames[i]];
-
-        if (
-          currentConcept.type !== 'array' &&
-          currentConcept.items?.type !== 'object'
-        ) {
-          if (typeof currentConcept.condition != 'undefined') {
-            const condition = currentConcept.condition;
-            if (typeof condition == 'function') {
-              if (!condition(answers)) {
-                continue;
-              }
-            }
-          }
-          const question = await this.conceptToQuestion(
-            conceptNames[i],
-            concept[conceptNames[i]],
-            schemaDefinition,
-            false,
-            false,
-            `${conceptNames[i]}`,
-            true
-          );
-          if (typeof question.value != 'undefined') {
-            answers[conceptNames[i]] = question.value;
-          } else if (question) {
-            const answer = await prompts(question, {
-              onCancel: Action.onCancel,
-            });
-            answers[conceptNames[i]] = answer.value;
+      
+      // we return answers if all required fields are set
+      let isReady = true;
+      if (required.length > 0) {
+        for (let i = 0; i < required.length; i++) {
+          if (answers[required[i]] === undefined) {
+            isReady = false;
+            break;
           }
         }
-        if (
-          currentConcept.type === 'array'
-          // && currentConcept.items?.type === 'object'
-        ) {
-          const question = {
-            type: 'confirm',
-            name: 'value',
-            message: `Would you like to add ${conceptNames[i]}?`,
-            initial: true,
-          };
-          const { value } = await prompts(question);
-          if (value) {
-            let addMore = true;
-            while (addMore) {
-              let childConcept;
-              if (currentConcept.items?.type !== 'string') {
-                childConcept = await this.getPropertiesAnswers(
-                  currentConcept.items.properties
-                );
-              } else {
-                const conceptQuestion = await this.conceptToQuestion(
-                  conceptNames[i],
-                  currentConcept.items
-                );
-                const currentAnswer = await prompts(conceptQuestion, {
-                  onCancel: Action.onCancel,
-                });
-                childConcept = currentAnswer[conceptNames[i]];
-              }
-              if (answers[conceptNames[i]]) {
-                answers[conceptNames[i]].push(childConcept);
-              } else {
-                answers[conceptNames[i]] = [childConcept];
-              }
-              const question = {
-                type: 'confirm',
-                name: 'value',
-                message: `Would you like to add more ${conceptNames[i]}?`,
-                initial: true,
-              };
-              const { value } = await prompts(question);
-              if (!value) {
-                addMore = false;
-              }
+        if (isReady) return answers;
+      }
+    }
+
+    for (let i = 0; i < conceptNames.length; i++) {
+      const currentConcept = concept[conceptNames[i]];
+
+      if (
+        currentConcept.type !== 'array' &&
+        currentConcept.items?.type !== 'object'
+      ) {
+        if (typeof currentConcept.condition != 'undefined') {
+          const condition = currentConcept.condition;
+          if (typeof condition == 'function') {
+            if (!condition(answers)) {
+              continue;
+            }
+          }
+        }
+        const question = await this.conceptToQuestion(
+          conceptNames[i],
+          concept[conceptNames[i]],
+          schemaDefinition,
+          false,
+          false,
+          `${conceptNames[i]}`,
+          true
+        );
+        if (typeof question.value != 'undefined') {
+          answers[conceptNames[i]] = question.value;
+        } else if (question &&  typeof answers[conceptNames[i]]  == 'undefined') {
+          const answer = await prompts(question, {
+            onCancel: Action.onCancel,
+          });
+          answers[conceptNames[i]] = answer.value;
+        }
+      }
+      if (
+        currentConcept.type === 'array'
+        // && currentConcept.items?.type === 'object'
+      ) {
+        const question = {
+          type: 'confirm',
+          name: 'value',
+          message: `Would you like to add ${conceptNames[i]}?`,
+          initial: true,
+        };
+        const { value } = await prompts(question);
+        if (value) {
+          let addMore = true;
+          while (addMore) {
+            let childConcept;
+            if (currentConcept.items?.type !== 'string') {
+              childConcept = await this.getPropertiesAnswers(
+                currentConcept.items.properties
+              );
+            } else {
+              const conceptQuestion = await this.conceptToQuestion(
+                conceptNames[i],
+                currentConcept.items
+              );
+              const currentAnswer = await prompts(conceptQuestion, {
+                onCancel: Action.onCancel,
+              });
+              childConcept = currentAnswer[conceptNames[i]];
+            }
+            if (answers[conceptNames[i]]) {
+              answers[conceptNames[i]].push(childConcept);
+            } else {
+              answers[conceptNames[i]] = [childConcept];
+            }
+            const question = {
+              type: 'confirm',
+              name: 'value',
+              message: `Would you like to add more ${conceptNames[i]}?`,
+              initial: true,
+            };
+            const { value } = await prompts(question);
+            if (!value) {
+              addMore = false;
             }
           }
         }
