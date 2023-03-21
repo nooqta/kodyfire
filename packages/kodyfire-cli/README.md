@@ -1,6 +1,6 @@
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
-Kody is a command-line tool for generating artifact files, powered by both classic and AI code generation techniques. It can be used by both technical and non-technical users to generate files across a wide range of technologies.
+*Kody is a command-line tool for generating artifact files, powered by both classic and AI code generation techniques. It can be used by both technical and non-technical users to generate files across a wide range of technologies.*
 
 The code generation feature in Kody relies on [OpenAI Codex](https://openai.com/), a model that uses deep learning to generate human-like text, and ChatGPT to provide natural language processing capabilities.
 
@@ -76,9 +76,9 @@ Open the project you are willing to work on using vscode or your prefered editor
 
 ### Search and install a kody
 
-Based on your project, search availables kodies and select the one that fits your need. There are [13 kody packages](#Available kodies) available at the moment.
+Based on your project, search [availables kodies](#Available%20kodies) and select the one that fits your need..
 
-To search available kodies by keyword runthe following command. if you don't specify a keyword all available kodies will be listed
+To search [availables kodies](#Available%20kodies) by keyword runthe following command. if you don't specify a keyword all available kodies will be listed.
 
 ```bash
 kody search [keyword]
