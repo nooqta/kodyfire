@@ -9,7 +9,7 @@ Table of Contents
 
 *   [Installation](#installation)
 *   [Usage](#usage)
-*   [Getting Started](#Getting Started)
+*   [Getting Started](#Getting%20Started)
 *   [Terminology](#terminology)
 *   [Contributing](#contributing)
 *   [License](#license)
