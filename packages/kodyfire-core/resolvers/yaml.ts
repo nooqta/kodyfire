@@ -1,9 +1,9 @@
-const yaml = require('js-yaml');
-const fs = require('fs');
+const { load } = require('js-yaml');
+const { readFileSync } = require('fs');
 
 export class Yaml {
   public static resolve(source: string): any {
-    const data = fs.readFileSync(source, 'utf8');
-    return yaml.load(data.toString());
+    const data = readFileSync(source, 'utf8');
+    return load(data.toString());
   }
 }

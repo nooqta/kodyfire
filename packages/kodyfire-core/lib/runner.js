@@ -35,7 +35,7 @@ exports.Runner = void 0;
 const __1 = require("..");
 const jsonSchemaToObject_1 = __importDefault(require("../utils/jsonSchemaToObject"));
 const path_1 = require("path");
-const fs_1 = __importDefault(require("fs"));
+const fs_1 = require("fs");
 class Runner {
     constructor(options) {
         this.options = options;
@@ -98,7 +98,7 @@ class Runner {
         });
     }
     getSchemaDefinition(dependency, rootDir = process.cwd()) {
-        return JSON.parse(fs_1.default.readFileSync((0, path_1.join)(rootDir, `kody-${dependency.replace('-kodyfire', '')}.json`), 'utf8'));
+        return JSON.parse((0, fs_1.readFileSync)((0, path_1.join)(rootDir, `kody-${dependency.replace('-kodyfire', '')}.json`), 'utf8'));
     }
     preExecute(dependency, kody, data) {
         return __awaiter(this, void 0, void 0, function* () {

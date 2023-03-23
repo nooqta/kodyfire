@@ -1,7 +1,7 @@
 import { IKody, IKodyWorkflow, Package } from '..';
 import jsonSchemaToObject from '../utils/jsonSchemaToObject';
 import { join } from 'path';
-import fs from 'fs';
+import { readFileSync } from 'fs';
 export class Runner implements IKodyWorkflow {
   options: any;
   input: any;
@@ -83,7 +83,7 @@ export class Runner implements IKodyWorkflow {
 
   getSchemaDefinition(dependency: string, rootDir = process.cwd()) {
     return JSON.parse(
-      fs.readFileSync(
+      readFileSync(
         join(rootDir, `kody-${dependency.replace('-kodyfire', '')}.json`),
         'utf8'
       )
