@@ -1,0 +1,50 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = {
+    version: '0.1.31',
+    //  the common & unique name of all the programming languages, frameworks and libraries that support code generation
+    // in an alphabetical order
+    technologies: [
+        "angularjs",
+        "apache thrift",
+        "asp.net core",
+        "c++",
+        "codeigniter",
+        "dart",
+        "django",
+        "express.js",
+        "fastapi",
+        "flask",
+        "go",
+        "grails",
+        "hapi.js",
+        "hibernate",
+        "java",
+        "julia",
+        "kotlin",
+        "laravel",
+        "loopback",
+        "micronaut",
+        "nestjs",
+        "next.js",
+        "phoenix",
+        "php",
+        "play",
+        "python",
+        "rails",
+        "react",
+        "ruby",
+        "ruby on rails",
+        "scala",
+        "spark",
+        "spring",
+        "strapi",
+        "symfony",
+        "swift",
+        "typescript",
+        "vaadin",
+        "vue.js"
+    ],
+    prompts: 'Kodyfire configuration package',
+};
+//# sourceMappingURL=default.js.map
