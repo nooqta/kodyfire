@@ -1,4 +1,4 @@
-// import { $ } from "zx";
+// @ts-nocheck
 import chalk from 'chalk';
 import { capitalize, IKody, Package } from 'kodyfire-core';
 import { join } from 'path';
@@ -8,6 +8,7 @@ import { existsSync } from 'fs';
 const prompts = require('prompts');
 const boxen = require('boxen');
 const dotenv = require('envfile');
+
 export class Action {
   static kody: any;
   static concept: any;
@@ -61,6 +62,7 @@ export class Action {
     includes?: any;
     defaults?: any;
   }): Promise<void | any> {
+    process.env.SUPPRESS_NO_CONFIG_WARNING = 'y';
     let { addMore, includes } = _args;
     const { persist, kody: _kodyName, concept: _conceptName, defaults } = _args;
     let { name } = _args;

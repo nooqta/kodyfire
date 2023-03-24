@@ -36,7 +36,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Action = void 0;
-// import { $ } from "zx";
+// @ts-nocheck
 const chalk_1 = __importDefault(require("chalk"));
 const kodyfire_core_1 = require("kodyfire-core");
 const path_1 = require("path");
@@ -81,6 +81,7 @@ class Action {
     }
     static prompter(_args) {
         return __awaiter(this, void 0, void 0, function* () {
+            process.env.SUPPRESS_NO_CONFIG_WARNING = 'y';
             let { addMore, includes } = _args;
             const { persist, kody: _kodyName, concept: _conceptName, defaults } = _args;
             let { name } = _args;
