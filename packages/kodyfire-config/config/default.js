@@ -1,9 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
-    version: '0.1.31',
-    //  the common & unique name of all the programming languages, frameworks and libraries that support code generation
-    // in an alphabetical order
+    mode: 'ai',
+    useClassicIfKodyFound: true,
+    technology: {
+        continueOnNotFound: true,
+        prompts: {
+            useLocalPrompts: true,
+            fallback: 'ai',
+        }
+    },
     technologies: [
         "angularjs",
         "apache thrift",
@@ -45,6 +51,8 @@ exports.default = {
         "vaadin",
         "vue.js"
     ],
-    prompts: 'Kodyfire configuration package',
+    prompts: [
+        "default prompt"
+    ],
 };
 //# sourceMappingURL=default.js.map

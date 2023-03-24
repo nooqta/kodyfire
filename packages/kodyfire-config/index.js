@@ -19,13 +19,40 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const defaultConfig = __importStar(require("config"));
-exports.default = ((initialConfiguration = {}) => {
-    process.env.SUPPRESS_NO_CONFIG_WARNING = 'y';
-    const config = require('config');
-    // Mixin configs that have been passed in, and make those my defaults
-    config.util.extendDeep(defaultConfig, initialConfiguration);
-    console.log('config', config.util.toObject());
-    return config;
-})();
+exports.Config = void 0;
+const defaultConfig = __importStar(require("./config/default"));
+const path_1 = require("path");
+class Config {
+    constructor() {
+        this.initialConfig = defaultConfig;
+        this.init();
+    }
+    init() {
+        var _a;
+        process.env['NODE_CONFIG_DIR'] = `${(0, path_1.join)(__dirname, 'config')}${path_1.delimiter}${(_a = process.env['NODE_CONFIG_DIR']) !== null && _a !== void 0 ? _a : (0, path_1.join)(process.cwd(), '.kody')}`;
+        this.config = require('config');
+    }
+    get(key = '') {
+        if (!key)
+            return this.config;
+        return this.config.get(key);
+    }
+    has(key = '') {
+        return this.config.has(key);
+    }
+    // assuming that aliases is key value mapping in the config, if provided alias exists under aliases get corresponding technology
+    // else return alias
+    getTechnology(alias) {
+        const technologies = this.get('technologies');
+        const aliases = this.get('aliases');
+        if (aliases && aliases[alias]) {
+            return aliases[alias];
+        }
+        if (technologies.includes(alias)) {
+            return alias;
+        }
+        return null;
+    }
+}
+exports.Config = Config;
 //# sourceMappingURL=index.js.map

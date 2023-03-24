@@ -1,5 +1,13 @@
 export default {
-    version: '0.1.31',
+    mode: 'ai', // ai, classic
+    useClassicIfKodyFound: true,
+    technology: {
+        continueOnNotFound: true,
+        prompts: {
+        useLocalPrompts: true,
+        fallback: 'ai',
+        }
+    },
     technologies: [
         "angularjs",
         "apache thrift",
@@ -42,6 +50,6 @@ export default {
         "vue.js"
       ],
     prompts: [
-
+        "default prompt"
     ],
 };

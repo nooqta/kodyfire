@@ -1,7 +1,15 @@
 declare const _default: {
-    version: string;
+    mode: string;
+    useClassicIfKodyFound: boolean;
+    technology: {
+        continueOnNotFound: boolean;
+        prompts: {
+            useLocalPrompts: boolean;
+            fallback: string;
+        };
+    };
     technologies: string[];
-    prompts: string;
+    prompts: string[];
 };
 export default _default;
 //# sourceMappingURL=default.d.ts.map
