@@ -82,7 +82,7 @@ kody ai create a Laravel Controller named SampleController under API/V1. Add a c
 ```
 You can use the experimental Speech-to-Text option to pass your prompt using your voice.
 ```sh
-kody ai create a Laravel Controller named SampleController under API/V1. Add a comment on top saying Hello Kodyfire! -r
+kody ai -r
 ```
 The transcription relies on [Whisper](https://openai.com/research/whisper) and requires [SoX](http://sox.sourceforge.net/) installed and available in your \$PATH. for the audio recording.
 ### For Linux
