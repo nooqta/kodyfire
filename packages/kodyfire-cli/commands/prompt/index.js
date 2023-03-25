@@ -21,7 +21,6 @@ module.exports = (program) => {
         // use audio recorder speech to text to create a prompt
         .option('-r, --record', 'Record a prompt using your microphone')
         .action((prompt, opts) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log(opts);
         return yield action_1.Action.execute(prompt.join(' ') || '', opts);
     }));
 };
