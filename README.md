@@ -1,6 +1,6 @@
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
-*Kody is a command-line tool for generating artifact files, powered by both classic and AI code generation techniques. It can be used by both technical and non-technical users to generate files across a wide range of technologies.*
+*Kody is a command-line tool for generating artifact files, powered by both classic and AI code generation techniques. It can be used by both technical and non-technical users to generate files across a wide range of technologies and programming languages.*
 
 The code generation feature in Kody relies on [OpenAI GPT](https://openai.com/), a language model that uses deep learning to generate human-like text, and ChatGPT to provide natural language processing capabilities.
 
