@@ -2,7 +2,7 @@
 
 *Kody is a command-line tool for generating artifact files, powered by both classic and AI code generation techniques. It can be used by both technical and non-technical users to generate files across a wide range of technologies.*
 
-The code generation feature in Kody relies on [OpenAI Codex](https://openai.com/), a model that uses deep learning to generate human-like text, and ChatGPT to provide natural language processing capabilities.
+The code generation feature in Kody relies on [OpenAI GPT](https://openai.com/), a language model that uses deep learning to generate human-like text, and ChatGPT to provide natural language processing capabilities.
 
 Table of Contents
 -----------------
@@ -52,6 +52,7 @@ kody [options] [command]
 
 ### Commands
 
+*   `prompt|ai [options] [prompt...]`: AI powered prompt assistant to quickly generate an artifact
 *   `batch [options]`: Generate multiple digital artifact
 *   `create [options] <name> <technology>`: Generate a new blank kody project
 *   `generate|g [options] [kody] [concept]`: Prompt assistant to quickly generate an artifact
@@ -73,8 +74,35 @@ Getting Started
 
 
 Open the project you are willing to work on using vscode or your prefered editor.
+### Generate artifacts using AI
+In case you want to exclusivly rely on AI to generate your artifacts. I don't need to install any additional kodies. Run the `kody ai [prompt]` command and follow the prompts.
 
-### Search and install a kody
+```sh
+kody ai create a Laravel Controller named SampleController under API/V1. Add a comment on top saying Hello Kodyfire!
+```
+You can use the experimental speech to text (STT) option to pass your prompt using your voice.
+```sh
+kody ai create a Laravel Controller named SampleController under API/V1. Add a comment on top saying Hello Kodyfire! -r
+```
+The transcription relies on [Whisper](https://openai.com/research/whisper) and requires [SoX](http://sox.sourceforge.net/) installed and available in your \$PATH. for the audio recording.
+### For Linux
+
+```
+sudo apt-get install sox libsox-fmt-all
+```
+
+### For MacOS
+
+```
+brew install sox
+```
+
+### For Windows
+
+[Download the binaries](http://sourceforge.net/projects/sox/files/latest/download)
+### Generate your artifact using the classical method
+
+#### Search and install a kody
 
 Based on your project, search [availables kodies](#Available%20kodies) and select the one that fits your need..
 
