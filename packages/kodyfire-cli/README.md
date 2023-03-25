@@ -80,7 +80,7 @@ In case you want to exclusivly rely on AI to generate your artifacts. I don't ne
 ```sh
 kody ai create a Laravel Controller named SampleController under API/V1. Add a comment on top saying Hello Kodyfire!
 ```
-You can use the experimental speech to text (STT) option to pass your prompt using your voice.
+You can use the experimental Speech-to-Text option to pass your prompt using your voice.
 ```sh
 kody ai create a Laravel Controller named SampleController under API/V1. Add a comment on top saying Hello Kodyfire! -r
 ```
