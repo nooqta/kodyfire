@@ -253,8 +253,10 @@ export class Action {
           this.DIRECTORY,
           'whisper'.concat('.wav')
         );
-        console.log('Writing new recording file at:', this.whisperFileName);
 
+        if (!fs.existsSync(this.DIRECTORY)) {
+          fs.mkdirSync(this.DIRECTORY);
+        }
         // Create write stream.
         const fileStream = fs.createWriteStream(this.whisperFileName, {
           encoding: 'binary',
@@ -324,9 +326,9 @@ export class Action {
     };
     // Optional parameter intended for debugging.
     // The object has to implement a log and warn function.
-    const logger = console;
+    // const logger = console;
 
     // Create an instance.
-    return new AudioRecorder(options, logger);
+    return new AudioRecorder(options);
   }
 }

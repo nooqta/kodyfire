@@ -199,7 +199,9 @@ class Action {
                     this.recorder.start();
                     // Create file path with random name.
                     this.whisperFileName = (0, path_1.join)(process.cwd(), this.DIRECTORY, 'whisper'.concat('.wav'));
-                    console.log('Writing new recording file at:', this.whisperFileName);
+                    if (!zx_1.fs.existsSync(this.DIRECTORY)) {
+                        zx_1.fs.mkdirSync(this.DIRECTORY);
+                    }
                     // Create write stream.
                     const fileStream = zx_1.fs.createWriteStream(this.whisperFileName, {
                         encoding: 'binary',
@@ -259,9 +261,9 @@ class Action {
             };
             // Optional parameter intended for debugging.
             // The object has to implement a log and warn function.
-            const logger = console;
+            // const logger = console;
             // Create an instance.
-            return new AudioRecorder(options, logger);
+            return new AudioRecorder(options);
         });
     }
 }
