@@ -1,6 +1,6 @@
 {
   "name": "kodyfire-cli",
-  "version": "0.1.32",
+  "version": "0.1.33",
   "description": "Artifact generator,automation tool and a general purpose low code and nocode generator.",
   "repository": {
     "type": "git",
@@ -60,8 +60,8 @@
     "handlebars-delimiters": "^1.0.0",
     "import-local": "^3.1.0",
     "inquirer": "^8.1.5",
-    "kodyfire-config": "^0.1.32",
-    "kodyfire-core": "^0.1.32",
+    "kodyfire-config": "^0.1.33",
+    "kodyfire-core": "^0.1.33",
     "lodash": "^4.17.21",
     "minimist": "^1.2.5",
     "node-audiorecorder": "^3.0.0",
