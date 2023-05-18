@@ -1,6 +1,6 @@
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
-*Kody is a command-line tool for generating artifact files, powered by both classic and AI code generation techniques. It can be used by both technical and non-technical users to generate files across a wide range of technologies.*
+*Kody is a command-line tool for generating artifact files, powered by both classic and AI code generation techniques. It can be used by both technical and non-technical users to generate files across a wide range of technologies and programming languages.*
 
 The code generation feature in Kody relies on [OpenAI GPT](https://openai.com/), a language model that uses deep learning to generate human-like text, and ChatGPT to provide natural language processing capabilities.
 
@@ -75,7 +75,7 @@ Getting Started
 
 Open the project you are willing to work on using vscode or your prefered editor.
 ### Generate artifacts using AI
-In case you want to exclusivly rely on AI to generate your artifacts. I don't need to install any additional kodies. Run the `kody ai [prompt]` command and follow the prompts.
+In case you want to exclusivly rely on AI to generate your artifacts. You don't need to install any additional kodies. Run the `kody ai [prompt]` command and follow the prompts. For example, to create a Laravel Controller named SampleController under API/V1 and add a comment on top saying Hello Kodyfire, run the following command
 
 ```sh
 kody ai create a Laravel Controller named SampleController under API/V1. Add a comment on top saying Hello Kodyfire!
