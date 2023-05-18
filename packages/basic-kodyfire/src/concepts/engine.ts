@@ -17,7 +17,7 @@ export class Engine {
       return JSON.stringify(value);
     });
     this.builder.registerHelper('join', (value: any) => {
-      return value.join(', ');
+      return Array.isArray(value)? value.join(', '):value;
     });
     this.builder.registerHelper(
       'ifEquals',
