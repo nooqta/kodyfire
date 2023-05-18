@@ -99,8 +99,8 @@ export class Action {
       }
       // We loop through the _args.concepts list then the classes get the currentConcept based on the currentKody
       // and generate the concept
-      concepts.forEach(async (conceptName: string) => {
-        imports.forEach(async (c: any) => {
+      for (const conceptName of concepts) {
+        for (const c of imports) {
           const _concepts = await GenerateAction.getDependencyConcepts(
             currentKody.name
           );
@@ -109,8 +109,10 @@ export class Action {
             currentConcept,
             {
               name: c.name,
+              ...c
             },
-            currentKody.name
+            currentKody.name,
+            conceptName
           );
           answers.import = imports;
           answers.parser = type;
@@ -121,8 +123,8 @@ export class Action {
             conceptName,
             answers
           );
-        });
-      });
+        }
+      }
 
       this.displayMessage(
         chalk.green(

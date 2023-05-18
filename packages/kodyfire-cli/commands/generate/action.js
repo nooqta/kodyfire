@@ -198,49 +198,50 @@ class Action {
             return concepts[this.concept];
         });
     }
-    static getPropertiesAnswers(concept, answers = {}, kody = this.kody) {
+    static getPropertiesAnswers(concept, answers = {}, kody = this.kody, conceptName = this.concept) {
         var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             var _c;
             const schemaDefinition = this.getSchemaDefinition(kody);
-            const conceptNames = Object.keys(concept || {});
+            const conceptNames = Object.keys(concept || []);
             if (conceptNames.length == 0) {
                 return [];
             }
             // We check the required argument for the concept
             let required = [];
-            let schemaPath = (0, path_1.join)(process.cwd(), '.kody', this.kody);
+            let schemaPath = (0, path_1.join)(process.cwd(), '.kody', kody);
             if ((0, fs_1.existsSync)(schemaPath)) {
                 schemaPath = (0, path_1.join)(schemaPath, 'schema');
             }
             else {
-                schemaPath = (0, path_1.join)(process.cwd(), 'node_modules', this.kody);
+                schemaPath = (0, path_1.join)(process.cwd(), 'node_modules', kody);
             }
             const { schema } = yield (_c = schemaPath, Promise.resolve().then(() => __importStar(require(_c))));
-            if (schema.properties[this.concept].items.required) {
-                required = schema.properties[this.concept].items.required;
+            if (schema.properties[conceptName].items.required) {
+                required = schema.properties[conceptName].items.required;
             }
             // allow prompting usage when requested. example kody g ... --prompts
-            if (answers['name'] !== undefined) {
-                const props = conceptNames.filter((name) => name !== 'name');
-                for (let i = 0; i < props.length; i++) {
-                    if (answers[props[i]] === undefined && concept[props[i]].default !== undefined) {
-                        answers[props[i]] = concept[props[i]].default;
-                    }
-                }
-                // we return answers if all required fields are set
-                let isReady = true;
-                if (required.length > 0) {
-                    for (let i = 0; i < required.length; i++) {
-                        if (answers[required[i]] === undefined) {
-                            isReady = false;
-                            break;
-                        }
-                    }
-                    if (isReady)
-                        return answers;
+            // if (answers['name'] !== undefined) {
+            const props = conceptNames;
+            //.filter((name: string) => name !== 'name');
+            for (let i = 0; i < props.length; i++) {
+                if (answers[props[i]] === undefined && concept[props[i]].default !== undefined) {
+                    answers[props[i]] = concept[props[i]].default;
                 }
             }
+            // we return answers if all required fields are set
+            let isReady = true;
+            if (required.length > 0) {
+                for (let i = 0; i < required.length; i++) {
+                    if (answers[required[i]] === undefined) {
+                        isReady = false;
+                        break;
+                    }
+                }
+                if (isReady)
+                    return answers;
+            }
+            // }
             for (let i = 0; i < conceptNames.length; i++) {
                 const currentConcept = concept[conceptNames[i]];
                 if (currentConcept.type !== 'array' &&

@@ -211,28 +211,30 @@ export class Action {
   static async getPropertiesAnswers(
     concept: any,
     answers: any = {},
-    kody = this.kody
+    kody = this.kody,
+    conceptName = this.concept
   ) {
     const schemaDefinition = this.getSchemaDefinition(kody);
-    const conceptNames = Object.keys(concept || {});
+    const conceptNames = Object.keys(concept || []);
     if (conceptNames.length == 0) {
       return [];
     }
     // We check the required argument for the concept
     let required = [];
-    let schemaPath = join(process.cwd(), '.kody', this.kody);
+    let schemaPath = join(process.cwd(), '.kody', kody);
     if (existsSync(schemaPath)) {
       schemaPath = join(schemaPath, 'schema');
     } else {
-      schemaPath = join(process.cwd(), 'node_modules', this.kody);
+      schemaPath = join(process.cwd(), 'node_modules', kody);
     }
     const { schema } = await import(schemaPath);
-    if (schema.properties[this.concept].items.required) {
-      required = schema.properties[this.concept].items.required;
+    if (schema.properties[conceptName].items.required) {
+      required = schema.properties[conceptName].items.required;
     }
     // allow prompting usage when requested. example kody g ... --prompts
-    if (answers['name'] !== undefined) {
-      const props = conceptNames.filter((name: string) => name !== 'name');
+    // if (answers['name'] !== undefined) {
+      const props = conceptNames
+      //.filter((name: string) => name !== 'name');
       for (let i = 0; i < props.length; i++) {
         if (answers[props[i]] === undefined && concept[props[i]].default !== undefined) {
           answers[props[i]] = concept[props[i]].default;
@@ -250,7 +252,7 @@ export class Action {
         }
         if (isReady) return answers;
       }
-    }
+    // }
 
     for (let i = 0; i < conceptNames.length; i++) {
       const currentConcept = concept[conceptNames[i]];

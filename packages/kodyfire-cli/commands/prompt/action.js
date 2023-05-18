@@ -45,13 +45,14 @@ class Action {
             thread.push(response);
             console.log(`${md(response[0].text)}\n`);
             const { value } = yield prompts({
-                type: 'select',
+                type: 'autocomplete',
                 name: 'value',
                 message: 'What would you like to do next?',
                 choices: [
+                    { title: 'Continue', value: 'retry' },
                     { title: 'Save & Exit', value: 'save' },
                     { title: 'Save & Continue', value: 'continue' },
-                    { title: 'Retry', value: 'retry' },
+                    { title: 'Run', value: 'save' },
                     { title: 'Exit', value: 'exit' },
                 ],
                 default: `save`,

@@ -18,7 +18,7 @@ export declare class Action {
     static generateIncludes(kody: any, includes: any[], rootConcept: any): Promise<void>;
     private static setConcept;
     static getCurrentConcept(): Promise<any>;
-    static getPropertiesAnswers(concept: any, answers?: any, kody?: any): Promise<any>;
+    static getPropertiesAnswers(concept: any, answers?: any, kody?: any, conceptName?: any): Promise<any>;
     static getConceptQuestion(): Promise<false | {
         type: string;
         name: string;

@@ -94,20 +94,18 @@ class Action {
                 }
                 // We loop through the _args.concepts list then the classes get the currentConcept based on the currentKody
                 // and generate the concept
-                concepts.forEach((conceptName) => __awaiter(this, void 0, void 0, function* () {
-                    imports.forEach((c) => __awaiter(this, void 0, void 0, function* () {
+                for (const conceptName of concepts) {
+                    for (const c of imports) {
                         const _concepts = yield action_2.Action.getDependencyConcepts(currentKody.name);
                         const currentConcept = _concepts[conceptName];
-                        const answers = yield action_2.Action.getPropertiesAnswers(currentConcept, {
-                            name: c.name,
-                        }, currentKody.name);
+                        const answers = yield action_2.Action.getPropertiesAnswers(currentConcept, Object.assign({ name: c.name }, c), currentKody.name, conceptName);
                         answers.import = imports;
                         answers.parser = type;
                         answers.yaml = yaml;
                         answers.currentImport = c;
                         yield action_2.Action.generateConcept(currentKody.name, conceptName, answers);
-                    }));
-                }));
+                    }
+                }
                 this.displayMessage(chalk_1.default.green(`🙌 ${chalk_1.default.bold(source)} ${chalk_1.default.white('imported successfully')}`), 'green');
             }
             catch (error) {
