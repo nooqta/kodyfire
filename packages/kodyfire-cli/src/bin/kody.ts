@@ -10,7 +10,7 @@ const { version } = require(path.resolve(
   process.mainModule?.path,
   '../..',
   'package.json'
-));
+).replace(/\\/g, '/'));
 program.version(version, '-v, --version', 'Output the current version');
 
 // @todo: move to core
@@ -20,7 +20,7 @@ const getDirectories = (source: string) =>
     .map((dirent: any) => dirent.name);
 
 const cmdDir = getDirectories(
-  path.resolve(process.mainModule?.path, '../..', 'commands')
+  path.resolve(process.mainModule?.path, '../..', 'commands').replace(/\\/g, '/')
 ).join(',');
 
 glob
@@ -28,7 +28,7 @@ glob
     `${path.resolve(
       process.mainModule?.path,
       '../..'
-    )}/commands/{${cmdDir}}/index.js`
+    )}/commands/{${cmdDir}}/index.js`.replace(/\\/g, '/')
   )
   .forEach(function (file: any) {
     const cmd = require(path.resolve(file));
